@@ -1,4 +1,0 @@
-#A default java.util.logging configuration.
-
-# Por defecto dejo la configuraci\u00f3n para todos los logging de INFO, no especifico m\u00e1s detalles de clases por ahora.
-.level = INFO

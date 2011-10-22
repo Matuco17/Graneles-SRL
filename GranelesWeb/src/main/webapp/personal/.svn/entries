@@ -1,56 +1,0 @@
-10
-
-dir
-22
-svn://localhost/granelesweb/GranelesWeb/src/main/webapp/personal
-svn://localhost/granelesweb
-
-
-
-2011-08-06T23:20:34.426429Z
-21
-djorco
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-0f47ae3d-98c9-4b1b-9798-1bf6bbc26968
-
-
-
-
-
-
-0
-
-accidentado
-dir
-
-categoria
-dir
-
-categoriaSecundaria
-dir
-
-obraSocial
-dir
-
-personal
-dir
-
-sindicato
-dir
-
-tarea
-dir
-
