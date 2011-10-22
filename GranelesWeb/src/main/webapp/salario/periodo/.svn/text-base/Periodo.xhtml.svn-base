@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.PeriodoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body" >
+                <p:panel id="panBusqueda" rendered="true">
+                    <h:form id="fromBusqueda" >
+                        <h:outputText value="Selección de Período" />
+                        <h:selectOneMenu id="mes" value="#{periodoController.mes}" >
+                            <f:selectItem itemValue="1"  itemLabel="Enero"  />
+                            <f:selectItem itemValue="2"  itemLabel="Febrero"  />
+                            <f:selectItem itemValue="3"  itemLabel="Marzo"  />
+                            <f:selectItem itemValue="4"  itemLabel="Abril" />
+                            <f:selectItem itemValue="5"  itemLabel="Mayo" />
+                            <f:selectItem itemValue="6"  itemLabel="Junio" />
+                            <f:selectItem itemValue="7"  itemLabel="Julio" />
+                            <f:selectItem itemValue="8"  itemLabel="Agosto" />
+                            <f:selectItem itemValue="9"  itemLabel="Septiembre" />
+                            <f:selectItem itemValue="10" itemLabel="Octubre" />
+                            <f:selectItem itemValue="11" itemLabel="Noviembre" />
+                            <f:selectItem itemValue="12" itemLabel="Diciembre" />
+                        </h:selectOneMenu>
+                        <p:spinner id="anio" value="#{periodoController.anio}" maxlength="4" min="1980" max="2100" />
+                                
+                        <p:commandButton id="btnBuscarPeriodo" ajax="true" action="#{periodoController.buscarPeriodo()}" update="panPeriodoSeleccionado" value="Ver Libro de Sueldos" label="Buscar Perido" />
+                    </h:form>
+                </p:panel>
+            <p:panel id="panPeriodoSeleccionado"  >
+                   <h:panelGrid columns="2">
+                       <p:panel id="panPeridoView" header="Información" >
+                           <h:panelGrid columns="2">
+                               <h:outputText value="#{bundleSalario.PeriodoTitle_descripcion}"/>
+                               <h:outputText value="#{periodoController.selected.descripcion}" title="#{bundleSalario.PeriodoTitle_descripcion}"/>
+
+                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
+                               <h:outputLabel id="oLfolioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
+
+                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
+                               <h:outputLabel id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
+
+                               <h:outputLabel value="Cantidad de Sueldos Cargados" />
+                               <h:outputLabel id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
+                               
+                              
+                               <h:outputLabel value="Descargar Libro de Sueldos PDF" rendered="#{periodoController.urlArchivoPDF != null}"/>
+                               <h:link id="lnkLibroPDF" value="Libro PDF" onclick="window.open('#{periodoController.urlArchivoPDF}','Download');window.close();" rendered="#{periodoController.urlArchivoPDF != null}" />
+                              
+                               <h:outputLabel value="Descargar Libro de Sueldos para AFIP" rendered="#{periodoController.urlArchivoTxt != null}" />
+                               <h:link id="lnkLibroTXT" value="Libro AFIP" onclick="window.open('#{periodoController.urlArchivoTxt}','Download');window.close();" rendered="#{periodoController.urlArchivoTxt != null}" />
+                                
+                           </h:panelGrid>
+                       </p:panel>
+                       <p:panel id="panPeridoEdit" header="Modificar" rendered="#{periodoController.current != null}" >
+                            <h:form enctype="multipart/form-data">
+                                <h:panelGrid columns="2" >
+
+                                    <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
+                                    <h:inputText id="folioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
+                                    <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
+                                    <h:inputText id="nroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
+
+
+                                    <h:outputText value="Altas.dbf"/>
+                                    <p:fileUpload id="fupAltas" value="#{periodoController.fileAltas}" mode="simple" allowTypes="dbf"/>  
+
+                                    <h:outputText value="Planilla.dbf"/>
+                                    <p:fileUpload id="fupPlanilla" value="#{periodoController.filePlanillas}" mode="simple" allowTypes="dbf" />
+
+                                    <h:outputText value="CargaReg.dbf"/>
+                                    <p:fileUpload id="simple" value="#{periodoController.fileCargaReg}" mode="simple" allowTypes="dbf" />
+
+                                    <h:outputText value="PagoFeri.dbf"/>
+                                    <p:fileUpload id="fupPagoFeri" value="#{periodoController.filePagoFeri}" mode="simple" allowTypes="dbf" />
+
+                                   <p:commandButton value="#{bundleSalario.PeriodoSaveLink}" ajax="false"  
+                                                 actionListener="#{periodoController.subirArchivosYProcesarPeriodo()}"
+                                                 /> 
+
+                                 
+                                </h:panelGrid>
+                             </h:form>
+                       </p:panel>
+                     
+                   </h:panelGrid>
+                </p:panel>      
+
+        </ui:define>
+    </ui:composition>
+</html>
+

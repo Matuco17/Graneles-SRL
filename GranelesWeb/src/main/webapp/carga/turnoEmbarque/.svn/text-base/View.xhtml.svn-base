@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.ViewTurnoEmbarqueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.id}" title="#{bundleCarga.TurnoEmbarqueTitle_id}"/>
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_fecha}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.fecha}" title="#{bundleCarga.TurnoEmbarqueTitle_fecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.turno}" title="#{bundleCarga.TurnoEmbarqueTitle_turno}"/>
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_tipo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.tipo}" title="#{bundleCarga.TurnoEmbarqueTitle_tipo}"/>
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_fixedListid}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.fixedListid}" title="#{bundleCarga.TurnoEmbarqueTitle_fixedListid}"/>
+                    <h:outputText value="#{bundleCarga.TurnoEmbarqueTitle_embarque}" style="font-weight: bold;"/>
+                    <h:outputText value="#{turnoEmbarqueController.selected.embarque}" title="#{bundleCarga.TurnoEmbarqueTitle_embarque}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{turnoEmbarqueController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                                     title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este TurnoEmbarque?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleCarga.TurnoEmbarqueEditLink}"
+                                     title="#{bundleCarga.TurnoEmbarqueEditLink}"
+                                     />
+                    <h:commandButton action="#{turnoEmbarqueController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleCarga.TurnoEmbarqueCreateLink}"
+                                     title="#{bundleCarga.TurnoEmbarqueCreateLink}"
+                                     />
+                    <h:commandButton action="#{turnoEmbarqueController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleCarga.TurnoEmbarqueShowAllLink}"
+                                     title="#{bundleCarga.TurnoEmbarqueShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

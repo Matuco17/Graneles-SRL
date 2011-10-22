@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{itemsSueldoController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ListItemsSueldoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleSalario.ItemsSueldoEmpty}" rendered="#{itemsSueldoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{itemsSueldoController.items.rowCount > 0}">
+                    <p:dataTable value="#{itemsSueldoController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_ordenConcepto}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ordenConcepto}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_nroPrimeraHoja}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroPrimeraHoja}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_nroTomo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroTomo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_apellidoNombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.apellidoNombre}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_direccion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.direccion}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_localidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.localidad}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_fechaIngreso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaIngreso}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_categoria}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoria}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_descripcionPeriodo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcionPeriodo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_cuil}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cuil}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_sexo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_documentoYTipo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoYTipo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_fechaEgreso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaEgreso}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_estadoCivil}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estadoCivil}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoDescripcion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.conceptoDescripcion}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoCantidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.conceptoCantidad}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_legajo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.legajo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorRemunerativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorRemunerativo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorDeductivo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorDeductivo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorNoRemunerativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorNoRemunerativo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totaRemunerativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totaRemunerativo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalDeductivo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totalDeductivo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalNoRemunerativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totalNoRemunerativo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalSueldoNeto}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totalSueldoNeto}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_IDConceptoRecibo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDConceptoRecibo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_IDSueldo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDSueldo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorIngresado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorIngresado}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorCalculado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorCalculado}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoRecibo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.conceptoRecibo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_sueldo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sueldo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.ItemsSueldoTitle_cantidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cantidad}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{itemsSueldoController.prepareView}" 
+                                value="#{bundleSalario.ItemsSueldoViewLink}"
+                                title="#{bundleSalario.ItemsSueldoViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{itemsSueldoController.prepareEdit}" 
+                                value="#{bundleSalario.ItemsSueldoEditLink}"
+                                title="#{bundleSalario.ItemsSueldoEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este ItemsSueldo?');" 
+                                action="#{itemsSueldoController.destroy}" 
+                                title="#{bundleSalario.ItemsSueldoDestroyLink}"
+                                value="#{bundleSalario.ItemsSueldoDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{itemsSueldoController.prepareCreate}" 
+                    value="#{bundleSalario.ItemsSueldoCreateLink}"
+                    title="#{bundleSalario.ItemsSueldoCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

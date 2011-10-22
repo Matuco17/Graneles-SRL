@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{listController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListListTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundle.ListEmpty}" rendered="#{listController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{listController.items.rowCount > 0}">
+                    <p:dataTable value="#{listController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTitle_descripcion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTitle_configurable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.configurable}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{listController.prepareView}" 
+                                value="#{bundle.ListViewLink}"
+                                title="#{bundle.ListViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{listController.prepareEdit}" 
+                                value="#{bundle.ListEditLink}"
+                                title="#{bundle.ListEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este List?');" 
+                                action="#{listController.destroy}" 
+                                title="#{bundle.ListDestroyLink}"
+                                value="#{bundle.ListDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{listController.prepareCreate}" 
+                    value="#{bundle.ListCreateLink}"
+                    title="#{bundle.ListCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

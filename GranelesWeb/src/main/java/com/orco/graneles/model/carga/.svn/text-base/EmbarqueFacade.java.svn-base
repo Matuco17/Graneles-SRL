@@ -1,0 +1,65 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.orco.graneles.model.carga;
+
+import com.orco.graneles.domain.carga.Embarque;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.orco.graneles.model.AbstractFacade;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import javax.persistence.NoResultException;
+/**
+ *
+ * @author orco
+ */
+@Stateless
+public class EmbarqueFacade extends AbstractFacade<Embarque> {
+    @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
+
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public EmbarqueFacade() {
+        super(Embarque.class);
+    }
+    
+    
+    /**
+     * Metodo factory que crea un nuevo embarque con los datos necesarios nuevos
+     * @return 
+     */
+    public Embarque crearNuevoEmbarque(){
+        Embarque nuevoEmbarque = new Embarque();
+        
+        //Codigo
+        //Debo buscar el maximo codigo de este año y devuelvo uno más, si no encuentro entonces es el primero
+        int anio = (new GregorianCalendar()).get(Calendar.YEAR);
+        Long maximo = null;
+        try {
+            maximo = getEntityManager().createQuery("SELECT max(e.codigo) "
+                                                   + "FROM Embarque e "
+                                                   + "WHERE e.codigo < :limiteSuperior "
+                                                   + "AND e.codigo > :limiteInferior ", Long.class)
+                                        .setParameter("limiteSuperior", (anio + 1) * 1000)
+                                        .setParameter("limiteInferior", anio * 1000)
+                                        .getSingleResult();
+        } catch (NoResultException e) {            
+            maximo = null;
+        }
+        if (maximo == null)  
+            maximo = new Long(anio * 1000);
+        
+        nuevoEmbarque.setCodigo(maximo + 1);
+        
+        
+        return nuevoEmbarque;
+    }
+    
+}

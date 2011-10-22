@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditFixedListTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundle.FixedListTitle_idLista}" for="idLista" style="font-weight: bold;" />
+                    <h:selectOneMenu id="idLista" value="#{fixedListController.selected.lista}" required="true" requiredMessage="#{bundle.FixedListRequiredMessage_idLista}">
+                        <f:selectItems value="#{listController.itemsAvailableSelectOne}" />
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.FixedListTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <p:inputText id="descripcion" value="#{fixedListController.selected.descripcion}" required="true" requiredMessage="#{bundle.FixedListRequiredMessage_descripcion}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    
+                    <h:commandButton action="#{fixedListController.update}" 
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundle.FixedListSaveLink}"
+                                     title="#{bundle.FixedListSaveLink}"
+                                     />
+                    <h:commandButton action="View" 
+                                     value="#{bundle.FixedListViewLink}" 
+                                     image="/faces//resources/images/view.png" 
+                                     immediate="true"
+                                     title="#{bundle.FixedListViewLink}"
+                                     />
+                    <h:commandButton action="#{fixedListController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundle.FixedListShowAllLink}"
+                                     immediate="true"
+                                     title="#{bundle.FixedListShowAllLink}"
+                                     />
+                </h:panelGrid>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

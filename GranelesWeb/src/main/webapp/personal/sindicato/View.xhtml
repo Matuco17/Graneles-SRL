@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.ViewSindicatoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundlePersonal.SindicatoTitle_descripcion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sindicatoController.selected.descripcion}" title="#{bundlePersonal.SindicatoTitle_descripcion}"/>
+                    <h:outputText value="#{bundlePersonal.SindicatoTitle_porcentaje}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sindicatoController.selected.porcentaje}" title="#{bundlePersonal.SindicatoTitle_porcentaje}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{sindicatoController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundlePersonal.SindicatoDestroyLink}"
+                                     title="#{bundlePersonal.SindicatoDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Sindicato?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundlePersonal.SindicatoEditLink}"
+                                     title="#{bundlePersonal.SindicatoEditLink}"
+                                     />
+                    <h:commandButton action="#{sindicatoController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundlePersonal.SindicatoCreateLink}"
+                                     title="#{bundlePersonal.SindicatoCreateLink}"
+                                     />
+                    <h:commandButton action="#{sindicatoController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.SindicatoShowAllLink}"
+                                     title="#{bundlePersonal.SindicatoShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

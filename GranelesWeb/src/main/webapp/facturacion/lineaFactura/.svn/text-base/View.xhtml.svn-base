@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ViewLineaFacturaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{lineaFacturaController.selected.id}" title="#{bundleFacturacion.LineaFacturaTitle_id}"/>
+                    <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_cantidad}" style="font-weight: bold;"/>
+                    <h:outputText value="#{lineaFacturaController.selected.cantidad}" title="#{bundleFacturacion.LineaFacturaTitle_cantidad}"/>
+                    <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_descripcion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{lineaFacturaController.selected.descripcion}" title="#{bundleFacturacion.LineaFacturaTitle_descripcion}"/>
+                    <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_precioUnitario}" style="font-weight: bold;"/>
+                    <h:outputText value="#{lineaFacturaController.selected.precioUnitario}" title="#{bundleFacturacion.LineaFacturaTitle_precioUnitario}"/>
+                    <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_factura}" style="font-weight: bold;"/>
+                    <h:outputText value="#{lineaFacturaController.selected.factura}" title="#{bundleFacturacion.LineaFacturaTitle_factura}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{lineaFacturaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleFacturacion.LineaFacturaDestroyLink}"
+                                     title="#{bundleFacturacion.LineaFacturaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este LineaFactura?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleFacturacion.LineaFacturaEditLink}"
+                                     title="#{bundleFacturacion.LineaFacturaEditLink}"
+                                     />
+                    <h:commandButton action="#{lineaFacturaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleFacturacion.LineaFacturaCreateLink}"
+                                     title="#{bundleFacturacion.LineaFacturaCreateLink}"
+                                     />
+                    <h:commandButton action="#{lineaFacturaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleFacturacion.LineaFacturaShowAllLink}"
+                                     title="#{bundleFacturacion.LineaFacturaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

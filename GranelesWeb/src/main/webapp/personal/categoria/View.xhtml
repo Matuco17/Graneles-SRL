@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.ViewCategoriaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundlePersonal.CategoriaTitle_descripcion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaController.selected.descripcion}" title="#{bundlePersonal.CategoriaTitle_descripcion}"/>
+                    <h:outputText value="#{bundlePersonal.CategoriaTitle_sindicato}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaController.selected.sindicato.toString()}" title="#{bundlePersonal.CategoriaTitle_sindicato}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{categoriaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundlePersonal.CategoriaDestroyLink}"
+                                     title="#{bundlePersonal.CategoriaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Categoria?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundlePersonal.CategoriaEditLink}"
+                                     title="#{bundlePersonal.CategoriaEditLink}"
+                                     />
+                    <h:commandButton action="#{categoriaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundlePersonal.CategoriaCreateLink}"
+                                     title="#{bundlePersonal.CategoriaCreateLink}"
+                                     />
+                    <h:commandButton action="#{categoriaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.CategoriaShowAllLink}"
+                                     title="#{bundlePersonal.CategoriaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

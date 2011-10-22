@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.ViewTareaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <h:outputText id="descripcion" value="#{tareaController.selected.descripcion}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_lugar}" for="lugar" style="font-weight: bold;" />
+                    <h:outputText id="lugar" value="#{tareaController.selected.lugar.toString()}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_insalubre}" for="insalubre" style="font-weight: bold;" />
+                    <p:selectBooleanCheckbox disabled="true" id="insalubre" value="#{tareaController.selected.insalubre}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_peligrosa}" for="peligrosa" style="font-weight: bold;" />
+                    <p:selectBooleanCheckbox disabled="true" id="peligrosa" value="#{tareaController.selected.peligrosa}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_productiva}" for="productiva" style="font-weight: bold;" />
+                    <p:selectBooleanCheckbox disabled="true" id="productiva" value="#{tareaController.selected.productiva}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_adicional}" for="adicional" style="font-weight: bold;" />
+                    <p:selectBooleanCheckbox disabled="true" id="adicional" value="#{tareaController.selected.adicional}" />
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{tareaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundlePersonal.TareaDestroyLink}"
+                                     title="#{bundlePersonal.TareaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Tarea?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundlePersonal.TareaEditLink}"
+                                     title="#{bundlePersonal.TareaEditLink}"
+                                     />
+                    <h:commandButton action="#{tareaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundlePersonal.TareaCreateLink}"
+                                     title="#{bundlePersonal.TareaCreateLink}"
+                                     />
+                    <h:commandButton action="#{tareaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.TareaShowAllLink}"
+                                     title="#{bundlePersonal.TareaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

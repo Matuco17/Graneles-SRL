@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewItemsSueldoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_ordenConcepto}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.ordenConcepto}" title="#{bundleSalario.ItemsSueldoTitle_ordenConcepto}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_nroPrimeraHoja}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.nroPrimeraHoja}" title="#{bundleSalario.ItemsSueldoTitle_nroPrimeraHoja}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_nroTomo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.nroTomo}" title="#{bundleSalario.ItemsSueldoTitle_nroTomo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_apellidoNombre}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.apellidoNombre}" title="#{bundleSalario.ItemsSueldoTitle_apellidoNombre}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_direccion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.direccion}" title="#{bundleSalario.ItemsSueldoTitle_direccion}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_localidad}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.localidad}" title="#{bundleSalario.ItemsSueldoTitle_localidad}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_fechaIngreso}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.fechaIngreso}" title="#{bundleSalario.ItemsSueldoTitle_fechaIngreso}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_categoria}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.categoria}" title="#{bundleSalario.ItemsSueldoTitle_categoria}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_descripcionPeriodo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.descripcionPeriodo}" title="#{bundleSalario.ItemsSueldoTitle_descripcionPeriodo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_cuil}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.cuil}" title="#{bundleSalario.ItemsSueldoTitle_cuil}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_sexo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.sexo}" title="#{bundleSalario.ItemsSueldoTitle_sexo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_documentoYTipo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.documentoYTipo}" title="#{bundleSalario.ItemsSueldoTitle_documentoYTipo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_fechaEgreso}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.fechaEgreso}" title="#{bundleSalario.ItemsSueldoTitle_fechaEgreso}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_estadoCivil}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.estadoCivil}" title="#{bundleSalario.ItemsSueldoTitle_estadoCivil}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoDescripcion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.conceptoDescripcion}" title="#{bundleSalario.ItemsSueldoTitle_conceptoDescripcion}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoCantidad}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.conceptoCantidad}" title="#{bundleSalario.ItemsSueldoTitle_conceptoCantidad}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_legajo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.legajo}" title="#{bundleSalario.ItemsSueldoTitle_legajo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.valorRemunerativo}" title="#{bundleSalario.ItemsSueldoTitle_valorRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorDeductivo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.valorDeductivo}" title="#{bundleSalario.ItemsSueldoTitle_valorDeductivo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorNoRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.valorNoRemunerativo}" title="#{bundleSalario.ItemsSueldoTitle_valorNoRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totaRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.totaRemunerativo}" title="#{bundleSalario.ItemsSueldoTitle_totaRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalDeductivo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.totalDeductivo}" title="#{bundleSalario.ItemsSueldoTitle_totalDeductivo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalNoRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.totalNoRemunerativo}" title="#{bundleSalario.ItemsSueldoTitle_totalNoRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_totalSueldoNeto}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.totalSueldoNeto}" title="#{bundleSalario.ItemsSueldoTitle_totalSueldoNeto}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_IDConceptoRecibo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.IDConceptoRecibo}" title="#{bundleSalario.ItemsSueldoTitle_IDConceptoRecibo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_IDSueldo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.IDSueldo}" title="#{bundleSalario.ItemsSueldoTitle_IDSueldo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.id}" title="#{bundleSalario.ItemsSueldoTitle_id}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorIngresado}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.valorIngresado}" title="#{bundleSalario.ItemsSueldoTitle_valorIngresado}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_valorCalculado}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.valorCalculado}" title="#{bundleSalario.ItemsSueldoTitle_valorCalculado}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_conceptoRecibo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.conceptoRecibo}" title="#{bundleSalario.ItemsSueldoTitle_conceptoRecibo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_sueldo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.sueldo}" title="#{bundleSalario.ItemsSueldoTitle_sueldo}"/>
+                    <h:outputText value="#{bundleSalario.ItemsSueldoTitle_cantidad}" style="font-weight: bold;"/>
+                    <h:outputText value="#{itemsSueldoController.selected.cantidad}" title="#{bundleSalario.ItemsSueldoTitle_cantidad}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{itemsSueldoController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.ItemsSueldoDestroyLink}"
+                                     title="#{bundleSalario.ItemsSueldoDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este ItemsSueldo?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.ItemsSueldoEditLink}"
+                                     title="#{bundleSalario.ItemsSueldoEditLink}"
+                                     />
+                    <h:commandButton action="#{itemsSueldoController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.ItemsSueldoCreateLink}"
+                                     title="#{bundleSalario.ItemsSueldoCreateLink}"
+                                     />
+                    <h:commandButton action="#{itemsSueldoController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.ItemsSueldoShowAllLink}"
+                                     title="#{bundleSalario.ItemsSueldoShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

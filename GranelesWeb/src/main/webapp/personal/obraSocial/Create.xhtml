@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.CreateObraSocialTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundlePersonal.ObraSocialTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <p:inputText id="descripcion" value="#{obraSocialController.selected.descripcion}" />
+                    <h:outputLabel value="#{bundlePersonal.ObraSocialTitle_aportes}" for="aportes" style="font-weight: bold;" />
+                    <p:inputText id="aportes" value="#{obraSocialController.selected.aportes}" />
+                    <h:outputLabel value="#{bundlePersonal.ObraSocialTitle_contribucion}" for="contribucion" style="font-weight: bold;" />
+                    <p:inputText id="contribucion" value="#{obraSocialController.selected.contribucion}" />
+                    <h:outputLabel value="#{bundlePersonal.ObraSocialTitle_codigoAfip}" for="codigoAfip" style="font-weight: bold;" />
+                    <p:inputText id="codigoAfip" value="#{obraSocialController.selected.codigoAfip}" maxlength="6" />
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <h:commandButton action="#{obraSocialController.create}"
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundlePersonal.ObraSocialSaveLink}" 
+                                     title="#{bundlePersonal.ObraSocialSaveLink}"
+                                     />
+
+                    <h:commandButton action="#{obraSocialController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.ObraSocialShowAllLink}"
+                                     title="#{bundlePersonal.ObraSocialShowAllLink}"
+                                     immediate="true" 
+                                     />
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

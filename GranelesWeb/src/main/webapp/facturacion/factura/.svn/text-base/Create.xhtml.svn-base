@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.CreateFacturaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_id}" for="id" style="font-weight: bold;" />
+                    <p:inputText id="id" value="#{facturaController.selected.id}" />
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_fecha}" for="fecha" style="font-weight: bold;" />
+                    <p:calendar id="fecha" value="#{facturaController.selected.fecha}" title="#{bundleFacturacion.FacturaTitle_fecha}" required="true" requiredMessage="#{bundleFacturacion.FacturaRequiredMessage_fecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </p:calendar>
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_comprobante}" for="comprobante" style="font-weight: bold;" />
+                    <p:inputText id="comprobante" value="#{facturaController.selected.comprobante}" required="true" requiredMessage="#{bundleFacturacion.FacturaRequiredMessage_comprobante}"/>
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_porcentajeIva}" for="porcentajeIva" style="font-weight: bold;" />
+                    <p:inputText id="porcentajeIva" value="#{facturaController.selected.porcentajeIva}" />
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_porcentajeBonificacion}" for="porcentajeBonificacion" style="font-weight: bold;" />
+                    <p:inputText id="porcentajeBonificacion" value="#{facturaController.selected.porcentajeBonificacion}" />
+                    <h:outputLabel value="#{bundleFacturacion.FacturaTitle_cliente}" for="cliente" style="font-weight: bold;" />
+                    <p:selectOneMenu id="cliente" value="#{facturaController.selected.cliente}" required="true" requiredMessage="#{bundleFacturacion.FacturaRequiredMessage_cliente}" style="width:100%;">
+                        <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <h:commandButton action="#{facturaController.create}"
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundleFacturacion.FacturaSaveLink}" 
+                                     title="#{bundleFacturacion.FacturaSaveLink}"
+                                     />
+
+                    <h:commandButton action="#{facturaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleFacturacion.FacturaShowAllLink}"
+                                     title="#{bundleFacturacion.FacturaShowAllLink}"
+                                     immediate="true" 
+                                     />
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

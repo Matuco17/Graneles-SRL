@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{trabajadoresTurnoEmbarqueController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.ListTrabajadoresTurnoEmbarqueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleCarga.TrabajadoresTurnoEmbarqueEmpty}" rendered="#{trabajadoresTurnoEmbarqueController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{trabajadoresTurnoEmbarqueController.items.rowCount > 0}">
+                    <p:dataTable value="#{trabajadoresTurnoEmbarqueController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaInicio}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.horaInicio}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaFin}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.horaFin}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_libroSueldo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.libroSueldo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tarea}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoria}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personal}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_planilla}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.planilla}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{trabajadoresTurnoEmbarqueController.prepareView}" 
+                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueViewLink}"
+                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{trabajadoresTurnoEmbarqueController.prepareEdit}" 
+                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
+                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este TrabajadoresTurnoEmbarque?');" 
+                                action="#{trabajadoresTurnoEmbarqueController.destroy}" 
+                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
+                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{trabajadoresTurnoEmbarqueController.prepareCreate}" 
+                    value="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
+                    title="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

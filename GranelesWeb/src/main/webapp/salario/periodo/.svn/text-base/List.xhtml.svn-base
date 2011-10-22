@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{periodoController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ListPeriodoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleSalario.PeriodoEmpty}" rendered="#{periodoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{periodoController.items.rowCount > 0}">
+                    <p:dataTable value="#{periodoController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_descripcion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_desde}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desde}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_hasta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hasta}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_folioLibro}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.folioLibro}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nroPrimeraHoja}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{periodoController.prepareView}" 
+                                value="#{bundleSalario.PeriodoViewLink}"
+                                title="#{bundleSalario.PeriodoViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{periodoController.prepareEdit}" 
+                                value="#{bundleSalario.PeriodoEditLink}"
+                                title="#{bundleSalario.PeriodoEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Periodo?');" 
+                                action="#{periodoController.destroy}" 
+                                title="#{bundleSalario.PeriodoDestroyLink}"
+                                value="#{bundleSalario.PeriodoDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{periodoController.prepareCreate}" 
+                    value="#{bundleSalario.PeriodoCreateLink}"
+                    title="#{bundleSalario.PeriodoCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

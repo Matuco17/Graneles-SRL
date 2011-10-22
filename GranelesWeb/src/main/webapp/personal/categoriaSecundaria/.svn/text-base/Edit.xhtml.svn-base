@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.EditCategoriaSecundariaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundlePersonal.CategoriaSecundariaTitle_id}" for="id" style="font-weight: bold;" />
+                    <p:inputText id="id" value="#{categoriaSecundariaController.selected.id}" title="#{bundlePersonal.CategoriaSecundariaTitle_id}" />
+                    <h:outputLabel value="#{bundlePersonal.CategoriaSecundariaTitle_registro}" for="registro" style="font-weight: bold;" />
+                    <p:inputText id="registro" value="#{categoriaSecundariaController.selected.registro}" title="#{bundlePersonal.CategoriaSecundariaTitle_registro}" />
+                    <h:outputLabel value="#{bundlePersonal.CategoriaSecundariaTitle_personal}" for="personal" style="font-weight: bold;" />
+                    <p:selectOneMenu id="personal" value="#{categoriaSecundariaController.selected.personal}"  required="true" requiredMessage="#{bundlePersonal.CategoriaSecundariaRequiredMessage_personal}" style="width:100%;">
+                        <f:selectItems value="#{personalController.itemsAvailableSelectOne}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="#{bundlePersonal.CategoriaSecundariaTitle_categoria}" for="categoria" style="font-weight: bold;" />
+                    <p:selectOneMenu id="categoria" value="#{categoriaSecundariaController.selected.categoria}"  required="true" requiredMessage="#{bundlePersonal.CategoriaSecundariaRequiredMessage_categoria}" style="width:100%;">
+                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+
+                    <h:commandButton action="#{categoriaSecundariaController.update}" 
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaSaveLink}"
+                                     title="#{bundlePersonal.CategoriaSecundariaSaveLink}"
+                                     />
+                    <h:commandButton action="View" 
+                                     value="#{bundlePersonal.CategoriaSecundariaViewLink}" 
+                                     image="/faces//resources/images/view.png" 
+                                     immediate="true"
+                                     title="#{bundlePersonal.CategoriaSecundariaViewLink}"
+                                     />
+                    <h:commandButton action="#{categoriaSecundariaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaShowAllLink}"
+                                     immediate="true"
+                                     title="#{bundlePersonal.CategoriaSecundariaShowAllLink}"
+                                     />
+                </h:panelGrid>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.EditLineaFacturaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundleFacturacion.LineaFacturaTitle_id}" for="id" style="font-weight: bold;" />
+                    <p:inputText id="id" value="#{lineaFacturaController.selected.id}" title="#{bundleFacturacion.LineaFacturaTitle_id}" />
+                    <h:outputLabel value="#{bundleFacturacion.LineaFacturaTitle_cantidad}" for="cantidad" style="font-weight: bold;" />
+                    <p:inputText id="cantidad" value="#{lineaFacturaController.selected.cantidad}" title="#{bundleFacturacion.LineaFacturaTitle_cantidad}" />
+                    <h:outputLabel value="#{bundleFacturacion.LineaFacturaTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <p:inputText id="descripcion" value="#{lineaFacturaController.selected.descripcion}" title="#{bundleFacturacion.LineaFacturaTitle_descripcion}" />
+                    <h:outputLabel value="#{bundleFacturacion.LineaFacturaTitle_precioUnitario}" for="precioUnitario" style="font-weight: bold;" />
+                    <p:inputText id="precioUnitario" value="#{lineaFacturaController.selected.precioUnitario}" title="#{bundleFacturacion.LineaFacturaTitle_precioUnitario}" />
+                    <h:outputLabel value="#{bundleFacturacion.LineaFacturaTitle_factura}" for="factura" style="font-weight: bold;" />
+                    <p:selectOneMenu id="factura" value="#{lineaFacturaController.selected.factura}"  required="true" requiredMessage="#{bundleFacturacion.LineaFacturaRequiredMessage_factura}" style="width:100%;">
+                        <f:selectItems value="#{facturaController.itemsAvailableSelectOne}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+
+                    <h:commandButton action="#{lineaFacturaController.update}" 
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundleFacturacion.LineaFacturaSaveLink}"
+                                     title="#{bundleFacturacion.LineaFacturaSaveLink}"
+                                     />
+                    <h:commandButton action="View" 
+                                     value="#{bundleFacturacion.LineaFacturaViewLink}" 
+                                     image="/faces//resources/images/view.png" 
+                                     immediate="true"
+                                     title="#{bundleFacturacion.LineaFacturaViewLink}"
+                                     />
+                    <h:commandButton action="#{lineaFacturaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleFacturacion.LineaFacturaShowAllLink}"
+                                     immediate="true"
+                                     title="#{bundleFacturacion.LineaFacturaShowAllLink}"
+                                     />
+                </h:panelGrid>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

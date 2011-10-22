@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.ViewBodegaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleCarga.BodegaTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{bodegaController.selected.id}" title="#{bundleCarga.BodegaTitle_id}"/>
+                    <h:outputText value="#{bundleCarga.BodegaTitle_nro}" style="font-weight: bold;"/>
+                    <h:outputText value="#{bodegaController.selected.nro}" title="#{bundleCarga.BodegaTitle_nro}"/>
+                    <h:outputText value="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" style="font-weight: bold;"/>
+                    <h:outputText value="#{bodegaController.selected.capacidadPiesCubicos}" title="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}"/>
+                    <h:outputText value="#{bundleCarga.BodegaTitle_buque}" style="font-weight: bold;"/>
+                    <h:outputText value="#{bodegaController.selected.buque}" title="#{bundleCarga.BodegaTitle_buque}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{bodegaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleCarga.BodegaDestroyLink}"
+                                     title="#{bundleCarga.BodegaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Bodega?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleCarga.BodegaEditLink}"
+                                     title="#{bundleCarga.BodegaEditLink}"
+                                     />
+                    <h:commandButton action="#{bodegaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleCarga.BodegaCreateLink}"
+                                     title="#{bundleCarga.BodegaCreateLink}"
+                                     />
+                    <h:commandButton action="#{bodegaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleCarga.BodegaShowAllLink}"
+                                     title="#{bundleCarga.BodegaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

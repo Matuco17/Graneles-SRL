@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewTipoJornalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundleSalario.TipoJornalTitle_descripcion}" />
+                    <h:outputText value="#{tipoJornalController.selected.descripcion}" title="#{bundleSalario.TipoJornalTitle_descripcion}"/>
+                    <h:outputLabel value="#{bundleSalario.TipoJornalTitle_porcExtraBasico}" />
+                    <h:outputText value="#{tipoJornalController.selected.porcExtraBasico}" title="#{bundleSalario.TipoJornalTitle_porcExtraBasico}"/>
+                    <h:outputLabel value="#{bundleSalario.TipoJornalTitle_porcExtraBruto}" />
+                    <h:outputText value="#{tipoJornalController.selected.porcExtraBruto}" title="#{bundleSalario.TipoJornalTitle_porcExtraBruto}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{tipoJornalController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.TipoJornalDestroyLink}"
+                                     title="#{bundleSalario.TipoJornalDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este TipoJornal?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.TipoJornalEditLink}"
+                                     title="#{bundleSalario.TipoJornalEditLink}"
+                                     />
+                    <h:commandButton action="#{tipoJornalController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.TipoJornalCreateLink}"
+                                     title="#{bundleSalario.TipoJornalCreateLink}"
+                                     />
+                    <h:commandButton action="#{tipoJornalController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.TipoJornalShowAllLink}"
+                                     title="#{bundleSalario.TipoJornalShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

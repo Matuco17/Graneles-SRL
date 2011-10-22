@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.EditCategoriaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundlePersonal.CategoriaTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <p:inputText id="descripcion" value="#{categoriaController.selected.descripcion}" title="#{bundlePersonal.CategoriaTitle_descripcion}" />
+                    <h:outputLabel value="#{bundlePersonal.CategoriaTitle_sindicato}" for="sindicato" style="font-weight: bold;" />
+                    <h:selectOneMenu id="sindicato" value="#{categoriaController.selected.sindicato}"  required="true" requiredMessage="#{bundlePersonal.CategoriaRequiredMessage_sindicato}" style="width:100%;">
+                        <f:selectItems value="#{sindicatoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+
+                    <h:commandButton action="#{categoriaController.update}" 
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundlePersonal.CategoriaSaveLink}"
+                                     title="#{bundlePersonal.CategoriaSaveLink}"
+                                     />
+                    <h:commandButton action="View" 
+                                     value="#{bundlePersonal.CategoriaViewLink}" 
+                                     image="/faces//resources/images/view.png" 
+                                     immediate="true"
+                                     title="#{bundlePersonal.CategoriaViewLink}"
+                                     />
+                    <h:commandButton action="#{categoriaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.CategoriaShowAllLink}"
+                                     immediate="true"
+                                     title="#{bundlePersonal.CategoriaShowAllLink}"
+                                     />
+                </h:panelGrid>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

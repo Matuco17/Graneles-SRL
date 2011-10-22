@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.CreateSalarioBasicoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tipoJornal}" for="tipoJornal" style="font-weight: bold;" />
+                    <h:selectOneMenu id="tipoJornal" value="#{salarioBasicoController.selected.tipoJornal}" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_tipoJornal}">
+                        <f:selectItems value="#{fixedListController.tipoJornalSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tarea}" for="tarea" style="font-weight: bold;" />
+                    <h:selectOneMenu id="tarea" value="#{salarioBasicoController.selected.tarea}" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_tarea}" >
+                        <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_categoria}" for="categoria" style="font-weight: bold;" />
+                    <h:selectOneMenu id="categoria" value="#{salarioBasicoController.selected.categoria}" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_categoria}">
+                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value ="" />
+                    <h:outputLabel value ="" />
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_desde}" for="desde" style="font-weight: bold;" />
+                    <p:calendar id="desde" value="#{salarioBasicoController.selected.desde}" title="#{bundleSalario.SalarioBasicoTitle_desde}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_hasta}" for="hasta" style="font-weight: bold;" />
+                    <p:calendar id="hasta" value="#{salarioBasicoController.selected.hasta}" title="#{bundleSalario.SalarioBasicoTitle_hasta}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_basico}" for="basico" style="font-weight: bold;" />
+                    <p:inputText id="basico" value="#{salarioBasicoController.selected.basico}" />
+                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_adicional}" for="adicional" style="font-weight: bold;" />
+                    <p:inputText id="adicional" value="#{salarioBasicoController.selected.adicional}" />
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <h:commandButton action="#{salarioBasicoController.create}"
+                                     image="/faces/resources/images/save.png" 
+                                     value="#{bundleSalario.SalarioBasicoSaveLink}" 
+                                     title="#{bundleSalario.SalarioBasicoSaveLink}"
+                                     />
+
+                    <h:commandButton action="#{salarioBasicoController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.SalarioBasicoShowAllLink}"
+                                     title="#{bundleSalario.SalarioBasicoShowAllLink}"
+                                     immediate="true" 
+                                     />
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

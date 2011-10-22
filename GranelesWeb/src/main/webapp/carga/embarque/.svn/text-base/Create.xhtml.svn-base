@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.CreateEmbarqueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <p:fieldset legend="Datos del Embarque" toggleable="true" style="width: 650px; float:left;">
+                    <h:panelGrid columns="4" >
+                        <h:outputLabel for="codigo" value="#{bundleCarga.EmbarqueTitle_codigo}" />
+                        <p:inputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}" required="true" requiredMessage="#{bundleCarga.EmbarqueRequiredMessage_codigo}" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" for="buque"  />
+                        <h:selectOneMenu id="buque" value="#{embarqueController.selected.buque}" title="#{bundleCarga.EmbarqueTitle_buque}" required="true" requiredMessage="#{bundleCarga.EmbarqueRequiredMessage_buque}" 
+                                         valueChangeListener="#{embarqueController.seleccionarBuque}" >
+                             <p:ajax event="change" update="panCargaPrevia"/>
+
+                            <f:selectItems value="#{buqueController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_muelle}" for="muelle"  />
+                        <h:selectOneMenu id="muelle" value="#{embarqueController.selected.muelle}" title="#{bundleCarga.EmbarqueTitle_muelle}" required="true" requiredMessage="#{bundleCarga.EmbarqueRequiredMessage_muelle}">
+                            <f:selectItems value="#{muelleController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_destino}" for="destino"  />
+                        <p:inputText id="destino" value="#{embarqueController.selected.destino}" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" for="coordinador"  />
+                        <p:inputText id="coordinador" value="#{embarqueController.selected.coordinador}" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
+                        <h:selectOneMenu id="mercaderia" value="#{embarqueController.selected.mercaderia}" title="#{bundleCarga.EmbarqueTitle_mercaderia}" >
+                              <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" for="control"  />
+                        <p:inputText id="control" value="#{embarqueController.selected.control}" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_fumigacion}" for="fumigacion"  />
+                        <p:inputText id="fumigacion" value="#{embarqueController.selected.fumigacion}" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" for="boya11"  />
+                        <p:calendar id="boya11" value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion"  />
+                        <p:calendar id="inicioNavegacion" value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_atco}" for="atco"  />
+                        <p:calendar id="atco" value="#{embarqueController.selected.atco}" title="#{bundleCarga.EmbarqueTitle_atco}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ana}" for="ana"  />
+                        <p:calendar id="ana" value="#{embarqueController.selected.ana}" title="#{bundleCarga.EmbarqueTitle_ana}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ib}" for="ib"  />
+                        <p:calendar id="ib" value="#{embarqueController.selected.ib}" title="#{bundleCarga.EmbarqueTitle_ib}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_czo}" for="czo"  />
+                        <p:calendar id="czo" value="#{embarqueController.selected.czo}" title="#{bundleCarga.EmbarqueTitle_czo}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_tmo}" for="tmo"  />
+                        <p:calendar id="tmo" value="#{embarqueController.selected.tmo}" title="#{bundleCarga.EmbarqueTitle_tmo}" pattern="dd/MM/yyyy HH:mm" />
+
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_momentoFumigacion}" for="momentoFumigacion"  />
+                        <p:inputText id="momentoFumigacion" value="#{embarqueController.selected.momentoFumigacion}" />
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boletosPor}" for="boletosPor"  />
+                        <p:inputText id="boletosPor" value="#{embarqueController.selected.boletosPor}" />
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_maxACargar}" for="maxACargar"  />
+                        <p:inputText id="maxACargar" value="#{embarqueController.selected.maxACargar}" />
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_preStowPlan}" for="preStowPlan"  />
+                        <p:inputText id="preStowPlan" value="#{embarqueController.selected.preStowPlan}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" style="width: 350px; float: left;" >
+                    <h:panelGrid columns="2" style="width: 100%; float:left;" >
+                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
+                        <h:selectOneMenu id="mercaderiaPrevia" value="#{embarqueController.mercaderiaPrevia}" title="#{bundleCarga.EmbarqueTitle_mercaderia}"
+                                           valueChangeListener="#{embarqueController.seleccionarMercaderiaPrevia}" >
+                             <p:ajax event="change" update="panCargaPrevia"/>
+                             <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <p:dataTable id="dtbCargaPrevia" value="#{embarqueController.cargasPreviasModel}" var="item" style="width: 100%; float:left; text-align: right; " >
+                        <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
+                            <h:outputText value="#{item.bodega.nro}" />
+                        </p:column>
+                        <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
+                            <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
+                        </p:column>
+                         <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
+                             <p:inputText value="#{item.carga}" style="text-align: right;" />
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+                
+                <p:panel style="width: 100%; float: left;" >
+                    <h:panelGrid columns="2" >
+                        <h:commandButton action="#{embarqueController.create}"
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundleCarga.EmbarqueSaveLink}" 
+                                         title="#{bundleCarga.EmbarqueSaveLink}"
+                                         />
+
+                        <h:commandButton action="#{embarqueController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleCarga.EmbarqueShowAllLink}"
+                                         title="#{bundleCarga.EmbarqueShowAllLink}"
+                                         immediate="true" 
+                                         />
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

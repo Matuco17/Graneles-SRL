@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewAdelantoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleSalario.AdelantoTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{adelantoController.selected.id}" title="#{bundleSalario.AdelantoTitle_id}"/>
+                    <h:outputText value="#{bundleSalario.AdelantoTitle_fecha}" style="font-weight: bold;"/>
+                    <h:outputText value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundleSalario.AdelantoTitle_concepto}" style="font-weight: bold;"/>
+                    <h:outputText value="#{adelantoController.selected.concepto}" title="#{bundleSalario.AdelantoTitle_concepto}"/>
+                    <h:outputText value="#{bundleSalario.AdelantoTitle_personal}" style="font-weight: bold;"/>
+                    <h:outputText value="#{adelantoController.selected.personal}" title="#{bundleSalario.AdelantoTitle_personal}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{adelantoController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.AdelantoDestroyLink}"
+                                     title="#{bundleSalario.AdelantoDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Adelanto?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.AdelantoEditLink}"
+                                     title="#{bundleSalario.AdelantoEditLink}"
+                                     />
+                    <h:commandButton action="#{adelantoController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.AdelantoCreateLink}"
+                                     title="#{bundleSalario.AdelantoCreateLink}"
+                                     />
+                    <h:commandButton action="#{adelantoController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.AdelantoShowAllLink}"
+                                     title="#{bundleSalario.AdelantoShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

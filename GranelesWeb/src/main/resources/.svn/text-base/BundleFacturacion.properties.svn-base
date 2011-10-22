@@ -1,0 +1,75 @@
+PersistenceErrorOccured=Ha ocurrido un error al Guardar los Datos, si el error sigue persistiendo comun\u00c3\u00adquese con el Administrador.
+
+EmpresaCreated=Empresa ha sido creado con \u00e9xito.
+EmpresaUpdated=Empresa ha sido actualizado con \u00e9xito.
+EmpresaDeleted=Empresa ha sido borrado con \u00e9xito.
+CreateEmpresaTitle=Crear Nuevo Empresa
+EditEmpresaTitle=Editar Empresa
+ViewEmpresaTitle=Ver Empresa
+ListEmpresaTitle=Listado de Empresas
+EmpresaSaveLink=Guardar
+EmpresaShowAllLink=Listar Empresa
+EmpresaViewLink=Ver Empresa
+EmpresaDestroyLink=Borrar Empresa
+EmpresaCreateLink=Crear Nuevo Empresa
+EmpresaEditLink=Editar Empresa
+ListEmpresaEmpty=(No se encontraron Empresas para los par\u00e1metros de b\u00fasqueda)
+
+EmpresaTitle_id=Id
+EmpresaTitle_nombre=Nombre
+EmpresaTitle_direccion=Direcci\u00f3n
+EmpresaTitle_cuit=CUIT
+EmpresaTitle_cuidad=Cuidad
+EmpresaTitle_telefono=Tel\u00e9fono
+EmpresaTitle_mail=E-Mail
+EmpresaTitle_web=Web
+EmpresaTitle_tipoEmpresa=Tipo de Empresa
+    EmpresaRequiredMessage_tipoEmpresa=El campo Tipo de Empresa es requerido.
+
+FacturaCreated=Factura ha sido creado con \u00e9xito.
+FacturaUpdated=Factura ha sido actualizado con \u00e9xito.
+FacturaDeleted=Factura ha sido borrado con \u00e9xito.
+CreateFacturaTitle=Crear Nuevo Factura
+EditFacturaTitle=Editar Factura
+ViewFacturaTitle=Ver Factura
+ListFacturaTitle=Listado de Facturas
+FacturaSaveLink=Guardar
+FacturaShowAllLink=Listar Factura
+FacturaViewLink=Ver Factura
+FacturaDestroyLink=Borrar Factura
+FacturaCreateLink=Crear Nuevo Factura
+FacturaEditLink=Editar Factura
+ListFacturaEmpty=(No se encontraron Facturas para los par\u00e1metros de b\u00fasqueda)
+
+FacturaTitle_id=Id
+FacturaTitle_fecha=Fecha
+    FacturaRequiredMessage_fecha=El campo  Fecha es requerido.
+FacturaTitle_comprobante=Comprobante
+    FacturaRequiredMessage_comprobante=El campo  Comprobante es requerido.
+FacturaTitle_porcentajeIva=PorcentajeIva
+FacturaTitle_porcentajeBonificacion=PorcentajeBonificacion
+FacturaTitle_cliente=Cliente
+    FacturaRequiredMessage_cliente=El campo  Cliente es requerido.
+
+LineaFacturaCreated=LineaFactura ha sido creado con \u00e9xito.
+LineaFacturaUpdated=LineaFactura ha sido actualizado con \u00e9xito.
+LineaFacturaDeleted=LineaFactura ha sido borrado con \u00e9xito.
+CreateLineaFacturaTitle=Crear Nuevo LineaFactura
+EditLineaFacturaTitle=Editar LineaFactura
+ViewLineaFacturaTitle=Ver LineaFactura
+ListLineaFacturaTitle=Listado de LineaFacturas
+LineaFacturaSaveLink=Guardar
+LineaFacturaShowAllLink=Listar LineaFactura
+LineaFacturaViewLink=Ver LineaFactura
+LineaFacturaDestroyLink=Borrar LineaFactura
+LineaFacturaCreateLink=Crear Nuevo LineaFactura
+LineaFacturaEditLink=Editar LineaFactura
+ListLineaFacturaEmpty=(No se encontraron LineaFacturas para los par\u00e1metros de b\u00fasqueda)
+
+LineaFacturaTitle_id=Id
+LineaFacturaTitle_cantidad=Cantidad
+LineaFacturaTitle_descripcion=Descripcion
+LineaFacturaTitle_precioUnitario=PrecioUnitario
+LineaFacturaTitle_factura=Factura
+    LineaFacturaRequiredMessage_factura=El campo  Factura es requerido.
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.ViewCategoriaSecundariaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundlePersonal.CategoriaSecundariaTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaSecundariaController.selected.id}" title="#{bundlePersonal.CategoriaSecundariaTitle_id}"/>
+                    <h:outputText value="#{bundlePersonal.CategoriaSecundariaTitle_registro}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaSecundariaController.selected.registro}" title="#{bundlePersonal.CategoriaSecundariaTitle_registro}"/>
+                    <h:outputText value="#{bundlePersonal.CategoriaSecundariaTitle_personal}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaSecundariaController.selected.personal}" title="#{bundlePersonal.CategoriaSecundariaTitle_personal}"/>
+                    <h:outputText value="#{bundlePersonal.CategoriaSecundariaTitle_categoria}" style="font-weight: bold;"/>
+                    <h:outputText value="#{categoriaSecundariaController.selected.categoria}" title="#{bundlePersonal.CategoriaSecundariaTitle_categoria}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{categoriaSecundariaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaDestroyLink}"
+                                     title="#{bundlePersonal.CategoriaSecundariaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este CategoriaSecundaria?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaEditLink}"
+                                     title="#{bundlePersonal.CategoriaSecundariaEditLink}"
+                                     />
+                    <h:commandButton action="#{categoriaSecundariaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaCreateLink}"
+                                     title="#{bundlePersonal.CategoriaSecundariaCreateLink}"
+                                     />
+                    <h:commandButton action="#{categoriaSecundariaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundlePersonal.CategoriaSecundariaShowAllLink}"
+                                     title="#{bundlePersonal.CategoriaSecundariaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

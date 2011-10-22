@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{lineaFacturaController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ListLineaFacturaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleFacturacion.LineaFacturaEmpty}" rendered="#{lineaFacturaController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{lineaFacturaController.items.rowCount > 0}">
+                    <p:dataTable value="#{lineaFacturaController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_cantidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cantidad}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_descripcion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_precioUnitario}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.precioUnitario}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleFacturacion.LineaFacturaTitle_factura}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.factura}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{lineaFacturaController.prepareView}" 
+                                value="#{bundleFacturacion.LineaFacturaViewLink}"
+                                title="#{bundleFacturacion.LineaFacturaViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{lineaFacturaController.prepareEdit}" 
+                                value="#{bundleFacturacion.LineaFacturaEditLink}"
+                                title="#{bundleFacturacion.LineaFacturaEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este LineaFactura?');" 
+                                action="#{lineaFacturaController.destroy}" 
+                                title="#{bundleFacturacion.LineaFacturaDestroyLink}"
+                                value="#{bundleFacturacion.LineaFacturaDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{lineaFacturaController.prepareCreate}" 
+                    value="#{bundleFacturacion.LineaFacturaCreateLink}"
+                    title="#{bundleFacturacion.LineaFacturaCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

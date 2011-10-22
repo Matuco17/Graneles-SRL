@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewSueldoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleSalario.SueldoTitle_totalRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.totalRemunerativo}" title="#{bundleSalario.SueldoTitle_totalRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_totalDeductivo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.totalDeductivo}" title="#{bundleSalario.SueldoTitle_totalDeductivo}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_totalNoRemunerativo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.totalNoRemunerativo}" title="#{bundleSalario.SueldoTitle_totalNoRemunerativo}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_totalSueldoNeto}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.totalSueldoNeto}" title="#{bundleSalario.SueldoTitle_totalSueldoNeto}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.id}" title="#{bundleSalario.SueldoTitle_id}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_nroRecibo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.nroRecibo}" title="#{bundleSalario.SueldoTitle_nroRecibo}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_periodo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.periodo}" title="#{bundleSalario.SueldoTitle_periodo}"/>
+                    <h:outputText value="#{bundleSalario.SueldoTitle_personal}" style="font-weight: bold;"/>
+                    <h:outputText value="#{sueldoController.selected.personal}" title="#{bundleSalario.SueldoTitle_personal}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{sueldoController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.SueldoDestroyLink}"
+                                     title="#{bundleSalario.SueldoDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Sueldo?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.SueldoEditLink}"
+                                     title="#{bundleSalario.SueldoEditLink}"
+                                     />
+                    <h:commandButton action="#{sueldoController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.SueldoCreateLink}"
+                                     title="#{bundleSalario.SueldoCreateLink}"
+                                     />
+                    <h:commandButton action="#{sueldoController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.SueldoShowAllLink}"
+                                     title="#{bundleSalario.SueldoShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

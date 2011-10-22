@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{accidentadoController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundlePersonal.ListAccidentadoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundlePersonal.ListAccidentadoEmpty}" rendered="#{accidentadoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{accidentadoController.items.rowCount > 0}">
+                    <p:dataTable value="#{accidentadoController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <f:facet name="header">  
+                            <p:outputPanel>  
+                                <h:outputText value="Buscar:" />  
+                                <p:inputText id="globalFilter" onkeyup="buqueTable.filter()" style="width:350px" />  
+                            </p:outputPanel>  
+                        </f:facet> 
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_personal}" filterBy="#{item.personal.toString()}" filterStyleClass="filterColumn" filterOptions="contains">
+                            <h:outputText value="#{item.personal.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_tarea}" filterBy="#{item.tarea.toString()}" filterStyleClass="filterColumn" filterOptions="contains">
+                            <h:outputText value="#{item.tarea.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_categoria}" filterBy="#{item.categoria.toString()}" filterStyleClass="filterColumn" filterOptions="contains">
+                             <h:outputText value="#{item.categoria.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_desde}" filterBy="#{item.desde}" filterStyleClass="filterColumn" filterOptions="contains">
+                            <h:outputText value="#{item.desde}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_hasta}" filterBy="#{item.hasta}" filterStyleClass="filterColumn" filterOptions="contains">
+                             <h:outputText value="#{item.hasta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                             </h:outputText>
+                        </p:column>
+                          <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{accidentadoController.prepareView}" 
+                                value="#{bundlePersonal.AccidentadoViewLink}"
+                                title="#{bundlePersonal.AccidentadoViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{accidentadoController.prepareEdit}" 
+                                value="#{bundlePersonal.AccidentadoEditLink}"
+                                title="#{bundlePersonal.AccidentadoEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Accidentado?');" 
+                                action="#{accidentadoController.destroy}" 
+                                title="#{bundlePersonal.AccidentadoDestroyLink}"
+                                value="#{bundlePersonal.AccidentadoDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{accidentadoController.prepareCreate}" 
+                    value="#{bundlePersonal.AccidentadoCreateLink}"
+                    title="#{bundlePersonal.AccidentadoCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

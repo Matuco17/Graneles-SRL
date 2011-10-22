@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{embarqueController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.ListEmbarqueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleCarga.ListEmbarqueEmpty}" rendered="#{embarqueController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{embarqueController.items.rowCount > 0}">
+                    <p:dataTable value="#{embarqueController.items}" 
+                                 var="item"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" filterBy="#{item.destino}" filterMatchMode="exact" >
+                            <h:outputText value="#{item.codigo}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
+                             <h:outputText value="#{item.buque.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
+                            <h:outputText value="#{item.muelle.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
+                            <h:outputText value="#{item.mercaderia.toString()}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{embarqueController.prepareView}" 
+                                value="#{bundleCarga.EmbarqueViewLink}"
+                                title="#{bundleCarga.EmbarqueViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{embarqueController.prepareEdit}" 
+                                value="#{bundleCarga.EmbarqueEditLink}"
+                                title="#{bundleCarga.EmbarqueEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Embarque?');" 
+                                action="#{embarqueController.destroy}" 
+                                title="#{bundleCarga.EmbarqueDestroyLink}"
+                                value="#{bundleCarga.EmbarqueDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{embarqueController.prepareCreate}" 
+                    value="#{bundleCarga.EmbarqueCreateLink}"
+                    title="#{bundleCarga.EmbarqueCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

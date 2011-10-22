@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ViewFacturaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.id}" title="#{bundleFacturacion.FacturaTitle_id}"/>
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_fecha}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.fecha}" title="#{bundleFacturacion.FacturaTitle_fecha}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_comprobante}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.comprobante}" title="#{bundleFacturacion.FacturaTitle_comprobante}"/>
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_porcentajeIva}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.porcentajeIva}" title="#{bundleFacturacion.FacturaTitle_porcentajeIva}"/>
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_porcentajeBonificacion}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.porcentajeBonificacion}" title="#{bundleFacturacion.FacturaTitle_porcentajeBonificacion}"/>
+                    <h:outputText value="#{bundleFacturacion.FacturaTitle_cliente}" style="font-weight: bold;"/>
+                    <h:outputText value="#{facturaController.selected.cliente}" title="#{bundleFacturacion.FacturaTitle_cliente}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{facturaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleFacturacion.FacturaDestroyLink}"
+                                     title="#{bundleFacturacion.FacturaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Factura?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleFacturacion.FacturaEditLink}"
+                                     title="#{bundleFacturacion.FacturaEditLink}"
+                                     />
+                    <h:commandButton action="#{facturaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleFacturacion.FacturaCreateLink}"
+                                     title="#{bundleFacturacion.FacturaCreateLink}"
+                                     />
+                    <h:commandButton action="#{facturaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleFacturacion.FacturaShowAllLink}"
+                                     title="#{bundleFacturacion.FacturaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleCarga.ViewTrabajadoresTurnoEmbarqueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_id}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.id}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_id}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaInicio}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.horaInicio}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaInicio}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaFin}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.horaFin}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaFin}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_libroSueldo}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.libroSueldo}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_libroSueldo}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.tarea}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.categoria}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.personal}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"/>
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_planilla}" style="font-weight: bold;"/>
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.selected.planilla}" title="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_planilla}"/>
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{trabajadoresTurnoEmbarqueController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
+                                     title="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este TrabajadoresTurnoEmbarque?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
+                                     title="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
+                                     />
+                    <h:commandButton action="#{trabajadoresTurnoEmbarqueController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
+                                     title="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
+                                     />
+                    <h:commandButton action="#{trabajadoresTurnoEmbarqueController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleCarga.TrabajadoresTurnoEmbarqueShowAllLink}"
+                                     title="#{bundleCarga.TrabajadoresTurnoEmbarqueShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
