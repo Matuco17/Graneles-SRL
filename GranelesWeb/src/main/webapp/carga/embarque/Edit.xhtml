@@ -12,7 +12,7 @@
             <h:outputText value="#{bundleCarga.EditEmbarqueTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form>
+            <h:form enctype="multipart/form-data" >
                 <div style="width: 650px; float:left;">
                     <p:fieldset legend="Datos del Embarque" toggleable="true"  >
                         <h:panelGrid columns="4" >
@@ -150,16 +150,22 @@
                     
                     <p:fieldset id="panArchivos" legend="Archivos" toggleable="true">
                         <h:panelGrid columns="2">
-                            <p:fileUpload id="fupArchivoASubir" value="#{embarqueController.currentFile}" mode="simple" />
-                            <h:commandButton 
-                                image="/faces/resources/images/new.png" 
-                                action="#{embarqueController.subirArchivo()}" 
-                                value="Subir Archivo"
-                                title="Subir Archivo"
-                                />
+                            <p:fileUpload id="fupArchivoASubir" value="#{embarqueController.currentFile}" mode="simple"  />
+
+                            <p:commandButton value="+" ajax="false" process="panArchivos" 
+                                             actionListener="#{embarqueController.subirArchivo()}"
+                                             /> 
                         </h:panelGrid>
-                        
-                        
+                        <h:dataTable id="dtbLinkArchivos" value="#{embarqueController.archivosModel}"  var="archivo"  >
+                            <p:column>
+                                <h:link value="#{archivo.nombreArchivo}" onclick="window.open('#{archivo.urlCompleto}','Download');window.close();" />
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="x" ajax="false" process="panArchivos" 
+                                                 actionListener="#{embarqueController.eliminarArchivo()}"
+                                             /> 
+                            </p:column>
+                        </h:dataTable>
                     </p:fieldset>                    
                 </div>
                 

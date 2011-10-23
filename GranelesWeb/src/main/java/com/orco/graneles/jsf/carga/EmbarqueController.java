@@ -1,12 +1,6 @@
 package com.orco.graneles.jsf.carga;
 
-import com.orco.graneles.domain.carga.Buque;
-import com.orco.graneles.domain.carga.CargaPrevia;
-import com.orco.graneles.domain.carga.CargaTurno;
-import com.orco.graneles.domain.carga.Embarque;
-import com.orco.graneles.domain.carga.Mercaderia;
-import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
-import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.carga.*;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.personal.Tarea;
@@ -79,6 +73,7 @@ public class EmbarqueController implements Serializable {
 
     //Variables de Archivo
     private DataModel archivosModel;
+    private List<ArchivoEmbarque> listaArchivos;
     private UploadedFile currentFile;
     
     public EmbarqueController() {
@@ -293,6 +288,9 @@ public class EmbarqueController implements Serializable {
         this.listaTurnos = listaTurnos;
     }
 
+
+    
+    
     
     /*
      * Funcionalidades de turno Embarque dentro
@@ -497,20 +495,37 @@ public class EmbarqueController implements Serializable {
      */
     
     public void subirArchivo(){
-        if (StringUtils.isNotEmpty(currentFile.getFileName())){
+        if (getCurrentFile() != null && StringUtils.isNotEmpty(getCurrentFile().getFileName())){
             try {
                 ejbFacade.subirArchivo(currentFile.getInputstream(), currentFile.getFileName(), current);
             } catch (IOException ex) {
                 Logger.getLogger(EmbarqueController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        listaArchivos = null;
+        archivosModel = null;
     }
     
     public void eliminarArchivo(){
-        
+        if (archivosModel.getRowData() != null){
+            getSelected().getArchivoEmbarqueCollection().remove((ArchivoEmbarque) archivosModel.getRowData());
+            listaArchivos = null;
+            archivosModel = null;
+        }
     }    
+        
+    public List<ArchivoEmbarque> getListaArchivos() {
+        if (listaArchivos == null){
+            listaArchivos = new ArrayList<ArchivoEmbarque>(getSelected().getArchivoEmbarqueCollection());
+            Collections.sort(listaArchivos);
+        }
+        return listaArchivos;
+    }
     
     public DataModel getArchivosModel() {
+        if (archivosModel == null){
+            archivosModel = new ListDataModel(getListaArchivos());
+        }
         return archivosModel;
     }
 
@@ -521,6 +536,7 @@ public class EmbarqueController implements Serializable {
     public void setCurrentFile(UploadedFile currentFile) {
         this.currentFile = currentFile;
     }
+    
     /*
      * Fin de las funcionalidades del Archivos del embarque
      */

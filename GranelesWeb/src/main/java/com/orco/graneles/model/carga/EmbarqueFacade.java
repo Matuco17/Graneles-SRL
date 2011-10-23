@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
 /**
  *
@@ -89,8 +90,10 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
         FileOutputStream fop = null;
         try {
             //Obtengo el contenido del archivo y lo guardo
-            fop = new FileOutputStream(nuevoArchivo.getNombreArchivoEnDisco());
-            byte[] contenido = null;
+            String pathBaseArchivos = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+        
+            fop = new FileOutputStream(pathBaseArchivos + nuevoArchivo.getNombreArchivoEnDisco());
+            byte[] contenido = new byte[fip.available()];
             fip.read(contenido);
             fop.write(contenido);
             
@@ -98,6 +101,7 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
             archivoEmbarqueFacade.persist(nuevoArchivo);
             embarque.getArchivoEmbarqueCollection().add(nuevoArchivo);
             
+            fop.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

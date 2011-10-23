@@ -62,12 +62,12 @@ public class ArchivoEmbarque implements Serializable, Comparable<ArchivoEmbarque
         return nombreArchivo;
     }
     
-    public String getURLCompleto(){
-        return "~/../../../resources/uploadedFiles/" + getNombreArchivoEnDisco();
+    public String getUrlCompleto(){
+        return "~/../../.." + getNombreArchivoEnDisco();
     }
     
     public String getNombreArchivoEnDisco(){
-        return "embarque_" + getEmbarque().getId() + "_" + getNombreArchivo();
+        return "/resources/uploadedFiles/embarque_" + getEmbarque().getId() + "_" + getNombreArchivo();
     }
 
     public void setNombreArchivo(String nombreArchivo) {

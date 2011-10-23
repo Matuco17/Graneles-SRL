@@ -89,24 +89,33 @@
                         </p:dataTable>
                     </p:fieldset>
                 </div>    
-                <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" style=" float:left; min-width: 150px;">
-                    <h:panelGrid columns="2" style="width: 100%; float:left;" >
-                        <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
-                        <h:outputText id="mercaderiaPrevia" value="#{embarqueController.mercaderiaPrevia.toString()}" title="#{bundleCarga.EmbarqueTitle_mercaderia}" />
-                    </h:panelGrid>
-                    <p:dataTable id="dtbCargaPrevia" value="#{embarqueController.cargasPreviasModel}" var="item" style="width: 100%; float:left; text-align: right; " >
-                        <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
-                            <h:outputText value="#{item.bodega.nro}" />
-                        </p:column>
-                        <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
-                            <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
-                        </p:column>
-                         <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
-                             <h:outputText value="#{item.carga}" style="text-align: right;" />
-                        </p:column>
-                    </p:dataTable>
-                </p:fieldset>
+                <div style="width: 350px; float: left;" >
+                  <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" style=" float:left; min-width: 150px;">
+                        <h:panelGrid columns="2" style="width: 100%; float:left;" >
+                            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
+                            <h:outputText id="mercaderiaPrevia" value="#{embarqueController.mercaderiaPrevia.toString()}" title="#{bundleCarga.EmbarqueTitle_mercaderia}" />
+                        </h:panelGrid>
+                        <p:dataTable id="dtbCargaPrevia" value="#{embarqueController.cargasPreviasModel}" var="item" style="width: 100%; float:left; text-align: right; " >
+                            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
+                                <h:outputText value="#{item.bodega.nro}" />
+                            </p:column>
+                            <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
+                                <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
+                            </p:column>
+                             <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
+                                 <h:outputText value="#{item.carga}" style="text-align: right;" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
                 
+                    <p:fieldset id="panArchivos" legend="Archivos" toggleable="true">
+                        <h:dataTable id="dtbLinkArchivos" value="#{embarqueController.archivosModel}"  var="archivo"  >
+                            <p:column>
+                                <h:link value="#{archivo.nombreArchivo}" onclick="window.open('#{archivo.urlCompleto}','Download');window.close();" />
+                            </p:column>
+                        </h:dataTable>
+                    </p:fieldset> 
+                </div>
 
                 <p:panel style="width: 100%; float: left;" > 
                     <h:panelGrid columns="4">
