@@ -19,6 +19,11 @@
                     <h:outputText value="#{tipoJornalController.selected.porcExtraBasico}" title="#{bundleSalario.TipoJornalTitle_porcExtraBasico}"/>
                     <h:outputLabel value="#{bundleSalario.TipoJornalTitle_porcExtraBruto}" />
                     <h:outputText value="#{tipoJornalController.selected.porcExtraBruto}" title="#{bundleSalario.TipoJornalTitle_porcExtraBruto}"/>
+                    <h:outputLabel value="#{bundleSalario.TipoJornalTitle_conceptoRecibo}" for="conceptoRecibo" />
+                    <h:selectOneMenu id="conceptoRecibo" disabled="true" value="#{tipoJornalController.selected.conceptoRecibo}" >
+                        <f:selectItems value="#{tipoJornalController.conceptosRemunerativos}" var="concepto" itemValue="#{concepto.concepto}" />
+                    </h:selectOneMenu>
+             
                 </h:panelGrid>
 
 

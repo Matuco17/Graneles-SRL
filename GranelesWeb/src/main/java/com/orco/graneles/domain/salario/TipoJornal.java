@@ -8,17 +8,7 @@ import com.orco.graneles.domain.carga.TurnoEmbarque;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,6 +40,11 @@ public class TipoJornal implements Serializable {
     private BigDecimal porcExtraBasico;
     @Column(name = "porc_extra_bruto")
     private BigDecimal porcExtraBruto;
+    
+    @JoinColumn(name = "concepto_recibo", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private ConceptoRecibo conceptoRecibo;
+    
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipo")
     private Collection<TurnoEmbarque> turnoEmbarqueCollection;
@@ -99,6 +94,14 @@ public class TipoJornal implements Serializable {
 
     public void setTurnoEmbarqueCollection(Collection<TurnoEmbarque> turnoEmbarqueCollection) {
         this.turnoEmbarqueCollection = turnoEmbarqueCollection;
+    }
+
+    public ConceptoRecibo getConceptoRecibo() {
+        return conceptoRecibo;
+    }
+
+    public void setConceptoRecibo(ConceptoRecibo conceptoRecibo) {
+        this.conceptoRecibo = conceptoRecibo;
     }
     
     

@@ -24,9 +24,6 @@
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">
-                        <p:column headerText ="#{bundleSalario.SalarioBasicoTitle_tipoJornal}" filterBy="#{item.tipoJornal}" filterOptions="#{fixedListController.tipoJornalSelectOne}" filterMatchMode="exact" >
-                            <h:outputText value="#{item.tipoJornal.toString()}"/>
-                        </p:column>
                         <p:column headerText ="#{bundleSalario.SalarioBasicoTitle_tarea}" filterBy="#{item.tarea}" filterOptions="#{tareaController.itemsAvailableSelectOne}" filterMatchMode="exact" >
                             <h:outputText value="#{item.tarea.toString()}"/>
                         </p:column>

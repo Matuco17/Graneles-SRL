@@ -5,11 +5,13 @@
 package com.orco.graneles.model.carga;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.salario.Periodo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.util.List;
 /**
  *
  * @author orco
@@ -26,5 +28,12 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
     public TrabajadoresTurnoEmbarqueFacade() {
         super(TrabajadoresTurnoEmbarque.class);
     }
+    
+    public List<TrabajadoresTurnoEmbarque> getTrabajadoresPeriodo(Periodo periodo){
+      return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodo", TrabajadoresTurnoEmbarque.class)
+                  .setParameter("desde", periodo.getDesde())
+                  .setParameter("hasta", periodo.getHasta())
+                  .getResultList();
+    }    
     
 }

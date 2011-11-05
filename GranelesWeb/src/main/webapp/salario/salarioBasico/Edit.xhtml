@@ -13,10 +13,6 @@
         <ui:define name="body">
             <h:form>
                 <h:panelGrid columns="4">
-               <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tipoJornal}" for="tipoJornal" style="font-weight: bold;" />
-                    <h:selectOneMenu id="tipoJornal" value="#{salarioBasicoController.selected.tipoJornal}">
-                        <f:selectItems value="#{fixedListController.tipoJornalSelectOne}"/>
-                    </h:selectOneMenu>
                     <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tarea}" for="tarea" style="font-weight: bold;" />
                     <h:selectOneMenu id="tarea" value="#{salarioBasicoController.selected.tarea}" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_tarea}" >
                         <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
@@ -25,16 +21,12 @@
                     <h:selectOneMenu id="categoria" value="#{salarioBasicoController.selected.categoria}" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_categoria}">
                         <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                    <h:outputLabel value ="" />
-                    <h:outputLabel value ="" />
                     <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_desde}" for="desde" style="font-weight: bold;" />
                     <p:calendar id="desde" value="#{salarioBasicoController.selected.desde}" title="#{bundleSalario.SalarioBasicoTitle_desde}" pattern="dd/MM/yyyy" />
                     <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_hasta}" for="hasta" style="font-weight: bold;" />
                     <p:calendar id="hasta" value="#{salarioBasicoController.selected.hasta}" title="#{bundleSalario.SalarioBasicoTitle_hasta}" pattern="dd/MM/yyyy" />
                     <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_basico}" for="basico" style="font-weight: bold;" />
                     <p:inputText id="basico" value="#{salarioBasicoController.selected.basico}" />
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_adicional}" for="adicional" style="font-weight: bold;" />
-                    <p:inputText id="adicional" value="#{salarioBasicoController.selected.adicional}" />
                 </h:panelGrid>
                 <h:panelGrid columns="3">
 

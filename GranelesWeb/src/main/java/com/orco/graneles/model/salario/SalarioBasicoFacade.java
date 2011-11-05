@@ -4,12 +4,15 @@
  */
 package com.orco.graneles.model.salario;
 
+import com.orco.graneles.domain.personal.Categoria;
+import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.SalarioBasico;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 /**
@@ -56,7 +59,6 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
         boolean existe = false;
         
         List<SalarioBasico> salarios = getEntityManager().createNamedQuery("SalarioBasico.findByPrincipalKey", SalarioBasico.class)
-                                    .setParameter("tipoJornal", entity.getTipoJornal())
                                     .setParameter("categoria", entity.getCategoria())
                                     .setParameter("tarea", entity.getTarea())
                                     .getResultList();
@@ -88,6 +90,21 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
         }
         
         return existe;
+    }
+    
+    /**
+     * Obtengo el salario activo para la Tarea, categoría y fecha especificada
+     * @param tarea
+     * @param categoria
+     * @param fecha
+     * @return 
+     */
+    public SalarioBasico obtenerSalarioActivo(Tarea tarea, Categoria categoria, Date fecha){
+        return getEntityManager().createNamedQuery("SalarioBasico.findActivo", SalarioBasico.class)
+                        .setParameter("categoria", categoria)
+                        .setParameter("tarea", tarea)
+                        .setParameter("fecha", fecha)
+                        .getSingleResult();                        
     }
     
 }

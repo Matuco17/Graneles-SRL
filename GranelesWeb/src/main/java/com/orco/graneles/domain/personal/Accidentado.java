@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Accidentado.findByDesde", query = "SELECT a FROM Accidentado a WHERE a.desde = :desde"),
     @NamedQuery(name = "Accidentado.findByHasta", query = "SELECT a FROM Accidentado a WHERE a.hasta = :hasta"),
     @NamedQuery(name = "Accidentado.findByBruto", query = "SELECT a FROM Accidentado a WHERE a.bruto = :bruto"),
+    @NamedQuery(name = "Accidentado.findSinLibroSueldo", query = "SELECT a FROM Accidentado a WHERE a.libroSueldo IS NULL"),
     @NamedQuery(name = "Accidentado.findByDescripcionCortaAccidente", query = "SELECT a FROM Accidentado a WHERE a.descripcionCortaAccidente = :descripcionCortaAccidente")})
 public class Accidentado implements Serializable {
     private static final long serialVersionUID = 1L;

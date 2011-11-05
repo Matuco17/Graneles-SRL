@@ -5,6 +5,7 @@
 package com.orco.graneles.domain.miscelaneos;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -51,6 +52,9 @@ public class FixedList implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "descripcion")
     private String descripcion;
+    
+    @Column(name = "valor_defecto")
+    private BigDecimal valorDefecto;
     
     /*    
     @OneToMany(mappedBy = "tipoJornal")
@@ -119,6 +123,17 @@ public class FixedList implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public BigDecimal getValorDefecto() {
+        return valorDefecto;
+    }
+
+    public void setValorDefecto(BigDecimal valorDefecto) {
+        this.valorDefecto = valorDefecto;
+    }
+    
+    
+    
     /*
     @XmlTransient
     public Collection<SalarioBasico> getSalarioBasicoCollection() {

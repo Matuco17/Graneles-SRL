@@ -32,7 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findAll", query = "SELECT t FROM TrabajadoresTurnoEmbarque t"),
-    @NamedQuery(name = "TrabajadoresTurnoEmbarque.findById", query = "SELECT t FROM TrabajadoresTurnoEmbarque t WHERE t.id = :id")})
+    @NamedQuery(name = "TrabajadoresTurnoEmbarque.findById", query = "SELECT t FROM TrabajadoresTurnoEmbarque t WHERE t.id = :id"),
+    @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPeriodo",
+                query = "SELECT t FROM TrabajadoresTurnoEmbarque t "
+                               + " WHERE t.libroSueldo IS NULL "
+                               + " AND t.planilla.fecha BETWEEN :desde AND :hasta")})
 public class TrabajadoresTurnoEmbarque implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

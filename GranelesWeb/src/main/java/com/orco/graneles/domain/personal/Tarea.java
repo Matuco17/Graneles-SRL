@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tarea.findByInsalubre", query = "SELECT t FROM Tarea t WHERE t.insalubre = :insalubre"),
     @NamedQuery(name = "Tarea.findByPeligrosa", query = "SELECT t FROM Tarea t WHERE t.peligrosa = :peligrosa"),
     @NamedQuery(name = "Tarea.findByProductiva", query = "SELECT t FROM Tarea t WHERE t.productiva = :productiva"),
-    @NamedQuery(name = "Tarea.findByAdicional", query = "SELECT t FROM Tarea t WHERE t.adicional = :adicional")})
+    @NamedQuery(name = "Tarea.findByPeligrosa2", query = "SELECT t FROM Tarea t WHERE t.peligrosa2 = :peligrosa2")})
 public class Tarea implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,10 +59,10 @@ public class Tarea implements Serializable {
     private Boolean insalubre;
     @Column(name = "peligrosa")
     private Boolean peligrosa;
+    @Column(name = "peligrosa2")
+    private Boolean peligrosa2;
     @Column(name = "productiva")
     private Boolean productiva;
-    @Column(name = "adicional")
-    private Boolean adicional;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<SalarioBasico> salarioBasicoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
@@ -125,12 +125,12 @@ public class Tarea implements Serializable {
         this.productiva = productiva;
     }
 
-    public Boolean getAdicional() {
-        return adicional;
+    public Boolean getPeligrosa2() {
+        return peligrosa2;
     }
 
-    public void setAdicional(Boolean adicional) {
-        this.adicional = adicional;
+    public void setPeligrosa2(Boolean peligrosa2) {
+        this.peligrosa2 = peligrosa2;
     }
 
     @XmlTransient

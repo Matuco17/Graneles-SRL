@@ -4,7 +4,10 @@
  */
 package com.orco.graneles.model.personal;
 
-import com.orco.graneles.domain.miscelaneos.*;
+import com.orco.graneles.domain.miscelaneos.EstadoCivil;
+import com.orco.graneles.domain.miscelaneos.EstadoPersonal;
+import com.orco.graneles.domain.miscelaneos.TipoDocumento;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.personal.Personal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,6 +19,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.persistence.NoResultException;
@@ -33,10 +37,8 @@ public class PersonalFacade extends AbstractFacade<Personal> {
 
     @EJB
     private FixedListFacade fixedListFacade;
-    
     @EJB
     private ObraSocialFacade obraSocialFacade;
-    
     @EJB
     private CategoriaFacade categoriaFacade;
   
@@ -49,7 +51,12 @@ public class PersonalFacade extends AbstractFacade<Personal> {
         super(Personal.class);
     }
     
-    
+    public List<Personal> getPersonalMensualActivo(){
+        return getEntityManager().createNamedQuery("Personal.findByTipoReciboYActivo", Personal.class)
+                            .setParameter("tipoRecibo", fixedListFacade.find(TipoRecibo.MENSUAL))
+                            .setParameter("estado", fixedListFacade.find(EstadoPersonal.ACTIVO))
+                            .getResultList();        
+    }
     
     /**
      * Lee de la tabla dbf y genera un map con la lista del personal, existente o no

@@ -19,6 +19,12 @@
                     <p:inputText id="porcExtraBasico" value="#{tipoJornalController.selected.porcExtraBasico}" />
                     <h:outputLabel value="#{bundleSalario.TipoJornalTitle_porcExtraBruto}" for="porcExtraBruto"  />
                     <p:inputText id="porcExtraBruto" value="#{tipoJornalController.selected.porcExtraBruto}" />
+                    <h:outputLabel value="Nota" />
+                    <h:outputText value="Alguno de los valores entre de Porcentaje debe ser 0" />
+                    <h:outputLabel value="#{bundleSalario.TipoJornalTitle_conceptoRecibo}" for="conceptoRecibo" />
+                    <h:selectOneMenu id="conceptoRecibo" value="#{tipoJornalController.selected.conceptoRecibo}" >
+                        <f:selectItems value="#{tipoJornalController.conceptosRemunerativos}" var="concepto" itemValue="#{concepto.concepto}" />
+                    </h:selectOneMenu>
                 </h:panelGrid>
                 <h:panelGrid columns="2">
                     <h:commandButton action="#{tipoJornalController.create}"

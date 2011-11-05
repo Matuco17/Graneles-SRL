@@ -39,12 +39,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SalarioBasico.findByBasico", query = "SELECT s FROM SalarioBasico s WHERE s.basico = :basico"),
     @NamedQuery(name = "SalarioBasico.findByAdicional", query = "SELECT s FROM SalarioBasico s WHERE s.adicional = :adicional"),
     @NamedQuery(name = "SalarioBasico.findByDesde", query = "SELECT s FROM SalarioBasico s WHERE s.desde = :desde"),
-    @NamedQuery(name = "SalarioBasico.findByHasta", query = "SELECT s FROM SalarioBasico s WHERE s.hasta = :hasta")})
+    @NamedQuery(name = "SalarioBasico.findByHasta", query = "SELECT s FROM SalarioBasico s WHERE s.hasta = :hasta"),
     @NamedQuery(name = "SalarioBasico.findByPrincipalKey", 
                         query = "SELECT s FROM SalarioBasico s "
-                                + "WHERE s.tipoJornal = :tipoJornal " 
-                                + "AND s.categoria = :categoria "
-                                + "AND s.tarea = :tarea")
+                                + "WHERE s.categoria = :categoria "
+                                + "AND s.tarea = :tarea"),
+    @NamedQuery(name = "SalarioBasico.findActivo", 
+                        query = "SELECT s FROM SalarioBasico s "
+                                + "WHERE s.categoria = :categoria "
+                                + "AND s.tarea = :tarea "
+                                + "AND s.desde <= :fecha "
+                                + "AND (s.hasta IS NULL OR s.hasta >= :fecha)")})
 public class SalarioBasico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,9 +67,7 @@ public class SalarioBasico implements Serializable {
     @Column(name = "hasta")
     @Temporal(TemporalType.DATE)
     private Date hasta;
-    @JoinColumn(name = "tipo_jornal", referencedColumnName = "id")
-    @ManyToOne
-    private FixedList tipoJornal;
+    
     @JoinColumn(name = "tarea", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Tarea tarea;
@@ -119,14 +122,7 @@ public class SalarioBasico implements Serializable {
         this.hasta = hasta;
     }
 
-    public FixedList getTipoJornal() {
-        return tipoJornal;
-    }
-
-    public void setTipoJornal(FixedList tipoJornal) {
-        this.tipoJornal = tipoJornal;
-    }
-
+  
     public Tarea getTarea() {
         return tarea;
     }

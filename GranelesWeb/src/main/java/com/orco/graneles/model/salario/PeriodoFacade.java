@@ -4,27 +4,30 @@
  */
 package com.orco.graneles.model.salario;
 
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.miscelaneos.*;
+import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.personal.Personal;
-import com.orco.graneles.domain.salario.Sueldo;
+import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.NoResultException;
 /**
@@ -39,13 +42,21 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     @EJB
     private PersonalFacade personalFacade;
     @EJB
-    private TurnoEmbarqueFacade turnoEmbarqueFacade;
+    private TurnoEmbarqueFacade teFacade;
     @EJB
     private SueldoFacade sueldoFacade;
     @EJB
     private ItemsSueldoFacade itemSueldoFacade;
     @EJB
     private ConceptoReciboFacade conceptoReciboFacade;
+    @EJB
+    private TrabajadoresTurnoEmbarqueFacade tteFacade;
+    @EJB
+    private AccidentadoFacade accFacade;
+    @EJB
+    private FixedListFacade fxlFacade;
+    @EJB
+    private SalarioBasicoFacade sbFacade;
     
     protected EntityManager getEntityManager() {
         return em;
@@ -97,6 +108,125 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return per;
     }
    
+    private void generarSueldosTTE(Periodo periodo){
+        List<TrabajadoresTurnoEmbarque> listaTTE = tteFacade.getTrabajadoresPeriodo(periodo);
+        Map<Integer, List<ConceptoRecibo>> conceptos = conceptoReciboFacade.obtenerConceptosXTipoRecibo(fxlFacade.find(TipoRecibo.HORAS));
+        Map<Integer, FixedList> mapAdicTarea = fxlFacade.findByListaMap(AdicionalTarea.ID_LISTA);
+        
+        
+        //Por cada uno de los turnos trabajados realizo las operaciones
+        for(TrabajadoresTurnoEmbarque tte : listaTTE){
+            double totalBruto = 0; //Valor total del bruto para que se termine de cerrar esto
+            Sueldo sueldoTTE = new Sueldo();
+            sueldoTTE.setPeriodo(periodo);
+            sueldoTTE.setPersonal(tte.getPersonal());
+            
+            
+            
+            //Por cada tipo de Concepto Remunerativo
+            for (ConceptoRecibo cRemunerativo : conceptos.get(TipoConceptoRecibo.REMUNERATIVO)){
+                if (cRemunerativo.getTipo().getId().equals(TipoValorConcepto.DIAS_TRABAJO)){ //Esto significa que debo realizar el calculo del total bruto con el salario basico
+                    //Obtengo el salario correspondiente al tte
+                    SalarioBasico salario = sbFacade.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+                    
+                    //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+                    double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
+                    double totalConcepto = basicoBruto; //resultado de la suma del concepto
+                    
+                    
+                    //Realizo el agregado de los modificadores de tarea
+                    if (tte.getTarea().getInsalubre()){
+                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue();
+                    }
+                    if (tte.getTarea().getPeligrosa()){
+                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue();
+                    }
+                    if (tte.getTarea().getPeligrosa2()){
+                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue();
+                    }
+                    if (tte.getTarea().getProductiva()){
+                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue();
+                    }
+                    
+                    //Ahora aplico el valor del modificador del tipo de jornal
+                    totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
+                    
+                    //Agrego el valor del total del concepto al valor del total del bruto
+                    totalBruto += totalConcepto;
+                    
+                    //Una vez que tengo el valor de esta hora, lo agrego
+                    
+                    
+                    
+                }
+            }
+            
+            
+            
+            //TODO: MERGEAR EL SUELDO POR SI EXISTE UNO ANTERIOR (CREAR METODO YA QUE SE VA A USAR EN VS LADOS)
+        }
+        
+        
+        
+        
+        /*
+          Por cada tTE en listaTTE
+	sB = Saco El sueldo basico
+		Tengo que tener en cuenta el valor de la tarea
+		+ la suma de los modificadores de la tarea (insalub)
+		+ el modificador por dia (tipo de dia al 50%, al 100% etc) (tipo jornal)
+	jb = Saco la jubilacion (% buscado por el tipo sobre el sB)
+	os = Saco la obra social (% buscado por el tipo sobre el sB)
+	sind = Saco el sindicato (% buscado por el tipo sobre el sB)
+	dtoJud = saco el desc Judicial (% buscado por la trabajador sobre el sB)
+        noRemunerativo = algun otro concepto que se escape
+       //Ver si esto se busca de la siguiente manera
+          buscar todos los remunerativos
+          buscar todas las deducciones
+          buscar todos los no remunerativos
+       generar los valores del sueldo, y linkearlo al TTE
+       guardar
+        */
+        
+    }
+    
+    private void generarSueldosAccidentados(Periodo periodo){
+        List<Accidentado> listaAcc = accFacade.getAccidentadosPeriodo(periodo);
+        
+        /*
+        Para cada Acc 
+    Por cada Acc ver cuanto le correspodne de remunerativo total y despues
+	buscar todas las deducciones
+        buscar todos los no remunerativos
+    generar los valores del sueldo, y likearlo al Acc
+    guardar
+    * 
+    */
+    }
+    
+    private void generarSueldosMensuales(Periodo periodo){
+        List<Personal> listaMens = personalFacade.getPersonalMensualActivo();
+  
+        /*
+          Para cada Mensual 
+    Por cada Mensual ver cuanto le correspodne de remunerativo total y despues
+	buscar todas las deducciones
+        buscar todos los no remunerativos
+    generar los valores del sueldo, y likearlo al Acc
+    guardar
+    * 
+    */
+             
+    }
+    
+    
+    public void generarSueldosPeriodo(Periodo periodo){
+        generarSueldosAccidentados(periodo);
+        generarSueldosMensuales(periodo);
+        generarSueldosTTE(periodo);
+   }
+    
     
     /*
      * Constantes creadas por la generacion de sueldos a traves de la importacion utilizando valores de la base de datos
@@ -152,7 +282,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Map<String, Personal> mapPersonal = personalFacade.obtenerPersonalDesdeDBF(fileAltas);
         
         //Obtengo los Turnos embarque de la tabla de planillas
-        Map<Long, TurnoEmbarqueExcelVO> mapTurnos = turnoEmbarqueFacade.embarquesDesdeExcel(filePlanilla, periodoCarga.getDesde(), periodoCarga.getHasta());
+        Map<Long, TurnoEmbarqueExcelVO> mapTurnos = teFacade.embarquesDesdeExcel(filePlanilla, periodoCarga.getDesde(), periodoCarga.getHasta());
         
         //Obtengo los sueldos de las horas trabajadas y las agrego al map
         sueldoFacade.salariosPlanillaDesdeExcel(fileCargaReg, mapRegistros, mapTurnos);
@@ -298,9 +428,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     }
     
     
-    public void generarSueldosPeriodo(Periodo periodo){
-        
-    
-    }
+  
     
 }

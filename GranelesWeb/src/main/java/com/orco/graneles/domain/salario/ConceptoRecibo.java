@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ConceptoRecibo.findByVersion", query = "SELECT c FROM ConceptoRecibo c WHERE c.version = :version"),
     @NamedQuery(name = "ConceptoRecibo.findByOrden", query = "SELECT c FROM ConceptoRecibo c WHERE c.orden = :orden"),
     @NamedQuery(name = "ConceptoRecibo.findByValor", query = "SELECT c FROM ConceptoRecibo c WHERE c.valor = :valor"),
+    @NamedQuery(name = "ConceptoRecibo.findByTipoRecibo", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo"),
+    @NamedQuery(name = "ConceptoRecibo.findByTipoReciboYTipoConcepto", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.tipo = :tipo AND c.versionActiva = :versionActiva"),
     @NamedQuery(name = "ConceptoRecibo.findByCalculado", query = "SELECT c FROM ConceptoRecibo c WHERE c.calculado = :calculado")})
 public class ConceptoRecibo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -192,7 +194,7 @@ public class ConceptoRecibo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.ConceptoRecibo[ id=" + id + " ]";
+        return this.concepto;
     }
     
 }

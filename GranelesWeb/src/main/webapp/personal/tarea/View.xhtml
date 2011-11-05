@@ -13,18 +13,18 @@
         <ui:define name="body">
             <h:form>
                 <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_descripcion}" for="descripcion" />
                     <h:outputText id="descripcion" value="#{tareaController.selected.descripcion}" />
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_lugar}" for="lugar" style="font-weight: bold;" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_lugar}" for="lugar" />
                     <h:outputText id="lugar" value="#{tareaController.selected.lugar.toString()}" />
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_insalubre}" for="insalubre" style="font-weight: bold;" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_insalubre}" for="insalubre" />
                     <p:selectBooleanCheckbox disabled="true" id="insalubre" value="#{tareaController.selected.insalubre}" />
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_peligrosa}" for="peligrosa" style="font-weight: bold;" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_peligrosa}" for="peligrosa" />
                     <p:selectBooleanCheckbox disabled="true" id="peligrosa" value="#{tareaController.selected.peligrosa}" />
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_productiva}" for="productiva" style="font-weight: bold;" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_peligrosa2}" for="peligrosa2" />
+                    <p:selectBooleanCheckbox disabled="true" id="peligrosa2" value="#{tareaController.selected.peligrosa2}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_productiva}" for="productiva" />
                     <p:selectBooleanCheckbox disabled="true" id="productiva" value="#{tareaController.selected.productiva}" />
-                    <h:outputLabel value="#{bundlePersonal.TareaTitle_adicional}" for="adicional" style="font-weight: bold;" />
-                    <p:selectBooleanCheckbox disabled="true" id="adicional" value="#{tareaController.selected.adicional}" />
                 </h:panelGrid>
 
 
