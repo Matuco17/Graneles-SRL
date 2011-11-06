@@ -4,12 +4,15 @@
  */
 package com.orco.graneles.model.salario;
 
+import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.domain.salario.ItemsSueldo;
+import com.orco.graneles.domain.salario.Sueldo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.math.BigDecimal;
 /**
  *
  * @author orco
@@ -25,6 +28,20 @@ public class ItemsSueldoFacade extends AbstractFacade<ItemsSueldo> {
 
     public ItemsSueldoFacade() {
         super(ItemsSueldo.class);
+    }
+    
+    /**
+     * Crea un itemSueldo para el concepto y el valor pedido
+     */
+    public void crearItemSueldo(ConceptoRecibo concepto,BigDecimal cantidad, BigDecimal valor, Sueldo sueldo) {
+        //Item Sueldo Bruto
+        ItemsSueldo itemBruto = new ItemsSueldo();
+        itemBruto.setConceptoRecibo(concepto);
+        itemBruto.setValorCalculado(valor);
+        itemBruto.setValorIngresado(valor);
+        itemBruto.setCantidad(cantidad);
+        itemBruto.setSueldo(sueldo);
+        sueldo.getItemsSueldoCollection().add(itemBruto);
     }
     
 }

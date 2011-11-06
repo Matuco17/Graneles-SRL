@@ -26,6 +26,7 @@ import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,23 +41,23 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private EntityManager em;
 
     @EJB
-    private PersonalFacade personalFacade;
+    private PersonalFacade personalF;
     @EJB
-    private TurnoEmbarqueFacade teFacade;
+    private TurnoEmbarqueFacade turnoEmbarqueF;
     @EJB
-    private SueldoFacade sueldoFacade;
+    private SueldoFacade sueldoF;
     @EJB
-    private ItemsSueldoFacade itemSueldoFacade;
+    private ItemsSueldoFacade itemSueldoF;
     @EJB
-    private ConceptoReciboFacade conceptoReciboFacade;
+    private ConceptoReciboFacade conceptoReciboF;
     @EJB
-    private TrabajadoresTurnoEmbarqueFacade tteFacade;
+    private TrabajadoresTurnoEmbarqueFacade trabTurnoEmbarqueF;
     @EJB
-    private AccidentadoFacade accFacade;
+    private AccidentadoFacade accidentadoF;
     @EJB
-    private FixedListFacade fxlFacade;
-    @EJB
-    private SalarioBasicoFacade sbFacade;
+    private FixedListFacade fixedListF;
+    
+    
     
     protected EntityManager getEntityManager() {
         return em;
@@ -108,91 +109,38 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return per;
     }
    
-    private void generarSueldosTTE(Periodo periodo){
-        List<TrabajadoresTurnoEmbarque> listaTTE = tteFacade.getTrabajadoresPeriodo(periodo);
-        Map<Integer, List<ConceptoRecibo>> conceptos = conceptoReciboFacade.obtenerConceptosXTipoRecibo(fxlFacade.find(TipoRecibo.HORAS));
-        Map<Integer, FixedList> mapAdicTarea = fxlFacade.findByListaMap(AdicionalTarea.ID_LISTA);
-        
+    private Collection<Sueldo> generarSueldosTTE(Periodo periodo){
+        List<TrabajadoresTurnoEmbarque> listaTTE = trabTurnoEmbarqueF.getTrabajadoresPeriodo(periodo);
+        Map<Integer, List<ConceptoRecibo>> conceptos = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        Map<Integer, FixedList> mapAdicTarea = fixedListF.findByListaMap(AdicionalTarea.ID_LISTA);
+        Map<Long, Sueldo> mapSueldosXIdPers = new HashMap<Long, Sueldo>();
         
         //Por cada uno de los turnos trabajados realizo las operaciones
         for(TrabajadoresTurnoEmbarque tte : listaTTE){
-            double totalBruto = 0; //Valor total del bruto para que se termine de cerrar esto
-            Sueldo sueldoTTE = new Sueldo();
-            sueldoTTE.setPeriodo(periodo);
-            sueldoTTE.setPersonal(tte.getPersonal());
+            Sueldo sueldoTTE = sueldoF.calcularSueldoTTE(periodo, tte, conceptos, mapAdicTarea);
             
-            
-            
-            //Por cada tipo de Concepto Remunerativo
-            for (ConceptoRecibo cRemunerativo : conceptos.get(TipoConceptoRecibo.REMUNERATIVO)){
-                if (cRemunerativo.getTipo().getId().equals(TipoValorConcepto.DIAS_TRABAJO)){ //Esto significa que debo realizar el calculo del total bruto con el salario basico
-                    //Obtengo el salario correspondiente al tte
-                    SalarioBasico salario = sbFacade.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
-                    
-                    //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
-                    double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-                    double totalConcepto = basicoBruto; //resultado de la suma del concepto
-                    
-                    
-                    //Realizo el agregado de los modificadores de tarea
-                    if (tte.getTarea().getInsalubre()){
-                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue();
-                    }
-                    if (tte.getTarea().getPeligrosa()){
-                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue();
-                    }
-                    if (tte.getTarea().getPeligrosa2()){
-                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue();
-                    }
-                    if (tte.getTarea().getProductiva()){
-                        totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue();
-                    }
-                    
-                    //Ahora aplico el valor del modificador del tipo de jornal
-                    totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
-                    
-                    //Agrego el valor del total del concepto al valor del total del bruto
-                    totalBruto += totalConcepto;
-                    
-                    //Una vez que tengo el valor de esta hora, lo agrego
-                    
-                    
-                    
-                }
+            //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
+            Sueldo sueldoTTEAnterior = mapSueldosXIdPers.get(tte.getPersonal().getId());
+            if (sueldoTTEAnterior != null){
+                mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoF.mergeSueldos(sueldoTTEAnterior, sueldoTTE));
+                
+                tte.setLibroSueldo(sueldoTTEAnterior);
+                trabTurnoEmbarqueF.persist(tte);                
+            } else {
+                mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoTTE);
+                
+                sueldoF.persist(sueldoTTE);
+                tte.setLibroSueldo(sueldoTTE);
+                trabTurnoEmbarqueF.persist(tte);
             }
             
-            
-            
-            //TODO: MERGEAR EL SUELDO POR SI EXISTE UNO ANTERIOR (CREAR METODO YA QUE SE VA A USAR EN VS LADOS)
         }
         
-        
-        
-        
-        /*
-          Por cada tTE en listaTTE
-	sB = Saco El sueldo basico
-		Tengo que tener en cuenta el valor de la tarea
-		+ la suma de los modificadores de la tarea (insalub)
-		+ el modificador por dia (tipo de dia al 50%, al 100% etc) (tipo jornal)
-	jb = Saco la jubilacion (% buscado por el tipo sobre el sB)
-	os = Saco la obra social (% buscado por el tipo sobre el sB)
-	sind = Saco el sindicato (% buscado por el tipo sobre el sB)
-	dtoJud = saco el desc Judicial (% buscado por la trabajador sobre el sB)
-        noRemunerativo = algun otro concepto que se escape
-       //Ver si esto se busca de la siguiente manera
-          buscar todos los remunerativos
-          buscar todas las deducciones
-          buscar todos los no remunerativos
-       generar los valores del sueldo, y linkearlo al TTE
-       guardar
-        */
-        
+        return mapSueldosXIdPers.values();
     }
     
-    private void generarSueldosAccidentados(Periodo periodo){
-        List<Accidentado> listaAcc = accFacade.getAccidentadosPeriodo(periodo);
+    private Collection<Sueldo> generarSueldosAccidentados(Periodo periodo){
+        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo);
         
         /*
         Para cada Acc 
@@ -203,10 +151,11 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     guardar
     * 
     */
+        return null;
     }
     
-    private void generarSueldosMensuales(Periodo periodo){
-        List<Personal> listaMens = personalFacade.getPersonalMensualActivo();
+    private Collection<Sueldo> generarSueldosMensuales(Periodo periodo){
+        List<Personal> listaMens = personalF.getPersonalMensualActivo();
   
         /*
           Para cada Mensual 
@@ -217,14 +166,28 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     guardar
     * 
     */
-             
+      return null;       
     }
     
-    
+    /**
+     * Genera los sueldos del periodo seleccionado
+     * @param periodo 
+     */
     public void generarSueldosPeriodo(Periodo periodo){
-        generarSueldosAccidentados(periodo);
-        generarSueldosMensuales(periodo);
-        generarSueldosTTE(periodo);
+        Collection<Sueldo> sueldosCalculados = new ArrayList<Sueldo>();
+        sueldosCalculados.addAll(generarSueldosAccidentados(periodo));
+        sueldosCalculados.addAll(generarSueldosMensuales(periodo));
+        sueldosCalculados.addAll(generarSueldosTTE(periodo));
+        
+        //TODO: REALIZAR EL CÁLCULO DEL SAC si es necesario
+        //TODO: REALIZAR EL CALCULO DE LAS VACACIONES si es necesario
+        
+        
+        //Persisto todos los cambios
+        for (Sueldo s : sueldosCalculados){
+            sueldoF.persist(s);
+        }
+        
    }
     
     
@@ -279,28 +242,28 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Map<String, CargaRegVO[]> mapRegistros = new HashMap<String, CargaRegVO[]>();
         
         //Obtengo la lista procesada y actualizada de personal con clave igual al cuil
-        Map<String, Personal> mapPersonal = personalFacade.obtenerPersonalDesdeDBF(fileAltas);
+        Map<String, Personal> mapPersonal = personalF.obtenerPersonalDesdeDBF(fileAltas);
         
         //Obtengo los Turnos embarque de la tabla de planillas
-        Map<Long, TurnoEmbarqueExcelVO> mapTurnos = teFacade.embarquesDesdeExcel(filePlanilla, periodoCarga.getDesde(), periodoCarga.getHasta());
+        Map<Long, TurnoEmbarqueExcelVO> mapTurnos = turnoEmbarqueF.embarquesDesdeExcel(filePlanilla, periodoCarga.getDesde(), periodoCarga.getHasta());
         
         //Obtengo los sueldos de las horas trabajadas y las agrego al map
-        sueldoFacade.salariosPlanillaDesdeExcel(fileCargaReg, mapRegistros, mapTurnos);
+        sueldoF.salariosPlanillaDesdeExcel(fileCargaReg, mapRegistros, mapTurnos);
         
         //Obtengo los sueldos de feriados, accidentados, valores de vacaciones y aguinaldos y se los agrego a los registros
-        sueldoFacade.otrosConceptosDesdeExcel(filePagoFeri, mapRegistros, periodoCarga.getDesde(), periodoCarga.getHasta());
+        sueldoF.otrosConceptosDesdeExcel(filePagoFeri, mapRegistros, periodoCarga.getDesde(), periodoCarga.getHasta());
         
         
         //Actualizo los datos de todo el personal
         for (Map.Entry<String, Personal> personalEntry : mapPersonal.entrySet()){
-            personalFacade.persist(personalEntry.getValue());
+            personalF.persist(personalEntry.getValue());
         }
         
         //Cargo los Conceptos de los recibos para no tener que ir realizando busquedas de más
         Map<Integer, ConceptoRecibo> mapConceptos = new HashMap<Integer, ConceptoRecibo>();
         //Como los conceptos son seguidos, los cargo con iteracion
         for (int i = 1; i <= CANTIDAD_CONCEPTOS; i++)
-            mapConceptos.put(i, conceptoReciboFacade.find(i)) ;
+            mapConceptos.put(i, conceptoReciboF.find(i)) ;
         
         
         //Creo las entidades sueldo de acuerdo a los datos de Carga Reg levantados y sintetizados
@@ -327,7 +290,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 sueldo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
                 
                 //Persisto el sueldo
-                sueldoFacade.create(sueldo);
+                sueldoF.create(sueldo);
                 
                 /*
                  * Seteo las cantidades por defecto de los conceptos que no estan vinculados con planillas
@@ -395,13 +358,13 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 //Agrego los elementos calculados al sueldo
                 for (int i = 1; i <= CANTIDAD_CONCEPTOS; i++){
                     if (valores[i].doubleValue() > 0.005){
-                        crearItemSueldo(mapConceptos, cantidades[i], valores[i], sueldo, i);
+                         itemSueldoF.crearItemSueldo(mapConceptos.get(i), cantidades[i], valores[i], sueldo);
                     }
                 }
                 
                 
                 //Guardo los cambios realizados
-                sueldoFacade.edit(sueldo);
+                sueldoF.edit(sueldo);
                 periodoCarga.getSueldoCollection().add(sueldo);
             }
         }
@@ -413,19 +376,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return periodoCarga;
     }
 
-    /**
-     * Crea un itemSueldo para el concepto y el valor pedido
-     */
-    private void crearItemSueldo(Map<Integer, ConceptoRecibo> mapConceptos,BigDecimal cantidad, BigDecimal valor, Sueldo sueldo, int idConcepto) {
-        //Item Sueldo Bruto
-        ItemsSueldo itemBruto = new ItemsSueldo();
-        itemBruto.setConceptoRecibo(mapConceptos.get(idConcepto));
-        itemBruto.setValorCalculado(valor);
-        itemBruto.setValorIngresado(valor);
-        itemBruto.setCantidad(cantidad);
-        itemBruto.setSueldo(sueldo);
-        sueldo.getItemsSueldoCollection().add(itemBruto);
-    }
+
     
     
   

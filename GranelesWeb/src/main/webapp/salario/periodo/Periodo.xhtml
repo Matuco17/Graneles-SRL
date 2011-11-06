@@ -33,64 +33,70 @@
                         <p:commandButton id="btnBuscarPeriodo" ajax="true" action="#{periodoController.buscarPeriodo()}" update="panPeriodoSeleccionado" value="Ver Libro de Sueldos" label="Buscar Perido" />
                     </h:form>
                 </p:panel>
-            <p:panel id="panPeriodoSeleccionado"  >
-                   <h:panelGrid columns="2">
-                       <p:panel id="panPeridoView" header="Información" >
-                           <h:panelGrid columns="2">
-                               <h:outputText value="#{bundleSalario.PeriodoTitle_descripcion}"/>
-                               <h:outputText value="#{periodoController.selected.descripcion}" title="#{bundleSalario.PeriodoTitle_descripcion}"/>
+            <p:panel id="panPeriodoSeleccionado" >
+                   <p:panel id="panPeridoView" header="Información" style="float: left; width: 450px;">
+                       <h:panelGrid columns="2">
+                           <h:outputText value="#{bundleSalario.PeriodoTitle_descripcion}"/>
+                           <h:outputText value="#{periodoController.selected.descripcion}" title="#{bundleSalario.PeriodoTitle_descripcion}"/>
 
-                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
-                               <h:outputLabel id="oLfolioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
+                           <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
+                           <h:outputLabel id="oLfolioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
 
-                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
-                               <h:outputLabel id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
+                           <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
+                           <h:outputLabel id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
 
-                               <h:outputLabel value="Cantidad de Sueldos Cargados" />
-                               <h:outputLabel id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
-                               
-                              
-                               <h:outputLabel value="Descargar Libro de Sueldos PDF" rendered="#{periodoController.urlArchivoPDF != null}"/>
-                               <h:link id="lnkLibroPDF" value="Libro PDF" onclick="window.open('#{periodoController.urlArchivoPDF}','Download');window.close();" rendered="#{periodoController.urlArchivoPDF != null}" />
-                              
-                               <h:outputLabel value="Descargar Libro de Sueldos para AFIP" rendered="#{periodoController.urlArchivoTxt != null}" />
-                               <h:link id="lnkLibroTXT" value="Libro AFIP" onclick="window.open('#{periodoController.urlArchivoTxt}','Download');window.close();" rendered="#{periodoController.urlArchivoTxt != null}" />
-                                
-                           </h:panelGrid>
-                       </p:panel>
-                       <p:panel id="panPeridoEdit" header="Modificar" rendered="#{periodoController.current != null}" >
-                            <h:form enctype="multipart/form-data">
-                                <h:panelGrid columns="2" >
-
-                                    <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
-                                    <h:inputText id="folioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
-                                    <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
-                                    <h:inputText id="nroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
+                           <h:outputLabel value="Cantidad de Sueldos Cargados" />
+                           <h:outputLabel id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
 
 
-                                    <h:outputText value="Altas.dbf"/>
-                                    <p:fileUpload id="fupAltas" value="#{periodoController.fileAltas}" mode="simple" allowTypes="dbf"/>  
+                           <h:outputLabel value="Descargar Libro de Sueldos PDF" rendered="#{periodoController.urlArchivoPDF != null}"/>
+                           <h:link id="lnkLibroPDF" value="Libro PDF" onclick="window.open('#{periodoController.urlArchivoPDF}','Download');window.close();" rendered="#{periodoController.urlArchivoPDF != null}" />
 
-                                    <h:outputText value="Planilla.dbf"/>
-                                    <p:fileUpload id="fupPlanilla" value="#{periodoController.filePlanillas}" mode="simple" allowTypes="dbf" />
+                           <h:outputLabel value="Descargar Libro de Sueldos para AFIP" rendered="#{periodoController.urlArchivoTxt != null}" />
+                           <h:link id="lnkLibroTXT" value="Libro AFIP" onclick="window.open('#{periodoController.urlArchivoTxt}','Download');window.close();" rendered="#{periodoController.urlArchivoTxt != null}" />
 
-                                    <h:outputText value="CargaReg.dbf"/>
-                                    <p:fileUpload id="simple" value="#{periodoController.fileCargaReg}" mode="simple" allowTypes="dbf" />
+                       </h:panelGrid>
+                   </p:panel>
+                <div style="float: left; width: 350px;">
+                    <p:panel id="panPeriodoCalcular" header="Crear Libro de sueldos desde datos actuales" >
+                        <h:form>
+                            <h:commandButton id="cmdProcesarPeriodo" 
+                                             action="#{periodoController.procesarPeriodoConDatosSistema()}" />
+                        </h:form>
+                    </p:panel> 
+                    
+                   <p:panel id="panPeridoEdit" header="Cargar Libro de Sueldos desde programa anterior" rendered="#{periodoController.current != null}" >
+                        <h:form enctype="multipart/form-data">
+                            <h:panelGrid columns="2" >
 
-                                    <h:outputText value="PagoFeri.dbf"/>
-                                    <p:fileUpload id="fupPagoFeri" value="#{periodoController.filePagoFeri}" mode="simple" allowTypes="dbf" />
+                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
+                                <h:inputText id="folioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
+                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
+                                <h:inputText id="nroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
 
-                                   <p:commandButton value="#{bundleSalario.PeriodoSaveLink}" ajax="false"  
-                                                 actionListener="#{periodoController.subirArchivosYProcesarPeriodo()}"
-                                                 /> 
 
-                                 
-                                </h:panelGrid>
-                             </h:form>
-                       </p:panel>
-                     
-                   </h:panelGrid>
-                </p:panel>      
+                                <h:outputText value="Altas.dbf"/>
+                                <p:fileUpload id="fupAltas" value="#{periodoController.fileAltas}" mode="simple" allowTypes="dbf"/>  
+
+                                <h:outputText value="Planilla.dbf"/>
+                                <p:fileUpload id="fupPlanilla" value="#{periodoController.filePlanillas}" mode="simple" allowTypes="dbf" />
+
+                                <h:outputText value="CargaReg.dbf"/>
+                                <p:fileUpload id="simple" value="#{periodoController.fileCargaReg}" mode="simple" allowTypes="dbf" />
+
+                                <h:outputText value="PagoFeri.dbf"/>
+                                <p:fileUpload id="fupPagoFeri" value="#{periodoController.filePagoFeri}" mode="simple" allowTypes="dbf" />
+
+                               <p:commandButton value="#{bundleSalario.PeriodoSaveLink}" ajax="false"  
+                                             actionListener="#{periodoController.subirArchivosYProcesarPeriodo()}"
+                                             /> 
+
+
+                            </h:panelGrid>
+                         </h:form>
+                   </p:panel>
+                </div>
+              </p:panel>      
 
         </ui:define>
     </ui:composition>

@@ -89,6 +89,7 @@ public class PeriodoController implements Serializable {
         }
     }
     
+        
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -173,6 +174,20 @@ public class PeriodoController implements Serializable {
         current = getFacade().verPeriodo(this.anio, this.mes);
         generarArchivosPeriodo();
         selectedItemIndex = 1;
+    }
+    
+    public void procesarPeriodoConDatosSistema(){
+        if (current != null && current.getDescripcion() != null && current.getDescripcion().length() > 0){
+            try {
+                getFacade().generarSueldosPeriodo(current);
+
+                JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e.getMessage());
+            }
+        } else {
+            JsfUtil.addErrorMessage("Seleccione un periodo con anterioridad");
+        }
     }
     
     public void subirArchivosYProcesarPeriodo(){

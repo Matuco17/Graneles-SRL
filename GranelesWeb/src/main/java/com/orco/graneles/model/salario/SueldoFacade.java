@@ -4,8 +4,12 @@
  */
 package com.orco.graneles.model.salario;
 
-import com.orco.graneles.domain.salario.ItemsSueldo;
-import com.orco.graneles.domain.salario.Sueldo;
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.miscelaneos.AdicionalTarea;
+import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
+import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,7 +21,9 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,12 +36,87 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @EJB
+    private ItemsSueldoFacade itemSueldoF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
+
     protected EntityManager getEntityManager() {
         return em;
     }
 
     public SueldoFacade() {
         super(Sueldo.class);
+    }
+    
+    public Sueldo calcularSueldoTTE(Periodo periodo, TrabajadoresTurnoEmbarque tte, Map<Integer, List<ConceptoRecibo>> conceptos, Map<Integer, FixedList> mapAdicTarea) {
+        double totalBruto = 0; //Valor total del bruto para que se termine de cerrar esto
+        Sueldo sueldoTTE = new Sueldo();
+        sueldoTTE.setPeriodo(periodo);
+        sueldoTTE.setPersonal(tte.getPersonal());
+        
+        //Por cada tipo de Concepto Remunerativo
+        for (ConceptoRecibo cRemunerativo : conceptos.get(TipoConceptoRecibo.REMUNERATIVO)){
+            if (cRemunerativo.getTipo().getId().equals(TipoValorConcepto.DIAS_TRABAJO)){ 
+                double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, mapAdicTarea);
+                //Agrego el valor del total del concepto al valor del total del bruto
+                totalBruto += totalConcepto;
+                //Una vez que tengo el valor de esta hora, lo agrego
+                itemSueldoF.crearItemSueldo(tte.getPlanilla().getTipo().getConceptoRecibo(), new BigDecimal(tte.getHoras()), new BigDecimal(totalConcepto), sueldoTTE);
+            }
+        }
+        
+        //Por cada tipo de Concepto Deductivo
+        for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
+            double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto);
+            
+            //Una vez que tengo el valor de esta hora, lo agrego
+            itemSueldoF.crearItemSueldo(cDeductivo, cDeductivo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+        }
+        
+        //Por cada tipo de Concepto No Remunerativo
+        for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
+            double totalConcepto = conceptoReciboF.calcularValorConcepto(cNoRemunerativo, totalBruto);
+            
+            //Una vez que tengo el valor de esta hora, lo agrego
+            itemSueldoF.crearItemSueldo(cNoRemunerativo, cNoRemunerativo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+        }
+                
+        return sueldoTTE;
+    }
+    
+    
+    /**
+     * Método que suma de manera correcta los items sueldo de cada uno de los sueldos
+     * @param s1
+     * @param s2
+     * @return 
+     */
+    public Sueldo mergeSueldos(Sueldo s1, Sueldo s2){
+        //Junto cada uno de los items con el mismo concepto y saco de s2 los que uso
+        for (ItemsSueldo isS1 : s1.getItemsSueldoCollection()){
+            for (ItemsSueldo isS2 : s2.getItemsSueldoCollection()){
+                if (isS1.getConceptoRecibo().getId().equals(isS2.getConceptoRecibo().getId())){
+                    //Si es remunerativo, sumo todo, sino solo sumo el valor
+                    if (isS1.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                        isS1.setCantidad(isS1.getCantidad().add(isS2.getCantidad()));
+                    }
+                    
+                    isS1.setValorCalculado(isS1.getValorCalculado().add(isS2.getValorCalculado()));
+                    isS1.setValorIngresado(isS1.getValorIngresado().add(isS2.getValorIngresado()));
+                    
+                    //Saco el valor de S2
+                    s2.getItemsSueldoCollection().remove(isS2);
+                }
+            }
+        }
+        
+        //Agrego a s1 todos los items de s2 que no compartian concepto
+        for (ItemsSueldo isS2 : s2.getItemsSueldoCollection()){
+            s1.getItemsSueldoCollection().add(isS2);
+        }
+        
+        return s1;
     }
     
         /**
