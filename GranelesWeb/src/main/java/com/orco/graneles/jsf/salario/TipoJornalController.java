@@ -33,8 +33,6 @@ public class TipoJornalController implements Serializable {
     private TipoJornalFacade ejbFacade;
     @EJB
     private ConceptoReciboFacade crFacade;
-    @EJB
-    private FixedListFacade fxlFacade;
     
     private int selectedItemIndex;
 
@@ -77,10 +75,10 @@ public class TipoJornalController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario2").getString("TipoJornalCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("TipoJornalCreated"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario2").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
             return null;
         }
     }
@@ -94,10 +92,10 @@ public class TipoJornalController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario2").getString("TipoJornalUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("TipoJornalUpdated"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario2").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
             return null;
         }
     }
@@ -126,9 +124,9 @@ public class TipoJornalController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario2").getString("TipoJornalDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("TipoJornalDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario2").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
         }
     }
     
@@ -151,10 +149,7 @@ public class TipoJornalController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-    
-    public List<ConceptoRecibo> getConceptosRemunerativos(){
-        return crFacade.obtenerConceptos(fxlFacade.find(TipoRecibo.HORAS), fxlFacade.find(TipoConceptoRecibo.REMUNERATIVO));
-    }
+  
 
     @FacesConverter(forClass = TipoJornal.class)
     public static class TipoJornalControllerConverter implements Converter {

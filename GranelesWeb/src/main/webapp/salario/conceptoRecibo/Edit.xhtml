@@ -13,33 +13,33 @@
         <ui:define name="body">
             <h:form>
                 <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_id}" for="id" style="font-weight: bold;" />
-                    <p:inputText id="id" value="#{conceptoReciboController.selected.id}" title="#{bundleSalario.ConceptoReciboTitle_id}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_concepto}" for="concepto" style="font-weight: bold;" />
-                    <p:inputText id="concepto" value="#{conceptoReciboController.selected.concepto}" title="#{bundleSalario.ConceptoReciboTitle_concepto}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_versionActiva}" for="versionActiva" style="font-weight: bold;" />
-                    <p:inputText id="versionActiva" value="#{conceptoReciboController.selected.versionActiva}" title="#{bundleSalario.ConceptoReciboTitle_versionActiva}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_version}" for="version" style="font-weight: bold;" />
-                    <p:inputText id="version" value="#{conceptoReciboController.selected.version}" title="#{bundleSalario.ConceptoReciboTitle_version}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_orden}" for="orden" style="font-weight: bold;" />
-                    <p:inputText id="orden" value="#{conceptoReciboController.selected.orden}" title="#{bundleSalario.ConceptoReciboTitle_orden}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_valor}" for="valor" style="font-weight: bold;" />
-                    <p:inputText id="valor" value="#{conceptoReciboController.selected.valor}" title="#{bundleSalario.ConceptoReciboTitle_valor}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_calculado}" for="calculado" style="font-weight: bold;" />
-                    <p:inputText id="calculado" value="#{conceptoReciboController.selected.calculado}" title="#{bundleSalario.ConceptoReciboTitle_calculado}" />
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipoRecibo}" for="tipoRecibo" style="font-weight: bold;" />
-                    <p:selectOneMenu id="tipoRecibo" value="#{conceptoReciboController.selected.tipoRecibo}"  required="true" requiredMessage="#{bundleSalario.ConceptoReciboRequiredMessage_tipoRecibo}" style="width:100%;">
-                        <f:selectItems value="#{fixedListController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipoValor}" for="tipoValor" style="font-weight: bold;" />
-                    <p:selectOneMenu id="tipoValor" value="#{conceptoReciboController.selected.tipoValor}"   style="width:100%;">
-                        <f:selectItems value="#{fixedListController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipo}" for="tipo" style="font-weight: bold;" />
-                    <p:selectOneMenu id="tipo" value="#{conceptoReciboController.selected.tipo}"  required="true" requiredMessage="#{bundleSalario.ConceptoReciboRequiredMessage_tipo}" style="width:100%;">
-                        <f:selectItems value="#{fixedListController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
+                   <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_id}" for="id"  />
+                    <p:inputText id="id" value="#{conceptoReciboController.selected.id}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_concepto}" for="concepto"  />
+                    <p:inputText id="concepto" value="#{conceptoReciboController.selected.concepto}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_versionActiva}" for="versionActiva"  />
+                    <p:inputText id="versionActiva" value="#{conceptoReciboController.selected.versionActiva}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_version}" for="version"  />
+                    <p:inputText id="version" value="#{conceptoReciboController.selected.version}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_orden}" for="orden"  />
+                    <p:inputText id="orden" value="#{conceptoReciboController.selected.orden}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_valor}" for="valor"  />
+                    <p:inputText id="valor" value="#{conceptoReciboController.selected.valor}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_calculado}" for="calculado"  />
+                    <p:inputText id="calculado" value="#{conceptoReciboController.selected.calculado}" />
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipoRecibo}" for="tipoRecibo"  />
+                    <h:selectOneMenu id="tipoRecibo" value="#{conceptoReciboController.selected.tipoRecibo}"  required="true" requiredMessage="#{bundleSalario.ConceptoReciboRequiredMessage_tipoRecibo}" style="width:100%;">
+                        <f:selectItems value="#{fixedListController.tipoReciboSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipoValor}" for="tipoValor"  />
+                    <h:selectOneMenu id="tipoValor" value="#{conceptoReciboController.selected.tipoValor}"  >
+                        <f:selectItems value="#{fixedListController.tipoValorConceptoSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundleSalario.ConceptoReciboTitle_tipo}" for="tipo"  />
+                    <h:selectOneMenu id="tipo" value="#{conceptoReciboController.selected.tipo}" required="true" requiredMessage="#{bundleSalario.ConceptoReciboRequiredMessage_tipo}" >
+                        <f:selectItems value="#{fixedListController.tipoConceptoReciboSelectOne}"/>
+                    </h:selectOneMenu>
+                 </h:panelGrid>
                 <h:panelGrid columns="3">
 
                     <h:commandButton action="#{conceptoReciboController.update}" 

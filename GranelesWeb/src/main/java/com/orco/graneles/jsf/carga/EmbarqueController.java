@@ -270,7 +270,7 @@ public class EmbarqueController implements Serializable {
     }
 
     public DataModel getCargasPreviasModel() {
-        if (cargasPreviasModel == null && getSelected().getCargaPreviaCollection().size() > 0)
+        if (cargasPreviasModel == null && getSelected().getCargaPreviaCollection() != null && getSelected().getCargaPreviaCollection().size() > 0)
             cargasPreviasModel = new ListDataModel(getCargasPrevias());
         return cargasPreviasModel;
     }

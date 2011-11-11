@@ -1,10 +1,14 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +29,8 @@ public class ConceptoReciboController implements Serializable {
     private DataModel items = null;
     @EJB
     private ConceptoReciboFacade ejbFacade;
+    @EJB
+    private FixedListFacade fxlFacade;
     private int selectedItemIndex;
 
     public ConceptoReciboController() {
@@ -120,22 +126,6 @@ public class ConceptoReciboController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
 
     public DataModel getItems() {
         if (items == null) {
@@ -156,6 +146,18 @@ public class ConceptoReciboController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
+    public SelectItem[] getItemsConceptosRemunerativos(){
+        return JsfUtil.getSelectItems(ejbFacade.obtenerConceptos(fxlFacade.find(TipoRecibo.HORAS), fxlFacade.find(TipoConceptoRecibo.REMUNERATIVO)),false);
+    }
+    
+    private Converter converter = null;
+    public Converter getConverter(){
+        if (converter != null){
+            converter = new ConceptoReciboControllerConverter();
+        }
+        return converter;
+    }
+    
     @FacesConverter(forClass = ConceptoRecibo.class)
     public static class ConceptoReciboControllerConverter implements Converter {
 

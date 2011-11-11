@@ -151,7 +151,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     guardar
     * 
     */
-        return null;
+        return new ArrayList<Sueldo>();
     }
     
     private Collection<Sueldo> generarSueldosMensuales(Periodo periodo){
@@ -166,7 +166,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     guardar
     * 
     */
-      return null;       
+      return new ArrayList<Sueldo>();  
     }
     
     /**

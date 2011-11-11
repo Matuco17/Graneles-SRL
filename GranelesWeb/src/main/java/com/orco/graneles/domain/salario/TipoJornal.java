@@ -32,12 +32,14 @@ public class TipoJornal implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "porc_extra_basico")
     private BigDecimal porcExtraBasico;
+    
     @Column(name = "porc_extra_bruto")
     private BigDecimal porcExtraBruto;
     
