@@ -46,23 +46,26 @@ public class Sueldo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "nro_recibo")
     private Integer nroRecibo;
+    
     @JoinColumn(name = "periodo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Periodo periodo;
+    
     @JoinColumn(name = "personal", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Personal personal;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER)
-    @JoinColumn(name = "sueldo")
+    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER, mappedBy="sueldo", orphanRemoval = true)
     private Collection<ItemsSueldo> itemsSueldoCollection;
 
     
-    @OneToMany(mappedBy = "libroSueldo")
+    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.ALL)
     private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
-    @OneToMany(mappedBy = "libroSueldo")
+    
+    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.ALL)
     private Collection<Accidentado> accidentadoCollection;
     
     /*
@@ -152,7 +155,7 @@ public class Sueldo implements Serializable {
     public void setTrabajadoresTurnoEmbarqueCollection(Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection) {
         this.trabajadoresTurnoEmbarqueCollection = trabajadoresTurnoEmbarqueCollection;
     }
-
+    
     @XmlTransient
     public Collection<Accidentado> getAccidentadoCollection() {
         return accidentadoCollection;

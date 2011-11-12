@@ -63,8 +63,8 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @ManyToOne(optional = false)
     private Personal personal;
     
-    @JoinColumn(name = "planilla", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "planilla", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = true)
     private TurnoEmbarque planilla;
 
     public TrabajadoresTurnoEmbarque() {

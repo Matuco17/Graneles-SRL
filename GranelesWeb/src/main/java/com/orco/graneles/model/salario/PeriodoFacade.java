@@ -7,9 +7,6 @@ package com.orco.graneles.model.salario;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Accidentado;
-import com.orco.graneles.domain.salario.ConceptoRecibo;
-import com.orco.graneles.domain.salario.ItemsSueldo;
-import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
@@ -26,9 +23,10 @@ import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.persistence.NoResultException;
 /**
@@ -123,17 +121,17 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             Sueldo sueldoTTEAnterior = mapSueldosXIdPers.get(tte.getPersonal().getId());
             if (sueldoTTEAnterior != null){
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoF.mergeSueldos(sueldoTTEAnterior, sueldoTTE));
-                /*
+               
+                sueldoF.edit(sueldoTTEAnterior);
                 tte.setLibroSueldo(sueldoTTEAnterior);
-                trabTurnoEmbarqueF.persist(tte);    */            
+                trabTurnoEmbarqueF.edit(tte);                
             } else {
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoTTE);
-                /*
-                sueldoF.persist(sueldoTTE);
+               
+                sueldoF.create(sueldoTTE);
                 tte.setLibroSueldo(sueldoTTE);
-                trabTurnoEmbarqueF.persist(tte);
-                
-                */
+                periodo.getSueldoCollection().add(sueldoTTE);
+                trabTurnoEmbarqueF.edit(tte);                
             }
             
         }
@@ -176,20 +174,35 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param periodo 
      */
     public void generarSueldosPeriodo(Periodo periodo){
-        Collection<Sueldo> sueldosCalculados = new ArrayList<Sueldo>();
-        sueldosCalculados.addAll(generarSueldosAccidentados(periodo));
-        sueldosCalculados.addAll(generarSueldosMensuales(periodo));
-        sueldosCalculados.addAll(generarSueldosTTE(periodo));
-        
-        //TODO: REALIZAR EL CÁLCULO DEL SAC si es necesario
-        //TODO: REALIZAR EL CALCULO DE LAS VACACIONES si es necesario
-        
-        
-        //Persisto todos los cambios
-        for (Sueldo s : sueldosCalculados){
-            sueldoF.persist(s);
-        }
-        
+            //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
+            for (Sueldo s : periodo.getSueldoCollection()){
+                for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
+                    tte.setLibroSueldo(null);
+                    trabTurnoEmbarqueF.edit(tte);
+                }
+            }
+            
+            //limpio la lista de sueldos del periodo carga ya que se carga nuevamente y tiene que ser una operacion idempotente
+            periodo.setSueldoCollection(new ArrayList<Sueldo>());
+            //Persisto el periodo
+            persist(periodo);
+
+            Collection<Sueldo> sueldosCalculados = new ArrayList<Sueldo>();
+            sueldosCalculados.addAll(generarSueldosTTE(periodo));
+            //sueldosCalculados.addAll(generarSueldosAccidentados(periodo));
+            //sueldosCalculados.addAll(generarSueldosMensuales(periodo));
+            
+            //TODO: REALIZAR EL CÁLCULO DEL SAC si es necesario
+            //TODO: REALIZAR EL CALCULO DE LAS VACACIONES si es necesario
+
+
+            //Persisto todos los cambios
+            for (Sueldo s : sueldosCalculados){
+                sueldoF.persist(s);
+            }
+
+            persist(periodo);  
+            
    }
     
     

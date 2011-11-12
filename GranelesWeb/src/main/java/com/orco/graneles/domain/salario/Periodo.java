@@ -66,8 +66,7 @@ public class Periodo implements Serializable {
     @Column(name = "nro_primera_hoja")
     private BigInteger nroPrimeraHoja;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
-    @JoinColumn(name = "periodo")
+    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY, mappedBy="periodo", orphanRemoval = true)
     private Collection<Sueldo> sueldoCollection;
 
     public Periodo() {

@@ -123,6 +123,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         //Agrego a s1 todos los items de s2 que no compartian concepto
         for (ItemsSueldo isS2 : backIsS2.values()){
+            isS2.setSueldo(s1);
             s1.getItemsSueldoCollection().add(isS2);
         }
         

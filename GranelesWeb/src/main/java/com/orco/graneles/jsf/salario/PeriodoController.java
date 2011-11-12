@@ -180,6 +180,9 @@ public class PeriodoController implements Serializable {
         if (current != null && current.getDescripcion() != null && current.getDescripcion().length() > 0){
             try {
                 getFacade().generarSueldosPeriodo(current);
+                
+                //Una vez subido todo, genero nuevamente el pdf
+                generarArchivosPeriodo();
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (Exception e) {
