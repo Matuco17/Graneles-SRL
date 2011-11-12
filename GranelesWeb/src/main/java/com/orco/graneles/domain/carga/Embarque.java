@@ -124,13 +124,13 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @ManyToOne(optional = false)
     private Buque buque;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque", orphanRemoval = true)
     private Collection<ArchivoEmbarque> archivoEmbarqueCollection;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque", orphanRemoval = true)
     private Collection<CargaPrevia> cargaPreviaCollection;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque", orphanRemoval = true)
     private Collection<TurnoEmbarque> turnoEmbarqueCollection;
 
     public Embarque() {

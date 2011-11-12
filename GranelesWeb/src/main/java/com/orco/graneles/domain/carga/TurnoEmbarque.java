@@ -52,10 +52,10 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     private Date fecha;
    
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turnoEmbarque")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turnoEmbarque", orphanRemoval = true)
     private Collection<CargaTurno> cargaTurnoCollection;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla", orphanRemoval = true)
     private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
     
     @JoinColumn(name = "tipo", referencedColumnName = "id")
