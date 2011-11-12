@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 /**
  *
  * @author orco
@@ -41,6 +42,8 @@ public class ItemsSueldoFacade extends AbstractFacade<ItemsSueldo> {
         itemBruto.setValorIngresado(valor);
         itemBruto.setCantidad(cantidad);
         itemBruto.setSueldo(sueldo);
+        if (sueldo.getItemsSueldoCollection() == null)
+            sueldo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
         sueldo.getItemsSueldoCollection().add(itemBruto);
     }
     

@@ -9,6 +9,7 @@ import com.orco.graneles.domain.miscelaneos.AdicionalTarea;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
 import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.domain.salario.SalarioBasico;
 import javax.ejb.Stateless;
@@ -50,6 +51,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     public Map<Integer, List<ConceptoRecibo>> obtenerConceptosXTipoRecibo(FixedList tipoRecibo){
         List<ConceptoRecibo> conceptosEncontrados = getEntityManager().createNamedQuery("ConceptoRecibo.findByTipoRecibo", ConceptoRecibo.class)
                                                         .setParameter("tipoRecibo", tipoRecibo)
+                                                        .setParameter("versionActiva", true)
                                                         .getResultList();
         Map<Integer, List<ConceptoRecibo>> result = new HashMap<Integer, List<ConceptoRecibo>>();
         
@@ -93,16 +95,16 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         double totalConcepto = basicoBruto; //resultado de la suma del concepto
         //Realizo el agregado de los modificadores de tarea
         if (tte.getTarea().getInsalubre()){
-            totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue();
+            totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
         }
         if (tte.getTarea().getPeligrosa()){
-            totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue();
+            totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
         }
         if (tte.getTarea().getPeligrosa2()){
-            totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue();
+            totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
         }
         if (tte.getTarea().getProductiva()){
-            totalConcepto += basicoBruto * mapAdicTarea.get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue();
+            totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
         }
         //Ahora aplico el valor del modificador del tipo de jornal
         totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
@@ -111,16 +113,24 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     }
     
     /**
-     * Metodo que devuelve el valor calculado de acuerdo a la deduccion, puede ser un simple porcentaje o algo + complejo
+     * Metodo que devuelve el valor calculado de acuerdo al concepto, puede ser un simple porcentaje o algo + complejo
      * @param concepto
      * @param totalBruto
      * @return 
      */
-    public double calcularValorConcepto(ConceptoRecibo concepto, double totalBruto){
+    public double calcularValorConcepto(ConceptoRecibo concepto, double totalBruto, Personal personal){
         if (concepto.getTipoValor().getId() == TipoValorConcepto.FIJO){
             return concepto.getValor().doubleValue();
-        } else if (concepto.getTipoValor().getId() == TipoValorConcepto.PORCENTUAL){
+        } else if (concepto.getTipoValor().getId() == TipoValorConcepto.PORCENTUAL
+                || concepto.getTipoValor().getId() == TipoValorConcepto.JUBILACION
+                || concepto.getTipoValor().getId() == TipoValorConcepto.OBRA_SOCIAL){
             return totalBruto * concepto.getValor().doubleValue() / 100;
+        } else if (concepto.getTipoValor().getId() == TipoValorConcepto.SINDICATO) {
+            double porcSindicato = concepto.getValor().doubleValue();
+            if (personal.getCategoriaPrincipal().getSindicato() != null){
+                porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();
+            }
+            return totalBruto * porcSindicato / 100;
         } else {
             return 0;
         }

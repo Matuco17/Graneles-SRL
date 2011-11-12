@@ -55,32 +55,35 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         sueldoTTE.setPeriodo(periodo);
         sueldoTTE.setPersonal(tte.getPersonal());
         
-        //Por cada tipo de Concepto Remunerativo
-        for (ConceptoRecibo cRemunerativo : conceptos.get(TipoConceptoRecibo.REMUNERATIVO)){
-            if (cRemunerativo.getTipo().getId().equals(TipoValorConcepto.DIAS_TRABAJO)){ 
-                double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, mapAdicTarea);
-                //Agrego el valor del total del concepto al valor del total del bruto
-                totalBruto += totalConcepto;
-                //Una vez que tengo el valor de esta hora, lo agrego
-                itemSueldoF.crearItemSueldo(tte.getPlanilla().getTipo().getConceptoRecibo(), new BigDecimal(tte.getHoras()), new BigDecimal(totalConcepto), sueldoTTE);
-            }
+        //Concepto remunerativo unico dependiente de la cantidad de horas
+        if (tte.getHoras() > 0){
+            double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, mapAdicTarea);
+            //Agrego el valor del total del concepto al valor del total del bruto
+            totalBruto += totalConcepto;
+            //Una vez que tengo el valor de esta hora, lo agrego
+            itemSueldoF.crearItemSueldo(tte.getPlanilla().getTipo().getConceptoRecibo(), new BigDecimal(tte.getHoras()), new BigDecimal(totalConcepto), sueldoTTE);
         }
         
         //Por cada tipo de Concepto Deductivo
-        for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
-            double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto);
-            
-            //Una vez que tengo el valor de esta hora, lo agrego
-            itemSueldoF.crearItemSueldo(cDeductivo, cDeductivo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+        if (conceptos.get(TipoConceptoRecibo.DEDUCTIVO) != null){
+            for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
+                double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto, tte.getPersonal());
+
+                //Una vez que tengo el valor de esta hora, lo agrego
+                itemSueldoF.crearItemSueldo(cDeductivo, cDeductivo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+            }
         }
         
         //Por cada tipo de Concepto No Remunerativo
-        for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
-            double totalConcepto = conceptoReciboF.calcularValorConcepto(cNoRemunerativo, totalBruto);
-            
-            //Una vez que tengo el valor de esta hora, lo agrego
-            itemSueldoF.crearItemSueldo(cNoRemunerativo, cNoRemunerativo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+        if (conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null) {
+            for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
+                double totalConcepto = conceptoReciboF.calcularValorConcepto(cNoRemunerativo, totalBruto, tte.getPersonal());
+
+                //Una vez que tengo el valor de esta hora, lo agrego
+                itemSueldoF.crearItemSueldo(cNoRemunerativo, cNoRemunerativo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+            }
         }
+    
                 
         return sueldoTTE;
     }

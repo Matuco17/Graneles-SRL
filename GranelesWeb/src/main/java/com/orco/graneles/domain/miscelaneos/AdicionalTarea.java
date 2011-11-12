@@ -10,7 +10,7 @@ package com.orco.graneles.domain.miscelaneos;
  */
 public class AdicionalTarea {
 
-    public static final int ID_LISTA = 14;
+    public static final int ID_LISTA = 15;
     
     public static final int INSALUBRE = 140;
     public static final int PELIGROSA = 141;
