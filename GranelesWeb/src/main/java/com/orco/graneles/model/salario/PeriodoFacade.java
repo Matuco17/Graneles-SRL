@@ -123,15 +123,17 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             Sueldo sueldoTTEAnterior = mapSueldosXIdPers.get(tte.getPersonal().getId());
             if (sueldoTTEAnterior != null){
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoF.mergeSueldos(sueldoTTEAnterior, sueldoTTE));
-                
+                /*
                 tte.setLibroSueldo(sueldoTTEAnterior);
-                trabTurnoEmbarqueF.persist(tte);                
+                trabTurnoEmbarqueF.persist(tte);    */            
             } else {
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoTTE);
-                
+                /*
                 sueldoF.persist(sueldoTTE);
                 tte.setLibroSueldo(sueldoTTE);
                 trabTurnoEmbarqueF.persist(tte);
+                
+                */
             }
             
         }

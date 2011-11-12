@@ -19,7 +19,9 @@ import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -96,26 +98,31 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
      * @return 
      */
     public Sueldo mergeSueldos(Sueldo s1, Sueldo s2){
+        //cargo un map que va a servir para conseguir el item de acuerdo al concepto y extraerlo una vez que fue usado
+        Map<Integer, ItemsSueldo> backIsS2 = new HashMap<Integer, ItemsSueldo>();
+        for (ItemsSueldo isS2 : s2.getItemsSueldoCollection()){
+            backIsS2.put(isS2.getConceptoRecibo().getId(), isS2);
+        }
+        
         //Junto cada uno de los items con el mismo concepto y saco de s2 los que uso
         for (ItemsSueldo isS1 : s1.getItemsSueldoCollection()){
-            for (ItemsSueldo isS2 : s2.getItemsSueldoCollection()){
-                if (isS1.getConceptoRecibo().getId().equals(isS2.getConceptoRecibo().getId())){
-                    //Si es remunerativo, sumo todo, sino solo sumo el valor
-                    if (isS1.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
-                        isS1.setCantidad(isS1.getCantidad().add(isS2.getCantidad()));
-                    }
-                    
-                    isS1.setValorCalculado(isS1.getValorCalculado().add(isS2.getValorCalculado()));
-                    isS1.setValorIngresado(isS1.getValorIngresado().add(isS2.getValorIngresado()));
-                    
-                    //Saco el valor de S2
-                    s2.getItemsSueldoCollection().remove(isS2);
+            ItemsSueldo isS2 = backIsS2.get(isS1.getConceptoRecibo().getId());
+            if (isS2 != null){
+                //Si es remunerativo, sumo todo, sino solo sumo el valor
+                if (isS1.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                    isS1.setCantidad(isS1.getCantidad().add(isS2.getCantidad()));
                 }
-            }
+
+                isS1.setValorCalculado(isS1.getValorCalculado().add(isS2.getValorCalculado()));
+                isS1.setValorIngresado(isS1.getValorIngresado().add(isS2.getValorIngresado()));
+
+                //Saco el valor de S2
+                backIsS2.remove(isS1.getConceptoRecibo().getId());
+            }            
         }
         
         //Agrego a s1 todos los items de s2 que no compartian concepto
-        for (ItemsSueldo isS2 : s2.getItemsSueldoCollection()){
+        for (ItemsSueldo isS2 : backIsS2.values()){
             s1.getItemsSueldoCollection().add(isS2);
         }
         
