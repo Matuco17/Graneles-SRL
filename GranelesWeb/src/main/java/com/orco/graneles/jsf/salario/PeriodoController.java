@@ -49,13 +49,14 @@ public class PeriodoController implements Serializable {
     private String urlArchivoTxt;
     
     public PeriodoController() {
-        Calendar calHoy = new GregorianCalendar();
-        this.anio = calHoy.get(Calendar.YEAR);
-        this.mes = calHoy.get(Calendar.MONTH) + 1;
+        
     }
 
     public void init() {
-        recreateModel();
+        Calendar calHoy = new GregorianCalendar();
+        this.anio = calHoy.get(Calendar.YEAR);
+        this.mes = calHoy.get(Calendar.MONTH) + 1;
+        selectedItemIndex = -1;
     }
 
     public Periodo getSelected() {

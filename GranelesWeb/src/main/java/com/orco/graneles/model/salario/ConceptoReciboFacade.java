@@ -126,11 +126,15 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 || concepto.getTipoValor().getId() == TipoValorConcepto.OBRA_SOCIAL){
             return totalBruto * concepto.getValor().doubleValue() / 100;
         } else if (concepto.getTipoValor().getId() == TipoValorConcepto.SINDICATO) {
-            double porcSindicato = concepto.getValor().doubleValue();
-            if (personal.getCategoriaPrincipal().getSindicato() != null){
-                porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();
+            if (personal.getSindicato()){
+                double porcSindicato = concepto.getValor().doubleValue();
+                if (personal.getCategoriaPrincipal().getSindicato() != null){
+                    porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();
+                }
+                return totalBruto * porcSindicato / 100;
+            } else {
+                return 0;
             }
-            return totalBruto * porcSindicato / 100;
         } else {
             return 0;
         }

@@ -43,6 +43,36 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
 
+    
+    protected void calcularValorYCrearItemConcepto(ConceptoRecibo cDeductivo, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
+        double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto, tte.getPersonal());
+
+        //Una vez que tengo el valor de esta hora, lo agrego
+        if (totalConcepto > 0){
+            itemSueldoF.crearItemSueldo(cDeductivo, cDeductivo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
+        }
+    }
+        
+    protected void calcularDeducciones(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
+        //Por cada tipo de Concepto Deductivo
+        if (conceptos.get(TipoConceptoRecibo.DEDUCTIVO) != null){
+            for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
+                calcularValorYCrearItemConcepto(cDeductivo, totalBruto, tte, sueldoTTE);
+            }
+        }
+    }
+
+
+
+    protected void calcularNoRemunerativos(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
+        //Por cada tipo de Concepto No Remunerativo
+        if (conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null) {
+            for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
+                calcularValorYCrearItemConcepto(cNoRemunerativo, totalBruto, tte, sueldoTTE);
+            }
+        }
+    }
+
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -66,27 +96,10 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             itemSueldoF.crearItemSueldo(tte.getPlanilla().getTipo().getConceptoRecibo(), new BigDecimal(tte.getHoras()), new BigDecimal(totalConcepto), sueldoTTE);
         }
         
-        //Por cada tipo de Concepto Deductivo
-        if (conceptos.get(TipoConceptoRecibo.DEDUCTIVO) != null){
-            for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
-                double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto, tte.getPersonal());
-
-                //Una vez que tengo el valor de esta hora, lo agrego
-                itemSueldoF.crearItemSueldo(cDeductivo, cDeductivo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
-            }
-        }
+        calcularDeducciones(conceptos, totalBruto, tte, sueldoTTE);
         
-        //Por cada tipo de Concepto No Remunerativo
-        if (conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null) {
-            for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
-                double totalConcepto = conceptoReciboF.calcularValorConcepto(cNoRemunerativo, totalBruto, tte.getPersonal());
-
-                //Una vez que tengo el valor de esta hora, lo agrego
-                itemSueldoF.crearItemSueldo(cNoRemunerativo, cNoRemunerativo.getValor(), new BigDecimal(totalConcepto), sueldoTTE);
-            }
-        }
-    
-                
+        calcularNoRemunerativos(conceptos, totalBruto, tte, sueldoTTE);
+            
         return sueldoTTE;
     }
     
