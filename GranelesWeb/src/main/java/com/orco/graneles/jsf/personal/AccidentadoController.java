@@ -1,8 +1,10 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Accidentado;
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.AccidentadoFacade;
+import com.orco.graneles.vo.NuevoAccidentadoVO;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -22,6 +24,8 @@ import javax.faces.model.SelectItem;
 public class AccidentadoController implements Serializable {
 
     private Accidentado current;
+    private Personal currentPersonal;
+    private NuevoAccidentadoVO currentV0;
     private DataModel items = null;
     @EJB
     private AccidentadoFacade ejbFacade;
@@ -41,7 +45,21 @@ public class AccidentadoController implements Serializable {
         }
         return current;
     }
+    
+    public NuevoAccidentadoVO getSelectedVO(){
+        if (currentV0 == null) {
+            currentV0 = new NuevoAccidentadoVO(null, getSelected());
+        }
+        return currentV0;
+    }
 
+    public void crearDatosAccidentado(){
+        if (currentPersonal != null){
+            currentV0.getAccidentado().setPersonal(currentPersonal);
+            currentV0 = ejbFacade.calcularNuevoAccidentado(currentV0.getAccidentado());
+        }
+    }
+    
     private AccidentadoFacade getFacade() {
         return ejbFacade;
     }
@@ -58,33 +76,63 @@ public class AccidentadoController implements Serializable {
     }
 
     public String prepareCreate() {
-        current = new Accidentado();
+        currentV0 = null;
         selectedItemIndex = -1;
         return "Create";
     }
-
+    
+    public String prepareEdit() {
+        current = (Accidentado) getItems().getRowData();
+        currentV0 = ejbFacade.calcularNuevoAccidentado(current);
+        selectedItemIndex = getItems().getRowIndex();
+        return "Edit";
+    }
+    
+    public boolean validarCreateUpdate(){
+        if (getSelectedVO().getAccidentado().getPersonal() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_personal"));
+            return false;
+        }
+        if (getSelectedVO().getAccidentado().getTarea() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_tarea"));
+            return false;
+        }
+        if (getSelectedVO().getAccidentado().getCategoria() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_categoria"));
+            return false;
+        }
+        if (getSelectedVO().getAccidentado().getBruto() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_bruto"));
+            return false;
+        }
+        //Paso todas la validaciones
+        return true;
+    }
+    
     public String create() {
         try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoCreated"));
-            return "View";
+            if (validarCreateUpdate()){
+                getFacade().create(currentV0.getAccidentado());
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoCreated"));
+                return "View";
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundlePersonal").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
-    public String prepareEdit() {
-        current = (Accidentado) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
-    }
-
     public String update() {
         try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoUpdated"));
-            return "View";
+            if (validarCreateUpdate()){
+                getFacade().edit(currentV0.getAccidentado());
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoUpdated"));
+                return "View";
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundlePersonal").getString("PersistenceErrorOccured"));
             return null;
@@ -120,22 +168,7 @@ public class AccidentadoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundlePersonal").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
+
 
     public DataModel getItems() {
         if (items == null) {
@@ -146,6 +179,7 @@ public class AccidentadoController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        currentPersonal = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -192,4 +226,14 @@ public class AccidentadoController implements Serializable {
             }
         }
     }
+
+    public Personal getCurrentPersonal() {
+        return currentPersonal;
+    }
+
+    public void setCurrentPersonal(Personal currentPersonal) {
+        this.currentPersonal = currentPersonal;
+    }
+    
+    
 }

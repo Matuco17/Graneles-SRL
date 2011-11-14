@@ -81,7 +81,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         super(Sueldo.class);
     }
     
-    public Sueldo calcularSueldoTTE(Periodo periodo, TrabajadoresTurnoEmbarque tte, Map<Integer, List<ConceptoRecibo>> conceptos, Map<Integer, FixedList> mapAdicTarea) {
+    public Sueldo calcularSueldoTTE(Periodo periodo, TrabajadoresTurnoEmbarque tte, Map<Integer, List<ConceptoRecibo>> conceptos) {
         double totalBruto = 0; //Valor total del bruto para que se termine de cerrar esto
         Sueldo sueldoTTE = new Sueldo();
         sueldoTTE.setPeriodo(periodo);
@@ -89,7 +89,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         //Concepto remunerativo unico dependiente de la cantidad de horas
         if (tte.getHoras() > 0){
-            double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, mapAdicTarea);
+            double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, true);
             //Agrego el valor del total del concepto al valor del total del bruto
             totalBruto += totalConcepto;
             //Una vez que tengo el valor de esta hora, lo agrego

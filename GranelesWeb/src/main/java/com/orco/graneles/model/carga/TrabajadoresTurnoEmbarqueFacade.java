@@ -5,6 +5,7 @@
 package com.orco.graneles.model.carga;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Periodo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,5 +36,25 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
                   .setParameter("hasta", periodo.getHasta())
                   .getResultList();
     }    
+    
+    
+    /**
+     * Metodo que devuelve el último trabajo realizado por el personal correpondiente
+     * @param personal
+     * @return 
+     */
+    public TrabajadoresTurnoEmbarque getUltimoTrabajoRealizado(Personal personal){
+        List<TrabajadoresTurnoEmbarque> listaTrabajos = getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPersonalFechaDesc", TrabajadoresTurnoEmbarque.class)
+                                                    .setParameter("personal", personal)
+                                                    .getResultList();
+        
+        if (listaTrabajos != null && listaTrabajos.size() > 0){
+            return listaTrabajos.get(0);
+        } else {
+            return null;
+        }
+        
+    }
+    
     
 }

@@ -36,7 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPeriodo",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t "
                                + " WHERE t.libroSueldo IS NULL "
-                               + " AND t.planilla.fecha BETWEEN :desde AND :hasta")})
+                               + " AND t.planilla.fecha BETWEEN :desde AND :hasta"),
+    @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPersonalFechaDesc",
+                query = "SELECT t FROM TrabajadoresTurnoEmbarque t "
+                            + " WHERE t.personal = :personal "
+                            + " ORDER BY t.planilla.fecha DESC ")})
 public class TrabajadoresTurnoEmbarque implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

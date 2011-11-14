@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <p:panel id="panAccidentado" >
+            <h:panelGrid columns="4">
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personalSeleccionado}" for="personal" />
+                <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.cuil}" />
+                <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.apellido}" />
+                <h:outputText value="" />
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_tarea}" for="tarea" />
+                <h:selectOneMenu id="tarea" value="#{accidentadoController.selected.tarea}"  disabled="#{!cc.attrs.editar}">
+                    <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_categoria}" for="categoria" />
+                <h:selectOneMenu id="categoria" value="#{accidentadoController.selected.categoria}"  disabled="#{!cc.attrs.editar}">
+                    <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_desde}" for="desde" />
+                <p:calendar id="desde" value="#{accidentadoController.selected.desde}" title="#{bundlePersonal.AccidentadoTitle_desde}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_hasta}" for="hasta" />
+                <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
+
+                <c:if test="#{cc.attrs.editar}" >
+                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioConAdicionales}" for="calculadoConAdicionales" />
+                    <p:inputText style="text-align: right;" disabled="true" id="calculadoConAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaConAdicionales}" />
+                    <h:outputText value="" />
+                    <h:outputText value="" />
+
+                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioSinAdicionales}" for="calculadoSinAdicionales" />
+                    <p:inputText style="text-align: right;" disabled="true" id="calculadoSinAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaSinAdicionales}" />
+                    <h:outputText value="" />
+                    <h:outputText value="" />
+                </c:if>
+
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_bruto}" for="bruto" />
+                <p:inputText  style="text-align: right;" id="bruto" value="#{accidentadoController.selected.bruto}" disabled="#{!cc.attrs.editar}" />
+            </h:panelGrid>
+            <h:panelGrid columns="1" >
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_descripcionCortaAccidente}" for="descripcionCortaAccidente" />
+                <p:inputTextarea id="descripcionCortaAccidente" value="#{accidentadoController.selected.descripcionCortaAccidente}" style="width: 400px; height: 120px;" disabled="#{!cc.attrs.editar}" />
+            </h:panelGrid>
+        </p:panel>
+    </co:implementation>
+</html>

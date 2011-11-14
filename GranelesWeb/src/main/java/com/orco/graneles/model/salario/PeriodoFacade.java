@@ -110,12 +110,11 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private Collection<Sueldo> generarSueldosTTE(Periodo periodo){
         List<TrabajadoresTurnoEmbarque> listaTTE = trabTurnoEmbarqueF.getTrabajadoresPeriodo(periodo);
         Map<Integer, List<ConceptoRecibo>> conceptos = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
-        Map<Integer, FixedList> mapAdicTarea = fixedListF.findByListaMap(AdicionalTarea.ID_LISTA);
         Map<Long, Sueldo> mapSueldosXIdPers = new HashMap<Long, Sueldo>();
         
         //Por cada uno de los turnos trabajados realizo las operaciones
         for(TrabajadoresTurnoEmbarque tte : listaTTE){
-            Sueldo sueldoTTE = sueldoF.calcularSueldoTTE(periodo, tte, conceptos, mapAdicTarea);
+            Sueldo sueldoTTE = sueldoF.calcularSueldoTTE(periodo, tte, conceptos);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoTTEAnterior = mapSueldosXIdPers.get(tte.getPersonal().getId());
