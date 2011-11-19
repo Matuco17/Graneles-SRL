@@ -79,9 +79,31 @@ public class EmbarqueController implements Serializable {
     public EmbarqueController() {
     }
 
+    private void recreateModel() {
+        items = null;
+    }
+    
+    private void recreateModelEmbarqueIndividual(){
+        cargasPrevias = null;
+        archivosModel = null;
+        cargas = null;
+        cargasModel = null;
+        cargasPreviasModel = null;
+        trabajadores = null;
+        currentTTE = null;
+        listaTurnos = null;
+        mercaderiaPrevia = null;
+        trabajadoresTurno = null;
+        trabajadoresTurnoModel = null;
+        selectedTTE = null;
+        currentTE = null;
+        currentFile = null;
+        listaArchivos = null;
+    }
+    
     private void tratarDeLevantarCarga(){
-        if (getSelected().getBuque() != null && this.getMercaderiaPrevia() != null){
-            this.cargasPrevias = cargaPreviaFacade.obtenerCargasPrevias(getSelected().getBuque(), this.getMercaderiaPrevia(), getSelected());
+        if (getSelected().getBuque() != null && this.mercaderiaPrevia != null){
+            this.cargasPrevias = cargaPreviaFacade.obtenerCargasPrevias(getSelected().getBuque(), this.mercaderiaPrevia, getSelected());
             cargasPreviasModel = null;
         } else {
             cargasPreviasModel = null;
@@ -123,12 +145,14 @@ public class EmbarqueController implements Serializable {
     }
 
     public String prepareView() {
+        recreateModelEmbarqueIndividual();
         current = (Embarque) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
+        recreateModelEmbarqueIndividual();
         current = ejbFacade.crearNuevoEmbarque();
         selectedItemIndex = -1;
         return "Create";
@@ -147,6 +171,7 @@ public class EmbarqueController implements Serializable {
     }
 
     public String prepareEdit() {
+        recreateModelEmbarqueIndividual();
         current = (Embarque) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
         return "Edit";
@@ -201,9 +226,7 @@ public class EmbarqueController implements Serializable {
     }
 
     
-    private void recreateModel() {
-        items = null;
-    }
+
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);

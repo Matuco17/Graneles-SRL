@@ -52,6 +52,10 @@ public class CargaPreviaFacade extends AbstractFacade<CargaPrevia> {
     public List<CargaPrevia> obtenerCargasPrevias(Buque buque, Mercaderia mercaderia, Embarque embarque){
          List<CargaPrevia> cargas = null;
         if (embarque.getId() != null && embarque.getCargaPreviaCollection() != null){
+            //Actualizo la carga previa con la mercaderia
+            for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
+                cp.setMercaderia(mercaderia);
+            }
             cargas = new ArrayList<CargaPrevia>(embarque.getCargaPreviaCollection());
         } else {
             cargas = cargarNuevaPorBuque(buque, mercaderia, embarque);

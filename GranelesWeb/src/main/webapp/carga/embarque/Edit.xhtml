@@ -21,13 +21,8 @@
 
 
                             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" for="buque"  />
-                            <h:selectOneMenu id="buque" value="#{embarqueController.selected.buque}" title="#{bundleCarga.EmbarqueTitle_buque}" required="true" requiredMessage="#{bundleCarga.EmbarqueRequiredMessage_buque}" 
-                                             valueChangeListener="#{embarqueController.seleccionarBuque}" >
-                                 <p:ajax event="change" update="panCargaPrevia"/>
-
-                                <f:selectItems value="#{buqueController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-
+                            <h:outputText id="buque" value="#{embarqueController.selected.buque.toString()}" title="#{bundleCarga.EmbarqueTitle_buque}"  />
+                        
                             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_muelle}" for="muelle"  />
                             <h:selectOneMenu id="muelle" value="#{embarqueController.selected.muelle}" title="#{bundleCarga.EmbarqueTitle_muelle}" required="true" requiredMessage="#{bundleCarga.EmbarqueRequiredMessage_muelle}">
                                 <f:selectItems value="#{muelleController.itemsAvailableSelectOne}"/>
