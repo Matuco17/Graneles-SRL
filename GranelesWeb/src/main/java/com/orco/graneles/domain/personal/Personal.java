@@ -63,87 +63,123 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Personal.findByUrlFoto", query = "SELECT p FROM Personal p WHERE p.urlFoto = :urlFoto")})
 public class Personal implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Size(max = 128)
     @Column(name = "apellido")
     private String apellido;
+    
     @Size(max = 10)
     @Column(name = "registro")
     private String registro;
+    
     @Size(max = 13)
     @Column(name = "cuil")
     private String cuil;
+    
     @Column(name = "nro_afiliado")
     private Integer nroAfiliado;
+    
     @Size(max = 10)
     @Column(name = "documento")
     private String documento;
+    
     @Size(max = 256)
     @Column(name = "domicilio")
     private String domicilio;
+    
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
+    
     @Column(name = "ingreso")
     @Temporal(TemporalType.DATE)
     private Date ingreso;
+    
+    @Column(name = "baja")
+    @Temporal(TemporalType.DATE)
+    private Date baja;
+    
     @Size(max = 45)
     @Column(name = "localidad")
     private String localidad;
+    
     @Size(max = 45)
     @Column(name = "cuenta_bancaria")
     private String cuentaBancaria;
+    
     @Column(name = "esposa")
     private Boolean esposa;
+    
     @Column(name = "hijos")
     private Integer hijos;
+    
     @Column(name = "prenatal")
     private Boolean prenatal;
+    
     @Column(name = "escolaridad")
     private Integer escolaridad;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "descuento_judicial")
     private BigDecimal descuentoJudicial;
+    
     @Column(name = "version")
     private Integer version;
+    
     @Column(name = "version_activa")
     private Boolean versionActiva;
+    
     @Size(max = 256)
     @Column(name = "url_foto")
     private String urlFoto;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<Sueldo> sueldoCollection;
+    
     @JoinColumn(name = "estado", referencedColumnName = "id")
     @ManyToOne
     private FixedList estado;
+    
     @JoinColumn(name = "tipo_recibo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private FixedList tipoRecibo;
+    
     @JoinColumn(name = "tipo_documento", referencedColumnName = "id")
     @ManyToOne
     private FixedList tipoDocumento;
+    
     @JoinColumn(name = "estado_civil", referencedColumnName = "id")
     @ManyToOne
     private FixedList estadoCivil;
+    
     @JoinColumn(name = "obra_social", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ObraSocial obraSocial;
+    
     @Column(name = "sindicato")
     private Boolean sindicato;
+    
     @Column(name = "afjp")
     private Boolean afjp;    
+    
     @JoinColumn(name = "categoria_principal", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Categoria categoriaPrincipal;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<Adelanto> adelantoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<Accidentado> accidentadoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<CategoriaSecundaria> categoriaSecundariaCollection;
 
@@ -226,6 +262,14 @@ public class Personal implements Serializable {
         this.ingreso = ingreso;
     }
 
+    public Date getBaja() {
+        return baja;
+    }
+
+    public void setBaja(Date baja) {
+        this.baja = baja;
+    }    
+    
     public String getLocalidad() {
         return localidad;
     }

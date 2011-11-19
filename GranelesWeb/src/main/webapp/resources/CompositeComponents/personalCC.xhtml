@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="6">
+                <h:outputLabel value="#{bundlePersonal.PersonalTitle_registro}" for="registro" />
+            <p:inputText id="registro" value="#{personalController.selected.registro}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_apellido}" for="apellido" />
+            <p:inputText id="apellido" value="#{personalController.selected.apellido}"  />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_categoriaPrincipal}" for="categoriaPrincipal" />
+            <h:selectOneMenu id="categoriaPrincipal" value="#{personalController.selected.categoriaPrincipal}" required="true" requiredMessage="#{bundlePersonal.PersonalRequiredMessage_categoriaPrincipal}">
+                <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_nroAfiliado}" for="nroAfiliado" />
+            <p:inputText id="nroAfiliado" value="#{personalController.selected.nroAfiliado}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_documento}" for="documento" />
+            <p:inputText id="documento" value="#{personalController.selected.documento}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_estadoCivil}" for="estadoCivil" />
+            <h:selectOneMenu id="estadoCivil" value="#{personalController.selected.estadoCivil}">
+                <f:selectItems value="#{fixedListController.estadoCivilSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuil}" for="cuil" />
+            <p:inputText id="cuil" value="#{personalController.selected.cuil}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_sindicato}" for="sindicato" />
+            <p:selectBooleanCheckbox id="sindicato" value="#{personalController.selected.sindicato}" required="true" requiredMessage="#{bundlePersonal.PersonalRequiredMessage_sindicato}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_domicilio}" for="domicilio" />
+            <p:inputText id="domicilio" value="#{personalController.selected.domicilio}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_fechaNacimiento}" for="fechaNacimiento" />
+            <p:calendar id="fechaNacimiento" value="#{personalController.selected.fechaNacimiento}" title="#{bundlePersonal.PersonalTitle_fechaNacimiento}" pattern="dd/MM/yyyy"/>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_estado}" for="estado" />
+            <h:selectOneMenu id="estado" value="#{personalController.selected.estado}"  >
+                <f:selectItems value="#{fixedListController.estadoPersonalSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_obraSocial}" for="obraSocial" />
+            <h:selectOneMenu id="obraSocial" value="#{personalController.selected.obraSocial}" required="true" requiredMessage="#{bundlePersonal.PersonalRequiredMessage_obraSocial}">
+                <f:selectItems value="#{obraSocialController.itemsAvailableSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_ingreso}" for="ingreso" />
+            <p:calendar id="ingreso" value="#{personalController.selected.ingreso}" title="#{bundlePersonal.PersonalTitle_ingreso}" pattern="dd/MM/yyyy"/>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_baja}" for="baja" />
+            <p:calendar id="baja" value="#{personalController.selected.baja}" title="#{bundlePersonal.PersonalTitle_baja}" pattern="dd/MM/yyyy"/>
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_afjp}" for="afjp" />
+            <p:selectBooleanCheckbox id="afjp" value="#{personalController.selected.afjp}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_localidad}" for="localidad" />
+            <p:inputText id="localidad" value="#{personalController.selected.localidad}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuentaBancaria}" for="cuentaBancaria" />
+            <p:inputText id="cuentaBancaria" value="#{personalController.selected.cuentaBancaria}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_esposa}" for="esposa" />
+            <p:selectBooleanCheckbox id="esposa" value="#{personalController.selected.esposa}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_hijos}" for="hijos" />
+            <p:inputText id="hijos" value="#{personalController.selected.hijos}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_prenatal}" for="prenatal" />
+            <p:selectBooleanCheckbox id="prenatal" value="#{personalController.selected.prenatal}" />
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_escolaridad}" for="escolaridad" />
+            <p:inputText id="escolaridad" value="#{personalController.selected.escolaridad}" />
+
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_tipoRecibo}" for="tipoRecibo" />
+            <h:selectOneMenu id="tipoRecibo" value="#{personalController.selected.tipoRecibo}" required="true" requiredMessage="#{bundlePersonal.PersonalRequiredMessage_tipoRecibo}">
+                <f:selectItems value="#{fixedListController.tipoReciboSelectOne}"/>
+            </h:selectOneMenu>
+
+
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_descuentoJudicial}" for="descuentoJudicial" />
+            <p:inputText id="descuentoJudicial" value="#{personalController.selected.descuentoJudicial}" />
+
+        </h:panelGrid>
+                
+    </cc:implementation>
+</html>

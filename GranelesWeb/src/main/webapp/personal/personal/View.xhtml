@@ -56,6 +56,11 @@
                          <f:convertDateTime pattern="dd/MM/yyyy"/> 
                     </h:outputText>
                     
+                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_baja}" for="baja" />
+                    <h:outputText id="baja" value="#{personalController.selected.baja}" title="#{bundlePersonal.PersonalTitle_baja}">
+                         <f:convertDateTime pattern="dd/MM/yyyy"/> 
+                    </h:outputText>
+                    
                     <h:outputLabel value="#{bundlePersonal.PersonalTitle_afjp}" for="afjp" />
                     <p:selectBooleanCheckbox id="afjp" value="#{personalController.selected.afjp}" disabled="true" />
                                      
