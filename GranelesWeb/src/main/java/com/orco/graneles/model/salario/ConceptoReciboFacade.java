@@ -5,21 +5,19 @@
 package com.orco.graneles.model.salario;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
-import com.orco.graneles.domain.miscelaneos.AdicionalTarea;
-import com.orco.graneles.domain.miscelaneos.FixedList;
-import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
-import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.ConceptoRecibo;
+import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.SalarioBasico;
+import com.orco.graneles.domain.salario.Sueldo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -31,6 +29,9 @@ import javax.ejb.EJB;
 public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    
+    public static final double PORCENTAJE_SAC_MENSUAL = 12.5;
+    public static final double PORCENTAJE_VACACIONES_MENSUAL = 6;
 
     @EJB
     private SalarioBasicoFacade salarioBasicoF;
@@ -147,5 +148,39 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         }
     }
     
+    
+    /**
+     * Metodo que calcula el SAC del trabajador entre esas fechas
+     * OBS: Deben estar todos los sueldos persistidos sino puede calcular incorrectamente
+     * @param listaSueldos lista de los sueldos en el periodo calculado
+     * @return 
+     */
+    public double calcularValorSAC(Personal personal, Date desde, Date hasta){
+        //Dependiendo del tipo de trabajador calculo
+        List<Sueldo> listaSueldos = null;
+                
+        switch (personal.getTipoRecibo().getId()){
+            case TipoRecibo.HORAS :
+                //Sumo los conceptos remunerativos y le calculo el 12.5%
+                double totalConceptosRemunerativos = 0;
+                for (Sueldo s : listaSueldos)
+                    for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                        if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)
+                            && ! is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.SAC)
+                            && ! is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.VACACIONES)){
+                            //Sumo el concepto
+                            totalConceptosRemunerativos += is.getValorCalculado().doubleValue();
+                        }           
+                    }
+                
+                return totalConceptosRemunerativos * PORCENTAJE_SAC_MENSUAL / 100;
+                
+                
+            case TipoRecibo.MENSUAL:
+                //Busco el Mayor de los sueldos y divido x la cantidad de días
+                
+            default : return 0;
+        }
+    }
     
 }

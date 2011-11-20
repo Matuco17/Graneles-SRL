@@ -12,19 +12,29 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputText value="#{bundleSalario.AdelantoTitle_id}" style="font-weight: bold;"/>
-                    <h:outputText value="#{adelantoController.selected.id}" title="#{bundleSalario.AdelantoTitle_id}"/>
-                    <h:outputText value="#{bundleSalario.AdelantoTitle_fecha}" style="font-weight: bold;"/>
-                    <h:outputText value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:outputText>
-                    <h:outputText value="#{bundleSalario.AdelantoTitle_concepto}" style="font-weight: bold;"/>
-                    <h:outputText value="#{adelantoController.selected.concepto}" title="#{bundleSalario.AdelantoTitle_concepto}"/>
-                    <h:outputText value="#{bundleSalario.AdelantoTitle_personal}" style="font-weight: bold;"/>
-                    <h:outputText value="#{adelantoController.selected.personal}" title="#{bundleSalario.AdelantoTitle_personal}"/>
-                </h:panelGrid>
+                 <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
+                    <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
+                    <h:outputText value="" />
+                    <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
 
+
+                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
+                    <h:outputText id="fecha" value="#{adelantoController.selected.fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+
+                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto"/>
+                    <h:outputText id="concepto" value="#{adelantoController.selected.concepto.toString()}" />
+
+                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
+                    <h:outputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />
+
+                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_recibo}" for="recibo"/>
+                    <h:link id="recibo" value="#{bundleSalario.AdelantoTitle_reciboLink}" 
+                             onclick="window.open('','Download');window.close();" />
+                    
+                </h:panelGrid>
 
                 <h:panelGrid columns="4">
                     <h:commandButton action="#{adelantoController.destroyAndView}" 
@@ -33,12 +43,13 @@
                                      title="#{bundleSalario.AdelantoDestroyLink}"
                                      onclick="return confirm('¿Esta seguro que desea eliminar este Adelanto?');" 
                                      />
-
+                    <!--
                     <h:commandButton action="Edit" 
                                      image="/faces/resources/images/edit.png" 
                                      value="#{bundleSalario.AdelantoEditLink}"
                                      title="#{bundleSalario.AdelantoEditLink}"
                                      />
+                    -->
                     <h:commandButton action="#{adelantoController.prepareCreate}" 
                                      image="/faces/resources/images/new.png" 
                                      value="#{bundleSalario.AdelantoCreateLink}"

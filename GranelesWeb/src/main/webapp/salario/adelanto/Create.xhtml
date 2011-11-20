@@ -12,37 +12,84 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_id}" for="id" style="font-weight: bold;" />
-                    <p:inputText id="id" value="#{adelantoController.selected.id}" />
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha" style="font-weight: bold;" />
-                    <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </p:calendar>
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto" style="font-weight: bold;" />
-                    <p:selectOneMenu id="concepto" value="#{adelantoController.selected.concepto}"  style="width:100%;">
-                        <f:selectItems value="#{fixedListController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal" style="font-weight: bold;" />
-                    <p:selectOneMenu id="personal" value="#{adelantoController.selected.personal}" required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_personal}" style="width:100%;">
-                        <f:selectItems value="#{personalController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <h:panelGrid columns="2">
-                    <h:commandButton action="#{adelantoController.create}"
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundleSalario.AdelantoSaveLink}" 
-                                     title="#{bundleSalario.AdelantoSaveLink}"
-                                     />
+                <p:panel id="panSeleccion" >
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal" />
+                        <h:selectOneMenu id="currentPersonal" value="#{adelantoController.currentPersonal}"  >
+                           <f:selectItem itemLabel="---" />
+                           <f:selectItems value="#{personalController.personalOrdenadoXCuil}" var="trabajador" itemLabel="#{trabajador.cuil}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="" />
 
-                    <h:commandButton action="#{adelantoController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundleSalario.AdelantoShowAllLink}"
-                                     title="#{bundleSalario.AdelantoShowAllLink}"
-                                     immediate="true" 
-                                     />
+                        <h:commandButton id="btnSeleccionarPersonal"
+                                         action="#{adelantoController.seleccionarPersonal}" 
+                                     value="#{bundlePersonal.AccidentadoTitle_seleccionarPersonal}" 
+                                     label="#{bundlePersonal.AccidentadoTitle_seleccionarPersonal}" />
+                   
+           
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+            <h:form>
+                <p:panel id="panAdelanto" style="width: 450px; float: left;" visible="#{adelantoController.currentPersonal != null}" >
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
+                        <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
+                        <h:outputText value="" />
+                        <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
 
-                </h:panelGrid>
+
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
+                        <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}" pattern="dd/MM/yyyy" />
+                  
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto"/>
+                        <h:selectOneMenu value="#{adelantoController.selected.concepto}" id="concepto"
+                                         valueChangeListener="#{adelantoController.seleccionarConcepto}">
+                            <p:ajax event="change" update="valorMaximo"/>
+                            <f:selectItems value="#{adelantoController.opcionesAdelanto}" var="conceptoAdelanto" itemLabel="#{conceptoAdelanto.toString()}"  />
+                        </h:selectOneMenu>
+                 
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorMaximo}" for="valorMaximo" />
+                        <p:inputText id="valorMaximo" readonly="true" value="#{adelantoController.valorMaximoCalculado}" style="text-align: right;" />
+                  
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
+                        <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />
+              
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel id="panAdelantosPrevios" header="#{bundleSalario.AdelantoTitle_adelantosPrevios}" style="width: 400px; float: left;" visible="#{adelantoController.currentPersonal != null}" >
+                    <p:dataTable id="dtbAdelantos" value="#{adelantoController.adelantosPersonalModel}" var="adelanto" rows="5" >
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_fecha}" style="text-align: center;" >
+                            <h:outputText value="#{adelanto.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>    
+                        </p:column>
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_concepto}" style="text-align: left;" >
+                            <h:outputText value="#{adelanto.concepto.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_valor}" style="text-align: right;" >
+                            <h:outputText value="#{adelanto.valor}"/>
+                        </p:column>                        
+                    </p:dataTable>
+                </p:panel>
+                
+                <p:panel id="panAcciones" style="width: 100%; float: left;" visible="#{adelantoController.currentPersonal != null}" >
+                    <h:panelGrid columns="2">
+                        <h:commandButton action="#{adelantoController.create}"
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundleSalario.AdelantoSaveLink}" 
+                                         title="#{bundleSalario.AdelantoSaveLink}"
+                                         />
+
+                        <h:commandButton action="#{adelantoController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleSalario.AdelantoShowAllLink}"
+                                         title="#{bundleSalario.AdelantoShowAllLink}"
+                                         immediate="true" 
+                                         />
+
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

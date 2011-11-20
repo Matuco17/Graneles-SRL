@@ -7,6 +7,7 @@ package com.orco.graneles.domain.salario;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -41,15 +42,26 @@ public class Adelanto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
+    @NotNull
     private Date fecha;
+    
+    @Column(name = "valor")
+    @NotNull
+    private BigDecimal valor;
+    
     @JoinColumn(name = "concepto", referencedColumnName = "id")
     @ManyToOne
     private FixedList concepto;
+    
     @JoinColumn(name = "personal", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @NotNull
     private Personal personal;
+    
+    
 
     public Adelanto() {
     }
@@ -89,6 +101,16 @@ public class Adelanto implements Serializable {
     public void setPersonal(Personal personal) {
         this.personal = personal;
     }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+    
+    
 
     @Override
     public int hashCode() {

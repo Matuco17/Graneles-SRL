@@ -9,6 +9,7 @@ import com.orco.graneles.domain.miscelaneos.AdicionalTarea;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
 import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,8 +63,6 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         }
     }
 
-
-
     protected void calcularNoRemunerativos(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
         //Por cada tipo de Concepto No Remunerativo
         if (conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null) {
@@ -103,6 +102,10 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         return sueldoTTE;
     }
     
+    public List<Sueldo> obtenerSueldos(Personal personal, Date desde, Date hasta){
+        //TODO: HACER
+        return null;
+    }
     
     /**
      * Método que suma de manera correcta los items sueldo de cada uno de los sueldos
@@ -142,14 +145,6 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         return s1;
     }
-    
-        /**
-     * Devuelve un map de registros teniendo como clave el nro de embarque (nro de planilla originalmente) del excel
-     * @param archivoXLS archivo excel
-     * @param desde fecha limite
-     * @param hasta fecha limite
-     * @return map con los registros que cumplen con las fechas siempre que tengan limites, sino se devuelven todos
-     */
     
     /**
      * Agrega al map de Registros la suma de los embarques de cada uno de los trabajadores

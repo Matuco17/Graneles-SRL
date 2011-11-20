@@ -1,11 +1,18 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Adelanto;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.AdelantoFacade;
 
 import java.io.Serializable;
-import java.util.ResourceBundle;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -23,15 +30,55 @@ public class AdelantoController implements Serializable {
 
     private Adelanto current;
     private DataModel items = null;
+    private Personal currentPersonal;
     @EJB
     private AdelantoFacade ejbFacade;
+    @EJB
+    private FixedListFacade fxlFacade;
+    @EJB
+    private PersonalFacade personalF;
+    
     private int selectedItemIndex;
+    private ListDataModel adelantosPersonalModel;
+    private List<FixedList> opcionesAdelanto;
+    private BigDecimal valorMaximoCalculado;
 
     public AdelantoController() {
     }
 
     public void init() {
         recreateModel();
+    }
+
+    public void recreateModelCreate() {
+        currentPersonal = null;
+        adelantosPersonalModel = null;
+    }
+    
+    public void seleccionarPersonal(){
+        if (currentPersonal != null){
+            //No realizo la asignacion directa ya que puede ser que tengan datos desactualizados la lista de personal por el cache
+            getSelected().setPersonal(personalF.find(currentPersonal.getId()));
+        }
+    }
+    
+    public void seleccionarConcepto(){
+        //TODO: CODIFICAR CORRECTAMENTE
+        if (getSelected().getConcepto() != null){
+            switch (getSelected().getConcepto().getId()){
+                case TipoValorConcepto.SAC :
+                    valorMaximoCalculado = new BigDecimal(10);
+                    break;
+                case TipoValorConcepto.VACACIONES :
+                    valorMaximoCalculado = new BigDecimal(9);
+                    break;
+                default:
+                    valorMaximoCalculado = null;
+                    break;
+            }
+        } else {
+            valorMaximoCalculado = null;
+        }
     }
 
     public Adelanto getSelected() {
@@ -58,6 +105,7 @@ public class AdelantoController implements Serializable {
     }
 
     public String prepareCreate() {
+        recreateModelCreate();
         current = new Adelanto();
         selectedItemIndex = -1;
         return "Create";
@@ -66,6 +114,7 @@ public class AdelantoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            recreateModelCreate();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("AdelantoCreated"));
             return "View";
         } catch (Exception e) {
@@ -120,22 +169,6 @@ public class AdelantoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
 
     public DataModel getItems() {
         if (items == null) {
@@ -146,6 +179,7 @@ public class AdelantoController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        recreateModelCreate();
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -191,5 +225,58 @@ public class AdelantoController implements Serializable {
                 return null;
             }
         }
+    }
+
+    public Personal getCurrentPersonal() {
+        return currentPersonal;
+    }
+
+    public void setCurrentPersonal(Personal currentPersonal) {
+        this.currentPersonal = currentPersonal;
+    }
+
+    public ListDataModel getAdelantosPersonalModel() {
+        if (adelantosPersonalModel == null){
+            if (currentPersonal != null){
+                List<Adelanto> adelantos = new ArrayList<Adelanto>(currentPersonal.getAdelantoCollection());
+                Collections.sort(adelantos, new ComparadorAdelanto());
+                adelantosPersonalModel = new ListDataModel(adelantos);
+            }
+        }
+        return adelantosPersonalModel;
+    }
+
+    public List<FixedList> getOpcionesAdelanto() {
+        if (opcionesAdelanto == null){
+            opcionesAdelanto = new ArrayList<FixedList>();
+            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.SIN_CONCEPTO));
+            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.SAC));
+            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.VACACIONES));
+        }
+        return opcionesAdelanto;
+    }
+
+    public BigDecimal getValorMaximoCalculado() {
+        return valorMaximoCalculado;
+    }
+
+    public void setValorMaximoCalculado(BigDecimal valorMaximoCalculado) {
+        this.valorMaximoCalculado = valorMaximoCalculado;
+    }
+
+    
+    
+    
+    
+    /**
+     * Clse comparadora del adelanto por fecha desdcendiente
+     */
+    private class ComparadorAdelanto implements Comparator<Adelanto>{
+
+        @Override
+        public int compare(Adelanto o1, Adelanto o2) {
+            return o2.getFecha().compareTo(o1.getFecha());
+        }
+        
     }
 }

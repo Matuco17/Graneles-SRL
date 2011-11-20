@@ -23,4 +23,5 @@ public class TipoValorConcepto {
     public static final int HORAS_EXTRAS = 108;
     public static final int DIAS_TRABAJO = 109;
     public static final int SINDICATO = 110;
+    public static final int SIN_CONCEPTO = 111;
 }
