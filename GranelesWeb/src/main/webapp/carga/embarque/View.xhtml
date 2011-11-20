@@ -73,7 +73,9 @@
                     <p:fieldset id="panTurnos" legend="Turnos" toggleable="true" collapsed="false" >
                         <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
                             <p:column headerText="Fecha">
-                                <h:outputText value="#{turno.fecha}"/>
+                                <h:outputText value="#{turno.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>  
                             </p:column>
                             <p:column headerText="Turno">
                                 <h:outputText value="#{turno.turno.toString()}" />
