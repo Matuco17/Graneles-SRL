@@ -131,8 +131,7 @@ public class ItemsSueldo implements Serializable {
     }
     
     public Date getFechaEgreso(){
-        //TODO: AGREGAR LA COLUMNA FECHA EGRESO
-        return null;
+        return this.getSueldo().getPersonal().getBaja();
     }
     
     public String getEstadoCivil(){

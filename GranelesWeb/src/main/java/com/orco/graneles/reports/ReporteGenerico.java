@@ -59,7 +59,7 @@ public abstract class ReporteGenerico {
 
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(pathTemplate); 
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, ds);
                     
             
