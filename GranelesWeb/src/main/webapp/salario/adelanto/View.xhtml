@@ -18,14 +18,10 @@
                     <h:outputText value="" />
                     <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
 
-
                     <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
                     <h:outputText id="fecha" value="#{adelantoController.selected.fecha}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
-
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto"/>
-                    <h:outputText id="concepto" value="#{adelantoController.selected.concepto.toString()}" />
 
                     <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
                     <h:outputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />

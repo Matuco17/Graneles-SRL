@@ -106,6 +106,28 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         return per;
     }
+    
+    /**
+     * Metodo que obtiene el primer día del periodo semestral en que se encunetra el sistema
+     * @return 
+     */
+    public Date obtenerFechaInicioPeriodoSemestralActual(){
+        Calendar calHoy = new GregorianCalendar();
+        Calendar calInicio = new GregorianCalendar();
+        
+        calInicio.set(Calendar.DAY_OF_MONTH, 1);
+        calInicio.set(Calendar.HOUR_OF_DAY, 0);
+        calInicio.set(Calendar.MINUTE, 0);
+        calInicio.set(Calendar.SECOND, 0);
+        calInicio.set(Calendar.MILLISECOND, 0);
+        if (calHoy.get(Calendar.MONTH) <= Calendar.JUNE){
+            calInicio.set(Calendar.MONTH, Calendar.JANUARY);
+        } else {
+            calInicio.set(Calendar.MONTH, Calendar.JULY);
+        }
+        
+        return calInicio.getTime();
+    }
    
     private Collection<Sueldo> generarSueldosTTE(Periodo periodo){
         List<TrabajadoresTurnoEmbarque> listaTTE = trabTurnoEmbarqueF.getTrabajadoresPeriodo(periodo);

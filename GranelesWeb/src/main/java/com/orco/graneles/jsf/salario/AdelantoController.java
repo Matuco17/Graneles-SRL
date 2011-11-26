@@ -42,6 +42,8 @@ public class AdelantoController implements Serializable {
     private ListDataModel adelantosPersonalModel;
     private List<FixedList> opcionesAdelanto;
     private BigDecimal valorMaximoCalculado;
+    private BigDecimal valorTotalAdelantos;
+    
 
     public AdelantoController() {
     }
@@ -59,28 +61,22 @@ public class AdelantoController implements Serializable {
         if (currentPersonal != null){
             //No realizo la asignacion directa ya que puede ser que tengan datos desactualizados la lista de personal por el cache
             getSelected().setPersonal(personalF.find(currentPersonal.getId()));
-        }
-    }
-    
-    public void seleccionarConcepto(){
-        //TODO: CODIFICAR CORRECTAMENTE
-        if (getSelected().getConcepto() != null){
-            switch (getSelected().getConcepto().getId()){
-                case TipoValorConcepto.SAC :
-                    valorMaximoCalculado = new BigDecimal(10);
-                    break;
-                case TipoValorConcepto.VACACIONES :
-                    valorMaximoCalculado = new BigDecimal(9);
-                    break;
-                default:
-                    valorMaximoCalculado = null;
-                    break;
-            }
-        } else {
-            valorMaximoCalculado = null;
-        }
-    }
+            valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(currentPersonal);
+            
+            List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(currentPersonal);
+            Collections.sort(adelantos, new ComparadorAdelanto());
+            adelantosPersonalModel = new ListDataModel(adelantos);
 
+            valorTotalAdelantos = BigDecimal.ZERO;
+            for (Adelanto a : adelantos){
+                valorTotalAdelantos = valorTotalAdelantos.add(a.getValor());
+            }
+            
+            getSelected().setValor(valorMaximoCalculado.subtract(valorTotalAdelantos));
+            getSelected().setFecha(new Date());
+        }
+    }
+   
     public Adelanto getSelected() {
         if (current == null) {
             current = new Adelanto();
@@ -236,24 +232,7 @@ public class AdelantoController implements Serializable {
     }
 
     public ListDataModel getAdelantosPersonalModel() {
-        if (adelantosPersonalModel == null){
-            if (currentPersonal != null){
-                List<Adelanto> adelantos = new ArrayList<Adelanto>(currentPersonal.getAdelantoCollection());
-                Collections.sort(adelantos, new ComparadorAdelanto());
-                adelantosPersonalModel = new ListDataModel(adelantos);
-            }
-        }
         return adelantosPersonalModel;
-    }
-
-    public List<FixedList> getOpcionesAdelanto() {
-        if (opcionesAdelanto == null){
-            opcionesAdelanto = new ArrayList<FixedList>();
-            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.SIN_CONCEPTO));
-            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.SAC));
-            opcionesAdelanto.add(fxlFacade.find(TipoValorConcepto.VACACIONES));
-        }
-        return opcionesAdelanto;
     }
 
     public BigDecimal getValorMaximoCalculado() {
@@ -262,6 +241,14 @@ public class AdelantoController implements Serializable {
 
     public void setValorMaximoCalculado(BigDecimal valorMaximoCalculado) {
         this.valorMaximoCalculado = valorMaximoCalculado;
+    }
+
+    public BigDecimal getValorTotalAdelantos() {
+        return valorTotalAdelantos;
+    }
+
+    public void setValorTotalAdelantos(BigDecimal valorTotalAdelantos) {
+        this.valorTotalAdelantos = valorTotalAdelantos;
     }
 
     
@@ -275,7 +262,7 @@ public class AdelantoController implements Serializable {
 
         @Override
         public int compare(Adelanto o1, Adelanto o2) {
-            return o2.getFecha().compareTo(o1.getFecha());
+            return o1.getFecha().compareTo(o2.getFecha());
         }
         
     }

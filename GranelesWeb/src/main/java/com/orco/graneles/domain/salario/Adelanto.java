@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Adelanto.findAll", query = "SELECT a FROM Adelanto a"),
     @NamedQuery(name = "Adelanto.findById", query = "SELECT a FROM Adelanto a WHERE a.id = :id"),
-    @NamedQuery(name = "Adelanto.findByFecha", query = "SELECT a FROM Adelanto a WHERE a.fecha = :fecha")})
+    @NamedQuery(name = "Adelanto.findByFecha", query = "SELECT a FROM Adelanto a WHERE a.fecha = :fecha"),
+    @NamedQuery(name = "Adelanto.findByFechaPersonalDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.personal = :personal AND a.fecha BETWEEN :desde AND :hasta")})
 public class Adelanto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,10 +52,6 @@ public class Adelanto implements Serializable {
     @Column(name = "valor")
     @NotNull
     private BigDecimal valor;
-    
-    @JoinColumn(name = "concepto", referencedColumnName = "id")
-    @ManyToOne
-    private FixedList concepto;
     
     @JoinColumn(name = "personal", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -84,14 +81,6 @@ public class Adelanto implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }
-
-    public FixedList getConcepto() {
-        return concepto;
-    }
-
-    public void setConcepto(FixedList concepto) {
-        this.concepto = concepto;
     }
 
     public Personal getPersonal() {

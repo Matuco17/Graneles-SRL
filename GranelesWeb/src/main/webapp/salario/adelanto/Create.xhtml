@@ -31,7 +31,7 @@
                 </p:panel>
             </h:form>
             <h:form>
-                <p:panel id="panAdelanto" style="width: 450px; float: left;" visible="#{adelantoController.currentPersonal != null}" >
+                <p:panel id="panAdelanto" style="width: 350px; height: 300px;  float: left;" visible="#{adelantoController.currentPersonal != null}" >
                     <h:panelGrid columns="2">
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
                         <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
@@ -40,32 +40,30 @@
 
 
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
-                        <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}" pattern="dd/MM/yyyy" />
+                        <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}" pattern="dd/MM/yyyy"
+                                    required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_fecha}"/>
                   
-                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto"/>
-                        <h:selectOneMenu value="#{adelantoController.selected.concepto}" id="concepto"
-                                         valueChangeListener="#{adelantoController.seleccionarConcepto}">
-                            <p:ajax event="change" update="valorMaximo"/>
-                            <f:selectItems value="#{adelantoController.opcionesAdelanto}" var="conceptoAdelanto" itemLabel="#{conceptoAdelanto.toString()}"  />
-                        </h:selectOneMenu>
-                 
+                   
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorMaximo}" for="valorMaximo" />
                         <p:inputText id="valorMaximo" readonly="true" value="#{adelantoController.valorMaximoCalculado}" style="text-align: right;" />
                   
-                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
-                        <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorTotalAdelantos}" for="valorTotal" />
+                        <p:inputText id="valorTotal" readonly="true" value="#{adelantoController.valorTotalAdelantos}" style="text-align: right;" />
+                  
+                        <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorADar}" for="valor" />
+                        <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;"
+                                     required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_valor}"/>
               
                     </h:panelGrid>
                 </p:panel>
-                <p:panel id="panAdelantosPrevios" header="#{bundleSalario.AdelantoTitle_adelantosPrevios}" style="width: 400px; float: left;" visible="#{adelantoController.currentPersonal != null}" >
-                    <p:dataTable id="dtbAdelantos" value="#{adelantoController.adelantosPersonalModel}" var="adelanto" rows="5" >
+                <p:panel id="panAdelantosPrevios" header="#{bundleSalario.AdelantoTitle_adelantosPrevios}" style="width: 280px; height: 300px; float: left;" visible="#{adelantoController.currentPersonal != null}" >
+                    <p:dataTable id="dtbAdelantos" value="#{adelantoController.adelantosPersonalModel}" var="adelanto" 
+                                 paginator="true" rows="8" paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} "
+                        >
                         <p:column headerText="#{bundleSalario.AdelantoTitle_fecha}" style="text-align: center;" >
                             <h:outputText value="#{adelanto.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>    
-                        </p:column>
-                        <p:column headerText="#{bundleSalario.AdelantoTitle_concepto}" style="text-align: left;" >
-                            <h:outputText value="#{adelanto.concepto.toString()}"/>
                         </p:column>
                         <p:column headerText="#{bundleSalario.AdelantoTitle_valor}" style="text-align: right;" >
                             <h:outputText value="#{adelanto.valor}"/>

@@ -24,24 +24,16 @@
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">
-                        
-                        <p:column headerText="#{bundleSalario.AdelantoTitle_personal}" 
-                                  >
-                            
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_personal}" filterBy="#{item.personal.cuil}" filterMatchMode="contains"   >
                             <h:outputText value="#{item.personal.cuil}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSalario.AdelantoTitle_personal}" 
-                                  >
-                            
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_personal}" filterBy="#{item.personal.apellido}"  filterMatchMode="contains"  >
                             <h:outputText value="#{item.personal.apellido}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSalario.AdelantoTitle_fecha}"  >
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_fecha}"   >
                             <h:outputText value="#{item.fecha}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
-                        </p:column>
-                        <p:column headerText="#{bundleSalario.AdelantoTitle_concepto}">
-                            <h:outputText value="#{item.concepto.toString()}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -57,12 +49,6 @@
                         </p:column>
                     </p:dataTable>
                 </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{adelantoController.prepareCreate}" 
-                    value="#{bundleSalario.AdelantoCreateLink}"
-                    title="#{bundleSalario.AdelantoCreateLink}"
-                    />
             </h:form>
         </ui:define>
     </ui:composition>
