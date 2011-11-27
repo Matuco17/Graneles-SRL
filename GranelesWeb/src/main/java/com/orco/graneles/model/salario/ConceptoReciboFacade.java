@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import java.util.*;
 import java.util.List;
@@ -30,14 +31,71 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     
-    public static final double PORCENTAJE_SAC_MENSUAL = 12.5;
-    public static final double PORCENTAJE_VACACIONES_MENSUAL = 6;
 
     @EJB
     private SalarioBasicoFacade salarioBasicoF;
     @EJB
     private FixedListFacade fixedListF;
+    @EJB
+    private TrabajadoresTurnoEmbarqueFacade tteF;
+    @EJB
+    private PeriodoFacade periodoF;
     
+    
+    //Singletos que no se tienen que cargar de nuevo, solamente con una vez me alcanzan
+    private Map<Integer, FixedList> mapAdicTarea = null;
+
+    /**
+     * Metodo que levanta el acumulado por las horas del trabajador en el periodo seleccionado
+     * @return 
+     */
+    protected double acumuladoBrutoTrabajadores(Personal personal, Date desde, Date hasta) {
+        double totalAcumulado = 0;
+        SalarioBasico salarioActivo = null; //Variable del salario activo que me sirve de cache para no tener que hacer la busqueda por cada jornal trabajado
+        List<TrabajadoresTurnoEmbarque> ttes = tteF.getTTEPeriodo(personal, desde, hasta);
+        for (TrabajadoresTurnoEmbarque tte : ttes){
+            //Verifico que tengo un salario basico para ese periodo
+            if (salarioActivo == null 
+                || (salarioActivo.getHasta() != null && salarioActivo.getHasta().before(tte.getPlanilla().getFecha()))){
+                salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+            }
+            
+            totalAcumulado += calcularDiaTTE(salarioActivo, tte, true);
+        }
+        return totalAcumulado;
+    }
+
+    protected double calcularDiaTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
+        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+        double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
+        double totalConcepto = basicoBruto; //resultado de la suma del concepto
+        //Realizo el agregado de los modificadores de tarea
+        if (incluirAdicionales){
+            if (tte.getTarea().getInsalubre()){
+                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
+            }
+            if (tte.getTarea().getPeligrosa()){
+                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
+            }
+            if (tte.getTarea().getPeligrosa2()){
+                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
+            }
+            if (tte.getTarea().getProductiva()){
+                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
+            }
+        }
+        //Ahora aplico el valor del modificador del tipo de jornal
+        totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+        totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
+        return totalConcepto;
+    }
+    
+    protected Map<Integer, FixedList> getMapAdicTarea(){
+        if (mapAdicTarea == null){
+            mapAdicTarea = fixedListF.findByListaMap(AdicionalTarea.ID_LISTA);
+        }
+        return mapAdicTarea;
+    }
     
     protected EntityManager getEntityManager() {
         return em;
@@ -85,39 +143,30 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     }
     
     /**
+     * Obtiene los conceptos de tal tipo de Concepto y tal tipo de Recibo de sueldo
+     * @param tipoRecibo
+     * @param tipoValor
+     * @return 
+     */
+    public ConceptoRecibo obtenerConcepto(FixedList tipoRecibo, FixedList tipoValor){
+        return getEntityManager().createNamedQuery("ConceptoRecibo.findByTipoReciboYTipoValor", ConceptoRecibo.class)
+                                   .setParameter("tipoRecibo", tipoRecibo)
+                                   .setParameter("tipoValor", tipoValor)
+                                   .setParameter("versionActiva", true)
+                                   .getResultList().get(0);
+    }
+    
+    /**
      * Metodo que calcula el valor total del dia trabajado para el Trabajador
      * @param tte
      * @param mapAdicTarea
      * @return 
      */
     public double calcularDiaTrabajadoTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        Map<Integer, FixedList> mapAdicTarea = fixedListF.findByListaMap(AdicionalTarea.ID_LISTA);
-        
         //Esto significa que debo realizar el calculo del total bruto con el salario basico
         //Obtengo el salario correspondiente al tte
         SalarioBasico salario = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
-        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
-        double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-        double totalConcepto = basicoBruto; //resultado de la suma del concepto
-        //Realizo el agregado de los modificadores de tarea
-        if (incluirAdicionales){
-            if (tte.getTarea().getInsalubre()){
-                totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
-            }
-            if (tte.getTarea().getPeligrosa()){
-                totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-            }
-            if (tte.getTarea().getPeligrosa2()){
-                totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-            }
-            if (tte.getTarea().getProductiva()){
-                totalConcepto += basicoBruto * (mapAdicTarea.get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-            }
-        }
-        //Ahora aplico el valor del modificador del tipo de jornal
-        totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-        totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
-        return totalConcepto;
+        return calcularDiaTTE(salario, tte, incluirAdicionales);
     }
     
     /**
@@ -133,6 +182,8 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 || concepto.getTipoValor().getId() == TipoValorConcepto.JUBILACION
                 || concepto.getTipoValor().getId() == TipoValorConcepto.OBRA_SOCIAL){
             return totalBruto * concepto.getValor().doubleValue() / 100;
+        } else if (concepto.getTipoValor().getId() == TipoValorConcepto.OBRA_SOCIAL) {
+            return totalBruto * personal.getObraSocial().getAportes().doubleValue() / 100;
         } else if (concepto.getTipoValor().getId() == TipoValorConcepto.SINDICATO) {
             if (personal.getSindicato()){
                 double porcSindicato = concepto.getValor().doubleValue();
@@ -156,31 +207,57 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * @return 
      */
     public double calcularValorSAC(Personal personal, Date desde, Date hasta){
-        //Dependiendo del tipo de trabajador calculo
-        List<Sueldo> listaSueldos = null;
                 
         switch (personal.getTipoRecibo().getId()){
             case TipoRecibo.HORAS :
-                //Sumo los conceptos remunerativos y le calculo el 12.5%
-                double totalConceptosRemunerativos = 0;
-                for (Sueldo s : listaSueldos)
-                    for (ItemsSueldo is : s.getItemsSueldoCollection()){
-                        if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)
-                            && ! is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.SAC)
-                            && ! is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.VACACIONES)){
-                            //Sumo el concepto
-                            totalConceptosRemunerativos += is.getValorCalculado().doubleValue();
-                        }           
-                    }
+                /**
+                 * Debo realizar nuevamente el calculo del total de jornales que tiene el personal
+                 * desde la fecha desde y hasta
+                 * de ahi levanto el concepto de sac para sacar el porcentaje y lo calculo, de ahi lo devuelvo
+                */
+                ConceptoRecibo conceptoSAC = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.SAC));
                 
-                return totalConceptosRemunerativos * PORCENTAJE_SAC_MENSUAL / 100;
-                
-                
+                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta);
+                           
+                return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
+                                
             case TipoRecibo.MENSUAL:
                 //Busco el Mayor de los sueldos y divido x la cantidad de días
                 
             default : return 0;
         }
     }
+    
+    
+    /**
+     * Metodo que calcula las Vacaciones del trabajador entre esas fechas
+     * OBS: Deben estar todos los sueldos persistidos sino puede calcular incorrectamente
+     * @param listaSueldos lista de los sueldos en el periodo calculado
+     * @return 
+     */
+    public double calcularValorVacaciones(Personal personal, Date desde, Date hasta){
+                
+        switch (personal.getTipoRecibo().getId()){
+            case TipoRecibo.HORAS :
+                /**
+                 * Debo realizar nuevamente el calculo del total de jornales que tiene el personal
+                 * desde la fecha desde y hasta
+                 * de ahi levanto el concepto de sac para sacar el porcentaje y lo calculo, de ahi lo devuelvo
+                */
+                ConceptoRecibo conceptoVacaciones = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.VACACIONES));
+                
+                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta);
+                           
+                return totalAcumulado * conceptoVacaciones.getValor().doubleValue() / 100;
+                                
+            case TipoRecibo.MENSUAL:
+                //Busco el Mayor de los sueldos y divido x la cantidad de días
+                
+            default : return 0;
+        }
+    }
+    
+    
+    
     
 }

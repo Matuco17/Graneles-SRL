@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,6 +27,8 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
     
     @EJB
     private PeriodoFacade periodoF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
 
     protected EntityManager getEntityManager() {
         return em;
@@ -43,9 +46,13 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
      */
     public BigDecimal calcularTotalAdelantoAcumulado(Personal personal){
         Date fechaInicio = periodoF.obtenerFechaInicioPeriodoSemestralActual();
+        Date fechaFin = new Date();
         
-        //TODO: realizar la llamada de los metodos de calcular con el sac y calcular las vacaciones del periodo
-        return BigDecimal.TEN;
+        double acumulado = 0;
+        acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin);
+        acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin);
+        
+        return new BigDecimal(acumulado);
     }
     
     /**

@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ConceptoRecibo.findByValor", query = "SELECT c FROM ConceptoRecibo c WHERE c.valor = :valor"),
     @NamedQuery(name = "ConceptoRecibo.findByTipoRecibo", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.versionActiva = :versionActiva"),
     @NamedQuery(name = "ConceptoRecibo.findByTipoReciboYTipoConcepto", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.tipo = :tipo AND c.versionActiva = :versionActiva"),
+    @NamedQuery(name = "ConceptoRecibo.findByTipoReciboYTipoValor", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.tipoValor = :tipoValor AND c.versionActiva = :versionActiva"),
     @NamedQuery(name = "ConceptoRecibo.findByCalculado", query = "SELECT c FROM ConceptoRecibo c WHERE c.calculado = :calculado")})
 public class ConceptoRecibo implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -45,14 +45,19 @@
                   
                    
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorMaximo}" for="valorMaximo" />
-                        <p:inputText id="valorMaximo" readonly="true" value="#{adelantoController.valorMaximoCalculado}" style="text-align: right;" />
+                        <p:inputText id="valorMaximo" readonly="true" value="#{adelantoController.valorMaximoCalculado}" style="text-align: right;" >
+                            <f:convertNumber maxFractionDigits="2" />
+                        </p:inputText>
                   
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorTotalAdelantos}" for="valorTotal" />
-                        <p:inputText id="valorTotal" readonly="true" value="#{adelantoController.valorTotalAdelantos}" style="text-align: right;" />
+                        <p:inputText id="valorTotal" readonly="true" value="#{adelantoController.valorTotalAdelantos}" style="text-align: right;" >
+                            <f:convertNumber maxFractionDigits="2" />
+                        </p:inputText>
                   
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorADar}" for="valor" />
-                        <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;"
-                                     required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_valor}"/>
+                        <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_valor}">
+                            <f:convertNumber maxFractionDigits="2" />
+                        </p:inputText>
               
                     </h:panelGrid>
                 </p:panel>

@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.util.Date;
 import java.util.List;
 /**
  *
@@ -36,6 +37,15 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
                   .setParameter("hasta", periodo.getHasta())
                   .getResultList();
     }    
+    
+    public List<TrabajadoresTurnoEmbarque> getTTEPeriodo(Personal personal, Date desde, Date hasta){
+      return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodoYPersonal", TrabajadoresTurnoEmbarque.class)
+                  .setParameter("personal", personal)
+                  .setParameter("desde", desde)
+                  .setParameter("hasta", hasta)
+                  .getResultList();
+    }    
+    
     
     
     /**
