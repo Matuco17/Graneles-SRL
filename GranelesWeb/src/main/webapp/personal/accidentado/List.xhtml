@@ -19,7 +19,7 @@
             <h:form styleClass="jsfcrud_list_form">
                 <h:outputText escape="false" value="#{bundlePersonal.ListAccidentadoEmpty}" rendered="#{accidentadoController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{accidentadoController.items.rowCount > 0}">
-                    <p:dataTable value="#{accidentadoController.items}" 
+                    <p:dataTable widgetVar="dtbAccidentado" value="#{accidentadoController.items}" 
                                  var="item"
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -27,7 +27,7 @@
                         <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Buscar:" />  
-                                <p:inputText id="globalFilter" onkeyup="buqueTable.filter()" style="width:350px" />  
+                                <p:inputText id="globalFilter" onkeyup="dtbAccidentado.filter()" style="width:350px" />  
                             </p:outputPanel>  
                         </f:facet> 
                         <p:column headerText="#{bundlePersonal.AccidentadoTitle_personal}" filterBy="#{item.personal.toString()}" filterStyleClass="filterColumn" filterOptions="contains">

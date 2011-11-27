@@ -36,18 +36,24 @@
 
                 <c:if test="#{cc.attrs.editar}" >
                     <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioConAdicionales}" for="calculadoConAdicionales" />
-                    <p:inputText style="text-align: right;" disabled="true" id="calculadoConAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaConAdicionales}" />
+                    <p:inputText style="text-align: right;" readonly="true" id="calculadoConAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaConAdicionales}" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </p:inputText>
                     <h:outputText value="" />
                     <h:outputText value="" />
 
                     <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioSinAdicionales}" for="calculadoSinAdicionales" />
-                    <p:inputText style="text-align: right;" disabled="true" id="calculadoSinAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaSinAdicionales}" />
+                    <p:inputText style="text-align: right;" readonly="true" id="calculadoSinAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaSinAdicionales}" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </p:inputText>
                     <h:outputText value="" />
                     <h:outputText value="" />
                 </c:if>
 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_bruto}" for="bruto" />
-                <p:inputText  style="text-align: right;" id="bruto" value="#{accidentadoController.selected.bruto}" disabled="#{!cc.attrs.editar}" />
+                <p:inputText  style="text-align: right;" id="bruto" value="#{accidentadoController.selected.bruto}" readonly="#{!cc.attrs.editar}" >
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>
             </h:panelGrid>
             <h:panelGrid columns="1" >
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_descripcionCortaAccidente}" for="descripcionCortaAccidente" />
