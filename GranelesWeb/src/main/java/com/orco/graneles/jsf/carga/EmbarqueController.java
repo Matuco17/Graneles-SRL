@@ -57,7 +57,6 @@ public class EmbarqueController implements Serializable {
     private int selectedItemIndex;
     private List<CargaPrevia> cargasPrevias;
     private DataModel cargasPreviasModel;
-    private Mercaderia mercaderiaPrevia;
     private DataModel listaTurnos;
 
     //Variables de turno
@@ -92,7 +91,6 @@ public class EmbarqueController implements Serializable {
         trabajadores = null;
         currentTTE = null;
         listaTurnos = null;
-        mercaderiaPrevia = null;
         trabajadoresTurno = null;
         trabajadoresTurnoModel = null;
         selectedTTE = null;
@@ -102,23 +100,23 @@ public class EmbarqueController implements Serializable {
     }
     
     private void tratarDeLevantarCarga(){
-        if (getSelected().getBuque() != null && this.mercaderiaPrevia != null){
-            this.cargasPrevias = cargaPreviaFacade.obtenerCargasPrevias(getSelected().getBuque(), this.mercaderiaPrevia, getSelected());
+        if (getSelected().getBuque() != null && getSelected().getMercaderia() != null){
+            cargasPrevias = cargaPreviaFacade.obtenerCargasPrevias(getSelected().getBuque(), getSelected().getMercaderia(), getSelected());
             cargasPreviasModel = null;
         } else {
             cargasPreviasModel = null;
             cargasPrevias = null;
         }
     }
-
-        
+    
+   
     public void seleccionarBuque(ValueChangeEvent e){
             current.setBuque((Buque) e.getNewValue());
             tratarDeLevantarCarga();
     }
     
-    public void seleccionarMercaderiaPrevia(ValueChangeEvent e){
-            mercaderiaPrevia = (Mercaderia) e.getNewValue();
+    public void seleccionarMercaderia(ValueChangeEvent e){
+            current.setMercaderia((Mercaderia) e.getNewValue());
             tratarDeLevantarCarga();
     }
  
@@ -133,6 +131,26 @@ public class EmbarqueController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+    
+    public boolean validarCampos(){
+        boolean validar = true;
+        if (getSelected().getCodigo() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_codigo"));
+            validar = false;
+        }
+        
+        if (getSelected().getBuque() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_buque"));
+            validar = false;
+        }
+        
+        if (getSelected().getMuelle() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_muelle"));
+            validar = false;
+        }
+        
+        return validar;
     }
 
     private EmbarqueFacade getFacade() {
@@ -160,10 +178,14 @@ public class EmbarqueController implements Serializable {
         
     public String create() {
         try {
-            current.setCargaPreviaCollection(cargasPrevias);
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueCreated"));
-            return "View";
+            if (validarCampos()){
+                current.setCargaPreviaCollection(cargasPrevias);
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueCreated"));
+                return "View";
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleCarga").getString("PersistenceErrorOccured"));
             return null;
@@ -179,10 +201,14 @@ public class EmbarqueController implements Serializable {
 
     public String update() {
         try {
-            current.setCargaPreviaCollection(cargasPrevias);
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueUpdated"));
-            return "View";
+            if (validarCampos()){
+                current.setCargaPreviaCollection(cargasPrevias);
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueUpdated"));
+                return "View";
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleCarga").getString("PersistenceErrorOccured"));
             return null;
@@ -273,17 +299,6 @@ public class EmbarqueController implements Serializable {
         }
     }
 
-     
-    public Mercaderia getMercaderiaPrevia() {
-        if (getSelected().getCargaPreviaCollection() != null && getSelected().getCargaPreviaCollection().size() > 0){
-            mercaderiaPrevia = getSelected().getCargaPreviaCollection().iterator().next().getMercaderia();
-        }
-        return mercaderiaPrevia;
-    }
-
-    public void setMercaderiaPrevia(Mercaderia mercaderiaPrevia) {
-        this.mercaderiaPrevia = mercaderiaPrevia;
-    }
     
     public List<CargaPrevia> getCargasPrevias() {
         if (cargasPrevias == null){
@@ -293,7 +308,7 @@ public class EmbarqueController implements Serializable {
     }
 
     public DataModel getCargasPreviasModel() {
-        if (cargasPreviasModel == null && getSelected().getCargaPreviaCollection() != null && getSelected().getCargaPreviaCollection().size() > 0)
+        if (cargasPreviasModel == null)
             cargasPreviasModel = new ListDataModel(getCargasPrevias());
         return cargasPreviasModel;
     }

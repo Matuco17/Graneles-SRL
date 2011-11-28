@@ -61,64 +61,86 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "codigo")
     private Long codigo;
+    
     @Size(max = 128)
     @Column(name = "destino")
     private String destino;
-    @Size(max = 128)
-    @Column(name = "coordinador")
-    private String coordinador;
+    
+    
     @Size(max = 128)
     @Column(name = "control")
     private String control;
+    
     @Size(max = 128)
     @Column(name = "fumigacion")
     private String fumigacion;
+    
     @Column(name = "boya11")
     @Temporal(TemporalType.TIMESTAMP)
     private Date boya11;
+    
     @Column(name = "inicio_navegacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicioNavegacion;
+    
     @Column(name = "atco")
     @Temporal(TemporalType.TIMESTAMP)
     private Date atco;
+    
     @Column(name = "ana")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ana;
+    
     @Column(name = "ib")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ib;
+    
     @Column(name = "czo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date czo;
+    
     @Column(name = "tmo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tmo;
+    
     @Size(max = 45)
     @Column(name = "momento_fumigacion")
     private String momentoFumigacion;
+    
     @Size(max = 128)
     @Column(name = "boletos_por")
     private String boletosPor;
+    
     @Size(max = 128)
     @Column(name = "max_a_cargar")
     private String maxACargar;
+    
     @Size(max = 45)
     @Column(name = "pre_stow_plan")
     private String preStowPlan;
+    
+    @JoinColumn(name = "coordinador", referencedColumnName = "id")
+    @ManyToOne
+    private Empresa coordinador;
+    
+    
     @JoinTable(name = "embarque_exportador", joinColumns = {
         @JoinColumn(name = "embarque", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "empresa", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Empresa> empresaCollection;
+    
     @JoinColumn(name = "mercaderia", referencedColumnName = "id")
     @ManyToOne
     private Mercaderia mercaderia;
+    
     @JoinColumn(name = "muelle", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muelle muelle;
+    
     
     @JoinColumn(name = "buque", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -164,11 +186,11 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         this.destino = destino;
     }
 
-    public String getCoordinador() {
+    public Empresa getCoordinador() {
         return coordinador;
     }
 
-    public void setCoordinador(String coordinador) {
+    public void setCoordinador(Empresa coordinador) {
         this.coordinador = coordinador;
     }
 

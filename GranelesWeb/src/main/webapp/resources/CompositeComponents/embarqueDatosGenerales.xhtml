@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <h:panelGrid columns="4" >
+            <h:outputLabel for="codigo" value="#{bundleCarga.EmbarqueTitle_codigo}" />
+            <c:choose>
+                <c:when test="#{cc.attrs.nuevo}">
+                    <p:inputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}" />
+                </c:when>
+                <c:otherwise>
+                    <h:outputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}"  />
+                </c:otherwise>
+            </c:choose>
+            
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" for="buque"  />
+            <c:choose>
+                <c:when test="#{cc.attrs.nuevo}">
+                   <h:selectOneMenu id="buque" value="#{embarqueController.selected.buque}" title="#{bundleCarga.EmbarqueTitle_buque}"  
+                                    valueChangeListener="#{embarqueController.seleccionarBuque}" onchange="submit()" >
+                        <f:selectItems value="#{buqueController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </c:when>
+                <c:otherwise>
+                   <h:outputText id="buque" value="#{embarqueController.selected.buque.toString()}" title="#{bundleCarga.EmbarqueTitle_buque}"  />
+                </c:otherwise>
+            </c:choose>
+            
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_muelle}" for="muelle"  />
+            <h:selectOneMenu id="muelle" value="#{embarqueController.selected.muelle}" title="#{bundleCarga.EmbarqueTitle_muelle}" >
+                <f:selectItems value="#{muelleController.itemsAvailableSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_destino}" for="destino"  />
+            <p:inputText id="destino" value="#{embarqueController.selected.destino}" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" for="coordinador"  />
+            <h:selectOneMenu id="coordinador" value="#{embarqueController.selected.coordinador}" >
+                <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
+            </h:selectOneMenu>
+
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
+            <h:selectOneMenu id="mercaderia" value="#{embarqueController.selected.mercaderia}" title="#{bundleCarga.EmbarqueTitle_mercaderia}" 
+                             valueChangeListener="#{embarqueController.seleccionarMercaderia}" onchange="submit()" >
+                <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" for="control"  />
+            <p:inputText id="control" value="#{embarqueController.selected.control}" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_fumigacion}" for="fumigacion"  />
+            <p:inputText id="fumigacion" value="#{embarqueController.selected.fumigacion}" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" for="boya11"  />
+            <p:calendar id="boya11" value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion"  />
+            <p:calendar id="inicioNavegacion" value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_atco}" for="atco"  />
+            <p:calendar id="atco" value="#{embarqueController.selected.atco}" title="#{bundleCarga.EmbarqueTitle_atco}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ana}" for="ana"  />
+            <p:calendar id="ana" value="#{embarqueController.selected.ana}" title="#{bundleCarga.EmbarqueTitle_ana}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ib}" for="ib"  />
+            <p:calendar id="ib" value="#{embarqueController.selected.ib}" title="#{bundleCarga.EmbarqueTitle_ib}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_czo}" for="czo"  />
+            <p:calendar id="czo" value="#{embarqueController.selected.czo}" title="#{bundleCarga.EmbarqueTitle_czo}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_tmo}" for="tmo"  />
+            <p:calendar id="tmo" value="#{embarqueController.selected.tmo}" title="#{bundleCarga.EmbarqueTitle_tmo}" pattern="dd/MM/yyyy HH:mm" />
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_momentoFumigacion}" for="momentoFumigacion"  />
+            <p:inputText id="momentoFumigacion" value="#{embarqueController.selected.momentoFumigacion}" />
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boletosPor}" for="boletosPor"  />
+            <p:inputText id="boletosPor" value="#{embarqueController.selected.boletosPor}" />
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_maxACargar}" for="maxACargar"  />
+            <p:inputText id="maxACargar" value="#{embarqueController.selected.maxACargar}" />
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_preStowPlan}" for="preStowPlan"  />
+            <p:inputText id="preStowPlan" value="#{embarqueController.selected.preStowPlan}" />
+        </h:panelGrid>
+    </co:implementation>
+</html>

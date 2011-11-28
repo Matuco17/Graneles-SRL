@@ -4,11 +4,7 @@
  */
 package com.orco.graneles.model.carga;
 
-import com.orco.graneles.domain.carga.Bodega;
-import com.orco.graneles.domain.carga.Buque;
-import com.orco.graneles.domain.carga.CargaTurno;
-import com.orco.graneles.domain.carga.Mercaderia;
-import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.carga.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,9 +34,9 @@ public class CargaTurnoFacade extends AbstractFacade<CargaTurno> {
     private List<CargaTurno> cargarNuevaPorBuque(TurnoEmbarque tembarque){
         List<CargaTurno> cargas = new ArrayList<CargaTurno>();
         
-        for (Bodega bodega : tembarque.getEmbarque().getBuque().getBodegaCollection()){
+        for (CargaPrevia cargaOriginal : tembarque.getEmbarque().getCargaPreviaCollection()){
             CargaTurno carga = new CargaTurno();
-            carga.setBodega(bodega);
+            carga.setCargaOriginalBodega(cargaOriginal);
             carga.setTurnoEmbarque(tembarque);
             carga.setCarga(BigDecimal.ZERO);
             cargas.add(carga);

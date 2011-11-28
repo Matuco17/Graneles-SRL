@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByCuidad", query = "SELECT e FROM Empresa e WHERE e.cuidad = :cuidad"),
     @NamedQuery(name = "Empresa.findByTelefono", query = "SELECT e FROM Empresa e WHERE e.telefono = :telefono"),
     @NamedQuery(name = "Empresa.findByMail", query = "SELECT e FROM Empresa e WHERE e.mail = :mail"),
+    @NamedQuery(name = "Empresa.findByTipoEmpresa", query = "SELECT e FROM Empresa e WHERE e.tipoEmpresa = :tipoEmpresa ORDER BY e.nombre"),
     @NamedQuery(name = "Empresa.findByWeb", query = "SELECT e FROM Empresa e WHERE e.web = :web")})
 public class Empresa implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -210,7 +211,7 @@ public class Empresa implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.Empresa[ id=" + id + " ]";
+        return nombre;
     }
     
 }

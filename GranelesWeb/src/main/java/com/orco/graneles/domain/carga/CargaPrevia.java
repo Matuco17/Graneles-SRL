@@ -41,12 +41,15 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "carga")
     private BigDecimal carga;
+    
     @JoinColumn(name = "mercaderia", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Mercaderia mercaderia;
+    
     @JoinColumn(name = "bodega", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Bodega bodega;
+    
     @JoinColumn(name = "embarque", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Embarque embarque;

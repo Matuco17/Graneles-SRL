@@ -1,8 +1,10 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
+import com.orco.graneles.domain.miscelaneos.TipoEmpresa;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.EmpresaFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,6 +27,8 @@ public class EmpresaController implements Serializable {
     private DataModel items = null;
     @EJB
     private EmpresaFacade ejbFacade;
+    @EJB
+    private FixedListFacade fixedListF;
     private int selectedItemIndex;
 
     public EmpresaController() {
@@ -120,22 +124,7 @@ public class EmpresaController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
+
 
     public DataModel getItems() {
         if (items == null) {
@@ -155,6 +144,12 @@ public class EmpresaController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
+    
+    public SelectItem[] getItemsAvailableExportadoresSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByTipoEmpresa(fixedListF.find(TipoEmpresa.EXPORTADOR)), true);
+    }
+    
+    
 
     @FacesConverter(forClass = Empresa.class)
     public static class EmpresaControllerConverter implements Converter {

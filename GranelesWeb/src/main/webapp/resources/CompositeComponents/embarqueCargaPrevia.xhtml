@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <p:dataTable id="dtbCargaPrevia" value="#{embarqueController.cargasPreviasModel}" var="item" style="width: 100%; float:left; text-align: right; " >
+            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
+                <h:outputText value="#{item.bodega.nro}" />
+            </p:column>
+            <p:column id="colMercaderia" headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" >
+                <h:selectOneMenu id="mercaderiaPrevia" value="#{item.mercaderia}" title="#{bundleCarga.CargaPreviaTitle_mercaderia}"
+                                 onchange="submit()">
+                    <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+            </p:column>
+            <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
+                <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
+            </p:column>
+            <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
+                <p:inputText value="#{item.carga}" style="text-align: right;" />
+            </p:column>
+        </p:dataTable>
+    </co:implementation>
+</html>

@@ -47,11 +47,11 @@ public class Bodega implements Serializable, Comparable<Bodega> {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "capacidad_pies_cubicos")
     private BigDecimal capacidadPiesCubicos;
+    
     @JoinColumn(name = "buque", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Buque buque;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bodega")
-    private Collection<CargaTurno> cargaTurnoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bodega")
     private Collection<CargaPrevia> cargaPreviaCollection;
 
@@ -92,15 +92,6 @@ public class Bodega implements Serializable, Comparable<Bodega> {
 
     public void setBuque(Buque buque) {
         this.buque = buque;
-    }
-
-    @XmlTransient
-    public Collection<CargaTurno> getCargaTurnoCollection() {
-        return cargaTurnoCollection;
-    }
-
-    public void setCargaTurnoCollection(Collection<CargaTurno> cargaTurnoCollection) {
-        this.cargaTurnoCollection = cargaTurnoCollection;
     }
 
     @XmlTransient

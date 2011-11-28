@@ -37,16 +37,19 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "carga")
     private BigDecimal carga;
+    
     @JoinColumn(name = "turno_embarque", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TurnoEmbarque turnoEmbarque;
-    @JoinColumn(name = "bodega", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Bodega bodega;
-
+    
+    @JoinColumn(name = "carga_original", referencedColumnName = "id")
+    @ManyToOne()
+    private CargaPrevia cargaOriginalBodega;
+    
     public CargaTurno() {
     }
 
@@ -78,13 +81,15 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.turnoEmbarque = turnoEmbarque;
     }
 
-    public Bodega getBodega() {
-        return bodega;
+    public CargaPrevia getCargaOriginalBodega() {
+        return cargaOriginalBodega;
     }
 
-    public void setBodega(Bodega bodega) {
-        this.bodega = bodega;
+    public void setCargaOriginalBodega(CargaPrevia cargaOriginalBodega) {
+        this.cargaOriginalBodega = cargaOriginalBodega;
     }
+    
+    
 
     @Override
     public int hashCode() {
@@ -113,11 +118,14 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
 
     @Override
     public int compareTo(CargaTurno o) {
-        if (this.getBodega() != null){
-            if (this.getBodega().getBuque().equals(o.getBodega().getBuque())){
-                return this.getBodega().compareTo(o.getBodega());
+        if (this.getCargaOriginalBodega() != null){
+            Bodega thisBodega = this.getCargaOriginalBodega().getBodega();
+            Bodega otherBodega = o.getCargaOriginalBodega().getBodega();
+            
+            if (thisBodega.getBuque().equals(otherBodega.getBuque())){
+                return thisBodega.compareTo(otherBodega);
             } else {
-                return this.getBodega().getBuque().compareTo(o.getBodega().getBuque());
+                return thisBodega.getBuque().compareTo(otherBodega.getBuque());
             }
         } else {
             return 0;
