@@ -4,20 +4,12 @@
  */
 package com.orco.graneles.domain.carga;
 
+import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,8 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CargaTurno.findAll", query = "SELECT c FROM CargaTurno c"),
-    @NamedQuery(name = "CargaTurno.findById", query = "SELECT c FROM CargaTurno c WHERE c.id = :id"),
-    @NamedQuery(name = "CargaTurno.findByCarga", query = "SELECT c FROM CargaTurno c WHERE c.carga = :carga")})
+    @NamedQuery(name = "CargaTurno.findById", query = "SELECT c FROM CargaTurno c WHERE c.id = :id")})
 public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,17 +29,17 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @Column(name = "id")
     private Long id;
     
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "carga")
-    private BigDecimal carga;
-    
     @JoinColumn(name = "turno_embarque", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TurnoEmbarque turnoEmbarque;
     
-    @JoinColumn(name = "carga_original", referencedColumnName = "id")
-    @ManyToOne()
-    private CargaPrevia cargaOriginalBodega;
+    @JoinColumn(name = "coordinador", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Empresa coordinador;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
+    private List<CargaTurnoCargas> cargasCollection;
+    
     
     public CargaTurno() {
     }
@@ -65,14 +56,6 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.id = id;
     }
 
-    public BigDecimal getCarga() {
-        return carga;
-    }
-
-    public void setCarga(BigDecimal carga) {
-        this.carga = carga;
-    }
-
     public TurnoEmbarque getTurnoEmbarque() {
         return turnoEmbarque;
     }
@@ -81,14 +64,22 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.turnoEmbarque = turnoEmbarque;
     }
 
-    public CargaPrevia getCargaOriginalBodega() {
-        return cargaOriginalBodega;
+    public Empresa getCoordinador() {
+        return coordinador;
     }
 
-    public void setCargaOriginalBodega(CargaPrevia cargaOriginalBodega) {
-        this.cargaOriginalBodega = cargaOriginalBodega;
+    public void setCoordinador(Empresa coordinador) {
+        this.coordinador = coordinador;
     }
-    
+
+    public List<CargaTurnoCargas> getCargasCollection() {
+        return cargasCollection;
+    }
+
+    public void setCargasCollection(Collection<CargaTurnoCargas> cargasCollection) {
+        this.cargasCollection = (List<CargaTurnoCargas>) cargasCollection;
+    }
+
     
 
     @Override
@@ -118,17 +109,10 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
 
     @Override
     public int compareTo(CargaTurno o) {
-        if (this.getCargaOriginalBodega() != null){
-            Bodega thisBodega = this.getCargaOriginalBodega().getBodega();
-            Bodega otherBodega = o.getCargaOriginalBodega().getBodega();
-            
-            if (thisBodega.getBuque().equals(otherBodega.getBuque())){
-                return thisBodega.compareTo(otherBodega);
-            } else {
-                return thisBodega.getBuque().compareTo(otherBodega.getBuque());
-            }
+        if (this.getTurnoEmbarque().equals(o.getTurnoEmbarque())){
+            return this.getCoordinador().getNombre().compareTo(o.getCoordinador().getNombre());
         } else {
-            return 0;
+            return this.getTurnoEmbarque().compareTo(o.getTurnoEmbarque());
         }      
     }
     

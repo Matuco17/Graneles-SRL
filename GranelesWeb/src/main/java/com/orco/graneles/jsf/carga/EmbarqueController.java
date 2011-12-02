@@ -111,13 +111,13 @@ public class EmbarqueController implements Serializable {
     
    
     public void seleccionarBuque(ValueChangeEvent e){
-            current.setBuque((Buque) e.getNewValue());
-            tratarDeLevantarCarga();
+        current.setBuque((Buque) e.getNewValue());
+        tratarDeLevantarCarga();
     }
     
     public void seleccionarMercaderia(ValueChangeEvent e){
-            current.setMercaderia((Mercaderia) e.getNewValue());
-            tratarDeLevantarCarga();
+        current.setMercaderia((Mercaderia) e.getNewValue());
+        tratarDeLevantarCarga();
     }
  
         
@@ -342,6 +342,26 @@ public class EmbarqueController implements Serializable {
         this.cargasModel = null;
     }
     
+    public boolean validarTurno(){
+        boolean validar = true;
+        
+        if (currentTE.getTurno() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("TurnoEmbarqueRequiredMessage_turno"));
+            validar = false;
+        }
+
+        if (currentTE.getTipo() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("TurnoEmbarqueRequiredMessage_tipo"));
+            validar = false;
+        }
+        
+        if (currentTE.getFecha() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("TurnoEmbarqueRequiredMessage_fecha"));
+            validar = false;
+        }
+        
+        return validar;
+    }
         
     public String prepareEditTE() {
         currentTE = (TurnoEmbarque) getListaTurnos().getRowData();
@@ -460,6 +480,10 @@ public class EmbarqueController implements Serializable {
         }
     }
     
+    public void agregarCargaTurno(){
+        cargas.add(cargaTurnoFacade.cargarNuevaPorBuque(currentTE));
+        cargasModel = null;
+    }
     
     public void seleccionarTTE(){
         selectedTTE = getTrabajadoresTurnoModel().getRowData();
