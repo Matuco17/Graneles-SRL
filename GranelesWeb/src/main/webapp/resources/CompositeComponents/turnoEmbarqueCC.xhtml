@@ -144,7 +144,7 @@
                         </h:panelGrid>
 
                         <p:dataTable id="dtbCarga" value="#{cargaTurno.cargasCollection}" var="carga" sortBy="#{carga.nroBodega}" >
-                            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; " >
+                            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; "  >
                                 <h:outputText value="#{carga.nroBodega}" />
                             </p:column>
                             <p:column id="colMercaderia" headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" style="text-align: left; " >
