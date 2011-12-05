@@ -16,7 +16,7 @@
     <!-- IMPLEMENTATION -->
     <co:implementation>
 
-        <div style="width: 750px; float:left;">
+        <div style="width: 800px; float:left;">
             <p:fieldset id="panDatosGenerales" toggleable="true" legend="Datos Generales">
                 <h:panelGrid columns="6" >
                     <h:outputLabel value="#{bundleCarga.EmbarqueTitle_codigo}" />
@@ -27,18 +27,23 @@
                     <h:outputText value="#{cc.attrs.embarque.destino}" title="#{bundleCarga.EmbarqueTitle_destino}"/>
 
                     <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_turno}" for="turno"  />
-                    <h:selectOneMenu id="turno" value="#{embarqueController.currentTE.turno}" disabled="#{!cc.attrs.editar}" >
+                    <h:selectOneMenu id="turno" value="#{embarqueController.currentTE.turno}" disabled="#{!cc.attrs.editar}"
+                                            >
                         <f:selectItems value="#{fixedListController.turnoSelectOne}"/>
                     </h:selectOneMenu>
 
                     <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_tipo}" for="tipo"  />
-                    <h:selectOneMenu id="tipo" value="#{embarqueController.currentTE.tipo}"  disabled="#{!cc.attrs.editar}" >
+                    <h:selectOneMenu id="tipo" value="#{embarqueController.currentTE.tipo}"  disabled="#{!cc.attrs.editar}" 
+                                             valueChangeListener="#{embarqueController.seleccionarTipoJornal}">
+                        <p:ajax event="change"/>                  
                         <f:selectItems value="#{tipoJornalController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
 
                     <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_fecha}" for="fecha"  />
                     <p:calendar id="fecha" value="#{embarqueController.currentTE.fecha}" title="#{bundleCarga.TurnoEmbarqueTitle_fecha}" 
-                                pattern="dd/MM/yyyy"  disabled="#{!cc.attrs.editar}"  />
+                                pattern="dd/MM/yyyy"  disabled="#{!cc.attrs.editar}"  >
+                        <p:ajax event="dateSelect" listener="#{embarqueController.seleccionarFecha}" />  
+                    </p:calendar>
 
                 </h:panelGrid>
             </p:fieldset>
@@ -50,38 +55,40 @@
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" />
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" />
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horas}" />
-                    <h:outputText value="" />
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" />
                     <h:outputText value="" />
 
-                    <h:selectOneMenu id="personal" value="#{embarqueController.currentTTE.personal}" 
+                    <h:selectOneMenu id="personal" value="#{embarqueController.currentTTE.tte.personal}" 
                                      valueChangeListener="#{embarqueController.seleccionarPersonal}">
                         <p:ajax event="change" update="panTrabajadores"/>
                         <f:selectItem itemLabel="---" />
                         <f:selectItems value="#{embarqueController.trabajadores}" var="trabajador" itemLabel="#{trabajador.cuil}"/>
                     </h:selectOneMenu>
 
-                    <p:inputText id="personalNombre" value="#{embarqueController.currentTTE.personal.toString()}" readonly="true" style="min-width: 180px;" />
+                    <p:inputText id="personalNombre" value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
 
-                    <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.categoria}" 
+                    <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.tte.categoria}" 
                                      valueChangeListener="#{embarqueController.seleccionarCategoria}">
                         <p:ajax event="change" update="panTrabajadores"/>
                         <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
 
-
-
-                    <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tarea}" 
+                    <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tte.tarea}" 
                                      valueChangeListener="#{embarqueController.seleccionarTarea}">
                         <p:ajax event="change" update="panTrabajadores"/>
                         <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
 
-                    <h:selectOneMenu id="horas" value="#{embarqueController.currentTTE.horas}"  
+                    <h:selectOneMenu id="horas" value="#{embarqueController.currentTTE.tte.horas}"  
                                      valueChangeListener="#{embarqueController.seleccionarHoras}">
                         <p:ajax event="change" update="panTrabajadores"/>
                         <f:selectItem itemValue="6" itemLabel="6" />
                         <f:selectItem itemValue="3" itemLabel="3" />
                     </h:selectOneMenu>
+                    
+                    <p:inputText id="bruto" value="#{embarqueController.currentTTE.valorTurno}" readonly="true" style="width: 50px; text-align: right;" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </p:inputText>
 
                     <h:commandButton id="btnAgregarTrabajador" 
                                      action="#{embarqueController.agregarTrabajador}"
@@ -93,33 +100,38 @@
                 </h:panelGrid>
 
                 <p:dataTable id="dtbTrabajadores" 
-                             selection="#{embarqueController.selectedTTE}" selectionMode="single"
                              value="#{embarqueController.trabajadoresTurnoModel}" var="item"
-                             rowKey="#{item.personal.cuil}">
+                             rowKey="#{item.tte.personal.cuil}">
 
 
                     <p:column id="colCuil" headerText="#{bundlePersonal.PersonalTitle_cuil}" >
-                        <h:outputText value="#{item.personal.cuil}" />
+                        <h:outputText value="#{item.tte.personal.cuil}" />
                     </p:column>
                     <p:column id="colNombre" headerText="#{bundlePersonal.PersonalTitle_apellido}" >
-                        <h:outputText value="#{item.personal.apellido}" />
+                        <h:outputText value="#{item.tte.personal.apellido}" />
                     </p:column>
                     <p:column id="colCategoria" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" >
-                        <h:selectOneMenu id="selColCategoria" value="#{item.categoria}"  disabled="#{!cc.attrs.editar}" >
+                        <h:selectOneMenu id="selColCategoria" value="#{item.tte.categoria}"  disabled="#{!cc.attrs.editar}" >
                             <f:selectItems value="#{categoriaController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
                     </p:column>
                     <p:column id="colTarea" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" >
-                        <h:selectOneMenu id="selColTarea" value="#{item.tarea}"  disabled="#{!cc.attrs.editar}" >
+                        <h:selectOneMenu id="selColTarea" value="#{item.tte.tarea}"  disabled="#{!cc.attrs.editar}" >
                             <f:selectItems value="#{tareaController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
                     </p:column>
                     <p:column id="colHoras" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horas}"  >
-                        <h:selectOneMenu id="selColHoras" value="#{item.horas}" disabled="#{!cc.attrs.editar}" >
+                        <h:selectOneMenu id="selColHoras" value="#{item.tte.horas}" disabled="#{!cc.attrs.editar}" >
                             <f:selectItem itemValue="6" itemLabel="6" />
                             <f:selectItem itemValue="3" itemLabel="3" />
                         </h:selectOneMenu>
                     </p:column>
+                    <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
+                        <h:outputText value="#{item.valorTurno}" >
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>
+                    </p:column>
+                    
                     <p:column>
                         <h:commandButton id="btnEliminarTrabajador"
                                          image="/faces/resources/images/destroy.png"
@@ -137,20 +149,20 @@
                 <c:forEach items="#{embarqueController.cargas}" var="cargaTurno" >
                     <p:tab title="#{cargaTurno.coordinador.toString()}" >
                         <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
-                            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" for="coordinador"  />
-                            <h:selectOneMenu id="coordinador" value="#{cargaTurno.coordinador}" >
+                            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" />
+                            <h:selectOneMenu value="#{cargaTurno.coordinador}" >
                                 <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
                             </h:selectOneMenu>
                         </h:panelGrid>
 
-                        <p:dataTable id="dtbCarga" value="#{cargaTurno.cargasCollection}" var="carga" sortBy="#{carga.nroBodega}" >
-                            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; "  >
+                        <p:dataTable value="#{cargaTurno.cargasSorted}" var="carga" >
+                            <p:column headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; " >
                                 <h:outputText value="#{carga.nroBodega}" />
                             </p:column>
-                            <p:column id="colMercaderia" headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" style="text-align: left; " >
+                            <p:column headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" style="text-align: left; " >
                                 <h:outputText value="#{carga.mercaderiaBodega.toString()}" />
                             </p:column>
-                            <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
+                            <p:column headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
                                 <p:inputText value="#{carga.carga}" readonly="#{!cc.attrs.editar}" style="text-align: right;"  />
                             </p:column>
                         </p:dataTable>  

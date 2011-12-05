@@ -7,7 +7,9 @@ package com.orco.graneles.domain.carga;
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +40,7 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     private Empresa coordinador;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
-    private List<CargaTurnoCargas> cargasCollection;
+    private Collection<CargaTurnoCargas> cargasCollection;
     
     
     public CargaTurno() {
@@ -72,12 +74,20 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.coordinador = coordinador;
     }
 
-    public List<CargaTurnoCargas> getCargasCollection() {
+    public Collection<CargaTurnoCargas> getCargasCollection() {
         return cargasCollection;
     }
 
+    public List<CargaTurnoCargas> getCargasSorted(){
+        List<CargaTurnoCargas> cargas = new ArrayList<CargaTurnoCargas>();
+        if (this.getCargasCollection() != null)
+            cargas.addAll(this.getCargasCollection());
+        Collections.sort(cargas);
+        return cargas;
+    }
+    
     public void setCargasCollection(Collection<CargaTurnoCargas> cargasCollection) {
-        this.cargasCollection = (List<CargaTurnoCargas>) cargasCollection;
+        this.cargasCollection =  cargasCollection;
     }
 
     

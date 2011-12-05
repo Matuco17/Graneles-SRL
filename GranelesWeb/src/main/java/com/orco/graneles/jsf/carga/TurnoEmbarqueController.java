@@ -105,7 +105,7 @@ public class TurnoEmbarqueController implements Serializable {
     }
     
     public void eliminarTrabajador() {
-        selectedItemIndex = getTrabajadoresTurnoModel().getRowIndex(getSelectedTTE());
+        //selectedItemIndex = getTrabajadoresTurnoModel().getRowIndex(getSelectedTTE());
         if (selectedItemIndex >= 0){
             getTrabajadoresTurno().remove(selectedItemIndex);
 
@@ -116,7 +116,7 @@ public class TurnoEmbarqueController implements Serializable {
     
     
     public void seleccionarTTE(){
-        selectedTTE = getTrabajadoresTurnoModel().getRowData();
+        //selectedTTE = getTrabajadoresTurnoModel().getRowData();
     }
     
     public List<Personal> getTrabajadores(){
@@ -316,7 +316,7 @@ public class TurnoEmbarqueController implements Serializable {
 
     public TrabajadoresTurnoModel getTrabajadoresTurnoModel() {
         if (trabajadoresTurnoModel == null){
-            trabajadoresTurnoModel = new TrabajadoresTurnoModel(trabajadoresTurno);
+           // trabajadoresTurnoModel = new TrabajadoresTurnoModel(trabajadoresTurno);
         }
         return trabajadoresTurnoModel;
     }

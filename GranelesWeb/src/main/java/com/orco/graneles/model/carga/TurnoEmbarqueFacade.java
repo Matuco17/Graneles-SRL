@@ -40,6 +40,7 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
     public TurnoEmbarque crearNuevoTurnoEmbarque(Embarque embarque){
         TurnoEmbarque te = new TurnoEmbarque();
         te.setEmbarque(embarque);
+        te.setFecha(new Date());
         return te;
     }
     

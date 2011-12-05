@@ -1,18 +1,24 @@
 package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.*;
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.personal.Tarea;
+import com.orco.graneles.domain.salario.TipoJornal;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaPreviaFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
+import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,6 +39,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.event.DateSelectEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "embarqueController")
@@ -44,13 +51,15 @@ public class EmbarqueController implements Serializable {
     @EJB
     private EmbarqueFacade ejbFacade;
     @EJB
-    private CargaPreviaFacade cargaPreviaFacade;
+    private CargaPreviaFacade cargaPreviaF;
     @EJB
-    private CargaTurnoFacade cargaTurnoFacade;
+    private CargaTurnoFacade cargaTurnoF;
     @EJB
-    private PersonalFacade personalFacade;
+    private PersonalFacade personalF;
     @EJB
-    private TurnoEmbarqueFacade turnoEmbarqueFacade;
+    private TurnoEmbarqueFacade turnoEmbarqueF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
     
     
     
@@ -63,10 +72,10 @@ public class EmbarqueController implements Serializable {
     private List<CargaTurno> cargas;
     private DataModel cargasModel;
     private List<Personal> trabajadores;
-    private TrabajadoresTurnoEmbarque currentTTE;
-    private List<TrabajadoresTurnoEmbarque> trabajadoresTurno;
-    private TrabajadoresTurnoModel trabajadoresTurnoModel;
-    private TrabajadoresTurnoEmbarque selectedTTE;
+    private TrabajadorTurnoEmbarqueVO currentTTE;
+    private List<TrabajadorTurnoEmbarqueVO> trabajadoresTurno;
+    private DataModel trabajadoresTurnoModel;
+    private TrabajadorTurnoEmbarqueVO selectedTTE;
     private TurnoEmbarque currentTE;
     private boolean editarTurno;
 
@@ -101,7 +110,7 @@ public class EmbarqueController implements Serializable {
     
     private void tratarDeLevantarCarga(){
         if (getSelected().getBuque() != null && getSelected().getMercaderia() != null){
-            cargasPrevias = cargaPreviaFacade.obtenerCargasPrevias(getSelected().getBuque(), getSelected().getMercaderia(), getSelected());
+            cargasPrevias = cargaPreviaF.obtenerCargasPrevias(getSelected().getBuque(), getSelected().getMercaderia(), getSelected());
             cargasPreviasModel = null;
         } else {
             cargasPreviasModel = null;
@@ -378,7 +387,7 @@ public class EmbarqueController implements Serializable {
     }
     
     public String prepareCreateTE() {
-        currentTE = turnoEmbarqueFacade.crearNuevoTurnoEmbarque(current);
+        currentTE = turnoEmbarqueF.crearNuevoTurnoEmbarque(current);
         recreateModelTurno();
         editarTurno = true;
         return "CreateEditTurnoEmbarque";
@@ -387,7 +396,7 @@ public class EmbarqueController implements Serializable {
     public void destroyTE(){
         currentTE = (TurnoEmbarque) getListaTurnos().getRowData();
         try {
-            turnoEmbarqueFacade.remove(currentTE);
+            turnoEmbarqueF.remove(currentTE);
             current.getTurnoEmbarqueCollection().remove(currentTE);
             listaTurnos = null;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("TurnoEmbarqueDeleted"));
@@ -399,15 +408,22 @@ public class EmbarqueController implements Serializable {
     public String saveTE(){
         if (editarTurno){
             currentTE.setCargaTurnoCollection(cargas);
-            for (TrabajadoresTurnoEmbarque tte : trabajadoresTurno){
+            
+            List<TrabajadoresTurnoEmbarque> trabajadores = new ArrayList<TrabajadoresTurnoEmbarque>();
+            for (TrabajadorTurnoEmbarqueVO tteVO : trabajadoresTurno){
+                trabajadores.add(tteVO.getTte());
+            }
+            
+            
+            for (TrabajadoresTurnoEmbarque tte : trabajadores){
                 tte.setPlanilla(currentTE);
             }
-            currentTE.setTrabajadoresTurnoEmbarqueCollection(trabajadoresTurno);
+            currentTE.setTrabajadoresTurnoEmbarqueCollection(trabajadores);
             
             if (currentTE.getId() == null)
                 current.getTurnoEmbarqueCollection().add(currentTE);
             
-            turnoEmbarqueFacade.persist(currentTE);
+            turnoEmbarqueF.persist(currentTE);
             
             listaTurnos = null;            
         }
@@ -423,44 +439,66 @@ public class EmbarqueController implements Serializable {
         recreateModelTurno();
     }
     
-    public TrabajadoresTurnoEmbarque getCurrentTTE() {
+    public TrabajadorTurnoEmbarqueVO getCurrentTTE() {
         if (currentTTE == null){
-            currentTTE = new TrabajadoresTurnoEmbarque();
-            currentTTE.setHoras(6);
+            currentTTE = new TrabajadorTurnoEmbarqueVO(new TrabajadoresTurnoEmbarque(), BigDecimal.ZERO);
+            currentTTE.getTte().setHoras(6);
+            currentTTE.getTte().setPlanilla(currentTE);
         }
         return currentTTE;
     }
 
-    public void setCurrentTTE(TrabajadoresTurnoEmbarque currentTTE) {
+    public void setCurrentTTE(TrabajadorTurnoEmbarqueVO currentTTE) {
         this.currentTTE = currentTTE;
     }
+
+    public void seleccionarTipoJornal(ValueChangeEvent e){
+        getCurrentTE().setTipo((TipoJornal) e.getNewValue());
+    }
+    
+    public void seleccionarFecha(DateSelectEvent event) {  
+        getCurrentTE().setFecha(event.getDate());  
+    }  
     
     public void seleccionarPersonal(ValueChangeEvent e){
         Personal personalSeleccionado = (Personal) e.getNewValue();
-        getCurrentTTE().setPersonal(personalSeleccionado);
+        getCurrentTTE().getTte().setPersonal(personalSeleccionado);
+        getCurrentTTE().getTte().setPlanilla(currentTE);
         if (personalSeleccionado.getCategoriaPrincipal() != null)
-            getCurrentTTE().setCategoria(personalSeleccionado.getCategoriaPrincipal());
+            getCurrentTTE().getTte().setCategoria(personalSeleccionado.getCategoriaPrincipal());
+        actualizarSueldoTTE(getCurrentTTE());
     }
     
     public void seleccionarTarea(ValueChangeEvent e){
-        getCurrentTTE().setTarea((Tarea) e.getNewValue());
+        getCurrentTTE().getTte().setTarea((Tarea) e.getNewValue());
+        actualizarSueldoTTE(getCurrentTTE());
     }
     
     public void seleccionarCategoria(ValueChangeEvent e){
-        getCurrentTTE().setCategoria((Categoria) e.getNewValue());
+        getCurrentTTE().getTte().setCategoria((Categoria) e.getNewValue());
+        actualizarSueldoTTE(getCurrentTTE());
     }
     
     public void seleccionarHoras(ValueChangeEvent e){
-        getCurrentTTE().setHoras((Integer) e.getNewValue());
+        getCurrentTTE().getTte().setHoras((Integer) e.getNewValue());
+        actualizarSueldoTTE(getCurrentTTE());
+    }
+    
+    private void actualizarSueldoTTE(TrabajadorTurnoEmbarqueVO tteVO){
+        try {
+            tteVO.setValorTurno(new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(tteVO.getTte(), true)));
+        } catch (Exception e) {
+            //Por ahora no hago nada ya que creo que no es necesario
+        }
     }
     
     public void agregarTrabajador(){
-        if (currentTTE.getCategoria() != null &&
-            currentTTE.getHoras() != null &&
-            currentTTE.getPersonal() != null &&
-            currentTTE.getTarea() != null){
+        if (currentTTE.getTte().getCategoria() != null &&
+            currentTTE.getTte().getHoras() != null &&
+            currentTTE.getTte().getPersonal() != null &&
+            currentTTE.getTte().getTarea() != null){
         
-            getTrabajadoresTurno().add(currentTTE);
+            getTrabajadoresTurno().add(0, currentTTE);
             currentTTE = null;
             trabajadoresTurnoModel = null;
         } else {
@@ -469,7 +507,7 @@ public class EmbarqueController implements Serializable {
     }
         
     public void eliminarTrabajador() {
-        selectedItemIndex = getTrabajadoresTurnoModel().getRowIndex(getSelectedTTE());
+        selectedItemIndex = getTrabajadoresTurnoModel().getRowIndex();
         getTrabajadoresTurnoModel().setRowIndex(-1);
         if (selectedItemIndex >= 0){
             getTrabajadoresTurno().remove(selectedItemIndex);
@@ -481,17 +519,17 @@ public class EmbarqueController implements Serializable {
     }
     
     public void agregarCargaTurno(){
-        cargas.add(cargaTurnoFacade.cargarNuevaPorBuque(currentTE));
+        cargas.add(cargaTurnoF.cargarNuevaPorBuque(currentTE));
         cargasModel = null;
     }
     
     public void seleccionarTTE(){
-        selectedTTE = getTrabajadoresTurnoModel().getRowData();
+        selectedTTE = (TrabajadorTurnoEmbarqueVO) getTrabajadoresTurnoModel().getRowData();
     }
     
     public List<Personal> getTrabajadores(){
         if (trabajadores == null){
-            trabajadores = personalFacade.findAll();
+            trabajadores = personalF.findAll();
             Collections.sort(trabajadores, new ComparadorPersonal());
         }
         return trabajadores;
@@ -504,29 +542,33 @@ public class EmbarqueController implements Serializable {
         return cargasModel;
     }
 
-    public List<TrabajadoresTurnoEmbarque> getTrabajadoresTurno() {
+    public List<TrabajadorTurnoEmbarqueVO> getTrabajadoresTurno() {
         if (trabajadoresTurno == null){
             if (getCurrentTE().getTrabajadoresTurnoEmbarqueCollection() != null){
-               trabajadoresTurno = new ArrayList<TrabajadoresTurnoEmbarque>(getCurrentTE().getTrabajadoresTurnoEmbarqueCollection());
+                trabajadoresTurno = new ArrayList<TrabajadorTurnoEmbarqueVO>();
+                for (TrabajadoresTurnoEmbarque tte : getCurrentTE().getTrabajadoresTurnoEmbarqueCollection()){
+                    trabajadoresTurno.add(new TrabajadorTurnoEmbarqueVO(tte, 
+                            new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(tte, true))));
+                }
             } else {
-               trabajadoresTurno = new ArrayList<TrabajadoresTurnoEmbarque>();
+               trabajadoresTurno = new ArrayList<TrabajadorTurnoEmbarqueVO>();
             }            
         }
         return trabajadoresTurno;
     }
 
-    public TrabajadoresTurnoModel getTrabajadoresTurnoModel() {
+    public DataModel getTrabajadoresTurnoModel() {
         if (trabajadoresTurnoModel == null){
-            trabajadoresTurnoModel = new TrabajadoresTurnoModel(getTrabajadoresTurno());
+            trabajadoresTurnoModel = new ListDataModel(getTrabajadoresTurno());
         }
         return trabajadoresTurnoModel;
     }
 
-    public TrabajadoresTurnoEmbarque getSelectedTTE() {
+    public TrabajadorTurnoEmbarqueVO getSelectedTTE() {
         return selectedTTE;
     }
 
-    public void setSelectedTTE(TrabajadoresTurnoEmbarque selectedTTE) {
+    public void setSelectedTTE(TrabajadorTurnoEmbarqueVO selectedTTE) {
         this.selectedTTE = selectedTTE;
     }
     
@@ -543,7 +585,7 @@ public class EmbarqueController implements Serializable {
     
     public List<CargaTurno> getCargas() {
         if (cargas == null && currentTE != null){
-            this.cargas = cargaTurnoFacade.obtenerCargas(getCurrentTE());
+            this.cargas = cargaTurnoF.obtenerCargas(getCurrentTE());
         }
         return cargas;
     }

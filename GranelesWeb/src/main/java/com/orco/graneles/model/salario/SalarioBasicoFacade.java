@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import com.orco.graneles.model.AbstractFacade;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.NoResultException;
 import org.apache.commons.lang.time.DateUtils;
 /**
  *
@@ -100,11 +101,15 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
      * @return 
      */
     public SalarioBasico obtenerSalarioActivo(Tarea tarea, Categoria categoria, Date fecha){
-        return getEntityManager().createNamedQuery("SalarioBasico.findActivo", SalarioBasico.class)
+        try {
+            return getEntityManager().createNamedQuery("SalarioBasico.findActivo", SalarioBasico.class)
                         .setParameter("categoria", categoria)
                         .setParameter("tarea", tarea)
                         .setParameter("fecha", fecha)
-                        .getSingleResult();                        
+                        .getSingleResult();         
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }

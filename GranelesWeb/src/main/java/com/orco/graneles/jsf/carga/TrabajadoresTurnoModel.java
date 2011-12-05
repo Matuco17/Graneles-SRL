@@ -5,6 +5,7 @@
 package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.util.List;
 import javax.faces.model.ListDataModel;
 import org.primefaces.model.SelectableDataModel;
@@ -13,38 +14,38 @@ import org.primefaces.model.SelectableDataModel;
  *
  * @author orco
  */
-public class TrabajadoresTurnoModel extends ListDataModel<TrabajadoresTurnoEmbarque> implements SelectableDataModel<TrabajadoresTurnoEmbarque> {
+public class TrabajadoresTurnoModel extends ListDataModel<TrabajadorTurnoEmbarqueVO> implements SelectableDataModel<TrabajadorTurnoEmbarqueVO> {
 
     public TrabajadoresTurnoModel(){
     }
     
-    public TrabajadoresTurnoModel(List<TrabajadoresTurnoEmbarque> data){
+    public TrabajadoresTurnoModel(List<TrabajadorTurnoEmbarqueVO> data){
         super(data);
     }
     
     @Override
-    public Object getRowKey(TrabajadoresTurnoEmbarque t) {
-        if (t != null && t.getPersonal() != null)
-            return t.getPersonal().getCuil();
+    public Object getRowKey(TrabajadorTurnoEmbarqueVO t) {
+        if (t != null && t.getTte().getPersonal() != null)
+            return t.getTte().getPersonal().getCuil();
         return null;
     }
 
     @Override
-    public TrabajadoresTurnoEmbarque getRowData(String rowKey) {
-        List<TrabajadoresTurnoEmbarque> trabajadores = (List<TrabajadoresTurnoEmbarque>) getWrappedData();
+    public TrabajadorTurnoEmbarqueVO getRowData(String rowKey) {
+        List<TrabajadorTurnoEmbarqueVO> trabajadores = (List<TrabajadorTurnoEmbarqueVO>) getWrappedData();
         
-        for(TrabajadoresTurnoEmbarque tte : trabajadores)
-            if (tte.getPersonal().getCuil().equalsIgnoreCase(rowKey))
-                return tte;
+        for(TrabajadorTurnoEmbarqueVO tteVO : trabajadores)
+            if (tteVO.getTte().getPersonal().getCuil().equalsIgnoreCase(rowKey))
+                return tteVO;
         
         return null;
     }
     
-    public int getRowIndex(TrabajadoresTurnoEmbarque t){
-        List<TrabajadoresTurnoEmbarque> trabajadores = (List<TrabajadoresTurnoEmbarque>) getWrappedData();
+    public int getRowIndex(TrabajadorTurnoEmbarqueVO t){
+        List<TrabajadorTurnoEmbarqueVO> trabajadores = (List<TrabajadorTurnoEmbarqueVO>) getWrappedData();
         
         for(int i = 0; i < trabajadores.size(); i++)
-            if (trabajadores.get(i).getPersonal().getCuil().equalsIgnoreCase((String) getRowKey(t)))
+            if (trabajadores.get(i).getTte().getPersonal().getCuil().equalsIgnoreCase((String) getRowKey(t)))
                 return i;
                 
         
