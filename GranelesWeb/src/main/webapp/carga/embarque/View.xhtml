@@ -118,27 +118,31 @@
                     </p:fieldset> 
                 </div>
                 <p:panel style="width: 100%; float: left;" >
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                             <h:commandButton action="#{embarqueController.generarReportePlano()}"
                                          label="Generar Plano de Carga"
                                          value="Generar Plano de Carga"
-                                         rendered="#{embarqueController.urlReportePlano == null}"
-                                         />
-                            
+                                         rendered="#{embarqueController.urlReportePlano == null}" />
                             <h:link value="Plano de Carga" 
                                     onclick="window.open('#{embarqueController.urlReportePlano}','Download');window.close();" 
                                     rendered="#{embarqueController.urlReportePlano != null}" />
 
+                            
                            <h:commandButton action="#{embarqueController.generarReporteResumenCargasTurnos()}"
                                          label="Generar Resumen Total de Cargas por Turnos"
                                          value="Generar Resumen Total de Cargas por Turnos"
-                                         rendered="#{embarqueController.urlReporteResumenCargasTurnos == null}"
-                                         />
-                            
-                            <h:link value="Resumen Total de Cargas por Turnos" 
+                                         rendered="#{embarqueController.urlReporteResumenCargasTurnos == null}" />
+                           <h:link value="Resumen Total de Cargas por Turnos" 
                                     onclick="window.open('#{embarqueController.urlReporteResumenCargasTurnos}','Download');window.close();" 
                                     rendered="#{embarqueController.urlReporteResumenCargasTurnos != null}" />
-
+                           
+                           <h:commandButton action="#{embarqueController.generarReporteResumenCargasCoordinador()}"
+                                         label="Generar Resumen Total de Cargas por Coordinador"
+                                         value="Generar Resumen Total de Cargas por Coordinador"
+                                         rendered="#{embarqueController.urlReporteResumenCargasCoordinador == null}" />
+                           <h:link value="Resumen Total de Cargas por Coordinador" 
+                                    onclick="window.open('#{embarqueController.urlReporteResumenCargasCoordinador}','Download');window.close();" 
+                                    rendered="#{embarqueController.urlReporteResumenCargasCoordinador != null}" />
                         
                     </h:panelGrid>
                 </p:panel>

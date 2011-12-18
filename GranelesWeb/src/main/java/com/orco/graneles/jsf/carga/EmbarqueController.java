@@ -14,6 +14,7 @@ import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.reports.EmbarquePlanoCarga;
+import com.orco.graneles.reports.ResumenCargasPorCoordinador;
 import com.orco.graneles.reports.ResumenCargasPorTurno;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
@@ -89,6 +90,7 @@ public class EmbarqueController implements Serializable {
     //Reportes
     private String urlReportePlano;
     private String urlReporteResumenCargasTurnos;
+    private String urlReporteResumenCargasCoordinador;
     
     public EmbarqueController() {
     }
@@ -114,6 +116,7 @@ public class EmbarqueController implements Serializable {
         listaArchivos = null;
         urlReportePlano = null;
         urlReporteResumenCargasTurnos = null;
+        urlReporteResumenCargasCoordinador = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -275,6 +278,10 @@ public class EmbarqueController implements Serializable {
     public void generarReporteResumenCargasTurnos(){
         urlReporteResumenCargasTurnos = (new ResumenCargasPorTurno(current)).obtenerReportePDF();
     }
+    
+    public void generarReporteResumenCargasCoordinador(){
+        urlReporteResumenCargasCoordinador = (new ResumenCargasPorCoordinador(current)).obtenerReportePDF();
+    }
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
@@ -356,8 +363,10 @@ public class EmbarqueController implements Serializable {
         return urlReporteResumenCargasTurnos;
     }
 
+    public String getUrlReporteResumenCargasCoordinador(){
+        return urlReporteResumenCargasCoordinador;
+    }
     
-
     
     
     
