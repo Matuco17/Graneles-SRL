@@ -428,7 +428,7 @@
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField isBlankWhenNull="true">
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
 				<reportElement x="0" y="1" width="59" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{turnoFecha}]]></textFieldExpression>
