@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,10 @@ public abstract class ReporteGenerico {
     
     public abstract String obtenerReportePDF();
     
+    protected String[] getUrlImagenes(){
+        return null;
+    };
+    
     /**
      * Metodo generico para la realizacion del reporte
      * @param ds Data source con la lista de los objetos del reporte
@@ -40,27 +45,26 @@ public abstract class ReporteGenerico {
     protected String printGenerico(JRBeanCollectionDataSource ds, String archivosJasper, String nombreArchivoPDF) {
         try
         {
-            /*
-            //Agrego la imagen de Logo Reducido por si el reporte lo necesita
-            try {
-                    params.put("logoreducido_img", new FileInputStream(request.getSession().getServletContext().getRealPath("/images/" + "logoReducido.jpg")));
-            } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+            Map<String, Object> params = new HashMap<String, Object>();
+            
+            //Cargo las imagenes del reporte
+            if (getUrlImagenes() != null){
+                for (int i = 0; i < getUrlImagenes().length; i++){
+                    try {
+                        params.put(getUrlImagenes()[i], new FileInputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/" + getUrlImagenes()[i])));
+                    } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                    }
+                }
             }
-            //Agrego la imagen de Membrete por si el reporte lo necesita
-            try {
-                    params.put("membrete_img", new FileInputStream(request.getSession().getServletContext().getRealPath("/images/" + "membrete.jpg")));
-            } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-            }
-             */
+                        
             
             String pathBaseReportes = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "/";
 
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, ds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, ds);
                     
             
             String pathPdfGenerado = pathBaseReportes + nombreArchivoPDF + ".pdf";

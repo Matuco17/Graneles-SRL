@@ -13,6 +13,7 @@ import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
+import com.orco.graneles.reports.EmbarquePlanoCarga;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
 
@@ -84,6 +85,9 @@ public class EmbarqueController implements Serializable {
     private List<ArchivoEmbarque> listaArchivos;
     private UploadedFile currentFile;
     
+    //Reportes
+    private String urlReporteGenerado;
+    
     public EmbarqueController() {
     }
 
@@ -106,6 +110,7 @@ public class EmbarqueController implements Serializable {
         currentTE = null;
         currentFile = null;
         listaArchivos = null;
+        urlReporteGenerado = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -259,9 +264,11 @@ public class EmbarqueController implements Serializable {
         }
         return items;
     }
-
     
-
+    public void generarReportePlano(){
+        urlReporteGenerado = (new EmbarquePlanoCarga(current)).obtenerReportePDF();
+    }
+    
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
@@ -335,7 +342,15 @@ public class EmbarqueController implements Serializable {
         this.listaTurnos = listaTurnos;
     }
 
+    public String getUrlReporteGenerado() {
+        return urlReporteGenerado;
+    }
 
+    public void setUrlReporteGenerado(String urlReporteGenerado) {
+        this.urlReporteGenerado = urlReporteGenerado;
+    }
+
+    
     
     
     

@@ -13,11 +13,13 @@ import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.lowagie.text.pdf.AcroFields.Item;
 import com.orco.graneles.domain.*;
+import com.orco.graneles.domain.carga.Embarque;
 import com.orco.graneles.domain.miscelaneos.EstadoCivil;
 import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
 import com.orco.graneles.domain.miscelaneos.TipoDocumento;
 import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.vo.ResumenCargaEmbarqueVO;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -61,6 +63,11 @@ public class DummiesFactory {
         return items;
     }
     
+    public static List<ResumenCargaEmbarqueVO> crearResumenEmbarque(){
+        List<ResumenCargaEmbarqueVO> resumenes = new ArrayList<ResumenCargaEmbarqueVO>();
+        resumenes.add(new ResumenCargaEmbarqueVO(new Embarque()));
+        return resumenes;
+    }
     
     public static Periodo crearPeriodo(){
         Periodo periodoDummy = new Periodo();
