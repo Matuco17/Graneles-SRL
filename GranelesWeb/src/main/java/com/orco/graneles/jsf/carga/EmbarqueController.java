@@ -14,6 +14,7 @@ import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.reports.EmbarquePlanoCarga;
+import com.orco.graneles.reports.ResumenCargasPorTurno;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
 
@@ -86,7 +87,8 @@ public class EmbarqueController implements Serializable {
     private UploadedFile currentFile;
     
     //Reportes
-    private String urlReporteGenerado;
+    private String urlReportePlano;
+    private String urlReporteResumenCargasTurnos;
     
     public EmbarqueController() {
     }
@@ -110,7 +112,8 @@ public class EmbarqueController implements Serializable {
         currentTE = null;
         currentFile = null;
         listaArchivos = null;
-        urlReporteGenerado = null;
+        urlReportePlano = null;
+        urlReporteResumenCargasTurnos = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -266,9 +269,12 @@ public class EmbarqueController implements Serializable {
     }
     
     public void generarReportePlano(){
-        urlReporteGenerado = (new EmbarquePlanoCarga(current)).obtenerReportePDF();
+        urlReportePlano = (new EmbarquePlanoCarga(current)).obtenerReportePDF();
     }
     
+    public void generarReporteResumenCargasTurnos(){
+        urlReporteResumenCargasTurnos = (new ResumenCargasPorTurno(current)).obtenerReportePDF();
+    }
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
@@ -342,13 +348,15 @@ public class EmbarqueController implements Serializable {
         this.listaTurnos = listaTurnos;
     }
 
-    public String getUrlReporteGenerado() {
-        return urlReporteGenerado;
+    public String getUrlReportePlano() {
+        return urlReportePlano;
     }
 
-    public void setUrlReporteGenerado(String urlReporteGenerado) {
-        this.urlReporteGenerado = urlReporteGenerado;
+    public String getUrlReporteResumenCargasTurnos() {
+        return urlReporteResumenCargasTurnos;
     }
+
+    
 
     
     

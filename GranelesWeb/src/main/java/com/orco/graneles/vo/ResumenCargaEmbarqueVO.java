@@ -22,6 +22,12 @@ public class ResumenCargaEmbarqueVO {
     
     private BigDecimal[] totalCargadoXBodega;
     private CargaPrevia[] cargasPrevias; //cargas previas del embarque ordenadas
+    private BigDecimal[] totalEnBuqueXBodega;
+    
+    private BigDecimal totalCargaActual;
+    private BigDecimal totalCargaPrevia;
+    private BigDecimal totalEnBuque;
+    
     
     public ResumenCargaEmbarqueVO(Embarque embarque){
         this.embarque = embarque;
@@ -44,6 +50,24 @@ public class ResumenCargaEmbarqueVO {
             cargasPrevias[cp.getBodega().getNro()] = cp;
         }
         
+        totalEnBuqueXBodega = new BigDecimal[8];
+        for(int i = 1; i < totalEnBuqueXBodega.length; i++){
+            totalEnBuqueXBodega[i] = cargasPrevias[i].getCarga().add(totalCargadoXBodega[i]);
+        }
+        
+        //Pto, atenterior
+        totalCargaPrevia = BigDecimal.ZERO;
+        for(int i = 1; i < cargasPrevias.length; i++){ 
+            totalCargaPrevia = totalCargaPrevia.add(cargasPrevias[i].getCarga());
+        }
+        
+        //Total carga actual
+        totalCargaActual = BigDecimal.ZERO;
+        for(int i = 1; i < totalCargadoXBodega.length; i++){
+            totalCargaActual = totalCargaActual.add(totalCargadoXBodega[i]);           
+        }
+        
+        totalEnBuque = totalCargaPrevia.add(totalCargaActual);
         
     }
     
@@ -53,6 +77,10 @@ public class ResumenCargaEmbarqueVO {
     
     public Long getEmbarqueCodigo(){
         return embarque.getCodigo();
+    }
+    
+    public String getNombreBuque(){
+        return embarque.getBuque().getDescripcion();
     }
     
     public Date getFechaReporte(){
@@ -109,6 +137,29 @@ public class ResumenCargaEmbarqueVO {
         return cargasPrevias[7].getCarga();
     }
     
+    //Cargas Totales X Bodega
+    public BigDecimal getEnBuqueBod1(){
+        return totalEnBuqueXBodega[1];
+    }
+    public BigDecimal getEnBuqueBod2(){
+        return totalEnBuqueXBodega[2];
+    }
+    public BigDecimal getEnBuqueBod3(){
+        return totalEnBuqueXBodega[3];
+    }
+    public BigDecimal getEnBuqueBod4(){
+        return totalEnBuqueXBodega[4];
+    }
+    public BigDecimal getEnBuqueBod5(){
+        return totalEnBuqueXBodega[5];
+    }
+    public BigDecimal getEnBuqueBod6(){
+        return totalEnBuqueXBodega[6];
+    }
+    public BigDecimal getEnBuqueBod7(){
+        return totalEnBuqueXBodega[7];
+    }
+    
     //Mercaderia
     public String getMercaderiaBod1(){
         return cargasPrevias[1].getMercaderia().getDescripcion();
@@ -134,22 +185,14 @@ public class ResumenCargaEmbarqueVO {
   
     //TOTALES
     public BigDecimal getTotalPuertoAnterior(){
-        BigDecimal total = BigDecimal.ZERO;
-        for(int i = 1; i < cargasPrevias.length; i++) 
-            total = total.add(cargasPrevias[i].getCarga());
-        return total;
-
+        return totalCargaPrevia;
     }
     
     public BigDecimal getTotalCargaActual(){
-        BigDecimal total = BigDecimal.ZERO;
-        for(int i = 1; i < totalCargadoXBodega.length; i++)
-            total = total.add(totalCargadoXBodega[i]);
-        return total;
-        
+        return totalCargaActual;
     } 
     
     public BigDecimal getTotalCargaBuque(){
-        return getTotalPuertoAnterior().add(getTotalCargaActual());
+        return totalEnBuque;
     }
 }

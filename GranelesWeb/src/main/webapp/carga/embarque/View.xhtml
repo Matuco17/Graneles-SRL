@@ -118,19 +118,28 @@
                     </p:fieldset> 
                 </div>
                 <p:panel style="width: 100%; float: left;" >
-                    <h:panelGrid columns="1">
-                        <div>
+                    <h:panelGrid columns="2">
                             <h:commandButton action="#{embarqueController.generarReportePlano()}"
-                                         label="Generar Reporte Plano"
-                                         value="Generar Reporte Plano"
-                                         rendered="#{embarqueController.urlReporteGenerado == null}"
+                                         label="Generar Plano de Carga"
+                                         value="Generar Plano de Carga"
+                                         rendered="#{embarqueController.urlReportePlano == null}"
                                          />
                             
-                            <h:link value="Reporte Plano" 
-                                    onclick="window.open('#{embarqueController.urlReporteGenerado}','Download');window.close();" 
-                                    rendered="#{embarqueController.urlReporteGenerado != null}" />
+                            <h:link value="Plano de Carga" 
+                                    onclick="window.open('#{embarqueController.urlReportePlano}','Download');window.close();" 
+                                    rendered="#{embarqueController.urlReportePlano != null}" />
 
-                        </div>
+                           <h:commandButton action="#{embarqueController.generarReporteResumenCargasTurnos()}"
+                                         label="Generar Resumen Total de Cargas por Turnos"
+                                         value="Generar Resumen Total de Cargas por Turnos"
+                                         rendered="#{embarqueController.urlReporteResumenCargasTurnos == null}"
+                                         />
+                            
+                            <h:link value="Resumen Total de Cargas por Turnos" 
+                                    onclick="window.open('#{embarqueController.urlReporteResumenCargasTurnos}','Download');window.close();" 
+                                    rendered="#{embarqueController.urlReporteResumenCargasTurnos != null}" />
+
+                        
                     </h:panelGrid>
                 </p:panel>
                 <p:panel style="width: 100%; float: left;" > 
