@@ -14,6 +14,7 @@ import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.reports.EmbarquePlanoCarga;
+import com.orco.graneles.reports.PlanillaTrabajadoresTurno;
 import com.orco.graneles.reports.ResumenCargasPorCoordinador;
 import com.orco.graneles.reports.ResumenCargasPorTurno;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
@@ -87,10 +88,13 @@ public class EmbarqueController implements Serializable {
     private List<ArchivoEmbarque> listaArchivos;
     private UploadedFile currentFile;
     
-    //Reportes
+    //Reportes Embarque
     private String urlReportePlano;
     private String urlReporteResumenCargasTurnos;
     private String urlReporteResumenCargasCoordinador;
+    //Reportes Turno
+    private String urlReportePlanillaTrabajadores;
+    
     
     public EmbarqueController() {
     }
@@ -381,6 +385,7 @@ public class EmbarqueController implements Serializable {
         this.selectedTTE = null;
         this.cargas = null;
         this.cargasModel = null;
+        this.urlReportePlanillaTrabajadores = null;
     }
     
     public boolean validarTurno(){
@@ -559,6 +564,10 @@ public class EmbarqueController implements Serializable {
         selectedTTE = (TrabajadorTurnoEmbarqueVO) getTrabajadoresTurnoModel().getRowData();
     }
     
+    public void generarPlanillaTrabajdores(){
+        urlReportePlanillaTrabajadores = (new PlanillaTrabajadoresTurno(currentTE)).obtenerReportePDF();
+    }
+    
     public List<Personal> getTrabajadores(){
         if (trabajadores == null){
             trabajadores = personalF.findAll();
@@ -621,7 +630,12 @@ public class EmbarqueController implements Serializable {
         }
         return cargas;
     }
+
+    public String getUrlReportePlanillaTrabajadores() {
+        return urlReportePlanillaTrabajadores;
+    }
   
+    
      /*
      * Fin Funcionalidades turno Embarque
      */

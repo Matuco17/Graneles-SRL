@@ -144,39 +144,53 @@
             </p:fieldset>
         </div> 
 
-        <p:fieldset id="panCarga" legend="Carga" toggleable="true" style="width: 300px; float: left;" >
-            <p:accordionPanel style="width: 300px;">
-                <c:forEach items="#{embarqueController.cargas}" var="cargaTurno" >
-                    <p:tab title="#{cargaTurno.coordinador.toString()}" >
-                        <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
-                            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" />
-                            <h:selectOneMenu value="#{cargaTurno.coordinador}" >
-                                <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
-                            </h:selectOneMenu>
-                        </h:panelGrid>
+        <div style="width: 300px; float: left;">
+            <p:fieldset id="panCarga" legend="Carga" toggleable="true" style="width: 300px; float: left;" >
+                <p:accordionPanel style="width: 300px;">
+                    <c:forEach items="#{embarqueController.cargas}" var="cargaTurno" >
+                        <p:tab title="#{cargaTurno.coordinador.toString()}" >
+                            <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
+                                <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" />
+                                <h:selectOneMenu value="#{cargaTurno.coordinador}" >
+                                    <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
+                                </h:selectOneMenu>
+                            </h:panelGrid>
 
-                        <p:dataTable value="#{cargaTurno.cargasSorted}" var="carga" >
-                            <p:column headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; " >
-                                <h:outputText value="#{carga.nroBodega}" />
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" style="text-align: left; " >
-                                <h:outputText value="#{carga.mercaderiaBodega.toString()}" />
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
-                                <p:inputText value="#{carga.carga}" readonly="#{!cc.attrs.editar}" style="text-align: right;"  />
-                            </p:column>
-                        </p:dataTable>  
-                    </p:tab>
-                </c:forEach>
-            </p:accordionPanel>
+                            <p:dataTable value="#{cargaTurno.cargasSorted}" var="carga" >
+                                <p:column headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; " >
+                                    <h:outputText value="#{carga.nroBodega}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" style="text-align: left; " >
+                                    <h:outputText value="#{carga.mercaderiaBodega.toString()}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
+                                    <p:inputText value="#{carga.carga}" readonly="#{!cc.attrs.editar}" style="text-align: right;"  />
+                                </p:column>
+                            </p:dataTable>  
+                        </p:tab>
+                    </c:forEach>
+                </p:accordionPanel>
 
-            <h:commandButton id="btnAgregarCargaTurno" 
-                             action="#{embarqueController.agregarCargaTurno}"
-                             image="/faces/resources/images/new.png"
-                             rendered="#{cc.attrs.editar}">
-            </h:commandButton>
+                <h:commandButton id="btnAgregarCargaTurno" 
+                                 action="#{embarqueController.agregarCargaTurno}"
+                                 image="/faces/resources/images/new.png"
+                                 rendered="#{cc.attrs.editar}">
+                </h:commandButton>
 
-        </p:fieldset>
+            </p:fieldset>
+
+            <p:fieldset id="panReportes" legend="Reportes" toggleable="true" rendered="#{!cc.attrs.editar}" style="width: 300px; float: left;">
+                <h:commandButton action="#{embarqueController.generarPlanillaTrabajdores()}"
+                             label="Generar Planilla de Trabajadores"
+                             value="Generar Planilla de Trabajadores"
+                             rendered="#{embarqueController.urlReportePlanillaTrabajadores == null}" />
+                <h:link value="Resumen Total de Cargas por Coordinador" 
+                        onclick="window.open('#{embarqueController.urlReportePlanillaTrabajadores}','Download');window.close();" 
+                        rendered="#{embarqueController.urlReportePlanillaTrabajadores != null}" />
+
+
+            </p:fieldset>
+        </div>
 
 
     </co:implementation>

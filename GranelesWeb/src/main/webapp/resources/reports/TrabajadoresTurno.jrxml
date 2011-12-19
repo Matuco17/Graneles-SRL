@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrabajadoresTurno" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="apellido" class="java.lang.String">
+		<fieldDescription><![CDATA[apellido]]></fieldDescription>
+	</field>
+	<field name="buqueNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[buqueNombre]]></fieldDescription>
+	</field>
+	<field name="categoriaDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[categoriaDescripcion]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cuil" class="java.lang.String">
+		<fieldDescription><![CDATA[cuil]]></fieldDescription>
+	</field>
+	<field name="fechaTurno" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaTurno]]></fieldDescription>
+	</field>
+	<field name="horas" class="java.lang.Integer">
+		<fieldDescription><![CDATA[horas]]></fieldDescription>
+	</field>
+	<field name="insalubre" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[insalubre]]></fieldDescription>
+	</field>
+	<field name="jornalBasico" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[jornalBasico]]></fieldDescription>
+	</field>
+	<field name="peligrosa" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[peligrosa]]></fieldDescription>
+	</field>
+	<field name="productiva" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[productiva]]></fieldDescription>
+	</field>
+	<field name="registro" class="java.lang.String">
+		<fieldDescription><![CDATA[registro]]></fieldDescription>
+	</field>
+	<field name="sitio" class="java.lang.String">
+		<fieldDescription><![CDATA[sitio]]></fieldDescription>
+	</field>
+	<field name="tareaDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[tareaDescripcion]]></fieldDescription>
+	</field>
+	<field name="tte" class="com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque">
+		<fieldDescription><![CDATA[tte]]></fieldDescription>
+	</field>
+	<field name="turnoDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[turnoDescripcion]]></fieldDescription>
+	</field>
+	<field name="valorBruto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorBruto]]></fieldDescription>
+	</field>
+	<field name="valorTurno" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorTurno]]></fieldDescription>
+	</field>
+	<variable name="nroOrden" class="java.lang.Integer" incrementType="Report" calculation="Count">
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<variable name="valorBruto_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorBruto}]]></variableExpression>
+	</variable>
+	<variable name="valorTurno_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorTurno}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="802" height="50"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="126" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANSSES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BUQUE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="11" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="31" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SITIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="11" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="31" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TURNO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="11" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOJA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="11" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[30-68807557-9]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="31" width="171" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{buqueNombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="331" y="11" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Carga]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="331" y="31" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sitio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement x="514" y="11" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaTurno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="31" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turnoDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="749" y="11" width="53" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="68" width="802" height="50"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["En el puerto de BAHIA BLANCA a los _____ días del mes de ____________ del año _____ comparece ante el suscriptor funcionario ________________________ del Consorcio de Gestión del Puerto de Bahía Blanca, el representante de la empresa GRANELES S.R.L., a fin de efectura la Declaración Jurada de la Nómina del Personal Eventual Contratado, correspondiente al día" + $F{fechaTurno}.toLocaleString() + ", conforme al detalle que obra a continuación:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="27" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="27" y="0" width="37" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="64" y="0" width="20" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="84" y="0" width="343" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="427" y="0" width="62" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="489" y="0" width="45" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="534" y="0" width="154" height="40"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="688" y="0" width="114" height="40"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="27" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[N° Ord]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="0" width="37" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="0" width="20" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Hs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="0" width="343" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Consocio de Gestión del Puerto de Bahía Blanca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="21" width="88" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="21" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Reg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="20" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CUIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="20" width="140" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Apellido y Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="1" width="62" height="39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cargo Asignado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="1" width="45" height="39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jornal Básico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="1" width="154" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Adicional Imp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="538" y="21" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Insal.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="588" y="21" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Pelig.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="638" y="21" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Prod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="698" y="1" width="50" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Bruto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="752" y="1" width="50" height="39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Neto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="27" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{nroOrden}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="0" width="37" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turnoDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="64" y="0" width="20" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="88" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoriaDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="0" width="35" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="0" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="0" width="140" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="0" width="62" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tareaDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="489" y="0" width="45" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jornalBasico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="538" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insalubre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="588" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peligrosa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productiva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="698" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorBruto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="752" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTurno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="27" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="2" width="802" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="598" y="2" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="698" y="2" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{valorBruto_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="752" y="2" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{valorTurno_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="31"/>
+				<textElement/>
+				<text><![CDATA[No siendo para más y en prueba de conformidad. El compareciente previa lectura y retificación ante mi, Funcionario Interviniente firma al pie dando conformidad, de todo lo cual doy fe.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
