@@ -26,9 +26,17 @@
 
                         <h:commandButton action="Edit" 
                                          image="/faces/resources/images/viewAll.png" 
-                                         value="#{bundleCarga.TurnoEmbarqueShowAllLink}"
-                                         title="#{bundleCarga.TurnoEmbarqueShowAllLink}"
-                                         immediate="true" 
+                                         value="#{bundleCarga.EmbarqueEditLink}"
+                                         title="#{bundleCarga.EmbarqueEditLink}"
+                                         rendered="#{embarqueController.editarTurno}"                                         
+                                         />
+                        
+                        <h:commandButton action="View" 
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleCarga.EmbarqueViewLink}"
+                                         title="#{bundleCarga.EmbarqueViewLink}"
+                                         immediate="true"
+                                         rendered="#{!embarqueController.editarTurno}"                                         
                                          />
                     </h:panelGrid>
                 </p:panel>
