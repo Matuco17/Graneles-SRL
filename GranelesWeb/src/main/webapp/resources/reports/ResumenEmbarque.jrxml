@@ -595,14 +595,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mercaderiaBod6}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mercaderiaBod7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="678" y="40" width="113" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cargadoBod6}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cargadoBod7}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="678" y="85" width="113" height="20"/>
@@ -616,7 +616,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cargaPreviaBod6}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cargaPreviaBod7}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="678" y="150" width="113" height="20"/>
