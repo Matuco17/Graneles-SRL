@@ -4,13 +4,12 @@
  */
 package com.orco.graneles.vo;
 
-import com.orco.graneles.domain.carga.CargaPrevia;
-import com.orco.graneles.domain.carga.CargaTurno;
-import com.orco.graneles.domain.carga.CargaTurnoCargas;
-import com.orco.graneles.domain.carga.Embarque;
-import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.carga.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -28,9 +27,16 @@ public class ResumenCargaEmbarqueVO {
     private BigDecimal totalCargaPrevia;
     private BigDecimal totalEnBuque;
     
+    private List<TotalesCargaVO> totalesCargaActual;
+    private List<TotalesCargaVO> totalesCargaPrevia;
+    private List<TotalesCargaVO> totalesCargaEnBuque;
+    
     
     public ResumenCargaEmbarqueVO(Embarque embarque){
         this.embarque = embarque;
+        totalesCargaActual = new ArrayList<TotalesCargaVO>();
+        totalesCargaEnBuque = new ArrayList<TotalesCargaVO>();
+        totalesCargaPrevia = new ArrayList<TotalesCargaVO>();
         
         //Realizo el proceso de calculos
         totalCargadoXBodega = new BigDecimal[8];
@@ -40,7 +46,9 @@ public class ResumenCargaEmbarqueVO {
         for (TurnoEmbarque te : embarque.getTurnoEmbarqueCollection()){
             for (CargaTurno ct : te.getCargaTurnoCollection()){
                 for (CargaTurnoCargas ctc : ct.getCargasCollection()){
-                    totalCargadoXBodega[ctc.getNroBodega()] = totalCargadoXBodega[ctc.getNroBodega()].add(ctc.getCarga()); 
+                    totalCargadoXBodega[ctc.getNroBodega()] = totalCargadoXBodega[ctc.getNroBodega()].add(ctc.getCarga());
+                    agregarAlListaTotal(totalesCargaActual, ctc.getMercaderiaBodega().getDescripcion(), ctc.getCarga());
+                    agregarAlListaTotal(totalesCargaEnBuque, ctc.getMercaderiaBodega().getDescripcion(), ctc.getCarga());
                 }
             }
         }
@@ -48,6 +56,8 @@ public class ResumenCargaEmbarqueVO {
         cargasPrevias = new CargaPrevia[8];
         for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
             cargasPrevias[cp.getBodega().getNro()] = cp;
+            agregarAlListaTotal(totalesCargaPrevia, cp.getMercaderia().getDescripcion(), cp.getCarga());
+            agregarAlListaTotal(totalesCargaEnBuque, cp.getMercaderia().getDescripcion(), cp.getCarga());
         }
         
         totalEnBuqueXBodega = new BigDecimal[8];
@@ -69,6 +79,21 @@ public class ResumenCargaEmbarqueVO {
         
         totalEnBuque = totalCargaPrevia.add(totalCargaActual);
         
+        Collections.sort(totalesCargaActual);
+        Collections.sort(totalesCargaEnBuque);
+        Collections.sort(totalesCargaPrevia);
+        
+    }
+    
+    
+    private void agregarAlListaTotal(List<TotalesCargaVO> lista, String mercaderiaNombre, BigDecimal carga){
+        for (TotalesCargaVO tcVO : lista){
+            if (tcVO.getMercaderia().equalsIgnoreCase(mercaderiaNombre)){
+                tcVO.setCarga(tcVO.getCarga().add(carga));
+                return;
+            }
+        }
+        lista.add(new TotalesCargaVO(mercaderiaNombre, carga));
     }
     
     public Long getEmbarqueId(){
@@ -195,4 +220,18 @@ public class ResumenCargaEmbarqueVO {
     public BigDecimal getTotalCargaBuque(){
         return totalEnBuque;
     }
+
+    public List<TotalesCargaVO> getTotalesCargaActual() {
+        return totalesCargaActual;
+    }
+
+    public List<TotalesCargaVO> getTotalesCargaEnBuque() {
+        return totalesCargaEnBuque;
+    }
+
+    public List<TotalesCargaVO> getTotalesCargaPrevia() {
+        return totalesCargaPrevia;
+    }
+    
+    
 }
