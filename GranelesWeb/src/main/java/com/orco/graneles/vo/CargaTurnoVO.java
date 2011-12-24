@@ -38,11 +38,11 @@ public class CargaTurnoVO {
     }
 
     public Long getCoordinadorId(){
-        return ct.getCoordinador().getId();
+        return ct.getCargador().getId();
     }
     
     public String getCoodinadorNombre(){
-        return ct.getCoordinador().getNombre();
+        return ct.getCargador().getNombre();
     }
     
     public Date getTurnoFecha(){

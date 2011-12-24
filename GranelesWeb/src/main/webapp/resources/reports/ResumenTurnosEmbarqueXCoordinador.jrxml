@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenTurnosEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.1000000000000005"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="28"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
@@ -306,7 +306,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Coordinador:]]></text>
+					<text><![CDATA[Cargador:]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="135" y="0" width="665" height="30"/>
@@ -535,7 +535,7 @@
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Resumen Total de Cargas de Turnos por coordinador]]></text>
+				<text><![CDATA[Resumen Total de Cargas de Turnos por cargador]]></text>
 			</staticText>
 		</band>
 	</title>

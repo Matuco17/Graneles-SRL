@@ -42,7 +42,7 @@ public class CargaTurnoFacade extends AbstractFacade<CargaTurno> {
         
         CargaTurno cargaTurno = new CargaTurno();
         cargaTurno.setTurnoEmbarque(tembarque);
-        cargaTurno.setCoordinador(tembarque.getEmbarque().getCoordinador());
+        cargaTurno.setCargador(tembarque.getEmbarque().getCoordinador());
         cargaTurno.setCargasCollection(new ArrayList<CargaTurnoCargas>());
         
         for (CargaPrevia cargaOriginal : tembarque.getEmbarque().getCargaPreviaCollection()){

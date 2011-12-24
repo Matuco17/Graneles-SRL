@@ -37,7 +37,7 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Empresa coordinador;
+    private Empresa cargador;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargasCollection;
@@ -66,12 +66,12 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.turnoEmbarque = turnoEmbarque;
     }
 
-    public Empresa getCoordinador() {
-        return coordinador;
+    public Empresa getCargador() {
+        return cargador;
     }
 
-    public void setCoordinador(Empresa coordinador) {
-        this.coordinador = coordinador;
+    public void setCargador(Empresa cargador) {
+        this.cargador = cargador;
     }
 
     public Collection<CargaTurnoCargas> getCargasCollection() {
@@ -120,7 +120,7 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @Override
     public int compareTo(CargaTurno o) {
         if (this.getTurnoEmbarque().equals(o.getTurnoEmbarque())){
-            return this.getCoordinador().getNombre().compareTo(o.getCoordinador().getNombre());
+            return this.getCargador().getNombre().compareTo(o.getCargador().getNombre());
         } else {
             return this.getTurnoEmbarque().compareTo(o.getTurnoEmbarque());
         }      

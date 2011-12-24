@@ -148,10 +148,10 @@
             <p:fieldset id="panCarga" legend="Carga" toggleable="true" style="width: 300px; float: left;" >
                 <p:accordionPanel style="width: 300px;">
                     <c:forEach items="#{embarqueController.cargas}" var="cargaTurno" >
-                        <p:tab title="#{cargaTurno.coordinador.toString()}" >
+                        <p:tab title="#{cargaTurno.cargador.toString()}" >
                             <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
-                                <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" />
-                                <h:selectOneMenu value="#{cargaTurno.coordinador}" >
+                                <h:outputLabel value="#{bundleCarga.CargaTurnoTitle_cargador}" />
+                                <h:selectOneMenu value="#{cargaTurno.cargador}" >
                                     <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
                                 </h:selectOneMenu>
                             </h:panelGrid>
