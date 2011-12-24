@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroSueldos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="485" leftMargin="85" rightMargin="25" topMargin="99" bottomMargin="23">
 	<property name="ireport.zoom" value="1.6105100000000119"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="51"/>
+	<property name="ireport.y" value="34"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -304,11 +304,11 @@
 				<textFieldExpression><![CDATA[(($V{PAGE_NUMBER} + $F{nroPrimeraHoja} - 2) % 500) + 1]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="22" width="480" height="26" isPrintWhenDetailOverflows="true"/>
+				<reportElement x="0" y="22" width="325" height="12" isPrintWhenDetailOverflows="true"/>
 				<textElement>
 					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[HABILITACION DEL REGISTRO DE HOJAS MOVILES EN REEMPLAZO DEL LIBRO ESPECIAL  ART. 52 LEY 20744 (T.O.)]]></text>
+				<text><![CDATA[REGISTRO DE REMUNERACIONES LEY 20744 (T.O.)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="11" width="377" height="12"/>
@@ -318,14 +318,14 @@
 				<text><![CDATA[GRANELES S.R.L. - 30-68807557-9 - CARREGA 3746 - ING. WHITE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="325" y="34" width="100" height="12"/>
+				<reportElement x="325" y="22" width="100" height="12"/>
 				<textElement>
 					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[PERIODO ABONADO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="422" y="34" width="46" height="12"/>
+				<reportElement x="422" y="22" width="46" height="12"/>
 				<textElement>
 					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 				</textElement>
@@ -344,6 +344,13 @@
 					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[TOMO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="34" width="480" height="12" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[                     Disposición D.R.B.B N° 685/96]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
