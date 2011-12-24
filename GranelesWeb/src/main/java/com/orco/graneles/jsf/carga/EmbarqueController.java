@@ -1,7 +1,6 @@
 package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.*;
-import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.personal.Tarea;
@@ -22,7 +21,6 @@ import java.io.IOException;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +35,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.event.ActionListener;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
