@@ -29,6 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.persistence.NoResultException;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 /**
  *
  * @author orco
@@ -129,14 +131,13 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return calInicio.getTime();
     }
    
-    private Collection<Sueldo> generarSueldosTTE(Periodo periodo){
+    private Map<Long, Sueldo> generarSueldosTTE(Periodo periodo, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
         List<TrabajadoresTurnoEmbarque> listaTTE = trabTurnoEmbarqueF.getTrabajadoresPeriodo(periodo);
-        Map<Integer, List<ConceptoRecibo>> conceptos = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
         Map<Long, Sueldo> mapSueldosXIdPers = new HashMap<Long, Sueldo>();
         
         //Por cada uno de los turnos trabajados realizo las operaciones
         for(TrabajadoresTurnoEmbarque tte : listaTTE){
-            Sueldo sueldoTTE = sueldoF.calcularSueldoTTE(periodo, tte, conceptos);
+            Sueldo sueldoTTE = sueldoF.calcularSueldoTTE(periodo, tte, conceptosHoras);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoTTEAnterior = mapSueldosXIdPers.get(tte.getPersonal().getId());
@@ -157,23 +158,33 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             
         }
         
-        return mapSueldosXIdPers.values();
+        return mapSueldosXIdPers;
     }
     
-    private Collection<Sueldo> generarSueldosAccidentados(Periodo periodo){
-        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo);
+    private Map<Long, Sueldo> generarSueldosAccidentados(Periodo periodo, Map<Long, Sueldo> mapSueldoCreados, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
+        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo.getDesde(), periodo.getHasta());
         
-        /*
-        Para cada Acc 
-    Por cada Acc ver cuanto le correspodne de remunerativo total y despues
-	buscar todas las deducciones
-        buscar todos los no remunerativos
-    generar los valores del sueldo, y likearlo al Acc
-    guardar
-    * 
-    */
-        return new ArrayList<Sueldo>();
+        
+        for (Accidentado acc : listaAcc){
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras);
+            
+            //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
+            Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
+            if (sueldoCreadoAnterior != null){
+                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoAcc));
+               
+                sueldoF.edit(sueldoCreadoAnterior);
+            } else {
+                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoAcc);
+               
+                sueldoF.create(sueldoAcc);
+                periodo.getSueldoCollection().add(sueldoAcc);
+            }
+        }
+       
+        return mapSueldoCreados;
     }
+    
     
     private Collection<Sueldo> generarSueldosMensuales(Periodo periodo){
         List<Personal> listaMens = personalF.getPersonalMensualActivo();
@@ -195,6 +206,9 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param periodo 
      */
     public void generarSueldosPeriodo(Periodo periodo){
+            Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        
+        
             //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
             for (Sueldo s : periodo.getSueldoCollection()){
                 for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
@@ -208,23 +222,91 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             //Persisto el periodo
             persist(periodo);
 
-            Collection<Sueldo> sueldosCalculados = new ArrayList<Sueldo>();
-            sueldosCalculados.addAll(generarSueldosTTE(periodo));
-            //sueldosCalculados.addAll(generarSueldosAccidentados(periodo));
-            //sueldosCalculados.addAll(generarSueldosMensuales(periodo));
+            Map<Long, Sueldo> sueldosCalculados = generarSueldosTTE(periodo, conceptosHoras);
+            sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
+            //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
             
-            //TODO: REALIZAR EL CÁLCULO DEL SAC si es necesario
-            //TODO: REALIZAR EL CALCULO DE LAS VACACIONES si es necesario
-
-
-            //Persisto todos los cambios
-            for (Sueldo s : sueldosCalculados){
-                sueldoF.persist(s);
+            //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
+            boolean calcularSac = periodoConSAC(periodo);
+            
+            for (Sueldo s : sueldosCalculados.values()){
+                //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
+                if (calcularSac 
+                    ||
+                    ((s.getPersonal().getBaja() != null)
+                        && s.getPersonal().getBaja().after(periodo.getDesde())
+                        && s.getPersonal().getBaja().before(periodo.getHasta()))){
+                    
+                    Date desde = obtenerDesdeSAC(periodo, s.getPersonal());
+                    Date hasta = obtenerHastaSAC(periodo, s.getPersonal());
+                    
+                    switch (s.getPersonal().getTipoRecibo().getId()){
+                        case TipoRecibo.HORAS:
+                            Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
+                            Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
+                            
+                            s = sueldoF.mergeSueldos(s, sueldoSAC);
+                            s = sueldoF.mergeSueldos(s, sueldoVacaciones);
+                            
+                            break;
+                        case TipoRecibo.MENSUAL:
+                            //TODO: COMPLETAR
+                            
+                            break;
+                    }
+                    
+                
+                    sueldoF.persist(s);
+                }
             }
 
             persist(periodo);  
             
-   }
+    }
+    
+    public Date obtenerDesdeSAC(Periodo periodo, Personal personal){
+        DateTime desdePeriodo = new DateTime(periodo.getDesde());
+        DateTime resultDesde = null;
+        if (desdePeriodo.getMonthOfYear() <= DateTimeConstants.JUNE){
+            resultDesde = new DateTime(desdePeriodo.getYear(), DateTimeConstants.JANUARY, 1, 0, 0);
+        } else {
+            resultDesde = new DateTime(desdePeriodo.getYear(), DateTimeConstants.JULY, 1, 0, 0);
+        }
+        
+        //Si el tipo ingreso despúes del periodo, entonces lo tomo desde ese momento
+        if (periodo.getDesde().before(personal.getIngreso())){
+            resultDesde = new DateTime(personal.getIngreso());
+        }
+        
+        return resultDesde.toDate();
+    }
+    
+    public Date obtenerHastaSAC(Periodo periodo, Personal personal){
+        DateTime hastaPeriodo = new DateTime(periodo.getDesde());
+        DateTime resultHasta = null;
+        if (hastaPeriodo.getMonthOfYear() <= DateTimeConstants.JUNE){
+            resultHasta = new DateTime(hastaPeriodo.getYear(), DateTimeConstants.JUNE, 30, 23, 59);
+        } else {
+            resultHasta = new DateTime(hastaPeriodo.getYear(), DateTimeConstants.DECEMBER, 31, 23, 59);
+        }
+        
+        //Si el tipo ingreso despúes del periodo, entonces lo tomo desde ese momento
+        if (personal.getBaja() != null
+            && personal.getBaja().before(periodo.getHasta())){
+            resultHasta = new DateTime(personal.getBaja());
+        }
+        
+        return resultHasta.toDate();
+    }
+    
+    
+    
+    public boolean periodoConSAC(Periodo periodo){
+        DateTime desde = new DateTime(periodo.getDesde());
+        
+        return (desde.getMonthOfYear() == DateTimeConstants.JUNE 
+            || desde.getMonthOfYear() == DateTimeConstants.DECEMBER);
+    }
     
     
     /*

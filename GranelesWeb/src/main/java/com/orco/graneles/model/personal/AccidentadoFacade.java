@@ -19,6 +19,7 @@ import com.orco.graneles.vo.NuevoAccidentadoVO;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 /**
@@ -48,21 +49,24 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
      * @param periodo
      * @return 
      */
-    public List<Accidentado> getAccidentadosPeriodo(Periodo periodo){
-        List<Accidentado> accidentados = new ArrayList<Accidentado>();
-        
-        //Tengo que hacer todas las busquedas ya que es complicado, asi que parto de los accidentados que no tienen libro
-        for(Accidentado acc : getEntityManager().createNamedQuery("Accidentado.findSinLibroSueldo", Accidentado.class).getResultList()){
-            //Tengo que ver que la fecha desde sea menor a la fecha final del periodo
-            if (acc.getDesde().before(periodo.getHasta())){
-                //Veo si no tiene hasta o si tiene hasta y es mayor a la fecha desde del periodo
-                if (acc.getHasta() == null || acc.getHasta().after(periodo.getDesde())){
-                    accidentados.add(acc);
-                }
-            }
-        }
-        
-        return accidentados;
+    public List<Accidentado> getAccidentadosPeriodo(Date desde, Date hasta){
+        return getEntityManager().createNamedQuery("Accidentado.findByPeriodo", Accidentado.class)
+                .setParameter("desde", desde)
+                .setParameter("hasta", hasta)
+                .getResultList();
+    }
+
+    /**
+     * Metodo que devuelve todos los accidentados del periodo del personal en cuestion
+     * @param periodo
+     * @return 
+     */
+    public List<Accidentado> getAccidentadosPeriodoYPersonal(Date desde, Date hasta, Personal personal){
+        return getEntityManager().createNamedQuery("Accidentado.findByPeriodoYPersonal", Accidentado.class)
+                .setParameter("personal", personal)
+                .setParameter("desde", desde)
+                .setParameter("hasta", hasta)
+                .getResultList();
     }
     
     /**

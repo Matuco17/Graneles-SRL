@@ -39,7 +39,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Accidentado.findByHasta", query = "SELECT a FROM Accidentado a WHERE a.hasta = :hasta"),
     @NamedQuery(name = "Accidentado.findByBruto", query = "SELECT a FROM Accidentado a WHERE a.bruto = :bruto"),
     @NamedQuery(name = "Accidentado.findSinLibroSueldo", query = "SELECT a FROM Accidentado a WHERE a.libroSueldo IS NULL"),
-    @NamedQuery(name = "Accidentado.findByDescripcionCortaAccidente", query = "SELECT a FROM Accidentado a WHERE a.descripcionCortaAccidente = :descripcionCortaAccidente")})
+    @NamedQuery(name = "Accidentado.findByDescripcionCortaAccidente", query = "SELECT a FROM Accidentado a WHERE a.descripcionCortaAccidente = :descripcionCortaAccidente"),
+    @NamedQuery(name = "Accidentado.findByPeriodo", 
+                query = "SELECT a FROM Accidentado a "
+                + "WHERE a.desde <= :hasta "
+                + "AND (a.hasta IS NULL OR a.hasta >= :desde)"),
+    @NamedQuery(name = "Accidentado.findByPeriodoYPersonal", 
+                query = "SELECT a FROM Accidentado a "
+                + "WHERE a.personal = :personal "
+                + "AND a.desde <= :hasta "
+                + "AND (a.hasta IS NULL OR a.hasta >= :desde)")})
 public class Accidentado implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

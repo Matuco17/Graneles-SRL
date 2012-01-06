@@ -5,10 +5,8 @@
 package com.orco.graneles.model.salario;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
-import com.orco.graneles.domain.miscelaneos.AdicionalTarea;
-import com.orco.graneles.domain.miscelaneos.FixedList;
-import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
-import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
+import com.orco.graneles.domain.miscelaneos.*;
+import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
@@ -16,10 +14,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +30,9 @@ import javax.ejb.EJB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.Period;
 /**
  *
  * @author orco
@@ -43,10 +46,12 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     private ItemsSueldoFacade itemSueldoF;
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    private FixedListFacade fixedListF;
 
     
-    protected void calcularValorYCrearItemConcepto(ConceptoRecibo cDeductivo, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
-        double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto, tte.getPersonal());
+    protected void calcularValorYCrearItemConcepto(ConceptoRecibo cDeductivo, double totalBruto, Personal personal, Sueldo sueldoTTE) {
+        double totalConcepto = conceptoReciboF.calcularValorConcepto(cDeductivo, totalBruto, personal);
 
         //Una vez que tengo el valor de esta hora, lo agrego
         if (totalConcepto > 0){
@@ -54,23 +59,48 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         }
     }
         
-    protected void calcularDeducciones(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
+    protected void calcularDeducciones(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, Personal personal, Sueldo sueldoTTE) {
         //Por cada tipo de Concepto Deductivo
         if (conceptos.get(TipoConceptoRecibo.DEDUCTIVO) != null){
             for (ConceptoRecibo cDeductivo : conceptos.get(TipoConceptoRecibo.DEDUCTIVO)){
-                calcularValorYCrearItemConcepto(cDeductivo, totalBruto, tte, sueldoTTE);
+                calcularValorYCrearItemConcepto(cDeductivo, totalBruto, personal, sueldoTTE);
             }
         }
     }
 
-    protected void calcularNoRemunerativos(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, TrabajadoresTurnoEmbarque tte, Sueldo sueldoTTE) {
+    protected void calcularNoRemunerativos(Map<Integer, List<ConceptoRecibo>> conceptos, double totalBruto, Personal personal, Sueldo sueldoTTE) {
         //Por cada tipo de Concepto No Remunerativo
         if (conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null) {
             for (ConceptoRecibo cNoRemunerativo : conceptos.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
-                calcularValorYCrearItemConcepto(cNoRemunerativo, totalBruto, tte, sueldoTTE);
+                calcularValorYCrearItemConcepto(cNoRemunerativo, totalBruto, personal, sueldoTTE);
             }
         }
     }
+
+    /**
+     * Crea un sueldo completo a traves de un Item, esto despúes esta preparado para un merge
+     * @param conceptoRecibo
+     * @param valorCantidad 
+     * @param valorItemBruto
+     * @param periodo
+     * @param conceptos
+     * @param personal
+     * @return 
+     */
+    protected Sueldo crearSueldoXItemBruto(ConceptoRecibo conceptoRecibo, BigDecimal valorCantidad, BigDecimal valorItemBruto, Periodo periodo, Map<Integer, List<ConceptoRecibo>> conceptos, Personal personal) {
+        Sueldo sueldo = new Sueldo();
+        sueldo.setPeriodo(periodo);
+        sueldo.setPersonal(personal);
+        
+        itemSueldoF.crearItemSueldo(conceptoRecibo, valorCantidad, valorItemBruto, sueldo);
+        
+        calcularDeducciones(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
+        
+        calcularNoRemunerativos(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
+        
+        return sueldo;
+    }
+
 
     protected EntityManager getEntityManager() {
         return em;
@@ -80,27 +110,79 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         super(Sueldo.class);
     }
     
+    /**
+     * Calcula el sueldo sacado desde el turno realizado por el trabajador
+     * @param periodo
+     * @param tte
+     * @param conceptos
+     * @return 
+     */
     public Sueldo calcularSueldoTTE(Periodo periodo, TrabajadoresTurnoEmbarque tte, Map<Integer, List<ConceptoRecibo>> conceptos) {
-        double totalBruto = 0; //Valor total del bruto para que se termine de cerrar esto
-        Sueldo sueldoTTE = new Sueldo();
-        sueldoTTE.setPeriodo(periodo);
-        sueldoTTE.setPersonal(tte.getPersonal());
-        
         //Concepto remunerativo unico dependiente de la cantidad de horas
         if (tte.getHoras() > 0){
             double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, true);
             //Agrego el valor del total del concepto al valor del total del bruto
-            totalBruto += totalConcepto;
-            //Una vez que tengo el valor de esta hora, lo agrego
-            itemSueldoF.crearItemSueldo(tte.getPlanilla().getTipo().getConceptoRecibo(), new BigDecimal(tte.getHoras()), new BigDecimal(totalConcepto), sueldoTTE);
-        }
-        
-        calcularDeducciones(conceptos, totalBruto, tte, sueldoTTE);
-        
-        calcularNoRemunerativos(conceptos, totalBruto, tte, sueldoTTE);
             
-        return sueldoTTE;
+            return crearSueldoXItemBruto(tte.getPlanilla().getTipo().getConceptoRecibo(),
+                    new BigDecimal(tte.getHoras()), 
+                    new BigDecimal(totalConcepto),
+                    periodo, conceptos, tte.getPersonal());
+        }
+        return null;
     }
+    
+    /**
+     * Calcula el sueldo de un accidentado para el periodo en cuestion
+     * @param periodo
+     * @param accidentado
+     * @param conceptos
+     * @return 
+     */
+    public Sueldo calcularSueldoAccidentado(Periodo periodo, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos){
+        int diasTrabajados = conceptoReciboF.calculoDiasAccidentado(periodo.getDesde(), periodo.getHasta(), accidentado);
+        
+        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, diasTrabajados);
+        
+        ConceptoRecibo conceptoReciboAccidentado = conceptoReciboF.obtenerConcepto(
+                                                                fixedListF.find(TipoRecibo.HORAS),
+                                                                fixedListF.find(TipoValorConcepto.HORAS_HABILES));
+        
+        return crearSueldoXItemBruto(conceptoReciboAccidentado, 
+                        new BigDecimal(diasTrabajados * 6),
+                        new BigDecimal(brutoCalculado),
+                        periodo, conceptos, accidentado.getPersonal());
+    }
+    
+    public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
+        
+        ConceptoRecibo conceptoReciboSAC = conceptoReciboF.obtenerConcepto(
+                                                                personal.getTipoRecibo(),
+                                                                fixedListF.find(TipoValorConcepto.SAC));
+        
+       
+        double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta);
+        
+        return crearSueldoXItemBruto(conceptoReciboSAC, null, 
+                                new BigDecimal(calculadoSAC),
+                                periodo, conceptos, personal);
+        
+    }
+    
+    public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
+        
+        ConceptoRecibo conceptoReciboVacaciones = conceptoReciboF.obtenerConcepto(
+                                                                personal.getTipoRecibo(),
+                                                                fixedListF.find(TipoValorConcepto.VACACIONES));
+        
+        
+        double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta);
+        
+        return crearSueldoXItemBruto(conceptoReciboVacaciones, null,
+                    new BigDecimal(calculadoVacaciones),
+                    periodo, conceptos, personal);
+    
+    }
+    
     
     public List<Sueldo> obtenerSueldos(Personal personal, Date desde, Date hasta){
         //TODO: HACER
