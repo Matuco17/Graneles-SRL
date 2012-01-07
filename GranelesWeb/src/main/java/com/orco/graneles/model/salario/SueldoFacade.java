@@ -91,12 +91,13 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         Sueldo sueldo = new Sueldo();
         sueldo.setPeriodo(periodo);
         sueldo.setPersonal(personal);
+        sueldo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
         
-        itemSueldoF.crearItemSueldo(conceptoRecibo, valorCantidad, valorItemBruto, sueldo);
-        
-        calcularDeducciones(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
-        
-        calcularNoRemunerativos(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
+        if (valorItemBruto.doubleValue() > 0){
+            itemSueldoF.crearItemSueldo(conceptoRecibo, valorCantidad, valorItemBruto, sueldo);
+            calcularDeducciones(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
+            calcularNoRemunerativos(conceptos, valorItemBruto.doubleValue(), personal, sueldo);
+        }
         
         return sueldo;
     }
@@ -152,6 +153,8 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                         new BigDecimal(brutoCalculado),
                         periodo, conceptos, accidentado.getPersonal());
     }
+    
+    
     
     public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
         

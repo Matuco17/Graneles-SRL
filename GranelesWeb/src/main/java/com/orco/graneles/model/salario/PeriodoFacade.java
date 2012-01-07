@@ -56,6 +56,82 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private AccidentadoFacade accidentadoF;
     @EJB
     private FixedListFacade fixedListF;
+
+    protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
+        //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
+        boolean calcularSac = periodoConSAC(periodo);
+        
+        for (Sueldo s : sueldosCalculados.values()){
+            //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
+            if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo)){
+                
+                s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras);
+                
+                sueldoF.persist(s);
+            }
+        }
+        
+        //Ahora solo falta encontrar los sueldos de todos los empleados que participaron en el semestre y no formaron parte del Mes en cuestion
+        for(Personal p : personalF.findAll()){
+            if (!sueldosCalculados.keySet().contains(p.getId())){
+                Sueldo sueldoSacNuevo = new Sueldo();
+                sueldoSacNuevo.setPeriodo(periodo);
+                sueldoSacNuevo.setPersonal(p);
+                sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
+                
+                sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras);
+                
+                if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
+                    sueldoF.create(sueldoSacNuevo);
+                    periodo.getSueldoCollection().add(sueldoSacNuevo);
+                }                
+            }
+        }
+        
+    }
+    
+    /**
+     * Evalua si el personal debe tener calculado el SAC sin evaluar si esta en un periodo de SAC en cuestion
+     * @param personal
+     * @param periodo
+     * @return 
+     */
+    protected boolean calcularSacIndividual(Personal personal, Periodo periodo){
+        return (personal.getBaja() != null)
+                    && personal.getBaja().after(periodo.getDesde())
+                    && personal.getBaja().before(periodo.getHasta());
+    }
+
+    /**
+     * Genera el Sac y las vacaciones para y lo Mergea con el sueldo pasado.
+     * @param periodo
+     * @param s
+     * @param conceptosHoras
+     * @return 
+     */
+    protected Sueldo generarSACyVacacionesIndividual(Periodo periodo, Sueldo s, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
+        Date desde = obtenerDesdeSAC(periodo, s.getPersonal());
+        Date hasta = obtenerHastaSAC(periodo, s.getPersonal());
+        switch (s.getPersonal().getTipoRecibo().getId()){
+            case TipoRecibo.HORAS:
+                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
+                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
+                
+                if (sueldoSAC.getItemsSueldoCollection() != null && sueldoSAC.getItemsSueldoCollection().size() > 0){
+                    s = sueldoF.mergeSueldos(s, sueldoSAC);
+                }
+                if (sueldoVacaciones.getItemsSueldoCollection() != null && sueldoVacaciones.getItemsSueldoCollection().size() > 0){
+                    s = sueldoF.mergeSueldos(s, sueldoVacaciones);
+                }
+                
+                break;
+            case TipoRecibo.MENSUAL:
+                //TODO: COMPLETAR
+                
+                break;
+        }
+        return s;
+    }
     
     
     
@@ -225,42 +301,12 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             Map<Long, Sueldo> sueldosCalculados = generarSueldosTTE(periodo, conceptosHoras);
             sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
             //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
-            
-            //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
-            boolean calcularSac = periodoConSAC(periodo);
-            
-            for (Sueldo s : sueldosCalculados.values()){
-                //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
-                if (calcularSac 
-                    ||
-                    ((s.getPersonal().getBaja() != null)
-                        && s.getPersonal().getBaja().after(periodo.getDesde())
-                        && s.getPersonal().getBaja().before(periodo.getHasta()))){
-                    
-                    Date desde = obtenerDesdeSAC(periodo, s.getPersonal());
-                    Date hasta = obtenerHastaSAC(periodo, s.getPersonal());
-                    
-                    switch (s.getPersonal().getTipoRecibo().getId()){
-                        case TipoRecibo.HORAS:
-                            Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
-                            Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
-                            
-                            s = sueldoF.mergeSueldos(s, sueldoSAC);
-                            s = sueldoF.mergeSueldos(s, sueldoVacaciones);
-                            
-                            break;
-                        case TipoRecibo.MENSUAL:
-                            //TODO: COMPLETAR
-                            
-                            break;
-                    }
-                    
-                
-                    sueldoF.persist(s);
-                }
-            }
+        
+            generarSueldosSACyVacaciones(periodo, sueldosCalculados, conceptosHoras);
 
             persist(periodo);  
+            
+            //TODO: REALIZAR OTRAS MODIFICACIONES A OTRAS ENTIDADES QUE NO TENGAN QUE VER DIRECTAMENTE CON EL PERIODO PERO QUE AL CERRARSE SE BLOQUEAN
             
     }
     
