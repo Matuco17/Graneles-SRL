@@ -30,6 +30,9 @@
                                 <p:inputText id="globalFilter" onkeyup="dtbAccidentado.filter()" style="width:350px" />  
                             </p:outputPanel>  
                         </f:facet> 
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_personal}" filterBy="#{item.personal.cuil}" filterStyleClass="filterColumn" filterOptions="contains">
+                            <h:outputText value="#{item.personal.cuil}"/>
+                        </p:column>
                         <p:column headerText="#{bundlePersonal.AccidentadoTitle_personal}" filterBy="#{item.personal.toString()}" filterStyleClass="filterColumn" filterOptions="contains">
                             <h:outputText value="#{item.personal.toString()}"/>
                         </p:column>
