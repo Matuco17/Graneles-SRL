@@ -55,7 +55,7 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @Column(name = "horas")
     private Integer horas;
     
-    @JoinColumn(name = "libro_sueldo", referencedColumnName = "id")
+    @JoinColumn(name = "libro_sueldo", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private Sueldo libroSueldo;
     

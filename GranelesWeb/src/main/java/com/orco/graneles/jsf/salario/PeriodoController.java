@@ -23,6 +23,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
@@ -77,8 +78,18 @@ public class PeriodoController implements Serializable {
     public void generarLibroPeriodo(){
         //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
         if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
-            LibroSueldoReport libroSueldo = new LibroSueldoReport(current);
-            urlArchivoPDF = libroSueldo.obtenerReportePDF();
+            if (StringUtils.isBlank(current.getFolioLibro()) || current.getNroPrimeraHoja() == null){
+                JsfUtil.addErrorMessage("Los campos " +  ResourceBundle.getBundle("/BundleSalario").getString("PeriodoTitle_folioLibro") 
+                                       + " y " +  ResourceBundle.getBundle("/BundleSalario").getString("PeriodoTitle_nroPrimeraHoja") + " son obligatorios");    
+            } else {
+                ejbFacade.persist(current);
+                
+                LibroSueldoReport libroSueldo = new LibroSueldoReport(current);
+                urlArchivoPDF = libroSueldo.obtenerReportePDF();
+                
+            }
+            
+            
             
         } else {
             urlArchivoPDF = null;

@@ -62,10 +62,10 @@ public class Sueldo implements Serializable {
     private Collection<ItemsSueldo> itemsSueldoCollection;
 
     
-    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.PERSIST)
     private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
     
-    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.PERSIST)
     private Collection<Accidentado> accidentadoCollection;
     
     /*

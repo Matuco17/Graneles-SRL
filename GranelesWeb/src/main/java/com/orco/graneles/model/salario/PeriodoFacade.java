@@ -317,13 +317,29 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                         trabTurnoEmbarqueF.edit(tte);
                     }
                 }
+            
+                getEntityManager().flush();
+            
+                
+            /*    
+                for (Sueldo s : periodo.getSueldoCollection()){
+                    sueldoF.remove(s);
+                }
+                
+                getEntityManager().flush();
+            */
             }
             
             //limpio la lista de sueldos del periodo carga ya que se carga nuevamente y tiene que ser una operacion idempotente
             periodo.setSueldoCollection(new ArrayList<Sueldo>());
+       
+            
             //Persisto el periodo
             persist(periodo);
 
+            getEntityManager().flush();
+           
+            
             Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
                     + "Reseteada del periodo");
             System.out.println("{" + (new Date()).toString() + "} " 
