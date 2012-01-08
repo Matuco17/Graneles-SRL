@@ -34,10 +34,12 @@
                     </h:selectOneMenu>
                     <p:spinner id="anio" value="#{periodoController.anio}" maxlength="4" min="1980" max="2100" />
 
-                    <p:commandButton id="btnBuscarPeriodo" ajax="true" action="#{periodoController.buscarPeriodo()}" update="panPeriodoSeleccionado" value="Ver Libro de Sueldos" label="Buscar Perido" />
+                    <h:commandButton id="btnBuscarPeriodo" 
+                                     action="#{periodoController.buscarPeriodo()}" 
+                                     value="Ver Libro de Sueldos" label="Buscar Periodo" />
                 </h:form>
             </p:panel>
-            <p:panel id="panPeriodoSeleccionado" style="float: left;" >
+            <p:panel id="panPeriodoSeleccionado" style="float: left;" rendered="#{periodoController.current != null}">
                    <p:panel id="panPeridoView" header="Información" style="float: left; width: 450px;">
                        <h:form>
                            <h:panelGrid columns="2">
@@ -53,10 +55,12 @@
                                <h:outputLabel value="Cantidad de Sueldos Cargados" />
                                <h:outputText id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
 
-                               <h:outputLabel value="Descargar Libro de Sueldos PDF" rendered="#{periodoController.urlArchivoPDF != null}"/>
+                               <h:outputLabel value="Descargar Libro de Sueldos PDF" />
+                               <h:commandButton value="Generar Libro Sueldos PDF" action="#{periodoController.generarLibroPeriodo()}" rendered="#{periodoController.urlArchivoPDF == null}" />
                                <h:link id="lnkLibroPDF" value="Libro PDF" onclick="window.open('#{periodoController.urlArchivoPDF}','Download');window.close();" rendered="#{periodoController.urlArchivoPDF != null}" />
 
-                               <h:outputLabel value="Descargar Libro de Sueldos para AFIP" rendered="#{periodoController.urlArchivoTxt != null}" />
+                               <h:outputLabel value="Descargar Libro de Sueldos para AFIP" />
+                               <h:commandButton value="Generar Libro para AFIP" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivoTxt == null}" />
                                <h:link id="lnkLibroTXT" value="Libro AFIP" outcome="#{periodoController.urlArchivoTxt}"  rendered="#{periodoController.urlArchivoTxt != null}" />
 
                            </h:panelGrid>

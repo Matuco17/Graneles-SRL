@@ -72,25 +72,32 @@ public class PeriodoController implements Serializable {
     }
 
     /**
-     * Genera los archivos del Periodo
+     * Genera el libro de sueldos del perido actual
      */
-    private void generarArchivosPeriodo() {
+    public void generarLibroPeriodo(){
         //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
         if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
             LibroSueldoReport libroSueldo = new LibroSueldoReport(current);
             urlArchivoPDF = libroSueldo.obtenerReportePDF();
-            //fileLibro = new DefaultStreamedContent(libroSueldo.obtenerReportePDF());
             
-            LibroSueldosAFIP libroSueldoAFIP = new LibroSueldosAFIP(new ArrayList<Sueldo>(current.getSueldoCollection()));
-            urlArchivoTxt = libroSueldoAFIP.generarArchivo(current.getDescripcion());
-            //fileExportAfip = new DefaultStreamedContent(libroSueldoAFIP.generarArchivo(current.getDescripcion() + ".txt"));
         } else {
             urlArchivoPDF = null;
+        }
+    }
+    
+/**
+     * Genera el libro de sueldos del perido actual
+     */
+    public void generarArchivoAfipPeriodo(){
+        //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
+        if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
+            LibroSueldosAFIP libroSueldoAFIP = new LibroSueldosAFIP(new ArrayList<Sueldo>(current.getSueldoCollection()));
+            urlArchivoTxt = libroSueldoAFIP.generarArchivo(current.getDescripcion());
+        } else {
             urlArchivoTxt = null;
         }
     }
     
-        
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -173,7 +180,8 @@ public class PeriodoController implements Serializable {
     
     public void buscarPeriodo(){
         current = getFacade().verPeriodo(this.anio, this.mes);
-        generarArchivosPeriodo();
+        urlArchivoPDF = null;
+        urlArchivoTxt = null;
         selectedItemIndex = 1;
     }
     
@@ -183,7 +191,8 @@ public class PeriodoController implements Serializable {
                 getFacade().generarSueldosPeriodo(current);
                 
                 //Una vez subido todo, genero nuevamente el pdf
-                generarArchivosPeriodo();
+                urlArchivoPDF = null;
+                urlArchivoTxt = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (Exception e) {
@@ -214,7 +223,8 @@ public class PeriodoController implements Serializable {
                 }
 
                 //Una vez subido todo, genero nuevamente el pdf
-                generarArchivosPeriodo();
+                urlArchivoPDF = null;
+                urlArchivoTxt = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (IOException e) {

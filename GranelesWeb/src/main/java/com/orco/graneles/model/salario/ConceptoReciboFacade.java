@@ -20,6 +20,8 @@ import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.AccidentadoFacade;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     
+    
     @EJB
     private SalarioBasicoFacade salarioBasicoF;
     @EJB
@@ -48,30 +51,42 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     //Singletos que no se tienen que cargar de nuevo, solamente con una vez me alcanzan
     private Map<Integer, FixedList> mapAdicTarea = null;
 
+    
+    Long personalCacheId;
+    Double totalAcumuladoCache; //ultimo total acumulado, dependie del personalCache
+    
     /**
      * Metodo que levanta el acumulado por las horas del trabajador en el periodo seleccionado
      * @return 
      */
     public double acumuladoBrutoTrabajadores(Personal personal, Date desde, Date hasta) {
-        double totalAcumulado = 0;
-        SalarioBasico salarioActivo = null; //Variable del salario activo que me sirve de cache para no tener que hacer la busqueda por cada jornal trabajado
-        List<TrabajadoresTurnoEmbarque> ttes = tteF.getTTEPeriodo(personal, desde, hasta);
-        for (TrabajadoresTurnoEmbarque tte : ttes){
-            //Verifico que tengo un salario basico para ese periodo
-            if (salarioActivo == null 
-                || (salarioActivo.getHasta() != null && salarioActivo.getHasta().before(tte.getPlanilla().getFecha()))){
-                salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+        if (personalCacheId == personal.getId()){
+            return totalAcumuladoCache;
+        } else {
+            double totalAcumulado = 0;
+            SalarioBasico salarioActivo = null; //Variable del salario activo que me sirve de cache para no tener que hacer la busqueda por cada jornal trabajado
+            List<TrabajadoresTurnoEmbarque> ttes = tteF.getTTEPeriodo(personal, desde, hasta);
+            for (TrabajadoresTurnoEmbarque tte : ttes){
+                //Verifico que tengo un salario basico para ese periodo
+                if (salarioActivo == null 
+                    || (salarioActivo.getHasta() != null && salarioActivo.getHasta().before(tte.getPlanilla().getFecha()))){
+                    salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+                }
+
+                totalAcumulado += calcularDiaTTE(salarioActivo, tte, true);
             }
+
+            List<Accidentado> accs = accidentadoF.getAccidentadosPeriodoYPersonal(desde, hasta, personal);
+            for (Accidentado acc : accs){
+                totalAcumulado += calculoSueldoAccidentado(acc, calculoDiasAccidentado(desde, hasta, acc)); 
+            }
+
+            //Completo los cache para aminorar los calculos
+            personalCacheId = personal.getId();
+            totalAcumuladoCache = totalAcumulado;
             
-            totalAcumulado += calcularDiaTTE(salarioActivo, tte, true);
+            return totalAcumulado;
         }
-        
-        List<Accidentado> accs = accidentadoF.getAccidentadosPeriodoYPersonal(desde, hasta, personal);
-        for (Accidentado acc : accs){
-            totalAcumulado += calculoSueldoAccidentado(acc, calculoDiasAccidentado(desde, hasta, acc)); 
-        }
-        
-        return totalAcumulado;
     }
 
     /**
@@ -95,7 +110,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         DateTime desdeCalculado;
         DateTime hastaCalculado;        
         int diasTrabajados = 0;
-        
+       
         //Se debe calcular las fechas limites a tener en cuenta, de ahi contar todos lso dias menos el domingo
         if (accidentado.getDesde().before(desde)) {
             desdeCalculado = new DateTime(desde);
@@ -104,10 +119,11 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         }
         
         if (accidentado.getHasta().before(hasta)){
-            hastaCalculado = new DateTime(accidentado.getHasta());
+            hastaCalculado = new DateTime(accidentado.getHasta()).plusDays(1);
         } else {
-            hastaCalculado = new DateTime(hasta);
+            hastaCalculado = new DateTime(hasta).plusDays(1);
         }
+        //OBS: le sumo un dia ya que la comparacion es solamente isBefore y no tengo el equal en la fecha.
                 
         //calculo los dias de acuerdo al periodo limite impuesto
         DateTime currentFecha = desdeCalculado;
@@ -115,6 +131,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             if (currentFecha.getDayOfWeek() != DateTimeConstants.SATURDAY){
                 diasTrabajados++;
             }
+            currentFecha = currentFecha.plusDays(1);
         }
         
         return diasTrabajados;
@@ -258,14 +275,48 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         }
     }
     
+        /**
+     * Metodo que devuelve la cantidad de acuerdo al concepto
+     * @param concepto
+     * @param totalBruto
+     * @return 
+     */
+    public BigDecimal calcularCantidadConcepto(ConceptoRecibo concepto, Personal personal){
+        
+        switch (concepto.getTipoValor().getId()){
+        
+            case TipoValorConcepto.FIJO:
+                return null;
+            case TipoValorConcepto.PORCENTUAL:
+                return new BigDecimal(concepto.getValor().doubleValue()); 
+            case TipoValorConcepto.JUBILACION:
+                return new BigDecimal(concepto.getValor().doubleValue()); 
+            case TipoValorConcepto.OBRA_SOCIAL:
+                return new BigDecimal(concepto.getValor().doubleValue()); 
+            case TipoValorConcepto.SINDICATO:
+                if (personal.getSindicato()){
+                    double porcSindicato = concepto.getValor().doubleValue();
+                    if (personal.getCategoriaPrincipal().getSindicato() != null){
+                        porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();
+                    }
+                return new BigDecimal(porcSindicato); 
+                } else {
+                    return BigDecimal.ZERO;
+                }
+           
+            default:
+                return BigDecimal.ZERO;
+        }
+    }
     
     /**
      * Metodo que calcula el SAC del trabajador entre esas fechas
      * OBS: Deben estar todos los sueldos persistidos sino puede calcular incorrectamente
      * @param listaSueldos lista de los sueldos en el periodo calculado
+     * @param conceptoSAC concepto del recibo, si es null el metodo se encarga de proveerlo
      * @return 
      */
-    public double calcularValorSAC(Personal personal, Date desde, Date hasta){
+    public double calcularValorSAC(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoSAC){
                 
         switch (personal.getTipoRecibo().getId()){
             case TipoRecibo.HORAS :
@@ -274,7 +325,9 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                  * desde la fecha desde y hasta
                  * de ahi levanto el concepto de sac para sacar el porcentaje y lo calculo, de ahi lo devuelvo
                 */
-                ConceptoRecibo conceptoSAC = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.SAC));
+                if (conceptoSAC == null) {
+                    conceptoSAC = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.SAC));
+                }
                 
                 double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta);
                            
@@ -292,9 +345,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * Metodo que calcula las Vacaciones del trabajador entre esas fechas
      * OBS: Deben estar todos los sueldos persistidos sino puede calcular incorrectamente
      * @param listaSueldos lista de los sueldos en el periodo calculado
-     * @return 
+     * @param conceptoVacaciones concepto del recibo, si es null el metodo se encarga de proveerlo
+      * @return 
      */
-    public double calcularValorVacaciones(Personal personal, Date desde, Date hasta){
+    public double calcularValorVacaciones(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoVacaciones){
                 
         switch (personal.getTipoRecibo().getId()){
             case TipoRecibo.HORAS :
@@ -303,7 +357,9 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                  * desde la fecha desde y hasta
                  * de ahi levanto el concepto de sac para sacar el porcentaje y lo calculo, de ahi lo devuelvo
                 */
-                ConceptoRecibo conceptoVacaciones = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.VACACIONES));
+                if (conceptoVacaciones == null){
+                    conceptoVacaciones = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.VACACIONES));
+                }
                 
                 double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta);
                            

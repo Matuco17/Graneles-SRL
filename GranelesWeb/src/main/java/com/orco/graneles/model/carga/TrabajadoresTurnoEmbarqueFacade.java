@@ -23,6 +23,7 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -35,6 +36,7 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
       return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodo", TrabajadoresTurnoEmbarque.class)
                   .setParameter("desde", periodo.getDesde())
                   .setParameter("hasta", periodo.getHasta())
+              
                   .getResultList();
     }    
     

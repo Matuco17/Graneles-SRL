@@ -40,6 +40,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    
     @EJB
     private PersonalFacade personalF;
     @EJB
@@ -71,22 +72,35 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             }
         }
         
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.INFO, null, "{" + (new Date()).toString() + "} " 
+                    + "SAC y Vacaciones de los trabajadores involucrados en el periodo generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                    + "SAC y Vacaciones de los trabajadores involucrados en el periodo generado");
+        
         //Ahora solo falta encontrar los sueldos de todos los empleados que participaron en el semestre y no formaron parte del Mes en cuestion
         for(Personal p : personalF.findAll()){
             if (!sueldosCalculados.keySet().contains(p.getId())){
-                Sueldo sueldoSacNuevo = new Sueldo();
-                sueldoSacNuevo.setPeriodo(periodo);
-                sueldoSacNuevo.setPersonal(p);
-                sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
-                
-                sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras);
-                
-                if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
-                    sueldoF.create(sueldoSacNuevo);
-                    periodo.getSueldoCollection().add(sueldoSacNuevo);
-                }                
+                if (calcularSac || calcularSacIndividual(p, periodo)){
+                    Sueldo sueldoSacNuevo = new Sueldo();
+                    sueldoSacNuevo.setPeriodo(periodo);
+                    sueldoSacNuevo.setPersonal(p);
+                    sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
+
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras);
+
+                    if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
+                        sueldoF.create(sueldoSacNuevo);
+                        periodo.getSueldoCollection().add(sueldoSacNuevo);
+                    }  
+                }
             }
         }
+        
+         Logger.getLogger(PeriodoFacade.class.getName()).log(Level.INFO, null, "{" + (new Date()).toString() + "} " 
+                    + "SAC y Vacaciones de los trabajadores NO involucrados en el periodo generado");
+         System.out.println("{" + (new Date()).toString() + "} " 
+                    + "SAC y Vacaciones de los trabajadores NO involucrados en el periodo generado");
+        
         
     }
     
@@ -282,14 +296,26 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param periodo 
      */
     public void generarSueldosPeriodo(Periodo periodo){
+            
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
+            System.out.println("{" + (new Date()).toString() + "} " 
+                  + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
+         
             Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
         
-        
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Levanto los conceptos de horas");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Levanto los conceptos de horas");
+            
             //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
-            for (Sueldo s : periodo.getSueldoCollection()){
-                for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
-                    tte.setLibroSueldo(null);
-                    trabTurnoEmbarqueF.edit(tte);
+            if (periodo.getSueldoCollection() != null){
+                for (Sueldo s : periodo.getSueldoCollection()){
+                    for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
+                        tte.setLibroSueldo(null);
+                        trabTurnoEmbarqueF.edit(tte);
+                    }
                 }
             }
             
@@ -298,15 +324,45 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             //Persisto el periodo
             persist(periodo);
 
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Reseteada del periodo");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Reseteada del periodo");
+            
+            
             Map<Long, Sueldo> sueldosCalculados = generarSueldosTTE(periodo, conceptosHoras);
+        
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Sueldos de los Trabajadores de Turno generado");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Sueldos de los Trabajadores de Turno generado");
+            
             sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
+
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Sueldos de los Accidentados generado");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Sueldos de los Accidentados generado");
+            
             //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
         
             generarSueldosSACyVacaciones(periodo, sueldosCalculados, conceptosHoras);
 
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Sac y Vacaciones Generado");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Sac y Vacaciones Generado");
+            
+            
             persist(periodo);  
             
+            
+            
             //TODO: REALIZAR OTRAS MODIFICACIONES A OTRAS ENTIDADES QUE NO TENGAN QUE VER DIRECTAMENTE CON EL PERIODO PERO QUE AL CERRARSE SE BLOQUEAN
+            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                    + "Fin del Proceso de Generacion de sueldos");
+            System.out.println("{" + (new Date()).toString() + "} " 
+                    + "Fin del Proceso de Generacion de sueldos");
             
     }
     
@@ -320,7 +376,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         
         //Si el tipo ingreso despúes del periodo, entonces lo tomo desde ese momento
-        if (periodo.getDesde().before(personal.getIngreso())){
+        if (personal.getIngreso() != null && periodo.getDesde().before(personal.getIngreso())){
             resultDesde = new DateTime(personal.getIngreso());
         }
         
