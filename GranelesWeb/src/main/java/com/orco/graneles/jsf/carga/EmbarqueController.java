@@ -562,7 +562,10 @@ public class EmbarqueController implements Serializable {
     }
     
     public void generarPlanillaTrabajdores(){
-        urlReportePlanillaTrabajadores = (new PlanillaTrabajadoresTurno(currentTE)).obtenerReportePDF();
+        urlReportePlanillaTrabajadores = 
+                (new PlanillaTrabajadoresTurno(currentTE,
+                 turnoEmbarqueF.obtenerTteVos(currentTE)))
+                 .obtenerReportePDF();
     }
     
     public List<Personal> getTrabajadores(){

@@ -6,12 +6,17 @@ package com.orco.graneles.reports;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
+import com.orco.graneles.domain.salario.ConceptoRecibo;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
+import com.orco.graneles.model.salario.SueldoFacade;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
@@ -23,25 +28,17 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
     private List<TrabajadorTurnoEmbarqueVO> trabajadores;
     private TurnoEmbarque planilla;
     
+    
     @Override
     protected String[] getUrlImagenes() {
         return new String[]{"logoReducido.jpg"};
     }
     
-    public PlanillaTrabajadoresTurno(TurnoEmbarque planilla){
+    public PlanillaTrabajadoresTurno(TurnoEmbarque planilla, List<TrabajadorTurnoEmbarqueVO> trabajadoresPlanilla){
         this.planilla = planilla;
-        trabajadores = new ArrayList<TrabajadorTurnoEmbarqueVO>();
-        
-        for(TrabajadoresTurnoEmbarque tte : planilla.getTrabajadoresTurnoEmbarqueCollection()){
-            TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte, BigDecimal.ZERO);
-            
-            //TODO: Realizar los calculos de sueldos y adicionales y agregarlos
-                        
-            trabajadores.add(tteVO);
-        }
+        this.trabajadores = trabajadoresPlanilla;
         
         Collections.sort(trabajadores, new ComparadorTteVo());
-        
     }
     
     

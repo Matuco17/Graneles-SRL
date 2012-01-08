@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrabajadoresTurno" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="0.9090909090909091"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="265"/>
+	<property name="ireport.y" value="50"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
@@ -22,6 +22,9 @@
 	<field name="cuil" class="java.lang.String">
 		<fieldDescription><![CDATA[cuil]]></fieldDescription>
 	</field>
+	<field name="decreto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[decreto]]></fieldDescription>
+	</field>
 	<field name="fechaTurno" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaTurno]]></fieldDescription>
 	</field>
@@ -36,6 +39,9 @@
 	</field>
 	<field name="peligrosa" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[peligrosa]]></fieldDescription>
+	</field>
+	<field name="peligrosa2" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[peligrosa2]]></fieldDescription>
 	</field>
 	<field name="productiva" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[productiva]]></fieldDescription>
@@ -270,14 +276,14 @@
 				<text><![CDATA[Adicional Imp.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="538" y="21" width="50" height="20"/>
+				<reportElement x="536" y="21" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Insal.]]></text>
+				<text><![CDATA[Gral.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="588" y="21" width="50" height="20"/>
+				<reportElement x="587" y="21" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Pelig.]]></text>
+				<text><![CDATA[Part.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="638" y="21" width="50" height="20"/>
@@ -361,7 +367,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tareaDescripcion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="489" y="0" width="45" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
@@ -370,22 +376,22 @@
 				<textFieldExpression><![CDATA[$F{jornalBasico}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="538" y="0" width="50" height="20"/>
+				<reportElement x="536" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{insalubre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[0.00]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="588" y="0" width="50" height="20"/>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="587" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{peligrosa}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{peligrosa}.add($F{peligrosa2}).add($F{insalubre})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="638" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
@@ -393,7 +399,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{productiva}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="698" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
@@ -401,7 +407,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valorBruto}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="752" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
@@ -421,14 +427,14 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[TOTALES]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="698" y="2" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{valorBruto_1}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="752" y="2" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>

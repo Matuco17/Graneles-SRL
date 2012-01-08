@@ -5,18 +5,25 @@
 package com.orco.graneles.model.carga;
 
 import com.orco.graneles.domain.carga.Embarque;
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
+import com.orco.graneles.domain.salario.ConceptoRecibo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
+import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import javax.ejb.EJB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -29,6 +36,12 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @EJB
+    ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    FixedListFacade fixedListF;
+    
+    
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -44,6 +57,49 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
         return te;
     }
     
+    /**
+     * Devuelve una lista con los Trabajdores de la planilla con la informacion de sueldos completada
+     * @param planilla
+     * @return 
+     */
+    public List<TrabajadorTurnoEmbarqueVO> obtenerTteVos(TurnoEmbarque planilla) {
+        List<TrabajadorTurnoEmbarqueVO> trabajadores = new ArrayList<TrabajadorTurnoEmbarqueVO>();
+        
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        
+        
+        for(TrabajadoresTurnoEmbarque tte : planilla.getTrabajadoresTurnoEmbarqueCollection()){
+            TrabajadorTurnoEmbarqueVO tteVO = conceptoReciboF.calcularDiaTTE(tte, true);
+            
+            BigDecimal valorNeto = BigDecimal.ZERO;
+            valorNeto = valorNeto.add(tteVO.getValorBruto());
+            
+            
+            if (conceptosHoras.get(TipoConceptoRecibo.DEDUCTIVO) != null){
+                for (ConceptoRecibo cr : conceptosHoras.get(TipoConceptoRecibo.DEDUCTIVO)){
+                    double cantidadConcepto = conceptoReciboF.calcularValorConcepto(cr, tteVO.getValorBruto().doubleValue(), tte.getPersonal());
+                    valorNeto = valorNeto.subtract(new BigDecimal(cantidadConcepto));
+                }
+            }
+                
+            BigDecimal noRemunerativo = BigDecimal.ZERO;
+            
+            if (conceptosHoras.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null){
+                for (ConceptoRecibo cr : conceptosHoras.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
+                    double cantidadConcepto = conceptoReciboF.calcularValorConcepto(cr, tteVO.getValorBruto().doubleValue(), tte.getPersonal());
+                    noRemunerativo = noRemunerativo.add(new BigDecimal(cantidadConcepto));
+                    valorNeto = valorNeto.add(new BigDecimal(cantidadConcepto));
+                }
+            }
+            
+            tteVO.setDecreto(noRemunerativo);
+            tteVO.setValorTurno(valorNeto);
+            
+            trabajadores.add(tteVO);
+        }
+        
+        return trabajadores;
+    }
     
      /**
      * Devuelve un map de turnos teniendo como clave el nro de embarque (nro de planilla originalmente) del excel

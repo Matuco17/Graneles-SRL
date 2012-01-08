@@ -19,13 +19,24 @@ public class TrabajadorTurnoEmbarqueVO {
     private BigDecimal jornalBasico;
     private BigDecimal insalubre;
     private BigDecimal peligrosa;
+    private BigDecimal peligrosa2;
     private BigDecimal productiva;
     private BigDecimal valorBruto;
+    private BigDecimal decreto;
     private BigDecimal valorTurno; //Neto
     
     public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte, BigDecimal valorTurno) {
         this.tte = tte;
         this.valorTurno = valorTurno;
+        jornalBasico = BigDecimal.ZERO;
+        insalubre = BigDecimal.ZERO;
+        peligrosa = BigDecimal.ZERO;
+        peligrosa2 = BigDecimal.ZERO;
+        productiva = BigDecimal.ZERO;
+        valorBruto = BigDecimal.ZERO;
+        decreto = BigDecimal.ZERO;
+        valorTurno = BigDecimal.ZERO;
+        
     }
 
     public BigDecimal getValorTurno() {
@@ -68,6 +79,15 @@ public class TrabajadorTurnoEmbarqueVO {
         this.peligrosa = peligrosa;
     }
 
+    public BigDecimal getPeligrosa2() {
+        return peligrosa2;
+    }
+
+    public void setPeligrosa2(BigDecimal peligrosa2) {
+        this.peligrosa2 = peligrosa2;
+    }
+
+    
     public BigDecimal getProductiva() {
         return productiva;
     }
@@ -82,6 +102,14 @@ public class TrabajadorTurnoEmbarqueVO {
 
     public void setValorBruto(BigDecimal valorBruto) {
         this.valorBruto = valorBruto;
+    }
+    
+    public BigDecimal getDecreto() {
+        return decreto;
+    }
+
+    public void setDecreto(BigDecimal decreto) {
+        this.decreto = decreto;
     }
     
     //DATOS DEL TTE PUENTEADOS PARA REPORTES
