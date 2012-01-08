@@ -63,6 +63,10 @@
                                <h:commandButton value="Generar Libro para AFIP" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivoTxt == null}" />
                                <h:link id="lnkLibroTXT" value="Libro AFIP" outcome="#{periodoController.urlArchivoTxt}"  rendered="#{periodoController.urlArchivoTxt != null}" />
 
+                               <h:outputLabel value="Descargar Listado de Cierre de Mes" />
+                               <h:commandButton value="Generar Listado de Cierre de Mes" action="#{periodoController.generarListadoCierreMes()}" rendered="#{periodoController.urlArchivoCierreMes == null}" />
+                               <h:link id="lnkCierreMes" value="Listado de Cierre de Mes" outcome="#{periodoController.urlArchivoCierreMes}"  rendered="#{periodoController.urlArchivoCierreMes != null}" />
+
                            </h:panelGrid>
                            
                            <h:commandButton id="cmdProcesarPeriodo" 

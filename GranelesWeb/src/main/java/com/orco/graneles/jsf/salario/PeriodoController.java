@@ -5,6 +5,7 @@ import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.fileExport.LibroSueldosAFIP;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.PeriodoFacade;
+import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
 import java.io.IOException;
 
@@ -48,6 +49,7 @@ public class PeriodoController implements Serializable {
     private StreamedContent fileExportAfip;
     private String urlArchivoPDF;
     private String urlArchivoTxt;
+    private String urlArchivoCierreMes;
     
     public PeriodoController() {
         
@@ -86,11 +88,7 @@ public class PeriodoController implements Serializable {
                 
                 LibroSueldoReport libroSueldo = new LibroSueldoReport(current);
                 urlArchivoPDF = libroSueldo.obtenerReportePDF();
-                
             }
-            
-            
-            
         } else {
             urlArchivoPDF = null;
         }
@@ -109,6 +107,21 @@ public class PeriodoController implements Serializable {
         }
     }
     
+    
+    /**
+     * Genera el listado de cierre de mes para el periodo actual
+     */
+    public void generarListadoCierreMes(){
+        //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
+        if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
+                
+                CierreMesReport reporte = new CierreMesReport(current);
+                urlArchivoCierreMes = reporte.obtenerReportePDF();
+            
+        } else {
+            urlArchivoCierreMes = null;
+        }
+    }
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -193,6 +206,7 @@ public class PeriodoController implements Serializable {
         current = getFacade().verPeriodo(this.anio, this.mes);
         urlArchivoPDF = null;
         urlArchivoTxt = null;
+        urlArchivoCierreMes = null;
         selectedItemIndex = 1;
     }
     
@@ -384,6 +398,10 @@ public class PeriodoController implements Serializable {
         this.urlArchivoTxt = urlArchivoTxt;
     }
 
+    public String getUrlArchivoCierreMes() {
+        return urlArchivoCierreMes;
+    }
+    
     public Periodo getCurrent() {
         return current;
     }

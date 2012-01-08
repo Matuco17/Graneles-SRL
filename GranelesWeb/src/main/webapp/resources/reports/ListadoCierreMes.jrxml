@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCierreMes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="apellidoYNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoYNombre]]></fieldDescription>
+	</field>
+	<field name="brutoSinSacYVacaciones" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[brutoSinSacYVacaciones]]></fieldDescription>
+	</field>
+	<field name="categoriaDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[categoriaDescripcion]]></fieldDescription>
+	</field>
+	<field name="categoriaId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[categoriaId]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cuil" class="java.lang.String">
+		<fieldDescription><![CDATA[cuil]]></fieldDescription>
+	</field>
+	<field name="descripcionPeriodo" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcionPeriodo]]></fieldDescription>
+	</field>
+	<variable name="brutoSinSacYVacaciones_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></variableExpression>
+	</variable>
+	<group name="categoria" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{categoriaId}]]></groupExpression>
+		<groupHeader>
+			<band height="51">
+				<rectangle>
+					<reportElement x="119" y="31" width="293" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="412" y="31" width="133" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="31" width="119" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="95" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Categoría:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="95" y="0" width="213" height="20"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{categoriaDescripcion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="31" width="119" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[CUIL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="119" y="31" width="293" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Apellido y Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="412" y="31" width="133" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Bruto]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<textField pattern="#,##0.00">
+					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="119" y="0" width="293" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Total Categoría]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="118" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="59"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="70" width="290" height="33"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Listado de Cierre de Mes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="70" width="93" height="33"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="70" width="100" height="33"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcionPeriodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="119" y="0" width="293" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="412" y="0" width="133" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="119" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="119" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="0" width="293" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellidoYNombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="412" y="0" width="133" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField pattern="#,##0.00">
+				<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="119" y="0" width="293" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<text><![CDATA[TOTAL GENERAL]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>
