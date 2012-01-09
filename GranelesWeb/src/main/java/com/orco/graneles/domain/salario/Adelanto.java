@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adelanto.findAll", query = "SELECT a FROM Adelanto a"),
     @NamedQuery(name = "Adelanto.findById", query = "SELECT a FROM Adelanto a WHERE a.id = :id"),
     @NamedQuery(name = "Adelanto.findByFecha", query = "SELECT a FROM Adelanto a WHERE a.fecha = :fecha"),
-    @NamedQuery(name = "Adelanto.findByFechaPersonalDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.personal = :personal AND a.fecha BETWEEN :desde AND :hasta")})
+    @NamedQuery(name = "Adelanto.findByFechaPersonalDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.personal = :personal AND a.fecha BETWEEN :desde AND :hasta"),
+    @NamedQuery(name = "Adelanto.findByFechaDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.fecha BETWEEN :desde AND :hasta")})
 public class Adelanto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

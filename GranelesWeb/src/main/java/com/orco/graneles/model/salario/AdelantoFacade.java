@@ -68,6 +68,16 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
                 .getResultList();
     }
     
+     /**
+     * Metodo que busca todos los adelantos sobre las fechas
+     * @return 
+     */
+    public List<Adelanto> obtenerAdelantos(Date desde, Date hasta){
+        return getEntityManager().createNamedQuery("Adelanto.findByFechaDesdeHasta", Adelanto.class)
+                .setParameter("desde", periodoF.obtenerFechaInicioPeriodoSemestralActual())
+                .setParameter("hasta", new Date())
+                .getResultList();
+    }
     
     
     

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{periodoController.init()}" />  
+    </f:metadata>
+    
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">Proyeccion de SAC y Vacaciones</ui:define>
+        <ui:define name="body" >
+            <h:form id="fromBusqueda" >
+                <p:panel id="panBusqueda" rendered="true">
+                    <h:outputText value="Selección de Período" />
+                    <h:selectOneMenu id="semestre" value="#{periodoController.semestre}" >
+                        <f:selectItem itemValue="1"  itemLabel="1er Semestre"  />
+                        <f:selectItem itemValue="2"  itemLabel="2do Semestre"  />
+                     </h:selectOneMenu>
+                    <p:spinner id="anio" value="#{periodoController.anio}" maxlength="4" min="1980" max="2100" />
+
+                    <h:commandButton id="btnBuscarPeriodo" 
+                                     action="#{periodoController.seleccionarPeriodoSemestral()}" 
+                                     value="Ver Proyeccion del periodo" label="Ver Proyeccion del periodo" />
+                </p:panel>
+                <p:panel rendered="#{periodoController.proyeccionesSacYVacaciones != null}">
+                        
+                    <p:dataTable value="#{periodoController.proyeccionesSacYVacaciones}" 
+                                     var="item" widgetVar="proyeccionTable"
+                                     paginator="true" rows="10" emptyMessage="#{bundlePersonal.List_PersonalEmpty}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                        <f:facet name="header">  
+                            <p:outputPanel>  
+                                <h:outputText value="Buscar:" />  
+                                <p:inputText id="globalFilter" onkeyup="proyeccionTable.filter()" style="width:350px" />  
+                            </p:outputPanel>  
+                        </f:facet> 
+                        <p:column filterBy="#{item.personal.cuil}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;" headerText="#{bundlePersonal.PersonalTitle_cuil}">
+                             <h:outputText value="#{item.personal.cuil}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.personal.apellido}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;" headerText="#{bundlePersonal.PersonalTitle_apellido}">
+                            <f:facet name="footer" >
+                                <h:outputText value="TOTALES" />
+                            </f:facet>
+                           <h:outputText value="#{item.personal.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Valor Bruto" style="text-align: right" >
+                           <f:facet name="footer" >
+                                <h:outputText value="#{periodoController.totalBruto}" >
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                            </f:facet>
+                            <h:outputText value="#{item.proyeccionBruto}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Valor Neto" style="text-align: right" >
+                            <f:facet name="footer" >
+                                <h:outputText value="#{periodoController.totalNeto}" >
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                            </f:facet>
+                            <h:outputText value="#{item.proyeccionNeto}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Total Adelantos" style="text-align: right" >
+                            <f:facet name="footer" >
+                                <h:outputText value="#{periodoController.totalAdelantos}" >
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                            </f:facet>
+                            <h:outputText value="#{item.totalAdelantos}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            
+            </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>
+
+
+

@@ -7,13 +7,12 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
+import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import java.io.IOException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.ResourceBundle;
+import java.math.BigDecimal;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -41,6 +40,7 @@ public class PeriodoController implements Serializable {
     // Datos para el formulario de Periodo (Libro de Sueldos
     private int mes;
     private int anio;
+    private int semestre;
     private UploadedFile fileAltas;
     private UploadedFile filePlanillas;
     private UploadedFile fileCargaReg;
@@ -50,6 +50,12 @@ public class PeriodoController implements Serializable {
     private String urlArchivoPDF;
     private String urlArchivoTxt;
     private String urlArchivoCierreMes;
+    
+    private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
+    private BigDecimal totalBruto;
+    private BigDecimal totalNeto;
+    private BigDecimal totalAdelantos;
+    
     
     public PeriodoController() {
         
@@ -74,6 +80,20 @@ public class PeriodoController implements Serializable {
         return selectedItemIndex > 0;
     }
 
+    public void seleccionarPeriodoSemestral(){
+        proyeccionesSacYVacaciones = ejbFacade.obtenerProyecciones(semestre, anio);
+        totalBruto = BigDecimal.ZERO;
+        totalNeto = BigDecimal.ZERO;
+        totalAdelantos = BigDecimal.ZERO;
+                
+        for (ProyeccionSacVacYAdelantosVO p : proyeccionesSacYVacaciones){
+            totalBruto = totalBruto.add(p.getProyeccionBruto());
+            totalNeto = totalNeto.add(p.getProyeccionNeto());
+            totalAdelantos = totalAdelantos.add(p.getTotalAdelantos());
+        }
+    }
+    
+    
     /**
      * Genera el libro de sueldos del perido actual
      */
@@ -115,8 +135,8 @@ public class PeriodoController implements Serializable {
         //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
         if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
                 
-                CierreMesReport reporte = new CierreMesReport(current);
-                urlArchivoCierreMes = reporte.obtenerReportePDF();
+            CierreMesReport reporte = new CierreMesReport(current);
+            urlArchivoCierreMes = reporte.obtenerReportePDF();
             
         } else {
             urlArchivoCierreMes = null;
@@ -333,6 +353,14 @@ public class PeriodoController implements Serializable {
     public void setMes(int mes) {
         this.mes = mes;
     }
+
+    public int getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(int semestre) {
+        this.semestre = semestre;
+    }
     
     public UploadedFile getFileAltas() {
         return fileAltas;
@@ -405,4 +433,22 @@ public class PeriodoController implements Serializable {
     public Periodo getCurrent() {
         return current;
     }
+
+    public List<ProyeccionSacVacYAdelantosVO> getProyeccionesSacYVacaciones() {
+        return proyeccionesSacYVacaciones;
+    }
+
+    public BigDecimal getTotalAdelantos() {
+        return totalAdelantos;
+    }
+
+    public BigDecimal getTotalBruto() {
+        return totalBruto;
+    }
+
+    public BigDecimal getTotalNeto() {
+        return totalNeto;
+    }
+    
+    
 }

@@ -20,6 +20,7 @@ import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.vo.CargaRegVO;
+import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -57,6 +58,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private AccidentadoFacade accidentadoF;
     @EJB
     private FixedListFacade fixedListF;
+    @EJB
+    private AdelantoFacade adelantoF;
 
     protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
         //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
@@ -198,6 +201,71 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         return per;
     }
+    
+    public List<ProyeccionSacVacYAdelantosVO> obtenerProyecciones(int semestre, int anio){
+        DateTime desde = null;
+        DateTime hasta = null;
+        Map<Long, ProyeccionSacVacYAdelantosVO> proyecciones = new HashMap<Long, ProyeccionSacVacYAdelantosVO>();
+        
+        if (semestre == 1){
+            desde = new DateTime(anio, DateTimeConstants.JANUARY, 1, 0, 0);
+            hasta = new DateTime(anio, DateTimeConstants.JUNE, 30, 23, 59);
+        } else {
+            desde = new DateTime(anio, DateTimeConstants.JULY, 1, 0, 0);
+            hasta = new DateTime(anio, DateTimeConstants.DECEMBER, 31, 23, 59);
+        }
+        
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        
+        for (Personal p : personalF.findAll()){
+            //Por ahora salteo los empleados mensuales
+            if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
+                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras);
+                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras));
+
+                ProyeccionSacVacYAdelantosVO currentProyeccion = new ProyeccionSacVacYAdelantosVO(p);
+
+                for (ItemsSueldo is : sueldoSACyVac.getItemsSueldoCollection()){
+                    switch (is.getConceptoRecibo().getTipo().getId()){
+                        case TipoConceptoRecibo.REMUNERATIVO:
+                            currentProyeccion.setProyeccionBruto(currentProyeccion.getProyeccionBruto().add(is.getValorCalculado()));
+                            currentProyeccion.setProyeccionNeto(currentProyeccion.getProyeccionNeto().add(is.getValorCalculado()));
+                            break;
+                        case TipoConceptoRecibo.DEDUCTIVO:
+                            currentProyeccion.setProyeccionNeto(currentProyeccion.getProyeccionNeto().subtract(is.getValorCalculado()));
+                            break;
+                        case TipoConceptoRecibo.NO_REMUNERATIVO:
+                            currentProyeccion.setProyeccionNeto(currentProyeccion.getProyeccionNeto().add(is.getValorCalculado()));
+                            break;
+                    }
+                }
+
+                if (currentProyeccion.getProyeccionBruto().doubleValue() > 0){
+                    proyecciones.put(p.getId(), currentProyeccion);
+                }
+            }
+        }
+        
+        //Completo los adelantos en cada fila
+        for (Adelanto a : adelantoF.obtenerAdelantos(desde.toDate(), hasta.toDate())){
+            ProyeccionSacVacYAdelantosVO proyeccion = proyecciones.get(a.getPersonal().getId());
+            if (proyeccion == null){
+                proyeccion = new ProyeccionSacVacYAdelantosVO(a.getPersonal());
+            }
+            
+            proyeccion.setTotalAdelantos(proyeccion.getTotalAdelantos().add(a.getValor()));
+            
+            proyecciones.put(a.getPersonal().getId(), proyeccion);
+        }
+        
+        List<ProyeccionSacVacYAdelantosVO> result = new ArrayList<ProyeccionSacVacYAdelantosVO>(proyecciones.values());
+        Collections.sort(result);
+        
+        return result;
+    }
+    
+    
+    
     
     /**
      * Metodo que obtiene el primer día del periodo semestral en que se encunetra el sistema
