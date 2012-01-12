@@ -154,6 +154,10 @@ public class EmbarqueController implements Serializable {
         return current;
     }
     
+    public void setSelected(Embarque selected){
+        current = selected;
+    }
+    
     public boolean validarCampos(){
         boolean validar = true;
         if (getSelected().getCodigo() == null){
@@ -184,10 +188,14 @@ public class EmbarqueController implements Serializable {
     }
 
     public String prepareView() {
-        recreateModelEmbarqueIndividual();
-        current = (Embarque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            recreateModelEmbarqueIndividual();
+            //current = (Embarque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
         return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -195,7 +203,7 @@ public class EmbarqueController implements Serializable {
         current = ejbFacade.crearNuevoEmbarque();
         selectedItemIndex = -1;
         return "Create";
-    }
+    } 
         
     public String create() {
         try {
@@ -214,10 +222,14 @@ public class EmbarqueController implements Serializable {
     }
 
     public String prepareEdit() {
-        recreateModelEmbarqueIndividual();
-        current = (Embarque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        if (current != null){
+            recreateModelEmbarqueIndividual();
+            //current = (Embarque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -237,11 +249,15 @@ public class EmbarqueController implements Serializable {
     }
 
     public String destroy() {
-        current = (Embarque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        if (current != null){
+            //current = (Embarque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {

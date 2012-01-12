@@ -20,10 +20,11 @@
                 <h:outputText escape="false" value="#{bundleCarga.ListBuqueEmpty}" rendered="#{buqueController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{buqueController.items.rowCount > 0}">
                     <p:dataTable value="#{buqueController.items}" 
-                                 var="item" widgetVar="buqueTable"
+                                 var="item" widgetVar="buqueTable" rowKey="#{item.id}"
                                  paginator="true" rows="10" emptyMessage="#{bundleCarga.ListBuqueEmpty}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{buqueController.selected}" selectionMode="single">
                        <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Buscar:" />  
@@ -36,40 +37,38 @@
                         <p:column headerText="#{bundleCarga.BuqueTitle_imo}" filterBy="#{item.imo}" filterStyleClass="filterColumn" filterOptions="contains">
                             <h:outputText value="#{item.imo}"/>
                         </p:column>
-                         <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
-                                image="/faces/resources/images/view.png" 
-                                action="#{buqueController.prepareView}" 
-                                value="#{bundleCarga.BuqueViewLink}"
-                                title="#{bundleCarga.BuqueViewLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/edit.png" 
-                                action="#{buqueController.prepareEdit}" 
-                                value="#{bundleCarga.BuqueEditLink}"
-                                title="#{bundleCarga.BuqueEditLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/destroy.png"
-                                onclick="return confirm('¿Esta seguro que desea eliminar este Buque?');" 
-                                action="#{buqueController.destroy}" 
-                                title="#{bundleCarga.BuqueDestroyLink}"
-                                value="#{bundleCarga.BuqueDestroyLink}"
-                                />
-                        </p:column>
+                         
                     </p:dataTable>
                 </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{buqueController.prepareCreate}" 
-                    value="#{bundleCarga.BuqueCreateLink}"
-                    title="#{bundleCarga.BuqueCreateLink}"
-                    />
+                <h:panelGrid columns="4" >
+                    <h:commandButton 
+                        image="/faces/resources/images/new.png" 
+                        action="#{buqueController.prepareCreate}" 
+                        value="#{bundleCarga.BuqueCreateLink}"
+                        title="#{bundleCarga.BuqueCreateLink}"
+                        />
+                    <h:commandButton 
+                        image="/faces/resources/images/view.png" 
+                        action="#{buqueController.prepareView}" 
+                        value="#{bundleCarga.BuqueViewLink}"
+                        title="#{bundleCarga.BuqueViewLink}"
+                        />
+
+                    <h:commandButton 
+                        image="/faces/resources/images/edit.png" 
+                        action="#{buqueController.prepareEdit}" 
+                        value="#{bundleCarga.BuqueEditLink}"
+                        title="#{bundleCarga.BuqueEditLink}"
+                        />
+
+                    <h:commandButton 
+                        image="/faces/resources/images/destroy.png"
+                        onclick="return confirm('¿Esta seguro que desea eliminar este Buque?');" 
+                        action="#{buqueController.destroy}" 
+                        title="#{bundleCarga.BuqueDestroyLink}"
+                        value="#{bundleCarga.BuqueDestroyLink}"
+                        />
+                    </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>

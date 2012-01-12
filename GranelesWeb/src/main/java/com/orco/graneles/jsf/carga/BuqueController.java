@@ -53,6 +53,10 @@ public class BuqueController implements Serializable {
         return current;
     }
 
+    public void setSelected(Buque selected){
+        current = selected;
+    }
+    
     private BuqueFacade getFacade() {
         return ejbFacade;
     }
@@ -63,9 +67,13 @@ public class BuqueController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Buque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
+        if (current != null){
+            //current = (Buque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -95,9 +103,13 @@ public class BuqueController implements Serializable {
     }
 */    
     public String prepareEdit() {
-        current = (Buque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        if (current != null){
+            //current = (Buque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -113,11 +125,15 @@ public class BuqueController implements Serializable {
     }
 
     public String destroy() {
-        current = (Buque) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        if (current != null){
+            //current = (Buque) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {

@@ -20,10 +20,11 @@
                 <h:outputText escape="false" value="#{bundleFacturacion.ListEmpresaEmpty}" rendered="#{empresaController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{empresaController.items.rowCount > 0}">
                     <p:dataTable value="#{empresaController.items}" 
-                                 var="item"
+                                 var="item" rowKey="#{item.id}"
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{empresaController.selected}" selectionMode="single">
                         <p:column headerText="#{bundleFacturacion.EmpresaTitle_nombre}" filterBy="#{item.nombre}" filterMatchMode="contains">
                             <h:outputText value="#{item.nombre}"/>
                         </p:column>
@@ -36,11 +37,17 @@
                         <p:column headerText="#{bundleFacturacion.EmpresaTitle_tipoEmpresa}" filterBy="#{item.tipoEmpresa}" filterOptions="#{fixedListController.tipoEmpresaSelectOne}" filterMatchMode="exact">
                            <h:outputText value="#{item.tipoEmpresa.toString()}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
+                
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{empresaController.prepareCreate}" 
+                    value="#{bundleFacturacion.EmpresaCreateLink}"
+                    title="#{bundleFacturacion.EmpresaCreateLink}"
+                    />
+                 <h:commandButton 
                                 image="/faces/resources/images/view.png" 
                                 action="#{empresaController.prepareView}" 
                                 value="#{bundleFacturacion.EmpresaViewLink}"
@@ -61,15 +68,8 @@
                                 title="#{bundleFacturacion.EmpresaDestroyLink}"
                                 value="#{bundleFacturacion.EmpresaDestroyLink}"
                                 />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{empresaController.prepareCreate}" 
-                    value="#{bundleFacturacion.EmpresaCreateLink}"
-                    title="#{bundleFacturacion.EmpresaCreateLink}"
-                    />
+                            
+                </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>

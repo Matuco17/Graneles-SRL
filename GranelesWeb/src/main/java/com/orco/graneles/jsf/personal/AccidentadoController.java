@@ -46,6 +46,10 @@ public class AccidentadoController implements Serializable {
         return current;
     }
     
+    public void setSelected(Accidentado selected){
+        current = selected;
+    }
+    
     public NuevoAccidentadoVO getSelectedVO(){
         if (currentV0 == null) {
             currentV0 = new NuevoAccidentadoVO(null, getSelected());
@@ -70,9 +74,13 @@ public class AccidentadoController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Accidentado) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        //current = (Accidentado) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
         return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -82,10 +90,14 @@ public class AccidentadoController implements Serializable {
     }
     
     public String prepareEdit() {
-        current = (Accidentado) getItems().getRowData();
-        currentV0 = ejbFacade.calcularNuevoAccidentado(current);
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        if (current != null){
+            //current = (Accidentado) getItems().getRowData();
+            currentV0 = ejbFacade.calcularNuevoAccidentado(current);
+            //selectedItemIndex = getItems().getRowIndex();
+            return "Edit";
+        } else {
+            return null;
+        }
     }
     
     public boolean validarCreateUpdate(){
@@ -140,11 +152,15 @@ public class AccidentadoController implements Serializable {
     }
 
     public String destroy() {
-        current = (Accidentado) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        if (current != null){
+            //current = (Accidentado) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {

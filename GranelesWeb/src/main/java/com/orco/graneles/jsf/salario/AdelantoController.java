@@ -84,6 +84,10 @@ public class AdelantoController implements Serializable {
         }
         return current;
     }
+    
+    public void setSelected(Adelanto selected){
+        current = selected;
+    }
 
     private AdelantoFacade getFacade() {
         return ejbFacade;
@@ -95,9 +99,13 @@ public class AdelantoController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Adelanto) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
+        //current = (Adelanto) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null) {
+            return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -120,9 +128,13 @@ public class AdelantoController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Adelanto) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        //current = (Adelanto) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -137,11 +149,15 @@ public class AdelantoController implements Serializable {
     }
 
     public String destroy() {
-        current = (Adelanto) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        //current = (Adelanto) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }         
     }
 
     public String destroyAndView() {

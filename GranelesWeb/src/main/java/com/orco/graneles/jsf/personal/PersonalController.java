@@ -47,6 +47,10 @@ public class PersonalController implements Serializable {
         }
         return current;
     }
+    
+    public void setSelected(Personal selected){
+        current = selected;
+    }
 
     private PersonalFacade getFacade() {
         return ejbFacade;
@@ -58,9 +62,13 @@ public class PersonalController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Personal) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
+        //current = (Personal) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -81,9 +89,13 @@ public class PersonalController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Personal) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        //current = (Personal) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -98,11 +110,15 @@ public class PersonalController implements Serializable {
     }
 
     public String destroy() {
-        current = (Personal) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        //current = (Personal) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+        if (current != null){
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {

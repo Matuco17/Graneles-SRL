@@ -20,10 +20,11 @@
                 <h:outputText escape="false" value="#{bundleSalario.ListSalarioBasicoEmpty}" rendered="#{salarioBasicoController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{salarioBasicoController.items.rowCount > 0}">
                     <p:dataTable value="#{salarioBasicoController.items}" 
-                                 var="item"
+                                 var="item" rowKey="#{item.id}"
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{salarioBasicoController.selected}" selectionMode="single">
                         <p:column headerText ="#{bundleSalario.SalarioBasicoTitle_tarea}" filterBy="#{item.tarea}" filterOptions="#{tareaController.itemsAvailableSelectOne}" filterMatchMode="exact" >
                             <h:outputText value="#{item.tarea.toString()}"/>
                         </p:column>
@@ -47,11 +48,17 @@
                             <h:outputText value="#{item.adicional}"/>
                         </p:column>
                     
-                         <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
+                         
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{salarioBasicoController.prepareCreate}" 
+                    value="#{bundleSalario.SalarioBasicoCreateLink}"
+                    title="#{bundleSalario.SalarioBasicoCreateLink}"
+                    />
+                   <h:commandButton 
                                 image="/faces/resources/images/view.png" 
                                 action="#{salarioBasicoController.prepareView}" 
                                 value="#{bundleSalario.SalarioBasicoViewLink}"
@@ -72,15 +79,7 @@
                                 title="#{bundleSalario.SalarioBasicoDestroyLink}"
                                 value="#{bundleSalario.SalarioBasicoDestroyLink}"
                                 />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{salarioBasicoController.prepareCreate}" 
-                    value="#{bundleSalario.SalarioBasicoCreateLink}"
-                    title="#{bundleSalario.SalarioBasicoCreateLink}"
-                    />
+                </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>

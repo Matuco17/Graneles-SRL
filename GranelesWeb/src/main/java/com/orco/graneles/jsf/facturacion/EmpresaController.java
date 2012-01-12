@@ -45,6 +45,10 @@ public class EmpresaController implements Serializable {
         }
         return current;
     }
+    
+    public void setSelected(Empresa selected){
+        current = selected;
+    }
 
     private EmpresaFacade getFacade() {
         return ejbFacade;
@@ -56,9 +60,13 @@ public class EmpresaController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Empresa) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
+        if (current != null){
+            //current = (Empresa) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -79,9 +87,13 @@ public class EmpresaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Empresa) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        if (current != null){
+            //current = (Empresa) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -96,11 +108,15 @@ public class EmpresaController implements Serializable {
     }
 
     public String destroy() {
-        current = (Empresa) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        if (current != null){
+            //current = (Empresa) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {

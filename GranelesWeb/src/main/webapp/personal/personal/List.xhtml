@@ -20,10 +20,11 @@
                 <h:outputText escape="false" value="#{bundlePersonal.ListPersonalEmpty}" rendered="#{personalController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{personalController.items.rowCount > 0}">
                     <p:dataTable value="#{personalController.items}" 
-                                 var="item" widgetVar="personalTable"
+                                 var="item" widgetVar="personalTable" rowKey="#{item.id}"                                  
                                  paginator="true" rows="10" emptyMessage="#{bundlePersonal.List_PersonalEmpty}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{personalController.selected}" selectionMode="single">
                         <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Buscar:" />  
@@ -42,8 +43,17 @@
                         <p:column filterBy="#{item.categoriaPrincipal.toString()}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;" headerText="#{bundlePersonal.PersonalTitle_categoriaPrincipal}">
                             <h:outputText value="#{item.categoriaPrincipal.toString()}"/>
                         </p:column>
-                        <p:column>
-                            <h:commandButton 
+                        
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{personalController.prepareCreate}" 
+                    value="#{bundlePersonal.PersonalCreateLink}"
+                    title="#{bundlePersonal.PersonalCreateLink}"
+                    />
+                <h:commandButton 
                                 image="/faces/resources/images/view.png" 
                                 action="#{personalController.prepareView}" 
                                 value="#{bundlePersonal.PersonalViewLink}"
@@ -64,15 +74,8 @@
                                 title="#{bundlePersonal.PersonalDestroyLink}"
                                 value="#{bundlePersonal.PersonalDestroyLink}"
                                 />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{personalController.prepareCreate}" 
-                    value="#{bundlePersonal.PersonalCreateLink}"
-                    title="#{bundlePersonal.PersonalCreateLink}"
-                    />
+                            
+                </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>

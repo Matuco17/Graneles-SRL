@@ -20,10 +20,11 @@
                 <h:outputText escape="false" value="#{bundlePersonal.ListAccidentadoEmpty}" rendered="#{accidentadoController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{accidentadoController.items.rowCount > 0}">
                     <p:dataTable widgetVar="dtbAccidentado" value="#{accidentadoController.items}" 
-                                 var="item"
+                                 var="item" rowKey="#{item.id}"
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{accidentadoController.selected}" selectionMode="single">
                         <f:facet name="header">  
                             <p:outputPanel>  
                                 <h:outputText value="Buscar:" />  
@@ -52,11 +53,17 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                              </h:outputText>
                         </p:column>
-                          <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
+                          
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{accidentadoController.prepareCreate}" 
+                    value="#{bundlePersonal.AccidentadoCreateLink}"
+                    title="#{bundlePersonal.AccidentadoCreateLink}"
+                    />
+                <h:commandButton 
                                 image="/faces/resources/images/view.png" 
                                 action="#{accidentadoController.prepareView}" 
                                 value="#{bundlePersonal.AccidentadoViewLink}"
@@ -77,15 +84,7 @@
                                 title="#{bundlePersonal.AccidentadoDestroyLink}"
                                 value="#{bundlePersonal.AccidentadoDestroyLink}"
                                 />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{accidentadoController.prepareCreate}" 
-                    value="#{bundlePersonal.AccidentadoCreateLink}"
-                    title="#{bundlePersonal.AccidentadoCreateLink}"
-                    />
+                </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>

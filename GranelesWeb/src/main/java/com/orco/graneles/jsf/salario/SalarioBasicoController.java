@@ -41,6 +41,10 @@ public class SalarioBasicoController implements Serializable {
         }
         return current;
     }
+    
+    public void setSelected(SalarioBasico selected){
+        current = selected;
+    }
 
     private SalarioBasicoFacade getFacade() {
         return ejbFacade;
@@ -52,9 +56,13 @@ public class SalarioBasicoController implements Serializable {
     }
 
     public String prepareView() {
-        current = (SalarioBasico) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
+        if (current != null){
+            //current = (SalarioBasico) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "View";
+        } else {
+            return null;
+        }
     }
 
     public String prepareCreate() {
@@ -75,9 +83,13 @@ public class SalarioBasicoController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (SalarioBasico) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        if (current != null){
+            //current = (SalarioBasico) getItems().getRowData();
+            //selectedItemIndex = getItems().getRowIndex();
+            return "Edit";
+        } else {
+            return null;
+        }
     }
 
     public String update() {
@@ -92,11 +104,15 @@ public class SalarioBasicoController implements Serializable {
     }
 
     public String destroy() {
-        current = (SalarioBasico) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
+        if (current != null){
+        //current = (SalarioBasico) getItems().getRowData();
+        //selectedItemIndex = getItems().getRowIndex();
+            performDestroy();
+            recreateModel();
+            return "List";
+        } else {
+            return null;
+        }
     }
 
     public String destroyAndView() {
