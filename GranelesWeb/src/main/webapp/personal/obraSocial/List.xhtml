@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{obraSocialController.init()}" />  
@@ -20,7 +20,7 @@
                 <h:outputText escape="false" value="#{bundlePersonal.ObraSocialEmpty}" rendered="#{obraSocialController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{obraSocialController.items.rowCount > 0}">
                     <p:dataTable value="#{obraSocialController.items}" 
-                                 var="item"
+                                 var="item" 
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:co="http://java.sun.com/jsf/composite"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
@@ -58,15 +58,23 @@
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" />
                     <h:outputText value="" />
 
-                    <h:selectOneMenu id="personal" value="#{embarqueController.currentTTE.tte.personal}" 
-                                     valueChangeListener="#{embarqueController.seleccionarPersonal}">
-                        <p:ajax event="change" update="panTrabajadores"/>
-                        <f:selectItem itemLabel="---" />
-                        <f:selectItems value="#{embarqueController.trabajadores}" var="trabajador" itemLabel="#{trabajador.cuil}"/>
-                    </h:selectOneMenu>
+                    <p:autoComplete value="#{embarqueController.currentTTE.tte.personal}" 
+                                completeMethod="#{personalController.completePersonal}"
+                                maxResults="15" 
+                                var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" >  
+                         <p:ajax event="change" update="panTrabajadores"/>
+                    </p:autoComplete> 
 
-                    <p:inputText id="personalNombre" value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
-
+                    <c:choose>
+                        <c:when test="#{embarqueController.currentTTE.tte.personal != null}">
+                            <p:inputText id="personalNombre"  value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
+                        </c:when>
+                        <c:otherwise>
+                            <p:inputText id="personalNombre" readonly="true" style="min-width: 180px;" />
+                        </c:otherwise>
+                    </c:choose>
+                    
                     <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.tte.categoria}" 
                                      valueChangeListener="#{embarqueController.seleccionarCategoria}">
                         <p:ajax event="change" update="panTrabajadores"/>

@@ -5,6 +5,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.PersonalFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +30,8 @@ public class PersonalController implements Serializable {
     @EJB
     private PersonalFacade ejbFacade;
     private int selectedItemIndex;
+    
+    private List<Personal> todoElPersonal;
 
     public PersonalController() {
     }
@@ -149,6 +152,17 @@ public class PersonalController implements Serializable {
         return lista;
     }
     
+    public List<Personal> completePersonal(String query) {  
+        List<Personal> suggestions = new ArrayList<Personal>();  
+          
+        for(Personal p : getTodoElPersonal()) {  
+            if(p.getCuil().contains(query) || p.getApellido().contains(query))  
+                suggestions.add(p);  
+        }  
+          
+        return suggestions;  
+    }  
+    
     
     @FacesConverter(forClass = Personal.class)
     public static class PersonalControllerConverter implements Converter {
@@ -186,6 +200,16 @@ public class PersonalController implements Serializable {
             }
         }
     }
+
+    public List<Personal> getTodoElPersonal() {
+        if (todoElPersonal == null){
+            todoElPersonal = ejbFacade.findAll();
+            Collections.sort(todoElPersonal, new ComparadorPersonalXCuil());
+        }
+        return todoElPersonal;
+    }
+    
+    
     
     private class ComparadorPersonalXCuil implements Comparator<Personal>{
 

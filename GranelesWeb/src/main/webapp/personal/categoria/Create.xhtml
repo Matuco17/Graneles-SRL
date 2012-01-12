@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -16,9 +16,9 @@
                     <h:outputLabel value="#{bundlePersonal.CategoriaTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
                     <p:inputText id="descripcion" value="#{categoriaController.selected.descripcion}" />
                     <h:outputLabel value="#{bundlePersonal.CategoriaTitle_sindicato}" for="sindicato" style="font-weight: bold;" />
-                    <p:selectOneMenu id="sindicato" value="#{categoriaController.selected.sindicato}" required="true" requiredMessage="#{bundlePersonal.CategoriaRequiredMessage_sindicato}" style="width:100%;">
+                    <h:selectOneMenu id="sindicato" value="#{categoriaController.selected.sindicato}" required="true" requiredMessage="#{bundlePersonal.CategoriaRequiredMessage_sindicato}" style="width:100%;">
                         <f:selectItems value="#{sindicatoController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
+                    </h:selectOneMenu>
                 </h:panelGrid>
                 <h:panelGrid columns="2">
                     <h:commandButton action="#{categoriaController.create}"

@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{periodoController.init()}" />  
@@ -70,6 +70,8 @@
                            <h:commandButton id="cmdProcesarPeriodo" 
                                              value="Procesar periodo"
                                              action="#{periodoController.procesarPeriodoConDatosSistema()}"
+                                             onclick="return confirm('Atención: Este proceso puede tardar varios minutos. ¿Desea continuar?');" 
+                                
                                              />
                         </h:form>                    
                    </p:panel>

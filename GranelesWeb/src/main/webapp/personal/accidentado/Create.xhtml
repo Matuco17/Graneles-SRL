@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
@@ -16,10 +16,13 @@
                 <p:panel id="panSeleccion" >
                  <h:panelGrid columns="4">
                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personal}" for="personal" />
-                    <h:selectOneMenu id="currentPersonal" value="#{accidentadoController.currentPersonal}"  >
-                       <f:selectItem itemLabel="---" />
-                       <f:selectItems value="#{personalController.personalOrdenadoXCuil}" var="trabajador" itemLabel="#{trabajador.cuil}"/>
-                    </h:selectOneMenu>
+                    
+                    <p:autoComplete value="#{accidentadoController.currentPersonal}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    forceSelection="true"  >  
+                    </p:autoComplete> 
                     <h:outputLabel value="" />
                      
                     <h:commandButton id="btnSeleccionarAccidentado"

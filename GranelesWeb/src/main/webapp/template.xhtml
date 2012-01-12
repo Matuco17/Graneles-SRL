@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -16,16 +16,14 @@
 
     <h:body>
         <div style="width: 35%;">
-            <h1>
-                Sistema Graneles S.R.L.
-            </h1>
+            
         </div>
         <div style="width: 63%" >
             <p:messages showDetail="false" />
         </div>
         <p>
             <h:form>
-               <p:menubar autoSubmenuDisplay="true" >  
+               <p:menubar  >  
                     <p:submenu label="Ingreso" >  
                         <p:menuitem value="Personal" url="/faces/personal/personal/List.xhtml" />  
                         <p:menuitem value="Accidentados"  url="/faces/personal/accidentado/List.xhtml" />
@@ -50,12 +48,7 @@
                         <p:menuitem value="Mercaderías" url="/faces/carga/mercaderia/List.xhtml" />
                         <p:menuitem value="Empresas" url="/faces/facturacion/empresa/List.xhtml" />
                         <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Mantenimiento" >  
-                        <p:menuitem value="Listas de Valores" url="/faces/miscelaneos/list/List.xhtml" />  
-                        <p:menuitem value="Elementos de Listas" url="/faces/miscelaneos/fixedList/List.xhtml" />  
-                    </p:submenu>
-                    <p:menuitem value="Inicio" url="/" />
+                    </p:submenu>                    
                 </p:menubar>
             </h:form>
         </p>

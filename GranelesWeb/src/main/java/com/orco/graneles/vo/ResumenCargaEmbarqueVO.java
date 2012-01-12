@@ -62,13 +62,18 @@ public class ResumenCargaEmbarqueVO {
         
         totalEnBuqueXBodega = new BigDecimal[8];
         for(int i = 1; i < totalEnBuqueXBodega.length; i++){
-            totalEnBuqueXBodega[i] = cargasPrevias[i].getCarga().add(totalCargadoXBodega[i]);
+            if (cargasPrevias[i].getCarga() != null) {
+                totalEnBuqueXBodega[i] = cargasPrevias[i].getCarga().add(totalCargadoXBodega[i]);
+            } else {
+                totalEnBuqueXBodega[i] = BigDecimal.ZERO.add(totalCargadoXBodega[i]);
+            }
         }
         
         //Pto, atenterior
         totalCargaPrevia = BigDecimal.ZERO;
-        for(int i = 1; i < cargasPrevias.length; i++){ 
-            totalCargaPrevia = totalCargaPrevia.add(cargasPrevias[i].getCarga());
+        for(int i = 1; i < cargasPrevias.length; i++){
+            if (cargasPrevias[i].getCarga() != null)
+                totalCargaPrevia = totalCargaPrevia.add(cargasPrevias[i].getCarga());
         }
         
         //Total carga actual
@@ -89,7 +94,10 @@ public class ResumenCargaEmbarqueVO {
     private void agregarAlListaTotal(List<TotalesCargaVO> lista, String mercaderiaNombre, BigDecimal carga){
         for (TotalesCargaVO tcVO : lista){
             if (tcVO.getMercaderia().equalsIgnoreCase(mercaderiaNombre)){
-                tcVO.setCarga(tcVO.getCarga().add(carga));
+                if (tcVO.getCarga() == null)
+                    tcVO.setCarga(BigDecimal.ZERO);
+                if (carga != null)
+                    tcVO.setCarga(tcVO.getCarga().add(carga));
                 return;
             }
         }
