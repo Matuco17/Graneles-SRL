@@ -457,6 +457,12 @@ public class EmbarqueController implements Serializable {
     
     public String saveTE(){
         if (editarTurno){
+            //realizo la validacion de los datos obligatorios
+            if (currentTE.getTipo() == null){
+                  JsfUtil.addErrorMessage("El campo tipo de Jornal es obligatorio");
+                  return null;
+            }
+            
             currentTE.setCargaTurnoCollection(cargas);
             
             List<TrabajadoresTurnoEmbarque> trabajadores = new ArrayList<TrabajadoresTurnoEmbarque>();

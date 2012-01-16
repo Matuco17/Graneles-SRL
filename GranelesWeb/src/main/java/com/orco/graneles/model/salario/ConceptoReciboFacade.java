@@ -139,73 +139,81 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     }
     
     protected double calcularDiaTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
-        double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-        double totalConcepto = basicoBruto; //resultado de la suma del concepto
-        //Realizo el agregado de los modificadores de tarea
-        if (incluirAdicionales){
-            if (tte.getTarea().getInsalubre()){
-                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
+        if (salario == null){
+            return 0.0;
+        } else {
+            //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+            double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
+            double totalConcepto = basicoBruto; //resultado de la suma del concepto
+            //Realizo el agregado de los modificadores de tarea
+            if (incluirAdicionales){
+                if (tte.getTarea().getInsalubre()){
+                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
+                }
+                if (tte.getTarea().getPeligrosa()){
+                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
+                }
+                if (tte.getTarea().getPeligrosa2()){
+                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
+                }
+                if (tte.getTarea().getProductiva()){
+                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
+                }
             }
-            if (tte.getTarea().getPeligrosa()){
-                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-            }
-            if (tte.getTarea().getPeligrosa2()){
-                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-            }
-            if (tte.getTarea().getProductiva()){
-                totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-            }
+            //Ahora aplico el valor del modificador del tipo de jornal
+            totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+            totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
+            return totalConcepto;
         }
-        //Ahora aplico el valor del modificador del tipo de jornal
-        totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-        totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
-        return totalConcepto;
     }
     
     public TrabajadorTurnoEmbarqueVO calcularDiaTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
         //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
         SalarioBasico salario = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
         
+        double basicoBruto = 0.0;
+        double totalConcepto = 0.0; //resultado de la suma del concepto
+
         TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte, BigDecimal.ZERO);
         
-        double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-        double totalConcepto = basicoBruto; //resultado de la suma del concepto
-        
-        //Realizo el agregado de los modificadores de tarea
-        if (incluirAdicionales){
-            if (tte.getTarea().getInsalubre()){
-                double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
-                conceptoInsalubre += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                tteVO.setInsalubre(new BigDecimal(conceptoInsalubre));
-                totalConcepto += conceptoInsalubre ;
+        if (salario != null){
+            
+            basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
+            totalConcepto = basicoBruto; //resultado de la suma del concepto
+
+            //Realizo el agregado de los modificadores de tarea
+            if (incluirAdicionales){
+                if (tte.getTarea().getInsalubre()){
+                    double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
+                    conceptoInsalubre += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setInsalubre(new BigDecimal(conceptoInsalubre));
+                    totalConcepto += conceptoInsalubre ;
+                }
+                if (tte.getTarea().getPeligrosa()){
+                    double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
+                    conceptoPeligrosa += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setPeligrosa(new BigDecimal(conceptoPeligrosa));
+                    totalConcepto += conceptoPeligrosa ;
+                }
+                if (tte.getTarea().getPeligrosa2()){
+                    double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
+                    conceptoPeligrosa2 += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setPeligrosa2(new BigDecimal(conceptoPeligrosa2));
+                    totalConcepto += conceptoPeligrosa2;
+                }
+                if (tte.getTarea().getProductiva()){
+                    double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
+                    conceptoProductiva += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setProductiva(new BigDecimal(conceptoProductiva));
+                    totalConcepto += conceptoProductiva ;
+                }
             }
-            if (tte.getTarea().getPeligrosa()){
-                double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-                conceptoPeligrosa += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                tteVO.setPeligrosa(new BigDecimal(conceptoPeligrosa));
-                totalConcepto += conceptoPeligrosa ;
-            }
-            if (tte.getTarea().getPeligrosa2()){
-                double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-                conceptoPeligrosa2 += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                tteVO.setPeligrosa2(new BigDecimal(conceptoPeligrosa2));
-                totalConcepto += conceptoPeligrosa2;
-            }
-            if (tte.getTarea().getProductiva()){
-                double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-                conceptoProductiva += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                tteVO.setProductiva(new BigDecimal(conceptoProductiva));
-                totalConcepto += conceptoProductiva ;
-            }
+            //Ahora aplico el valor del modificador del tipo de jornal
+            totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
         }
-        //Ahora aplico el valor del modificador del tipo de jornal
-        totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
         
         tteVO.setValorBruto(new BigDecimal(totalConcepto));
         tteVO.setJornalBasico(new BigDecimal(basicoBruto));
-        
-        
         
         return tteVO;
     }
