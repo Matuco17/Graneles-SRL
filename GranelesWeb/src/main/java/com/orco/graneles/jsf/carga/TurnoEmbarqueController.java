@@ -75,10 +75,6 @@ public class TurnoEmbarqueController implements Serializable {
         getCurrentTTE().setCategoria((Categoria) e.getNewValue());
     }
     
-    public void seleccionarHoras(ValueChangeEvent e){
-        getCurrentTTE().setHoras((Integer) e.getNewValue());
-    }
-    
       
     private void embarqueSeleccionado(){
         if (getSelected().getEmbarque() != null){
@@ -290,7 +286,6 @@ public class TurnoEmbarqueController implements Serializable {
     public TrabajadoresTurnoEmbarque getCurrentTTE() {
         if (currentTTE == null){
             currentTTE = new TrabajadoresTurnoEmbarque();
-            currentTTE.setHoras(6);
         }
         return currentTTE;
     }

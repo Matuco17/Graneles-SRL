@@ -52,9 +52,12 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "horas")
-    private Integer horas;
+    @Column(name = "desde")
+    private Integer desde;
     
+    @Column(name = "hasta")
+    private Integer hasta;
+        
     @JoinColumn(name = "libro_sueldo", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private Sueldo libroSueldo;
@@ -91,11 +94,31 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     }
 
     public Integer getHoras() {
-        return horas;
+        if (desde != null && hasta != null){
+            if (desde > hasta){
+                return hasta + 24 - desde;                
+            } else {
+                return hasta - desde;
+            }
+        } else {
+            return 0;
+        }
     }
 
-    public void setHoras(Integer horas) {
-        this.horas = horas;
+    public Integer getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Integer desde) {
+        this.desde = desde;
+    }
+
+    public Integer getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Integer hasta) {
+        this.hasta = hasta;
     }
 
     public Sueldo getLibroSueldo() {

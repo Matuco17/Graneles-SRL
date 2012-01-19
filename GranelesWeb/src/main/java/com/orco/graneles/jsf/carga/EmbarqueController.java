@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.*;
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.personal.Tarea;
@@ -498,7 +499,11 @@ public class EmbarqueController implements Serializable {
     public TrabajadorTurnoEmbarqueVO getCurrentTTE() {
         if (currentTTE == null){
             currentTTE = new TrabajadorTurnoEmbarqueVO(new TrabajadoresTurnoEmbarque(), BigDecimal.ZERO);
-            currentTTE.getTte().setHoras(6);
+            if (currentTE.getTurno() != null){
+                //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
+                currentTTE.getTte().setDesde(new Integer(currentTE.getTurno().getDescripcion().substring(0, 2)));
+                currentTTE.getTte().setHasta(new Integer(currentTE.getTurno().getDescripcion().substring(3)));
+            }
             currentTTE.getTte().setPlanilla(currentTE);
         }
         return currentTTE;
@@ -508,6 +513,10 @@ public class EmbarqueController implements Serializable {
         this.currentTTE = currentTTE;
     }
 
+    public void seleccionarTurno(ValueChangeEvent e){
+        getCurrentTE().setTurno((FixedList) e.getNewValue());
+    }
+    
     public void seleccionarTipoJornal(ValueChangeEvent e){
         getCurrentTE().setTipo((TipoJornal) e.getNewValue());
     }
@@ -522,6 +531,14 @@ public class EmbarqueController implements Serializable {
         getCurrentTTE().getTte().setPlanilla(currentTE);
         if (personalSeleccionado.getCategoriaPrincipal() != null)
             getCurrentTTE().getTte().setCategoria(personalSeleccionado.getCategoriaPrincipal());
+        
+        //TODO: ASIGNAR DINAMICAMENTE LAS TAREAS PERMITIDAS DE ACUERDO AL SALARIO BASICO CARGADO:
+        if (currentTE.getTurno() != null){
+            //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
+            currentTTE.getTte().setDesde(new Integer(currentTE.getTurno().getDescripcion().substring(0, 2)));
+            currentTTE.getTte().setHasta(new Integer(currentTE.getTurno().getDescripcion().substring(3)));
+        }
+          
         actualizarSueldoTTE(getCurrentTTE());
     }
     
@@ -534,9 +551,14 @@ public class EmbarqueController implements Serializable {
         getCurrentTTE().getTte().setCategoria((Categoria) e.getNewValue());
         actualizarSueldoTTE(getCurrentTTE());
     }
+        
+    public void seleccionarDesde(ValueChangeEvent e){
+        getCurrentTTE().getTte().setDesde((Integer) e.getNewValue());
+        actualizarSueldoTTE(getCurrentTTE());
+    }
     
-    public void seleccionarHoras(ValueChangeEvent e){
-        getCurrentTTE().getTte().setHoras((Integer) e.getNewValue());
+    public void seleccionarHasta(ValueChangeEvent e){
+        getCurrentTTE().getTte().setHasta((Integer) e.getNewValue());
         actualizarSueldoTTE(getCurrentTTE());
     }
     

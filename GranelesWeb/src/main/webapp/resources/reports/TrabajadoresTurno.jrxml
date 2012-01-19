@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrabajadoresTurno" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="265"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="50"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
@@ -25,8 +25,14 @@
 	<field name="decreto" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[decreto]]></fieldDescription>
 	</field>
+	<field name="desde" class="java.lang.Integer">
+		<fieldDescription><![CDATA[desde]]></fieldDescription>
+	</field>
 	<field name="fechaTurno" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaTurno]]></fieldDescription>
+	</field>
+	<field name="hasta" class="java.lang.Integer">
+		<fieldDescription><![CDATA[hasta]]></fieldDescription>
 	</field>
 	<field name="horas" class="java.lang.Integer">
 		<fieldDescription><![CDATA[horas]]></fieldDescription>
@@ -36,6 +42,9 @@
 	</field>
 	<field name="jornalBasico" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[jornalBasico]]></fieldDescription>
+	</field>
+	<field name="lugar" class="java.lang.String">
+		<fieldDescription><![CDATA[lugar]]></fieldDescription>
 	</field>
 	<field name="peligrosa" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[peligrosa]]></fieldDescription>
@@ -197,130 +206,144 @@
 	<columnHeader>
 		<band height="41" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="27" height="40"/>
+				<reportElement x="0" y="0" width="21" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="27" y="0" width="37" height="40"/>
+				<reportElement x="21" y="0" width="45" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="64" y="0" width="20" height="40"/>
+				<reportElement x="66" y="0" width="20" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="84" y="0" width="343" height="40"/>
+				<reportElement x="86" y="0" width="335" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="0" width="62" height="40"/>
+				<reportElement x="411" y="0" width="62" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="0" width="45" height="40"/>
+				<reportElement x="473" y="0" width="45" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="534" y="0" width="154" height="40"/>
+				<reportElement x="518" y="0" width="154" height="40"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="688" y="0" width="114" height="40"/>
+				<reportElement x="672" y="0" width="100" height="40"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="27" height="40"/>
+				<reportElement x="0" y="0" width="19" height="40"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[N° Ord]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="27" y="0" width="37" height="40"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Turno]]></text>
+				<reportElement x="21" y="0" width="22" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[Ent]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="64" y="0" width="20" height="40"/>
+				<reportElement x="66" y="0" width="20" height="40"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Hs]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="84" y="0" width="343" height="20"/>
+				<reportElement x="86" y="0" width="325" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Consocio de Gestión del Puerto de Bahía Blanca]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="84" y="21" width="88" height="20"/>
+				<reportElement x="86" y="21" width="80" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Categoria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="172" y="21" width="35" height="20"/>
+				<reportElement x="166" y="21" width="35" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Reg.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="207" y="20" width="80" height="20"/>
+				<reportElement x="201" y="20" width="74" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[CUIL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="287" y="20" width="140" height="20"/>
+				<reportElement x="275" y="19" width="136" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Apellido y Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="1" width="62" height="39"/>
+				<reportElement x="411" y="1" width="62" height="39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Cargo Asignado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="489" y="1" width="45" height="39"/>
+				<reportElement x="473" y="1" width="45" height="39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Jornal Básico]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="534" y="1" width="154" height="20"/>
+				<reportElement x="518" y="1" width="154" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Adicional Imp.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="536" y="21" width="50" height="20"/>
+				<reportElement x="520" y="21" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Gral.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="587" y="21" width="50" height="20"/>
+				<reportElement x="571" y="21" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Part.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="638" y="21" width="50" height="20"/>
+				<reportElement x="622" y="21" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Prod.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="698" y="1" width="50" height="40"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="672" y="0" width="50" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
 				<text><![CDATA[Total Bruto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="752" y="1" width="50" height="39"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="722" y="0" width="50" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
 				<text><![CDATA[Total Neto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="1" width="22" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[Sal]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="772" y="0" width="30" height="40"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="772" y="0" width="30" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Lugar]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="27" height="20"/>
+				<reportElement x="0" y="0" width="20" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{nroOrden}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="26" y="0" width="37" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{turnoDescripcion}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="64" y="0" width="20" height="20"/>
+				<reportElement x="66" y="0" width="20" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -328,7 +351,7 @@
 				<textFieldExpression><![CDATA[$F{horas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="84" y="0" width="88" height="20"/>
+				<reportElement x="86" y="0" width="80" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -336,7 +359,7 @@
 				<textFieldExpression><![CDATA[$F{categoriaDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="172" y="0" width="35" height="20"/>
+				<reportElement x="166" y="0" width="35" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -344,7 +367,7 @@
 				<textFieldExpression><![CDATA[$F{registro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="207" y="0" width="80" height="20"/>
+				<reportElement x="201" y="0" width="74" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -352,15 +375,7 @@
 				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="0" width="140" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-					<paragraph leftIndent="2" rightIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="427" y="0" width="62" height="20"/>
+				<reportElement x="411" y="0" width="62" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -368,7 +383,7 @@
 				<textFieldExpression><![CDATA[$F{tareaDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="489" y="0" width="45" height="20"/>
+				<reportElement x="473" y="0" width="45" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -376,7 +391,7 @@
 				<textFieldExpression><![CDATA[$F{jornalBasico}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="536" y="0" width="50" height="20"/>
+				<reportElement x="520" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -384,7 +399,7 @@
 				<textFieldExpression><![CDATA[0.00]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="587" y="0" width="50" height="20"/>
+				<reportElement x="571" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -392,7 +407,7 @@
 				<textFieldExpression><![CDATA[$F{peligrosa}.add($F{peligrosa2}).add($F{insalubre})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="638" y="0" width="50" height="20"/>
+				<reportElement x="622" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -400,7 +415,7 @@
 				<textFieldExpression><![CDATA[$F{productiva}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="698" y="0" width="50" height="20"/>
+				<reportElement x="672" y="0" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -408,12 +423,44 @@
 				<textFieldExpression><![CDATA[$F{valorBruto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="752" y="0" width="50" height="20"/>
+				<reportElement x="722" y="1" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valorTurno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="0" width="22" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="22" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hasta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="274" y="0" width="137" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="772" y="1" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lugar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -423,19 +470,19 @@
 				<reportElement x="0" y="2" width="802" height="20"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="598" y="2" width="100" height="20"/>
+				<reportElement x="570" y="2" width="100" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[TOTALES]]></text>
 			</staticText>
 			<textField pattern="###0.00">
-				<reportElement x="698" y="2" width="50" height="20"/>
+				<reportElement x="672" y="2" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{valorBruto_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="752" y="2" width="50" height="20"/>
+				<reportElement x="722" y="3" width="50" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>

@@ -28,7 +28,8 @@
 
                     <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_turno}" for="turno"  />
                     <h:selectOneMenu id="turno" value="#{embarqueController.currentTE.turno}" disabled="#{!cc.attrs.editar}"
-                                            >
+                                     valueChangeListener="#{embarqueController.seleccionarTurno}">
+                        <p:ajax event="change"/>                  
                         <f:selectItems value="#{fixedListController.turnoSelectOne}"/>
                     </h:selectOneMenu>
 
@@ -49,20 +50,24 @@
             </p:fieldset>
 
             <p:fieldset id="panTrabajadores" toggleable="true" legend="Trabajadores"  >
-                <h:panelGrid columns="7" rendered="#{cc.attrs.editar}">
+                <h:panelGrid columns="9" rendered="#{cc.attrs.editar}">
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"  />
                     <h:outputText value="" />
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" />
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horas}" />
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}" />
+                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}" />
                     <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" />
                     <h:outputText value="" />
+                    <h:outputText value="" />
+                    
 
                     <p:autoComplete value="#{embarqueController.currentTTE.tte.personal}" 
                                 completeMethod="#{personalController.completePersonal}"
                                 maxResults="15" 
                                 var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
-                                forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" >  
+                                forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" 
+                                style="width: 100px;">  
                          <p:ajax event="change" update="panTrabajadores"/>
                     </p:autoComplete> 
 
@@ -87,11 +92,20 @@
                         <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
 
-                    <h:selectOneMenu id="horas" value="#{embarqueController.currentTTE.tte.horas}"  
-                                     valueChangeListener="#{embarqueController.seleccionarHoras}">
+                    <h:selectOneMenu id="horaDesde" value="#{embarqueController.currentTTE.tte.desde}"  
+                                     valueChangeListener="#{embarqueController.seleccionarDesde}">
                         <p:ajax event="change" update="panTrabajadores"/>
-                        <f:selectItem itemValue="6" itemLabel="6" />
-                        <f:selectItem itemValue="3" itemLabel="3" />
+                        <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                            <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                        </c:forEach>
+                    </h:selectOneMenu>
+
+                    <h:selectOneMenu id="horaHasta" value="#{embarqueController.currentTTE.tte.hasta}"  
+                                     valueChangeListener="#{embarqueController.seleccionarHasta}">
+                        <p:ajax event="change" update="panTrabajadores"/>
+                        <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                            <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                        </c:forEach>
                     </h:selectOneMenu>
                     
                     <p:inputText id="bruto" value="#{embarqueController.currentTTE.valorTurno}" readonly="true" style="width: 50px; text-align: right;" >
@@ -102,15 +116,20 @@
                                      action="#{embarqueController.agregarTrabajador}"
                                      image="/faces/resources/images/new.png" >
                         <p:ajax update="panTrabajadores"/>
-
                     </h:commandButton>
 
+                    <h:commandButton id="btnEliminarTrabajador"
+                                         image="/faces/resources/images/destroy.png"
+                                         action="#{embarqueController.eliminarTrabajador}" >  
+                        <p:ajax update="panTrabajadores"/>
+                    </h:commandButton> 
+                    
                 </h:panelGrid>
 
                 <p:dataTable id="dtbTrabajadores" 
                              value="#{embarqueController.trabajadoresTurnoModel}" var="item"
-                             rowKey="#{item.tte.personal.cuil}">
-
+                             rowKey="#{item.tte.personal.cuil}"
+                             selection="#{embarqueController.selectedTTE}" selectionMode="single">
 
                     <p:column id="colCuil" headerText="#{bundlePersonal.PersonalTitle_cuil}" >
                         <h:outputText value="#{item.tte.personal.cuil}" />
@@ -128,26 +147,25 @@
                             <f:selectItems value="#{tareaController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
                     </p:column>
-                    <p:column id="colHoras" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horas}"  >
-                        <h:selectOneMenu id="selColHoras" value="#{item.tte.horas}" disabled="#{!cc.attrs.editar}" >
-                            <f:selectItem itemValue="6" itemLabel="6" />
-                            <f:selectItem itemValue="3" itemLabel="3" />
+                    <p:column id="colDesde" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}"  >
+                        <h:selectOneMenu id="selColDesde" value="#{item.tte.desde}" disabled="#{!cc.attrs.editar}" >
+                            <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                                <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                            </c:forEach>
+                        </h:selectOneMenu>
+                    </p:column>
+                    <p:column id="colHasta" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}"  >
+                        <h:selectOneMenu id="selColHasta" value="#{item.tte.hasta}" disabled="#{!cc.attrs.editar}" >
+                            <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                                <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                            </c:forEach>
                         </h:selectOneMenu>
                     </p:column>
                     <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
                         <h:outputText value="#{item.valorTurno}" >
                             <f:convertNumber maxFractionDigits="2" />
                         </h:outputText>
-                    </p:column>
-                    
-                    <p:column>
-                        <h:commandButton id="btnEliminarTrabajador"
-                                         image="/faces/resources/images/destroy.png"
-                                         action="#{embarqueController.eliminarTrabajador()}"
-                                         rendered="#{cc.attrs.editar}"
-                                         >  
-                        </h:commandButton> 
-                    </p:column>
+                    </p:column>                    
                 </p:dataTable>
             </p:fieldset>
         </div> 

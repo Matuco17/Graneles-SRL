@@ -154,4 +154,16 @@ public class TrabajadorTurnoEmbarqueVO {
         return tte.getTarea().getDescripcion();
     }
     
+    public Integer getDesde(){
+        return tte.getDesde();
+    }
+    
+    public Integer getHasta(){
+        return tte.getHasta();
+    }
+    
+    public String getLugar(){
+        return tte.getTarea().getLugar().getDescripcion();
+    }
+    
 }
