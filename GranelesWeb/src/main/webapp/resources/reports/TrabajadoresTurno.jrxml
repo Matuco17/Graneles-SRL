@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TrabajadoresTurno" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="50"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
@@ -199,7 +199,7 @@
 			<textField>
 				<reportElement x="0" y="68" width="802" height="50"/>
 				<textElement/>
-				<textFieldExpression><![CDATA["En el puerto de BAHIA BLANCA a los _____ días del mes de ____________ del año _____ comparece ante el suscriptor funcionario ________________________ del Consorcio de Gestión del Puerto de Bahía Blanca, el representante de la empresa GRANELES S.R.L., a fin de efectura la Declaración Jurada de la Nómina del Personal Eventual Contratado, correspondiente al día" + $F{fechaTurno}.toLocaleString() + ", conforme al detalle que obra a continuación:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["En el puerto de BAHIA BLANCA a los _____ días del mes de ____________ del año _____ comparece ante el suscriptor funcionario ________________________ del Consorcio de Gestión del Puerto de Bahía Blanca, el representante de la empresa GRANELES S.R.L., a fin de efectura la Declaración Jurada de la Nómina del Personal Eventual Contratado, correspondiente al día " + $F{fechaTurno}.toLocaleString() + ", conforme al detalle que obra a continuación:"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

@@ -165,7 +165,10 @@
                         <h:outputText value="#{item.valorTurno}" >
                             <f:convertNumber maxFractionDigits="2" />
                         </h:outputText>
-                    </p:column>                    
+                    </p:column>  
+                    <p:column id="colDelegado" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_delegado}" style="text-align: center;" >
+                        <h:selectBooleanCheckbox value="#{item.tte.delegado}" disabled="#{!cc.attrs.editar}" />
+                    </p:column>  
                 </p:dataTable>
             </p:fieldset>
         </div> 

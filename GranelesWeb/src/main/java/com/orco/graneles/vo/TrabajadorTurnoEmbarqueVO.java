@@ -151,7 +151,11 @@ public class TrabajadorTurnoEmbarqueVO {
     }
     
     public String getTareaDescripcion(){
-        return tte.getTarea().getDescripcion();
+        if (tte.getDelegado()){
+            return "Delegado";
+        } else {
+            return tte.getTarea().getDescripcion();
+        }
     }
     
     public Integer getDesde(){

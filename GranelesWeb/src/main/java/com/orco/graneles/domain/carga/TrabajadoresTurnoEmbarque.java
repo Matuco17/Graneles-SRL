@@ -57,7 +57,10 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     
     @Column(name = "hasta")
     private Integer hasta;
-        
+   
+    @Column(name = "delegado")
+    private Boolean delegado;    
+    
     @JoinColumn(name = "libro_sueldo", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private Sueldo libroSueldo;
@@ -77,6 +80,8 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @JoinColumn(name = "planilla", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = true)
     private TurnoEmbarque planilla;
+    
+   
 
     public TrabajadoresTurnoEmbarque() {
     }
@@ -121,6 +126,14 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
         this.hasta = hasta;
     }
 
+    public Boolean getDelegado() {
+        return delegado;
+    }
+
+    public void setDelegado(Boolean delegado) {
+        this.delegado = delegado;
+    }
+    
     public Sueldo getLibroSueldo() {
         return libroSueldo;
     }
