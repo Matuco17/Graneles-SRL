@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents">
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
+      >
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -16,51 +17,19 @@
                 <div style="min-width: 650px; float:left;">
                     <p:fieldset legend="Datos del Embarque" toggleable="true"  >
                         
-                        <Cc:embarqueDatosGenerales nuevo="false"/>
+                        <Cc:embarqueDatosGenerales nuevo="false" editar="true"/>
+                        
+                    </p:fieldset>
+                    
+                    <p:fieldset legend="Cargadores del Embarque" toggleable="true">
+                        
+                        <Cc:embarqueCargadores editar="true"/>
                         
                     </p:fieldset>
                     
                     <p:fieldset id="panTurnos" legend="Turnos" toggleable="true" collapsed="false" >
                    
-                        <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
-                            <p:column headerText="Fecha">
-                                <h:outputText value="#{turno.fecha}" >
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>   
-                            </p:column>
-                            <p:column headerText="Turno">
-                                <h:outputText value="#{turno.turno.toString()}" />
-                            </p:column>
-                            <p:column style="width: 90px;">
-                                     <h:commandButton 
-                                        image="/faces/resources/images/view.png" 
-                                        action="#{embarqueController.prepareViewTE}" 
-                                        value="#{bundleCarga.TurnoEmbarqueViewLink}"
-                                        title="#{bundleCarga.TurnoEmbarqueViewLink}"
-                                        />
-
-                                    <h:commandButton 
-                                        image="/faces/resources/images/edit.png" 
-                                        action="#{embarqueController.prepareEditTE}" 
-                                        value="#{bundleCarga.TurnoEmbarqueEditLink}"
-                                        title="#{bundleCarga.TurnoEmbarqueEditLink}"
-                                        />
-
-                                    <h:commandButton 
-                                        image="/faces/resources/images/destroy.png"
-                                        onclick="return confirm('¿Esta seguro que desea eliminar este Turno?');" 
-                                        action="#{embarqueController.destroyTE}" 
-                                        title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
-                                        value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
-                                        />
-                            </p:column>
-                        </p:dataTable>
-                        <h:commandButton 
-                                image="/faces/resources/images/new.png" 
-                                action="#{embarqueController.prepareCreateTE()}" 
-                                value="#{bundleCarga.TurnoEmbarqueCreateLink}"
-                                title="#{bundleCarga.TurnoEmbarqueCreateLink}"
-                                />
+                        <Cc:EmbarqueTurnos editar="true" />
 
                     </p:fieldset>
                     
@@ -68,28 +37,14 @@
                 <div style="min-width: 350px; float: left;" >
                     <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" >
                         
-                        <Cc:embarqueCargaPrevia nuevo="false"/>
+                        <Cc:embarqueCargaPrevia editar="true" nuevo="false"/>
                         
                     </p:fieldset>
                     
                     <p:fieldset id="panArchivos" legend="Archivos" toggleable="true">
-                        <h:panelGrid columns="2">
-                            <p:fileUpload id="fupArchivoASubir" value="#{embarqueController.currentFile}" mode="simple"  />
-
-                            <p:commandButton value="+" ajax="false" process="panArchivos" 
-                                             actionListener="#{embarqueController.subirArchivo()}"
-                                             /> 
-                        </h:panelGrid>
-                        <h:dataTable id="dtbLinkArchivos" value="#{embarqueController.archivosModel}"  var="archivo"  >
-                            <p:column>
-                                <h:link value="#{archivo.nombreArchivo}" onclick="window.open('#{archivo.urlCompleto}','Download');window.close();" />
-                            </p:column>
-                            <p:column>
-                                <p:commandButton value="x" ajax="false" process="panArchivos" 
-                                                 actionListener="#{embarqueController.eliminarArchivo()}"
-                                             /> 
-                            </p:column>
-                        </h:dataTable>
+                        
+                        <Cc:EmbarqueArchivos editar="true"/>
+                        
                     </p:fieldset>                    
                 </div>
                 

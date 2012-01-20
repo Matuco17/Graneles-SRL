@@ -9,6 +9,7 @@ import com.orco.graneles.domain.salario.TipoJornal;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaPreviaFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
+import com.orco.graneles.model.carga.EmbarqueCargadorFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
@@ -62,6 +63,8 @@ public class EmbarqueController implements Serializable {
     private TurnoEmbarqueFacade turnoEmbarqueF;
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    private EmbarqueCargadorFacade embarqueCargadorF;
     
     
     
@@ -93,6 +96,12 @@ public class EmbarqueController implements Serializable {
     //Reportes Turno
     private String urlReportePlanillaTrabajadores;
     
+    //Cargadores del Embarque
+    private EmbarqueCargador currentEC;
+    private List<EmbarqueCargador> cargadores;
+    private DataModel cargadoresModel;
+    
+    
     
     public EmbarqueController() {
     }
@@ -119,6 +128,9 @@ public class EmbarqueController implements Serializable {
         urlReportePlano = null;
         urlReporteResumenCargasTurnos = null;
         urlReporteResumenCargasCoordinador = null;
+        currentEC = null;
+        cargadores = null;
+        cargadoresModel = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -237,6 +249,7 @@ public class EmbarqueController implements Serializable {
         try {
             if (validarCampos()){
                 current.setCargaPreviaCollection(cargasPrevias);
+                current.setEmbarqueCargadoresCollection(cargadores);
                 getFacade().edit(current);
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueUpdated"));
                 return "View";
@@ -384,8 +397,6 @@ public class EmbarqueController implements Serializable {
     public String getUrlReporteResumenCargasCoordinador(){
         return urlReporteResumenCargasCoordinador;
     }
-    
-    
     
     
     
@@ -736,9 +747,65 @@ public class EmbarqueController implements Serializable {
      */
 
  
+  /*
+   * Inicio de la carga de cargadores del embarque con los minimos y maximos
+   */
+    public void agregarCargador(){
+        if (getCurrentEC().getCargador() != null){
+            for (EmbarqueCargador ec : getListaCargadores()){
+                if (getCurrentEC().getCargador().getId().equals(ec.getCargador().getId())){
+                    return;
+                }
+            }
+            
+            cargadores.add(currentEC);
+            currentEC = null;
+            cargadoresModel = null;
+        }
+    }
     
+    public void eliminarCargador(){
+        if (cargadoresModel.getRowData() != null){
+            cargadores.remove(cargadoresModel.getRowIndex());
+            cargadoresModel = null;
+            
+        }
+    }
+    
+    public List<EmbarqueCargador> getListaCargadores(){
+        if (cargadores == null){
+            if (getSelected().getEmbarqueCargadoresCollection() != null){
+                cargadores = new ArrayList<EmbarqueCargador>(getSelected().getEmbarqueCargadoresCollection());
+            } else {
+                cargadores = new ArrayList<EmbarqueCargador>();
+            }
+            
+        }
+        return cargadores;
+    }
+  
+    public DataModel getCargadoresModel(){
+        if (cargadoresModel == null){
+            cargadoresModel = new ListDataModel(getListaCargadores());
+        }
+        return cargadoresModel;
+    }
 
-  
-  
+    public EmbarqueCargador getCurrentEC() {
+        if (currentEC == null){
+            currentEC = new EmbarqueCargador();
+            currentEC.setEmbarque(current);
+        }
+        return currentEC;
+    }
+
+    public void setCurrentEC(EmbarqueCargador currentEC) {
+        this.currentEC = currentEC;
+    }
+    
+    
+  /**
+   * Fin de la carga de cargadores
+   */
 
 }

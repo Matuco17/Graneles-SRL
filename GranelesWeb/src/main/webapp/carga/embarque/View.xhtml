@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
@@ -12,140 +13,40 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <div style="width: 550px; float:left;">
+                <div style="min-width: 650px; float:left;">
                     <p:fieldset legend="Datos del Embarque" toggleable="true"  >
-                        <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_codigo}" />
-                    <h:outputText value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_destino}" />
-                    <h:outputText value="#{embarqueController.selected.destino}" title="#{bundleCarga.EmbarqueTitle_destino}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" />
-                    <h:outputText value="#{embarqueController.selected.coordinador.toString()}" title="#{bundleCarga.EmbarqueTitle_coordinador}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" />
-                    <h:outputText value="#{embarqueController.selected.control}" title="#{bundleCarga.EmbarqueTitle_control}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_fumigacion}" />
-                    <h:outputText value="#{embarqueController.selected.fumigacion}" title="#{bundleCarga.EmbarqueTitle_fumigacion}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" />
-                    <h:outputText value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" />
-                    <h:outputText value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_atco}" />
-                    <h:outputText value="#{embarqueController.selected.atco}" title="#{bundleCarga.EmbarqueTitle_atco}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ana}" />
-                    <h:outputText value="#{embarqueController.selected.ana}" title="#{bundleCarga.EmbarqueTitle_ana}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_ib}" />
-                    <h:outputText value="#{embarqueController.selected.ib}" title="#{bundleCarga.EmbarqueTitle_ib}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_czo}" />
-                    <h:outputText value="#{embarqueController.selected.czo}" title="#{bundleCarga.EmbarqueTitle_czo}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_tmo}" />
-                    <h:outputText value="#{embarqueController.selected.tmo}" title="#{bundleCarga.EmbarqueTitle_tmo}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
-                    </h:outputText>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_momentoFumigacion}" />
-                    <h:outputText value="#{embarqueController.selected.momentoFumigacion}" title="#{bundleCarga.EmbarqueTitle_momentoFumigacion}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boletosPor}" />
-                    <h:outputText value="#{embarqueController.selected.boletosPor}" title="#{bundleCarga.EmbarqueTitle_boletosPor}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_maxACargar}" />
-                    <h:outputText value="#{embarqueController.selected.maxACargar}" title="#{bundleCarga.EmbarqueTitle_maxACargar}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_preStowPlan}" />
-                    <h:outputText value="#{embarqueController.selected.preStowPlan}" title="#{bundleCarga.EmbarqueTitle_preStowPlan}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" />
-                    <h:outputText value="#{embarqueController.selected.mercaderia.toString()}" title="#{bundleCarga.EmbarqueTitle_mercaderia}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_muelle}" />
-                    <h:outputText value="#{embarqueController.selected.muelle.toString()}" title="#{bundleCarga.EmbarqueTitle_muelle}"/>
-                    <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" />
-                    <h:outputText value="#{embarqueController.selected.buque.toString()}" title="#{bundleCarga.EmbarqueTitle_buque}"/>
-                </h:panelGrid>
+                        
+                        <Cc:embarqueDatosGenerales nuevo="false" editar="false"/>
+                        
+                    </p:fieldset>
+                    
+                    <p:fieldset legend="Cargadores del Embarque" toggleable="true">
+                        
+                        <Cc:embarqueCargadores editar="false"/>
+                        
                     </p:fieldset>
                     
                     <p:fieldset id="panTurnos" legend="Turnos" toggleable="true" collapsed="false" >
-                        <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
-                            <p:column headerText="Fecha">
-                                <h:outputText value="#{turno.fecha}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>  
-                            </p:column>
-                            <p:column headerText="Turno">
-                                <h:outputText value="#{turno.turno.toString()}" />
-                            </p:column>
-                            <p:column style="width: 40px;">
-                                     <h:commandButton 
-                                        image="/faces/resources/images/view.png" 
-                                        action="#{embarqueController.prepareViewTE}" 
-                                        value="#{bundleCarga.TurnoEmbarqueViewLink}"
-                                        title="#{bundleCarga.TurnoEmbarqueViewLink}"
-                                        />
-                            </p:column>
-                        </p:dataTable>
-                    </p:fieldset>
-                </div>    
-                <div style="width: 350px; float: left;" >
-                  <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" style=" float:left; min-width: 150px;">
-                        <p:dataTable id="dtbCargaPrevia" value="#{embarqueController.cargasPreviasModel}" var="item" style="width: 100%; float:left; text-align: right; " >
-                            <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
-                                <h:outputText value="#{item.bodega.nro}" />
-                            </p:column>
-                            <p:column id="colMercaderia" headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" >
-                                <h:outputText value="#{item.mercaderia.toString()}" />
-                            </p:column>
-                            <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
-                                <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
-                            </p:column>
-                             <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
-                                 <h:outputText value="#{item.carga}" style="text-align: right;" />
-                            </p:column>
-                        </p:dataTable>
-                    </p:fieldset>
-                
-                    <p:fieldset id="panArchivos" legend="Archivos" toggleable="true">
-                        <h:dataTable id="dtbLinkArchivos" value="#{embarqueController.archivosModel}"  var="archivo"  >
-                            <p:column>
-                                <h:link value="#{archivo.nombreArchivo}" onclick="window.open('#{archivo.urlCompleto}','Download');window.close();" />
-                            </p:column>
-                        </h:dataTable>
-                    </p:fieldset> 
-                </div>
-                <p:panel style="width: 100%; float: left;" >
-                    <h:panelGrid columns="3">
-                            <h:commandButton action="#{embarqueController.generarReportePlano()}"
-                                         label="Generar Plano de Carga"
-                                         value="Generar Plano de Carga"
-                                         rendered="#{embarqueController.urlReportePlano == null}" />
-                            <h:link value="Plano de Carga" 
-                                    onclick="window.open('#{embarqueController.urlReportePlano}','Download');window.close();" 
-                                    rendered="#{embarqueController.urlReportePlano != null}" />
+                   
+                        <Cc:EmbarqueTurnos editar="false" />
 
-                            
-                           <h:commandButton action="#{embarqueController.generarReporteResumenCargasTurnos()}"
-                                         label="Generar Resumen Total de Cargas por Turnos"
-                                         value="Generar Resumen Total de Cargas por Turnos"
-                                         rendered="#{embarqueController.urlReporteResumenCargasTurnos == null}" />
-                           <h:link value="Resumen Total de Cargas por Turnos" 
-                                    onclick="window.open('#{embarqueController.urlReporteResumenCargasTurnos}','Download');window.close();" 
-                                    rendered="#{embarqueController.urlReporteResumenCargasTurnos != null}" />
-                           
-                           <h:commandButton action="#{embarqueController.generarReporteResumenCargasCoordinador()}"
-                                         label="Generar Resumen Total de Cargas por Coordinador"
-                                         value="Generar Resumen Total de Cargas por Coordinador"
-                                         rendered="#{embarqueController.urlReporteResumenCargasCoordinador == null}" />
-                           <h:link value="Resumen Total de Cargas por Coordinador" 
-                                    onclick="window.open('#{embarqueController.urlReporteResumenCargasCoordinador}','Download');window.close();" 
-                                    rendered="#{embarqueController.urlReporteResumenCargasCoordinador != null}" />
+                    </p:fieldset>
+                    
+                </div> 
+                <div style="min-width: 350px; float: left;" >
+                    <p:fieldset id="panCargaPrevia" legend="Carga Previa" toggleable="true" >
                         
-                    </h:panelGrid>
-                </p:panel>
+                        <Cc:embarqueCargaPrevia editar="false" nuevo="false"/>
+                        
+                    </p:fieldset>
+                    
+                    <p:fieldset id="panArchivos" legend="Archivos" toggleable="true">
+                        
+                        <Cc:EmbarqueArchivos editar="false"/>
+                        
+                    </p:fieldset>                    
+                </div>
+
                 <p:panel style="width: 100%; float: left;" > 
                     <h:panelGrid columns="4">
                         <h:commandButton action="#{embarqueController.destroyAndView}" 

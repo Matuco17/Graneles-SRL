@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
+            <p:column headerText="Fecha">
+                <h:outputText value="#{turno.fecha}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>   
+            </p:column>
+            <p:column headerText="Turno">
+                <h:outputText value="#{turno.turno.toString()}" />
+            </p:column>
+            <p:column style="width: 90px;">
+                <h:commandButton 
+                    image="/faces/resources/images/view.png" 
+                    action="#{embarqueController.prepareViewTE}" 
+                    value="#{bundleCarga.TurnoEmbarqueViewLink}"
+                    title="#{bundleCarga.TurnoEmbarqueViewLink}"
+                    />
+
+                <h:commandButton 
+                    image="/faces/resources/images/edit.png" 
+                    action="#{embarqueController.prepareEditTE}" 
+                    value="#{bundleCarga.TurnoEmbarqueEditLink}"
+                    title="#{bundleCarga.TurnoEmbarqueEditLink}"
+                    rendered="#{cc.attrs.editar}"
+                    />
+
+                <h:commandButton 
+                    image="/faces/resources/images/destroy.png"
+                    onclick="return confirm('¿Esta seguro que desea eliminar este Turno?');" 
+                    action="#{embarqueController.destroyTE}" 
+                    title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                    value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                    rendered="#{cc.attrs.editar}"
+                    />
+            </p:column>
+        </p:dataTable>
+        <h:commandButton 
+            image="/faces/resources/images/new.png" 
+            action="#{embarqueController.prepareCreateTE()}" 
+            value="#{bundleCarga.TurnoEmbarqueCreateLink}"
+            title="#{bundleCarga.TurnoEmbarqueCreateLink}"
+            rendered="#{cc.attrs.editar}"
+            />
+    </co:implementation>
+</html>

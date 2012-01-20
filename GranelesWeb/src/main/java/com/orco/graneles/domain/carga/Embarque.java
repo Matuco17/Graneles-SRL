@@ -6,6 +6,7 @@ package com.orco.graneles.domain.carga;
 
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -52,9 +53,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Embarque.findByCzo", query = "SELECT e FROM Embarque e WHERE e.czo = :czo"),
     @NamedQuery(name = "Embarque.findByTmo", query = "SELECT e FROM Embarque e WHERE e.tmo = :tmo"),
     @NamedQuery(name = "Embarque.findByMomentoFumigacion", query = "SELECT e FROM Embarque e WHERE e.momentoFumigacion = :momentoFumigacion"),
-    @NamedQuery(name = "Embarque.findByBoletosPor", query = "SELECT e FROM Embarque e WHERE e.boletosPor = :boletosPor"),
-    @NamedQuery(name = "Embarque.findByMaxACargar", query = "SELECT e FROM Embarque e WHERE e.maxACargar = :maxACargar"),
-    @NamedQuery(name = "Embarque.findByPreStowPlan", query = "SELECT e FROM Embarque e WHERE e.preStowPlan = :preStowPlan")})
+    @NamedQuery(name = "Embarque.findByBoletosPor", query = "SELECT e FROM Embarque e WHERE e.boletosPor = :boletosPor")})
 public class Embarque implements Serializable, Comparable<Embarque> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -114,14 +113,6 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @Column(name = "boletos_por")
     private String boletosPor;
     
-    @Size(max = 128)
-    @Column(name = "max_a_cargar")
-    private String maxACargar;
-    
-    @Size(max = 45)
-    @Column(name = "pre_stow_plan")
-    private String preStowPlan;
-    
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
     @ManyToOne
     private Empresa coordinador;
@@ -154,6 +145,9 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque", orphanRemoval = true)
     private Collection<TurnoEmbarque> turnoEmbarqueCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "embarque", orphanRemoval = true)
+    private Collection<EmbarqueCargador> embarqueCargadoresCollection;
 
     public Embarque() {
     }
@@ -282,22 +276,43 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         this.boletosPor = boletosPor;
     }
 
-    public String getMaxACargar() {
-        return maxACargar;
+    public BigDecimal getMaxACargar() {
+        BigDecimal max = BigDecimal.ZERO;
+        
+        if (this.getEmbarqueCargadoresCollection() != null){
+            for (EmbarqueCargador ec : this.getEmbarqueCargadoresCollection()){
+                max = max.add(ec.getMaximo());
+            }
+        }
+        
+        return max.subtract(this.getTotalCargaPrevia());
     }
 
-    public void setMaxACargar(String maxACargar) {
-        this.maxACargar = maxACargar;
+    public BigDecimal getMinACargar(){
+        BigDecimal min = BigDecimal.ZERO;
+        
+        if (this.getEmbarqueCargadoresCollection() != null){
+            for (EmbarqueCargador ec : this.getEmbarqueCargadoresCollection()){
+                min = min.add(ec.getMaximo());
+            }
+        }
+        
+        return  min.subtract(this.getTotalCargaPrevia());
     }
-
-    public String getPreStowPlan() {
-        return preStowPlan;
+    
+    public BigDecimal getTotalCargaPrevia(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (this.getCargaPreviaCollection() != null){
+            for (CargaPrevia cp : this.getCargaPreviaCollection()){
+                total = total.add(cp.getCarga());
+            }
+        }
+        
+        return total;
     }
-
-    public void setPreStowPlan(String preStowPlan) {
-        this.preStowPlan = preStowPlan;
-    }
-
+    
+    
     @XmlTransient
     public Collection<Empresa> getEmpresaCollection() {
         return empresaCollection;
@@ -331,6 +346,17 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         this.buque = buque;
     }
 
+    @XmlTransient
+    public Collection<EmbarqueCargador> getEmbarqueCargadoresCollection() {
+        return embarqueCargadoresCollection;
+    }
+
+    public void setEmbarqueCargadoresCollection(Collection<EmbarqueCargador> embarqueCargadoresCollection) {
+        this.embarqueCargadoresCollection = embarqueCargadoresCollection;
+    }
+
+    
+    
     @XmlTransient
     public Collection<ArchivoEmbarque> getArchivoEmbarqueCollection() {
         return archivoEmbarqueCollection;

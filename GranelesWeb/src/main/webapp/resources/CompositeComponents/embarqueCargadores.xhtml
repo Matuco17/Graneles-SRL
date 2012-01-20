@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <h:panelGrid columns="4" rendered="#{cc.attrs.editar}">
+            <h:outputLabel for="cargador" value="#{bundleCarga.EmbarqueCargadorTitle_cargador}" />
+            <h:outputLabel for="minACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" />
+            <h:outputLabel for="maxACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" />
+            <h:outputText value="" />
+
+            <h:selectOneMenu id="cargador" value="#{embarqueController.currentEC.cargador}" >
+                <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
+            </h:selectOneMenu>
+            <p:inputText id="minACargar" value="#{embarqueController.currentEC.minimo}" />
+            <p:inputText id="maxACargar" value="#{embarqueController.currentEC.maximo}" />
+            <h:commandButton 
+                image="/faces/resources/images/new.png" 
+                action="#{embarqueController.agregarCargador()}" 
+                value="#{bundleCarga.EmbarqueCargadorCreateLink}"
+                title="#{bundleCarga.EmbarqueCargadorCreateLink}"
+                />
+        </h:panelGrid>
+
+        <p:dataTable id="dtbCargadores" value="#{embarqueController.cargadoresModel}" var="cargador" >
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_cargador}" >
+                <h:outputText value="#{cargador.cargador.toString()}" />
+                <f:facet name="footer" >
+                    <h:outputText value="Totales" />
+                </f:facet>
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" style="text-align: right;" >
+                <p:inputText value="#{cargador.minimo}" rendered="#{cc.attrs.editar}">
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>                
+                <h:outputText value="#{cargador.minimo}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertNumber maxFractionDigits="2" />
+                </h:outputText>
+                <f:facet name="footer" >
+                    <h:outputText value="#{embarqueController.selected.minACargar}" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </h:outputText>
+                </f:facet>
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" style="text-align: right;">
+                <p:inputText value="#{cargador.maximo}" rendered="#{cc.attrs.editar}">
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>                
+                <h:outputText value="#{cargador.maximo}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertNumber maxFractionDigits="2" />
+                </h:outputText>
+                <f:facet name="footer" >
+                    <h:outputText value="#{embarqueController.selected.maxACargar}" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </h:outputText>
+                </f:facet>
+
+            </p:column>
+            <p:column rendered="#{cc.attrs.editar}">
+                <h:commandButton 
+                    image="/faces/resources/images/destroy.png"
+                    onclick="return confirm('¿Esta seguro que desea borrar el cargador?');" 
+                    action="#{embarqueController.eliminarCargador()}" 
+                    title="#{bundleCarga.EmbarqueCargadorDestroyLink}"
+                    value="#{bundleCarga.EmbarqueCargadorDestroyLink}"
+                    />
+            </p:column>                        
+        </p:dataTable> 
+    </co:implementation>
+</html>

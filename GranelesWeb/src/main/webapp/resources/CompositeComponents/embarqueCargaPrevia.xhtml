@@ -9,6 +9,8 @@
     <!-- INTERFACE -->
     <co:interface>
         <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+        
     </co:interface>
 
     <!-- IMPLEMENTATION -->
@@ -19,9 +21,10 @@
             </p:column>
             <p:column id="colMercaderia" headerText="#{bundleCarga.CargaPreviaTitle_mercaderia}" >
                 <h:selectOneMenu id="mercaderiaPrevia" value="#{item.mercaderia}" title="#{bundleCarga.CargaPreviaTitle_mercaderia}"
-                                 onchange="submit()">
+                                 onchange="submit()" rendered="#{cc.attrs.editar}">
                     <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
+                <h:outputText value="#{item.mercaderia.toString()}" rendered="#{!cc.attrs.editar}"/>
             </p:column>
             <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
                 <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
