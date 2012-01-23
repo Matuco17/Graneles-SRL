@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.*;
+import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
@@ -100,7 +101,7 @@ public class EmbarqueController implements Serializable {
     private EmbarqueCargador currentEC;
     private List<EmbarqueCargador> cargadores;
     private DataModel cargadoresModel;
-    
+    private List<Empresa> itemsCargadoresSelectOne;
     
     
     public EmbarqueController() {
@@ -131,6 +132,7 @@ public class EmbarqueController implements Serializable {
         currentEC = null;
         cargadores = null;
         cargadoresModel = null;
+        itemsCargadoresSelectOne = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -801,6 +803,16 @@ public class EmbarqueController implements Serializable {
 
     public void setCurrentEC(EmbarqueCargador currentEC) {
         this.currentEC = currentEC;
+    }
+
+    public List<Empresa> getItemsCargadoresSelectOne() {
+        if (itemsCargadoresSelectOne == null){
+            itemsCargadoresSelectOne = new ArrayList<Empresa>();
+            for (EmbarqueCargador ec : getListaCargadores()){
+                itemsCargadoresSelectOne.add(ec.getCargador());
+            }
+        }
+        return itemsCargadoresSelectOne;
     }
     
     

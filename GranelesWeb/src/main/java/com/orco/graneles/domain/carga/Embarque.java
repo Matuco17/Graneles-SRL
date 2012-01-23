@@ -293,7 +293,7 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         
         if (this.getEmbarqueCargadoresCollection() != null){
             for (EmbarqueCargador ec : this.getEmbarqueCargadoresCollection()){
-                min = min.add(ec.getMaximo());
+                min = min.add(ec.getMinimo());
             }
         }
         

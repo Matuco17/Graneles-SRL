@@ -181,7 +181,7 @@
                             <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
                                 <h:outputLabel value="#{bundleCarga.CargaTurnoTitle_cargador}" />
                                 <h:selectOneMenu value="#{cargaTurno.cargador}" >
-                                    <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
+                                    <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" var="empresa" itemLabel="#{empresa.toString()}" />
                                 </h:selectOneMenu>
                             </h:panelGrid>
 
