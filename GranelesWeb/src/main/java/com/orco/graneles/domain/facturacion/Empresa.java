@@ -7,6 +7,7 @@ package com.orco.graneles.domain.facturacion;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.carga.Embarque;
 import com.orco.graneles.domain.carga.Buque;
+import com.orco.graneles.domain.carga.TurnoEmbarqueObservaciones;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -48,41 +49,56 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByWeb", query = "SELECT e FROM Empresa e WHERE e.web = :web")})
 public class Empresa implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Size(max = 128)
     @Column(name = "nombre")
     private String nombre;
+    
     @Size(max = 128)
     @Column(name = "direccion")
     private String direccion;
+    
     @Size(max = 13)
     @Column(name = "cuit")
     private String cuit;
+    
     @Size(max = 128)
     @Column(name = "cuidad")
     private String cuidad;
+    
     @Size(max = 45)
     @Column(name = "telefono")
     private String telefono;
+    
     @Size(max = 45)
     @Column(name = "mail")
     private String mail;
+    
     @Size(max = 45)
     @Column(name = "web")
     private String web;
+    
     @ManyToMany(mappedBy = "empresaCollection")
     private Collection<Buque> buqueCollection;
+    
     @ManyToMany(mappedBy = "empresaCollection")
     private Collection<Embarque> embarqueCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private Collection<Factura> facturaCollection;
+    
     @JoinColumn(name = "tipo_empresa", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private FixedList tipoEmpresa;
 
+    @OneToMany(mappedBy = "cargador")
+    private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
+    
     public Empresa() {
     }
 
@@ -212,6 +228,15 @@ public class Empresa implements Serializable {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    @XmlTransient
+    public Collection<TurnoEmbarqueObservaciones> getTurnoEmbarqueObservacionesCollection() {
+        return turnoEmbarqueObservacionesCollection;
+    }
+
+    public void setTurnoEmbarqueObservacionesCollection(Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection) {
+        this.turnoEmbarqueObservacionesCollection = turnoEmbarqueObservacionesCollection;
     }
     
 }

@@ -104,6 +104,11 @@ public class EmbarqueController implements Serializable {
     private List<Empresa> itemsCargadoresSelectOne;
     
     
+    //Observaciones de Turnos
+    private TurnoEmbarqueObservaciones currentTEO;
+    private List<TurnoEmbarqueObservaciones> turnoObservaciones;
+    private DataModel turnoObservacionesModel;
+    
     public EmbarqueController() {
     }
 
@@ -133,6 +138,9 @@ public class EmbarqueController implements Serializable {
         cargadores = null;
         cargadoresModel = null;
         itemsCargadoresSelectOne = null;
+        currentTEO = null;
+        turnoObservaciones = null;
+        turnoObservacionesModel = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -484,11 +492,12 @@ public class EmbarqueController implements Serializable {
                 trabajadores.add(tteVO.getTte());
             }
             
-            
             for (TrabajadoresTurnoEmbarque tte : trabajadores){
                 tte.setPlanilla(currentTE);
             }
             currentTE.setTrabajadoresTurnoEmbarqueCollection(trabajadores);
+            
+            currentTE.setTurnoEmbarqueObservacionesCollection(turnoObservaciones);
             
             if (currentTE.getId() == null)
                 current.getTurnoEmbarqueCollection().add(currentTE);
@@ -819,5 +828,61 @@ public class EmbarqueController implements Serializable {
   /**
    * Fin de la carga de cargadores
    */
+    
+    
+     /*
+   * Inicio de la carga de observaciones de los turnos
+   */
+    public void agregarTurnoObservacion(){
+        if (StringUtils.isNotBlank(getCurrentTEO().getObservacion())){
+            turnoObservaciones.add(currentTEO);
+            currentTEO = null;
+            turnoObservacionesModel = null;
+        }
+    }
+    
+    public void eliminarTurnoObservacion(){
+        if (turnoObservacionesModel.getRowData() != null){
+            turnoObservaciones.remove(turnoObservacionesModel.getRowIndex());
+            turnoObservacionesModel = null;
+        }
+    }
+    
+    public List<TurnoEmbarqueObservaciones> getTurnoObservaciones(){
+        if (turnoObservaciones == null){
+            if (getCurrentTE().getTurnoEmbarqueObservacionesCollection() != null){
+                turnoObservaciones = new ArrayList<TurnoEmbarqueObservaciones>(getCurrentTE().getTurnoEmbarqueObservacionesCollection());
+            } else {
+                turnoObservaciones = new ArrayList<TurnoEmbarqueObservaciones>();
+            }            
+        }
+        return turnoObservaciones;
+    }
+  
+    public DataModel getTurnoObservacionesModel(){
+        if (turnoObservacionesModel == null){
+            turnoObservacionesModel = new ListDataModel(getTurnoObservaciones());
+        }
+        return turnoObservacionesModel;
+    }
+
+    public TurnoEmbarqueObservaciones getCurrentTEO() {
+        if (currentTEO == null){
+            currentTEO = new TurnoEmbarqueObservaciones();
+            currentTEO.setTurno(currentTE);
+        }
+        return currentTEO;
+    }
+
+    public void setCurrentTEO(TurnoEmbarqueObservaciones currentTEO) {
+        this.currentTEO = currentTEO;
+    }
+
+    
+    
+  /**
+   * Fin de la carga de observaciones
+   */
+
 
 }

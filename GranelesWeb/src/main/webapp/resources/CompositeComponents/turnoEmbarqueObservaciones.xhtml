@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <h:panelGrid columns="4" rendered="#{cc.attrs.editar}">
+            
+            <h:outputLabel for="obsDesde" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" />
+            <h:outputLabel for="obsHasta" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" />
+            <h:outputLabel for="obsCargador" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_cargador}" />
+            <h:outputLabel for="obsBodega" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_Bodega}" />
+            
+            <h:selectOneMenu id="obsDesde" value="#{embarqueController.currentTEO.desde}" disabled="#{!cc.attrs.editar}" >
+                <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                </c:forEach>
+            </h:selectOneMenu>
+            <h:selectOneMenu id="obsHasta" value="#{embarqueController.currentTEO.hasta}" disabled="#{!cc.attrs.editar}" >
+                <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                </c:forEach>
+            </h:selectOneMenu>
+            <h:selectOneMenu id="obsCargador" value="#{embarqueController.currentTEO.cargador}" >
+                <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
+            </h:selectOneMenu>
+            <h:selectOneMenu id="obsBodega" value="#{embarqueController.currentTEO.bodega}" >
+                <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  />
+            </h:selectOneMenu>
+        </h:panelGrid>
+        <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
+            <h:outputLabel for="obsObservaciones" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_observaciones}" />
+            <h:outputText value="" />
+            
+            <p:inputTextarea value="#{embarqueController.currentTEO.observacion}" />
+            <h:commandButton 
+                image="/faces/resources/images/new.png" 
+                action="#{embarqueController.agregarTurnoObservacion()}" 
+                value="#{bundleCarga.EmbarqueCargadorCreateLink}"
+                title="#{bundleCarga.EmbarqueCargadorCreateLink}"
+                />
+        </h:panelGrid>
+        
+        <p:dataTable id="dtbturnoObservaciones" value="#{embarqueController.turnoObservaciones}" var="turnoObservacion" >
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_cargador}" >
+                <h:outputText value="#{cargador.cargador.toString()}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" style="text-align: right;" >
+                <h:selectOneMenu  value="#{turnoObservacion.desde}" rendered="#{cc.attrs.editar}" >
+                    <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                        <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                    </c:forEach>
+                </h:selectOneMenu>
+                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" style="text-align: right;" >
+                <h:selectOneMenu  value="#{turnoObservacion.hasta}" rendered="#{cc.attrs.editar}" >
+                    <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                        <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                    </c:forEach>
+                </h:selectOneMenu>
+                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_cargador}">
+                <h:selectOneMenu value="#{turnoObservacion.cargador}" rendered="#{cc.attrs.editar}"  >
+                    <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{turnoObservacion.cargador.toString()}" rendered="#{!cc.attrs.editar}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_bodega}" >
+                <h:selectOneMenu value="#{turnoObservacion.bodega}" rendered="#{cc.attrs.editar}"  >
+                    <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  />
+                </h:selectOneMenu>
+                <h:outputText value="#{turnoObservacion.bodega.toString()}" rendered="#{!cc.attrs.editar}" />
+            </p:column>
+            <!-- TODO: falta agregar la observacion e integrarlo al turno -->
+            <p:column rendered="#{cc.attrs.editar}">
+                <h:commandButton 
+                    image="/faces/resources/images/destroy.png"
+                    onclick="return confirm('¿Esta seguro que desea borrar la observacion?');" 
+                    action="#{embarqueController.eliminarTurnoObservacion()}" 
+                    title="#{bundleCarga.ObservacionesTurnoEmbarqueDestroyLink}"
+                    value="#{bundleCarga.ObservacionesTurnoEmbarqueDestroyLink}"
+                    />
+            </p:column>                        
+        </p:dataTable> 
+    </co:implementation>
+</html>

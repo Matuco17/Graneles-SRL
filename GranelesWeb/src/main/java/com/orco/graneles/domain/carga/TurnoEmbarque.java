@@ -47,10 +47,13 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+   
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-   
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turno", orphanRemoval = true)
+    private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "turnoEmbarque", orphanRemoval = true)
     private Collection<CargaTurno> cargaTurnoCollection;
@@ -84,14 +87,6 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     public FixedList getTurno() {
@@ -172,6 +167,23 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
         } else {
             return this.embarque.compareTo(o.embarque);
         }
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    @XmlTransient
+    public Collection<TurnoEmbarqueObservaciones> getTurnoEmbarqueObservacionesCollection() {
+        return turnoEmbarqueObservacionesCollection;
+    }
+
+    public void setTurnoEmbarqueObservacionesCollection(Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection) {
+        this.turnoEmbarqueObservacionesCollection = turnoEmbarqueObservacionesCollection;
     }
     
 }
