@@ -69,13 +69,13 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     private String destino;
     
     
-    @Size(max = 128)
-    @Column(name = "control")
-    private String control;
+    @JoinColumn(name = "control", referencedColumnName = "id")
+    @ManyToOne
+    private Empresa control;
     
-    @Size(max = 128)
-    @Column(name = "fumigacion")
-    private String fumigacion;
+    @JoinColumn(name = "fumigacion", referencedColumnName = "id")
+    @ManyToOne
+    private Empresa fumigacion;
     
     @Column(name = "boya11")
     @Temporal(TemporalType.TIMESTAMP)
@@ -188,19 +188,19 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         this.coordinador = coordinador;
     }
 
-    public String getControl() {
+    public Empresa getControl() {
         return control;
     }
 
-    public void setControl(String control) {
+    public void setControl(Empresa control) {
         this.control = control;
     }
 
-    public String getFumigacion() {
+    public Empresa getFumigacion() {
         return fumigacion;
     }
 
-    public void setFumigacion(String fumigacion) {
+    public void setFumigacion(Empresa fumigacion) {
         this.fumigacion = fumigacion;
     }
 

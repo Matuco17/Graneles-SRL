@@ -14,5 +14,6 @@ public class TipoEmpresa {
     
     public static final int AGENCIA = 55;
     public static final int EXPORTADOR = 56;
-     
+    public static final int FUMIGACION = 57;
+    public static final int CONTROL = 58;
 }

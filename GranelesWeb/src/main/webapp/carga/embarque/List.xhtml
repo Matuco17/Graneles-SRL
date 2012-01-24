@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{embarqueController.init()}" />  
@@ -37,7 +38,12 @@
                         <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
                             <h:outputText value="#{item.mercaderia.toString()}"/>
                         </p:column>
-                        
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_control}" filterBy="#{item.control}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableControladoresSelectOne}" >
+                            <h:outputText value="#{item.control.toString()}" />
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_fumigacion}" filterBy="#{item.fumigacion}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableFumigadoresSelectOne}" >
+                            <h:outputText value="#{item.fumigacion.toString()}" />
+                        </p:column>
                     </p:dataTable>
                 </h:panelGroup>
                 <h:panelGrid columns="4">

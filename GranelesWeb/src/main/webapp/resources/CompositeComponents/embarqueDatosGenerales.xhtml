@@ -60,11 +60,16 @@
             </h:selectOneMenu>
 
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" for="control"  />
-            <p:inputText id="control" value="#{embarqueController.selected.control}" readonly="#{!cc.attrs.editar}"/>
+            <h:selectOneMenu id="control" value="#{embarqueController.selected.control}" disabled="#{!cc.attrs.editar}" >
+                <f:selectItems value="#{empresaController.itemsAvailableControladoresSelectOne}" />
+            </h:selectOneMenu>
 
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_fumigacion}" for="fumigacion"  />
-            <p:inputText id="fumigacion" value="#{embarqueController.selected.fumigacion}" readonly="#{!cc.attrs.editar}" />
+            <h:selectOneMenu id="fumigacion" value="#{embarqueController.selected.fumigacion}" disabled="#{!cc.attrs.editar}" >
+                <f:selectItems value="#{empresaController.itemsAvailableFumigadoresSelectOne}" />
+            </h:selectOneMenu>
 
+            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" for="boya11"  />
             <p:calendar id="boya11" value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}" pattern="dd/MM/yyyy HH:mm" disabled="#{!cc.attrs.editar}"/>
 

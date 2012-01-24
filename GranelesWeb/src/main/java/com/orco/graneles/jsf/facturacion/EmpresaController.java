@@ -165,8 +165,15 @@ public class EmpresaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findByTipoEmpresa(fixedListF.find(TipoEmpresa.EXPORTADOR)), true);
     }
     
+    public SelectItem[] getItemsAvailableFumigadoresSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByTipoEmpresa(fixedListF.find(TipoEmpresa.FUMIGACION)), true);
+    }
     
-
+    
+    public SelectItem[] getItemsAvailableControladoresSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByTipoEmpresa(fixedListF.find(TipoEmpresa.CONTROL)), true);
+    }
+    
     @FacesConverter(forClass = Empresa.class)
     public static class EmpresaControllerConverter implements Converter {
 
