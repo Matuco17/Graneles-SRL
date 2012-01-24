@@ -65,6 +65,10 @@ public class Accidentado implements Serializable {
     @Column(name = "bruto")
     private BigDecimal bruto;
     @Size(max = 256)
+    
+    @Column(name = "siniestro")
+    private String siniestro;
+    
     @Column(name = "descripcion_corta_accidente")
     private String descripcionCortaAccidente;
     @JoinColumn(name = "libro_sueldo", referencedColumnName = "id")
@@ -154,10 +158,20 @@ public class Accidentado implements Serializable {
     public Personal getPersonal() {
         return personal;
     }
-
+    
     public void setPersonal(Personal personal) {
         this.personal = personal;
     }
+
+    public String getSiniestro() {
+        return siniestro;
+    }
+
+    public void setSiniestro(String siniestro) {
+        this.siniestro = siniestro;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -43,6 +43,9 @@
                         <p:column headerText="#{bundlePersonal.AccidentadoTitle_categoria}" filterBy="#{item.categoria.toString()}" filterStyleClass="filterColumn" filterOptions="contains">
                              <h:outputText value="#{item.categoria.toString()}"/>
                         </p:column>
+                        <p:column headerText="#{bundlePersonal.AccidentadoTitle_siniestro}" filterBy="#{item.siniestro}" filterStyleClass="filterColumn" filterOptions="contains">
+                            <h:outputText value="#{item.siniestro}"/>
+                        </p:column>
                         <p:column headerText="#{bundlePersonal.AccidentadoTitle_desde}" filterBy="#{item.desde}" filterStyleClass="filterColumn" filterOptions="contains">
                             <h:outputText value="#{item.desde}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />

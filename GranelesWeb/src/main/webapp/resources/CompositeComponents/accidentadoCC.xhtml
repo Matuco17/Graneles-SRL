@@ -21,6 +21,7 @@
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.cuil}" />
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.apellido}" />
                 <h:outputText value="" />
+                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_tarea}" for="tarea" />
                 <h:selectOneMenu id="tarea" value="#{accidentadoController.selected.tarea}"  disabled="#{!cc.attrs.editar}">
                     <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
@@ -29,11 +30,17 @@
                 <h:selectOneMenu id="categoria" value="#{accidentadoController.selected.categoria}"  disabled="#{!cc.attrs.editar}">
                     <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
+                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_desde}" for="desde" />
                 <p:calendar id="desde" value="#{accidentadoController.selected.desde}" title="#{bundlePersonal.AccidentadoTitle_desde}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_hasta}" for="hasta" />
                 <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
 
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_siniestro}" for="siniestro" />
+                <p:inputMask id="siniestro" value="#{accidentadoController.selected.siniestro}" mask="999999/999" readonly="#{!cc.attrs.editar}" />
+                <h:outputText value="" />
+                <h:outputText value="" />
+                
                 <c:if test="#{cc.attrs.editar}" >
                     <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioConAdicionales}" for="calculadoConAdicionales" />
                     <p:inputText style="text-align: right;" readonly="true" id="calculadoConAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaConAdicionales}" >
