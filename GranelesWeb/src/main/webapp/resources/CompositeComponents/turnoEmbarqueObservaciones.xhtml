@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      >
 
     <!-- INTERFACE -->
     <co:interface>
@@ -14,13 +15,18 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <h:panelGrid columns="4" rendered="#{cc.attrs.editar}">
+        <h:panelGrid columns="6" rendered="#{cc.attrs.editar}">
             
+            <h:outputLabel for="obsCargador" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_cargador}" />
             <h:outputLabel for="obsDesde" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" />
             <h:outputLabel for="obsHasta" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" />
-            <h:outputLabel for="obsCargador" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_cargador}" />
-            <h:outputLabel for="obsBodega" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_Bodega}" />
+            <h:outputLabel for="obsBodega" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_bodega}" />
+            <h:outputLabel for="obsObservaciones" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_observaciones}" />
+            <h:outputText value="" />
             
+            <h:selectOneMenu id="obsCargador" value="#{embarqueController.currentTEO.cargador}" >
+                <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
+            </h:selectOneMenu>
             <h:selectOneMenu id="obsDesde" value="#{embarqueController.currentTEO.desde}" disabled="#{!cc.attrs.editar}" >
                 <c:forEach begin="0" end="23" varStatus="hora" step="1">
                     <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
@@ -31,18 +37,11 @@
                     <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                 </c:forEach>
             </h:selectOneMenu>
-            <h:selectOneMenu id="obsCargador" value="#{embarqueController.currentTEO.cargador}" >
-                <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
-            </h:selectOneMenu>
             <h:selectOneMenu id="obsBodega" value="#{embarqueController.currentTEO.bodega}" >
-                <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  />
+                <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}" var="bodega" itemLabel="#{bodega.nro}" />
             </h:selectOneMenu>
-        </h:panelGrid>
-        <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
-            <h:outputLabel for="obsObservaciones" value="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_observaciones}" />
-            <h:outputText value="" />
+            <p:inputText id="obsObservaciones" value="#{embarqueController.currentTEO.observacion}" style="width: 300px;" required="false"  />
             
-            <p:inputTextarea value="#{embarqueController.currentTEO.observacion}" />
             <h:commandButton 
                 image="/faces/resources/images/new.png" 
                 action="#{embarqueController.agregarTurnoObservacion()}" 
@@ -51,11 +50,11 @@
                 />
         </h:panelGrid>
         
-        <p:dataTable id="dtbturnoObservaciones" value="#{embarqueController.turnoObservaciones}" var="turnoObservacion" >
+        <p:dataTable id="dtbturnoObservaciones" value="#{embarqueController.turnoObservacionesModel}" var="turnoObservacion" >
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_cargador}" >
-                <h:outputText value="#{cargador.cargador.toString()}" />
+                <h:outputText value="#{turnoObservacion.cargador.toString()}" />
             </p:column>
-            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" style="text-align: right;" >
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" >
                 <h:selectOneMenu  value="#{turnoObservacion.desde}" rendered="#{cc.attrs.editar}" >
                     <c:forEach begin="0" end="23" varStatus="hora" step="1">
                         <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
@@ -63,7 +62,7 @@
                 </h:selectOneMenu>
                 <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
             </p:column>
-            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" style="text-align: right;" >
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" >
                 <h:selectOneMenu  value="#{turnoObservacion.hasta}" rendered="#{cc.attrs.editar}" >
                     <c:forEach begin="0" end="23" varStatus="hora" step="1">
                         <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
@@ -71,19 +70,17 @@
                 </h:selectOneMenu>
                 <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
             </p:column>
-            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_cargador}">
-                <h:selectOneMenu value="#{turnoObservacion.cargador}" rendered="#{cc.attrs.editar}"  >
-                    <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
-                </h:selectOneMenu>
-                <h:outputText value="#{turnoObservacion.cargador.toString()}" rendered="#{!cc.attrs.editar}" />
-            </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_bodega}" >
                 <h:selectOneMenu value="#{turnoObservacion.bodega}" rendered="#{cc.attrs.editar}"  >
-                    <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  />
+                    <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  var="bodega" itemLabel="#{bodega.nro}"   />
                 </h:selectOneMenu>
-                <h:outputText value="#{turnoObservacion.bodega.toString()}" rendered="#{!cc.attrs.editar}" />
+                <h:outputText value="#{turnoObservacion.bodega.nro}" rendered="#{!cc.attrs.editar}" />
             </p:column>
-            <!-- TODO: falta agregar la observacion e integrarlo al turno -->
+            <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_observaciones}" style="max-width: 300px;" >
+                <p:inplace editor="#{cc.attrs.editar}" >
+                    <p:inputText value="#{turnoObservacion.observacion}" />
+                </p:inplace>
+            </p:column>
             <p:column rendered="#{cc.attrs.editar}">
                 <h:commandButton 
                     image="/faces/resources/images/destroy.png"

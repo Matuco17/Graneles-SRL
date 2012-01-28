@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <!-- INTERFACE -->
     <co:interface>
@@ -170,6 +171,12 @@
                         <h:selectBooleanCheckbox value="#{item.tte.delegado}" disabled="#{!cc.attrs.editar}" />
                     </p:column>  
                 </p:dataTable>
+            </p:fieldset>
+            
+            <p:fieldset id="panObservaciones" toggleable="true" legend="Observaciones" >
+            
+                <o:turnoEmbarqueObservaciones editar="#{cc.attrs.editar}" />
+            
             </p:fieldset>
         </div> 
 

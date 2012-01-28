@@ -44,7 +44,7 @@ public class TurnoEmbarqueObservaciones implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 256)
+    @Size(max = 256)
     @Column(name = "observacion", nullable = false, length = 256)
     private String observacion;
     
