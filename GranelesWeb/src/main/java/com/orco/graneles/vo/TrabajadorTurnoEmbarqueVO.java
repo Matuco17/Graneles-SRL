@@ -7,6 +7,7 @@ package com.orco.graneles.vo;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -24,6 +25,8 @@ public class TrabajadorTurnoEmbarqueVO {
     private BigDecimal valorBruto;
     private BigDecimal decreto;
     private BigDecimal valorTurno; //Neto
+    
+    private List<TurnoObservacionVO> observaciones;
     
     public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte, BigDecimal valorTurno) {
         this.tte = tte;
@@ -169,5 +172,15 @@ public class TrabajadorTurnoEmbarqueVO {
     public String getLugar(){
         return tte.getTarea().getLugar().getDescripcion();
     }
+
+    public List<TurnoObservacionVO> getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(List<TurnoObservacionVO> observaciones) {
+        this.observaciones = observaciones;
+    }
+    
+    
     
 }

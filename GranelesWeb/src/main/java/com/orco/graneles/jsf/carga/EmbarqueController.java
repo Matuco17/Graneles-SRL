@@ -17,7 +17,7 @@ import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.reports.EmbarquePlanoCarga;
 import com.orco.graneles.reports.PlanillaTrabajadoresTurno;
-import com.orco.graneles.reports.ResumenCargasPorCoordinador;
+import com.orco.graneles.reports.ResumenCargasPorCargador;
 import com.orco.graneles.reports.ResumenCargasPorTurno;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
@@ -321,7 +321,7 @@ public class EmbarqueController implements Serializable {
     }
     
     public void generarReporteResumenCargasCoordinador(){
-        urlReporteResumenCargasCoordinador = (new ResumenCargasPorCoordinador(current)).obtenerReportePDF();
+        urlReporteResumenCargasCoordinador = (new ResumenCargasPorCargador(current)).obtenerReportePDF();
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -817,6 +817,7 @@ public class EmbarqueController implements Serializable {
     public List<Empresa> getItemsCargadoresSelectOne() {
         if (itemsCargadoresSelectOne == null){
             itemsCargadoresSelectOne = new ArrayList<Empresa>();
+            
             for (EmbarqueCargador ec : getListaCargadores()){
                 itemsCargadoresSelectOne.add(ec.getCargador());
             }

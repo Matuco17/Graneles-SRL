@@ -25,6 +25,7 @@
             <h:outputText value="" />
             
             <h:selectOneMenu id="obsCargador" value="#{embarqueController.currentTEO.cargador}" >
+                <f:selectItem noSelectionOption="true" itemLabel="---" />
                 <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
             </h:selectOneMenu>
             <h:selectOneMenu id="obsDesde" value="#{embarqueController.currentTEO.desde}" disabled="#{!cc.attrs.editar}" >

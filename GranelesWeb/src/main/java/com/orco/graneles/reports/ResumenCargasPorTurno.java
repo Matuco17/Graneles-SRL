@@ -4,16 +4,12 @@
  */
 package com.orco.graneles.reports;
 
-import com.orco.graneles.domain.carga.CargaTurno;
-import com.orco.graneles.domain.carga.Embarque;
-import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.carga.*;
 import com.orco.graneles.vo.CargaTurnoVO;
 import com.orco.graneles.vo.ResumenCargaEmbarqueVO;
+import com.orco.graneles.vo.TurnoObservacionVO;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
@@ -44,12 +40,21 @@ public class ResumenCargasPorTurno extends ReporteGenerico {
         Collections.sort(cargasTurnos, new ComparadorCargaTurno());
         
         
+        //Completo las observaciones
+        List<TurnoObservacionVO> observaciones = new ArrayList<TurnoObservacionVO>();
+        for (TurnoEmbarque te : embarque.getTurnoEmbarqueCollection()){
+            for (TurnoEmbarqueObservaciones teObs : te.getTurnoEmbarqueObservacionesCollection()){
+                observaciones.add(new TurnoObservacionVO(teObs));
+            }
+        }
+        
         //Completo el valor del calculo de abordo
         BigDecimal totalAcumulado = BigDecimal.ZERO;
         
         for (CargaTurnoVO ctVO : cargasTurnos){
             totalAcumulado = totalAcumulado.add(ctVO.getTotalCargaTurno());
             ctVO.setAcumulado(ctVO.getAcumulado().add(totalAcumulado));
+            ctVO.setObservaciones(observaciones);
         }
         
     }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenTurnosEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.1000000000000005"/>
-	<property name="ireport.x" value="28"/>
+	<property name="ireport.x" value="173"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/orco/git/Graneles-SRL/GranelesWeb/src/main/webapp/resources/reports/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -129,6 +132,9 @@
 	</field>
 	<field name="acumulado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[acumulado]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.util.List">
+		<fieldDescription><![CDATA[observaciones]]></fieldDescription>
 	</field>
 	<variable name="cargaBodega1_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Coordinador" calculation="Sum">
 		<variableExpression><![CDATA[$F{cargaBodega1}]]></variableExpression>
@@ -318,7 +324,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="63">
+			<band height="96">
 				<rectangle>
 					<reportElement x="135" y="10" width="70" height="20" backcolor="#F8F8F8"/>
 					<graphicElement>
@@ -518,6 +524,13 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega7_1}]]></textFieldExpression>
 				</textField>
+				<subreport>
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="59" width="802" height="24" printWhenGroupChanges="Coordinador">
+						<printWhenExpression><![CDATA[($F{observaciones}.size() > 0)]]></printWhenExpression>
+					</reportElement>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{observaciones})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubListadoObservaciones.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</groupFooter>
 	</group>

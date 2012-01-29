@@ -9,6 +9,7 @@ import com.orco.graneles.domain.carga.CargaTurnoCargas;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,6 +24,8 @@ public class CargaTurnoVO {
     private BigDecimal acumulado;
     
     private ResumenCargaEmbarqueVO resumenCargaEmbarque;
+    
+    private List<TurnoObservacionVO> observaciones;
     
     public CargaTurnoVO(CargaTurno cargaTurno, ResumenCargaEmbarqueVO resumenCargaEmbarque){
         this.ct = cargaTurno;
@@ -187,6 +190,14 @@ public class CargaTurnoVO {
 
     public void setAcumulado(BigDecimal acumulado) {
         this.acumulado = acumulado;
+    }
+
+    public List<TurnoObservacionVO> getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(List<TurnoObservacionVO> observaciones) {
+        this.observaciones = observaciones;
     }
     
     

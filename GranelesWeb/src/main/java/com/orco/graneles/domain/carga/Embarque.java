@@ -305,7 +305,9 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         
         if (this.getCargaPreviaCollection() != null){
             for (CargaPrevia cp : this.getCargaPreviaCollection()){
-                total = total.add(cp.getCarga());
+                if (cp.getCarga() != null) {
+                    total = total.add(cp.getCarga());
+                }
             }
         }
         

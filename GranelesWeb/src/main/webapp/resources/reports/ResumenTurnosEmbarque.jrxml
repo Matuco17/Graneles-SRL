@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenTurnosEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0000000000000002"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="166"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/orco/git/Graneles-SRL/GranelesWeb/src/main/webapp/resources/reports/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -129,6 +132,9 @@
 	</field>
 	<field name="acumulado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[acumulado]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.util.List">
+		<fieldDescription><![CDATA[observaciones]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -490,605 +496,612 @@
 			</textField>
 		</band>
 	</detail>
-	<lastPageFooter>
-		<band height="188">
+	<summary>
+		<band height="200">
 			<rectangle>
-				<reportElement x="247" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="247" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="427" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="427" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="125" width="98" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="702" y="127" width="98" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="247" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="247" y="147" width="60" height="20" backcolor="#FFFFFF"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="176" width="802" height="24">
+					<printWhenExpression><![CDATA[($F{observaciones}.size() > 0)]]></printWhenExpression>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{observaciones})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubListadoObservaciones.jasper"]]></subreportExpression>
+			</subreport>
+			<rectangle>
+				<reportElement x="547" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="547" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="367" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="367" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="487" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="487" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="307" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="307" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="607" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="607" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="547" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="547" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="702" y="147" width="98" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="145" width="98" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="427" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="487" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="487" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="547" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="547" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="702" y="73" width="98" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="71" width="98" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="427" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="607" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="607" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="247" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="247" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="247" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="247" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="367" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="367" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="487" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="487" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="547" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="547" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="427" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="607" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="607" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="702" y="18" width="98" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="16" width="98" height="20" backcolor="#F8F8F8"/>
-				<graphicElement>
-					<pen lineWidth="2.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="307" y="16" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="307" y="18" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="247" y="16" width="60" height="20"/>
+				<reportElement x="247" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="16" width="60" height="20"/>
+				<reportElement x="307" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="367" y="16" width="60" height="20"/>
+				<reportElement x="367" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="16" width="60" height="20"/>
+				<reportElement x="427" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="487" y="16" width="60" height="20"/>
+				<reportElement x="487" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[5]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="547" y="16" width="60" height="20"/>
+				<reportElement x="547" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[6]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="607" y="16" width="60" height="20"/>
+				<reportElement x="607" y="18" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[7]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="702" y="16" width="98" height="20"/>
+				<reportElement x="702" y="18" width="98" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL BBCA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="32" y="16" width="215" height="40"/>
+				<reportElement x="32" y="18" width="215" height="40"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total por bodegas en Bahía Blanca]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="247" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="247" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="367" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="367" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="487" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="487" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="547" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="547" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="427" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="427" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="607" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="607" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="36" width="98" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="702" y="38" width="98" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="307" y="36" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="307" y="38" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="247" y="36" width="60" height="20"/>
+				<reportElement x="247" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="307" y="36" width="60" height="20"/>
+				<reportElement x="307" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="367" y="36" width="60" height="20"/>
+				<reportElement x="367" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="427" y="36" width="60" height="20"/>
+				<reportElement x="427" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod4}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="487" y="36" width="60" height="20"/>
+				<reportElement x="487" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="547" y="36" width="60" height="20"/>
+				<reportElement x="547" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod6}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="607" y="36" width="60" height="20"/>
+				<reportElement x="607" y="38" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargadoBod7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="702" y="36" width="100" height="20"/>
+				<reportElement x="702" y="38" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenTotalCargaActual}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="307" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="307" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="702" y="91" width="98" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="702" y="93" width="98" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="607" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="607" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="307" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="307" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="247" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="247" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="307" y="71" width="60" height="20"/>
+				<reportElement x="307" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="367" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="367" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="702" y="91" width="100" height="20"/>
+				<reportElement x="702" y="93" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenTotalPuertoAnterior}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="367" y="71" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="367" y="73" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="427" y="71" width="60" height="20"/>
+				<reportElement x="427" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="307" y="91" width="60" height="20"/>
+				<reportElement x="307" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="607" y="91" width="60" height="20"/>
+				<reportElement x="607" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod7}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="487" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="487" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="247" y="91" width="60" height="20"/>
+				<reportElement x="247" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="427" y="91" width="60" height="20"/>
+				<reportElement x="427" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="487" y="71" width="60" height="20"/>
+				<reportElement x="487" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[5]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="547" y="71" width="60" height="20"/>
+				<reportElement x="547" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[6]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="367" y="71" width="60" height="20"/>
+				<reportElement x="367" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="367" y="91" width="60" height="20"/>
+				<reportElement x="367" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="702" y="71" width="98" height="20"/>
+				<reportElement x="702" y="73" width="98" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="247" y="71" width="60" height="20"/>
+				<reportElement x="247" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="487" y="91" width="60" height="20"/>
+				<reportElement x="487" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="607" y="71" width="60" height="20"/>
+				<reportElement x="607" y="73" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[7]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="547" y="91" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="547" y="93" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="547" y="91" width="60" height="20"/>
+				<reportElement x="547" y="93" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaPreviaBod6}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="32" y="71" width="215" height="40"/>
+				<reportElement x="32" y="73" width="215" height="40"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total por bodegas en Tránsito]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="547" y="125" width="60" height="20"/>
+				<reportElement x="547" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[6]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="125" width="60" height="20"/>
+				<reportElement x="427" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="125" width="60" height="20"/>
+				<reportElement x="307" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="487" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="487" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="702" y="125" width="98" height="20"/>
+				<reportElement x="702" y="127" width="98" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL GRAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="247" y="125" width="60" height="20"/>
+				<reportElement x="247" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="607" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="607" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="702" y="145" width="100" height="20"/>
+				<reportElement x="702" y="147" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenTotalCargaBuque}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="427" y="145" width="60" height="20"/>
+				<reportElement x="427" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod4}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="367" y="125" width="60" height="20" backcolor="#F8F8F8"/>
+				<reportElement x="367" y="127" width="60" height="20" backcolor="#F8F8F8"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="607" y="145" width="60" height="20"/>
+				<reportElement x="607" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod7}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="307" y="145" width="60" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="307" y="147" width="60" height="20" backcolor="#FFFFFF"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="367" y="145" width="60" height="20"/>
+				<reportElement x="367" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="307" y="145" width="60" height="20"/>
+				<reportElement x="307" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="487" y="145" width="60" height="20"/>
+				<reportElement x="487" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="607" y="125" width="60" height="20"/>
+				<reportElement x="607" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[7]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="367" y="125" width="60" height="20"/>
+				<reportElement x="367" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="247" y="145" width="60" height="20"/>
+				<reportElement x="247" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="487" y="125" width="60" height="20"/>
+				<reportElement x="487" y="127" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[5]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="547" y="145" width="60" height="20"/>
+				<reportElement x="547" y="147" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{resumenCargaTotalBod6}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="32" y="125" width="215" height="40"/>
+				<reportElement x="32" y="127" width="215" height="40"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total por bodegas general]]></text>
 			</staticText>
 		</band>
-	</lastPageFooter>
+	</summary>
 </jasperReport>
