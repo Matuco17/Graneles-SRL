@@ -7,6 +7,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
+import com.orco.graneles.reports.RecibosSueldoSacYVac;
 import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import java.io.IOException;
 
@@ -50,6 +51,7 @@ public class PeriodoController implements Serializable {
     private String urlArchivoPDF;
     private String urlArchivoTxt;
     private String urlArchivoCierreMes;
+    private String urlArchivoRecibosSacYVac;
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
     private BigDecimal totalBruto;
@@ -142,6 +144,20 @@ public class PeriodoController implements Serializable {
             urlArchivoCierreMes = null;
         }
     }
+    
+    /**
+     * Genera los recibos de sueldos de SAC y Vacaciones
+     */
+    public void generarRecibosSacYVac(){
+        if (current != null){
+            List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
+            
+            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac);
+            urlArchivoRecibosSacYVac = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoRecibosSacYVac = null;
+        }
+    }
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -227,6 +243,7 @@ public class PeriodoController implements Serializable {
         urlArchivoPDF = null;
         urlArchivoTxt = null;
         urlArchivoCierreMes = null;
+        urlArchivoRecibosSacYVac = null;
         selectedItemIndex = 1;
     }
     
@@ -428,6 +445,14 @@ public class PeriodoController implements Serializable {
 
     public String getUrlArchivoCierreMes() {
         return urlArchivoCierreMes;
+    }
+
+    public String getUrlArchivoRecibosSacYVac() {
+        return urlArchivoRecibosSacYVac;
+    }
+
+    public void setUrlArchivoRecibosSacYVac(String urlArchivoRecibosSacYVac) {
+        this.urlArchivoRecibosSacYVac = urlArchivoRecibosSacYVac;
     }
     
     public Periodo getCurrent() {

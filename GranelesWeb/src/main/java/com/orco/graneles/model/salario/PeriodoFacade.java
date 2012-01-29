@@ -202,6 +202,31 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return per;
     }
     
+    public List<Sueldo> obtenerSueldosSacYVac(Periodo periodo){
+        List<Sueldo> sueldos = new ArrayList<Sueldo>();
+        
+        boolean calcularSac = periodoConSAC(periodo);
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+                
+        for (Personal p : personalF.findAll()){
+            //Por ahora salteo los empleados mensuales
+            if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
+                if (calcularSac || calcularSacIndividual(p, periodo)){
+                    Sueldo sueldoSacNuevo = new Sueldo();
+                    sueldoSacNuevo.setPeriodo(periodo);
+                    sueldoSacNuevo.setPersonal(p);
+                    sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
+
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras);
+                    
+                    sueldos.add(sueldoSacNuevo);
+               }
+            }
+        }
+        return sueldos;
+    }
+    
+    
     public List<ProyeccionSacVacYAdelantosVO> obtenerProyecciones(int semestre, int anio){
         DateTime desde = null;
         DateTime hasta = null;

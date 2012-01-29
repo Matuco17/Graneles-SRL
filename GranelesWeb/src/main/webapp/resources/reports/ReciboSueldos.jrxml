@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboSueldos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="IDConceptoRecibo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[IDConceptoRecibo]]></fieldDescription>
+	</field>
+	<field name="IDSueldo" class="java.lang.Long">
+		<fieldDescription><![CDATA[IDSueldo]]></fieldDescription>
+	</field>
+	<field name="apellidoNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoNombre]]></fieldDescription>
+	</field>
+	<field name="categoria" class="java.lang.String">
+		<fieldDescription><![CDATA[categoria]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="conceptoCantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[conceptoCantidad]]></fieldDescription>
+	</field>
+	<field name="conceptoDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[conceptoDescripcion]]></fieldDescription>
+	</field>
+	<field name="cuil" class="java.lang.String">
+		<fieldDescription><![CDATA[cuil]]></fieldDescription>
+	</field>
+	<field name="descripcionPeriodo" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcionPeriodo]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[direccion]]></fieldDescription>
+	</field>
+	<field name="documentoYTipo" class="java.lang.String">
+		<fieldDescription><![CDATA[documentoYTipo]]></fieldDescription>
+	</field>
+	<field name="estadoCivil" class="java.lang.String">
+		<fieldDescription><![CDATA[estadoCivil]]></fieldDescription>
+	</field>
+	<field name="fechaEgreso" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaEgreso]]></fieldDescription>
+	</field>
+	<field name="fechaIngreso" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaIngreso]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="legajo" class="java.lang.String">
+		<fieldDescription><![CDATA[legajo]]></fieldDescription>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<fieldDescription><![CDATA[localidad]]></fieldDescription>
+	</field>
+	<field name="nroPrimeraHoja" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[nroPrimeraHoja]]></fieldDescription>
+	</field>
+	<field name="nroTomo" class="java.lang.String">
+		<fieldDescription><![CDATA[nroTomo]]></fieldDescription>
+	</field>
+	<field name="ordenConcepto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ordenConcepto]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[sexo]]></fieldDescription>
+	</field>
+	<field name="totaRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totaRemunerativo]]></fieldDescription>
+	</field>
+	<field name="totalDeductivo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalDeductivo]]></fieldDescription>
+	</field>
+	<field name="totalNoRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalNoRemunerativo]]></fieldDescription>
+	</field>
+	<field name="totalSueldoNeto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalSueldoNeto]]></fieldDescription>
+	</field>
+	<field name="valorCalculado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorCalculado]]></fieldDescription>
+	</field>
+	<field name="valorDeductivo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorDeductivo]]></fieldDescription>
+	</field>
+	<field name="valorIngresado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorIngresado]]></fieldDescription>
+	</field>
+	<field name="valorNoRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorNoRemunerativo]]></fieldDescription>
+	</field>
+	<field name="valorRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorRemunerativo]]></fieldDescription>
+	</field>
+	<group name="Sueldo" isStartNewPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{IDSueldo}]]></groupExpression>
+		<groupHeader>
+			<band height="100">
+				<line>
+					<reportElement x="0" y="0" width="487" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="0" y="1" width="100" height="15"/>
+					<textElement/>
+					<text><![CDATA[Legajo:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="16" width="100" height="15"/>
+					<textElement/>
+					<text><![CDATA[Apellido y Nombre:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="31" width="100" height="15"/>
+					<textElement/>
+					<text><![CDATA[Dirección:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="46" width="100" height="15"/>
+					<textElement/>
+					<text><![CDATA[Localidad:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="245" y="1" width="80" height="15"/>
+					<textElement/>
+					<text><![CDATA[C.U.I.L.:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="245" y="16" width="80" height="15"/>
+					<textElement/>
+					<text><![CDATA[Estado Civil:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="245" y="31" width="80" height="15"/>
+					<textElement/>
+					<text><![CDATA[Fecha Ingreso:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="245" y="46" width="80" height="15"/>
+					<textElement/>
+					<text><![CDATA[Fecha Egreso:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="61" width="100" height="15"/>
+					<textElement/>
+					<text><![CDATA[Categoría:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="245" y="61" width="80" height="15"/>
+					<textElement/>
+					<text><![CDATA[Documento:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="16" width="129" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{apellidoNombre}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="46" width="129" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{localidad}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="31" width="129" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="61" width="129" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="328" y="1" width="110" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+					<reportElement x="328" y="31" width="110" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{fechaIngreso}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+					<reportElement x="328" y="46" width="110" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{fechaEgreso}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="85" width="441" height="1"/>
+				</line>
+				<line>
+					<reportElement x="0" y="99" width="441" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="0" y="86" width="154" height="13"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[  Concepto]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="85" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="147" y="84" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="201" y="84" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="361" y="84" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="281" y="84" width="1" height="15"/>
+				</line>
+				<staticText>
+					<reportElement x="148" y="85" width="53" height="13"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Hs/%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="201" y="85" width="80" height="13"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Remuneracion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="282" y="85" width="79" height="13"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Deducción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="362" y="85" width="79" height="13"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Sin Remuneración]]></text>
+				</staticText>
+				<line>
+					<reportElement x="440" y="84" width="1" height="15"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement x="328" y="16" width="110" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{estadoCivil}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="100" y="1" width="129" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{legajo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="328" y="61" width="110" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{documentoYTipo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="75">
+				<line>
+					<reportElement x="0" y="39" width="438" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="3" y="4" width="190" height="13"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Totales]]></text>
+				</staticText>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="202" y="3" width="77" height="13"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totaRemunerativo}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="282" y="3" width="77" height="13"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalDeductivo}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="362" y="3" width="76" height="13"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalNoRemunerativo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="282" y="17" width="80" height="13"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[  Total Neto:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="17" width="441" height="1"/>
+				</line>
+				<line>
+					<reportElement x="0" y="3" width="441" height="1"/>
+				</line>
+				<line>
+					<reportElement x="201" y="2" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="361" y="2" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="281" y="2" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="0" y="3" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="440" y="2" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="282" y="30" width="158" height="1"/>
+				</line>
+				<line>
+					<reportElement x="361" y="16" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="440" y="16" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement x="281" y="16" width="1" height="15"/>
+				</line>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="362" y="17" width="76" height="13"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalSueldoNeto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="0" width="190" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conceptoDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="179" y="9" width="50" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conceptoCantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="205" y="0" width="77" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorRemunerativo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="261" y="9" width="77" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorDeductivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="362" y="7" width="79" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorNoRemunerativo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
