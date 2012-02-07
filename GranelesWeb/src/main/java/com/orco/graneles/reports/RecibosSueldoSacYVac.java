@@ -7,8 +7,7 @@ package com.orco.graneles.reports;
 import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.orco.graneles.vo.ItemSueldoVO;
 import java.util.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -18,17 +17,17 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  */
 public class RecibosSueldoSacYVac extends ReporteGenerico {
     
-    private List<ItemsSueldo> dataSource;
+    private List<ItemSueldoVO> dataSource;
     private Periodo periodo;
     
     public RecibosSueldoSacYVac(Periodo periodo, List<Sueldo> sueldos){
         this.periodo = periodo;
-        dataSource = new ArrayList<ItemsSueldo>();
+        dataSource = new ArrayList<ItemSueldoVO>();
         
         //Agrego todos los items del periodo para el reporte
         for(Sueldo s : sueldos)
             for (ItemsSueldo is : s.getItemsSueldoCollection())
-                dataSource.add(is);
+                dataSource.add(new ItemSueldoVO(is));
                 
         //Ordeno antes de devolver todo
         Collections.sort(dataSource, new ComparadorItems());
@@ -42,12 +41,12 @@ public class RecibosSueldoSacYVac extends ReporteGenerico {
     }
     
     
-    private class ComparadorItems implements Comparator<ItemsSueldo>{
+    private class ComparadorItems implements Comparator<ItemSueldoVO>{
         /*
          * Criterio de Ordenamiento, si es la misma persona ordeno por el orden del concepto, sino ordento por el apellido y nombre de la persona
          */
         @Override
-        public int compare(ItemsSueldo o1, ItemsSueldo o2) {
+        public int compare(ItemSueldoVO o1, ItemSueldoVO o2) {
             if (!o1.getSueldo().getPersonal().getId().equals(o2.getSueldo().getPersonal().getId())){
                 return o1.getSueldo().getPersonal().getApellido().compareTo(o2.getSueldo().getPersonal().getApellido());
             } else {
