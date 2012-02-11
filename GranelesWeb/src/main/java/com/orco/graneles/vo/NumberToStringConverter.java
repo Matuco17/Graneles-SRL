@@ -98,11 +98,16 @@ public class NumberToStringConverter {
   }
   
   public static String decimalACastellano(BigDecimal valor, int decimales, String separador, String finalizador){
-      return numeroACastellano(valor.longValue()) 
+      return (numeroACastellano(valor.longValue()) 
              + separador 
-             + numeroACastellano((new Double((valor.doubleValue() * (Math.pow(10, decimales))) % (Math.pow(10, decimales)))).longValue())
-             + finalizador; 
-             
+             + numeroACastellano(
+                        (new Double(
+                            Math.round(
+                                valor.doubleValue() 
+                                    * (Math.pow(10, decimales))
+                            ) % (Math.pow(10, decimales)))
+                        ).longValue())
+             + finalizador).trim();
   }
   
   
