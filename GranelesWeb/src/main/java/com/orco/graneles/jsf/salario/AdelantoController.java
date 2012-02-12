@@ -8,6 +8,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.AdelantoFacade;
+import com.orco.graneles.reports.ReciboAdelanto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ public class AdelantoController implements Serializable {
     @EJB
     private AdelantoFacade ejbFacade;
     @EJB
-    private FixedListFacade fxlFacade;
+    private FixedListFacade fixedListF;
     @EJB
     private PersonalFacade personalF;
     
@@ -43,6 +44,7 @@ public class AdelantoController implements Serializable {
     private List<FixedList> opcionesAdelanto;
     private BigDecimal valorMaximoCalculado;
     private BigDecimal valorTotalAdelantos;
+    private String urlRecibo;
     
 
     public AdelantoController() {
@@ -102,6 +104,10 @@ public class AdelantoController implements Serializable {
         //current = (Adelanto) getItems().getRowData();
         //selectedItemIndex = getItems().getRowIndex();
         if (current != null) {
+            
+            ReciboAdelanto recibo = new ReciboAdelanto(current);
+            urlRecibo = recibo.obtenerReportePDF();
+            
             return "View";
         } else {
             return null;
@@ -267,10 +273,10 @@ public class AdelantoController implements Serializable {
         this.valorTotalAdelantos = valorTotalAdelantos;
     }
 
-    
-    
-    
-    
+    public String getUrlRecibo() {
+        return urlRecibo;
+    }
+
     /**
      * Clse comparadora del adelanto por fecha desdcendiente
      */

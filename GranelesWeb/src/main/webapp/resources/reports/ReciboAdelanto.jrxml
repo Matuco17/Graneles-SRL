@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboJornalCaido" language="groovy" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="50" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0000000000000007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="apellidoYNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoYNombre]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="valorEnLetras" class="java.lang.String">
+		<fieldDescription><![CDATA[valorEnLetras]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="567" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="105" width="525" height="50"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Entregué a " + $F{apellidoYNombre} + " la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Haberes."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="175" width="83" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Día de Pago:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="83" y="175" width="87" height="20"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="216" y="175" width="108" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPLEADOR:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="324" y="195" width="185" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="498" width="83" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Día de Pago:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="499" width="108" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPLEADO:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="324" y="518" width="185" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="426" width="525" height="50"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Recibí de GRANELES S.R.L. la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Haberes."]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="83" y="498" width="87" height="20"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="380" width="525" height="1"/>
+			</line>
+			<image>
+				<reportElement x="0" y="0" width="525" height="58"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="393" width="525" height="26"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recibo de Adelanto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="79" width="525" height="26"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recibo de Adelanto]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="324" y="519" width="185" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{apellidoYNombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>
