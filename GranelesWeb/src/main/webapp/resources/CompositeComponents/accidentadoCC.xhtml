@@ -8,16 +8,16 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <!-- INTERFACE -->
-    <!-- INTERFACE -->
     <co:interface>
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
         <co:attribute name="editar" type="java.lang.Boolean" required="true" />
     </co:interface>
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <p:panel id="panAccidentado" >
+        <p:fieldset id="panAccidentado" legend="Accidentado" toggleable="true" >
             <h:panelGrid columns="4">
-                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personalSeleccionado}" for="personal" />
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personalSeleccionado}" />
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.cuil}" />
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.apellido}" />
                 <h:outputText value="" />
@@ -32,9 +32,9 @@
                 </h:selectOneMenu>
                 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_desde}" for="desde" />
-                <p:calendar id="desde" value="#{accidentadoController.selected.desde}" title="#{bundlePersonal.AccidentadoTitle_desde}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
+                <p:calendar id="desde" value="#{accidentadoController.selected.desde}" title="#{bundlePersonal.AccidentadoTitle_desde}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar || (accidentadoController.jornalesCaidos.size() > 0)}" />
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_hasta}" for="hasta" />
-                <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar}" />
+                <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar || (accidentadoController.jornalesCaidos.size() > 0)}" />
 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_siniestro}" for="siniestro" />
                 <p:inputMask id="siniestro" value="#{accidentadoController.selected.siniestro}" mask="999999/999" readonly="#{!cc.attrs.editar}" />
@@ -66,6 +66,60 @@
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_descripcionCortaAccidente}" for="descripcionCortaAccidente" />
                 <p:inputTextarea id="descripcionCortaAccidente" value="#{accidentadoController.selected.descripcionCortaAccidente}" style="width: 400px; height: 120px;" disabled="#{!cc.attrs.editar}" />
             </h:panelGrid>
-        </p:panel>
+        </p:fieldset>
+        <p:fieldset id="panAdelantos" legend="Adelantos" rendered="${!cc.attrs.nuevo}" toggleable="true" >
+            <h:panelGrid columns="2" rendered="${cc.attrs.editar}">
+                
+                <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_desde}" for="adelantoDesde" />
+                <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_hasta}" for="adelantoHasta" />
+                
+                <p:calendar id="adelantoDesde" value="#{accidentadoController.currentJC.desde}" mode="inline" mindate="#{accidentadoController.selected.desde}" maxdate="#{accidentadoController.selected.hasta}" /> 
+                <p:calendar id="adelantoHasta" value="#{accidentadoController.currentJC.hasta}" mode="inline" mindate="#{accidentadoController.selected.desde}" maxdate="#{accidentadoController.selected.hasta}" /> 
+            </h:panelGrid>
+            <h:panelGrid columns="3" rendered="${cc.attrs.editar}">
+            
+                <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_diaPago}" for="diaPago" />
+                <p:calendar id="diaPago" value="#{accidentadoController.currentJC.diaPago}" pattern="dd/MM/yyyy" />
+                
+                <h:commandButton id="btnAgregarAdelanto" 
+                                 action="#{accidentadoController.agregarJornalCaido()}"
+                                     image="/faces/resources/images/new.png" >
+                </h:commandButton>
+                
+            </h:panelGrid>
+            <p:dataTable id="dtbAdelantos" value="#{accidentadoController.jornalesCaidosModel}" var="jornalCaido" >
+                <p:column headerText="#{bundlePersonal.JornalCaidoTitle_desde}" style="text-align: center;">
+                    <h:outputText value="#{jornalCaido.desde}" >
+                        <f:convertDateTime pattern="dd/MM/yy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{bundlePersonal.JornalCaidoTitle_hasta}" style="text-align: center;">
+                    <h:outputText value="#{jornalCaido.hasta}" >
+                        <f:convertDateTime pattern="dd/MM/yy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{bundlePersonal.JornalCaidoTitle_diaPago}" style="text-align: center;">
+                    <h:outputText value="#{jornalCaido.diaPago}" >
+                        <f:convertDateTime pattern="dd/MM/yy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{bundlePersonal.JornalCaidoTitle_valor}" style="text-align: right;">
+                    <h:outputText value="#{jornalCaido.valor}" >
+                        <f:convertNumber maxFractionDigits="2" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <h:commandButton 
+                        image="/faces/resources/images/destroy.png"
+                        onclick="return confirm('¿Esta seguro que desea eliminar este Adelanto?');" 
+                        action="#{embarqueController.destroyTE}" 
+                        title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                        value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
+                        rendered="#{cc.attrs.editar}"
+                        />
+                    <h:link value="Recibo" onclick="window.open('#{jornalCaido.urlRecibo}','Recibo');window.close();" rendered="#{!cc.attrs.editar}" />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
     </co:implementation>
 </html>

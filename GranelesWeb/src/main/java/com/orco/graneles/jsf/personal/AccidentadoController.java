@@ -1,13 +1,16 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Accidentado;
+import com.orco.graneles.domain.personal.JornalCaido;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.AccidentadoFacade;
+import com.orco.graneles.model.personal.JornalCaidoFacade;
+import com.orco.graneles.reports.ReciboJornalCaído;
 import com.orco.graneles.vo.NuevoAccidentadoVO;
 
 import java.io.Serializable;
-import java.util.ResourceBundle;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,10 +30,20 @@ public class AccidentadoController implements Serializable {
     private Personal currentPersonal;
     private NuevoAccidentadoVO currentV0;
     private DataModel items = null;
+    
     @EJB
     private AccidentadoFacade ejbFacade;
+    
+    @EJB
+    private JornalCaidoFacade jornalCaidoF;
+    
     private int selectedItemIndex;
 
+    private List<JornalCaido> jornalesCaidos;
+    private DataModel jornalesCaidosModel;
+    private JornalCaido currentJC;
+    
+    
     public AccidentadoController() {
     }
 
@@ -77,7 +90,14 @@ public class AccidentadoController implements Serializable {
         //current = (Accidentado) getItems().getRowData();
         //selectedItemIndex = getItems().getRowIndex();
         if (current != null){
-        return "View";
+            
+            //Genero cada uno de los recibos
+            for (JornalCaido jc : current.getJornalesCaidosCollection()){
+                ReciboJornalCaído recibo = new ReciboJornalCaído(jc);
+                jc.setUrlRecibo(recibo.obtenerReportePDF());
+            }            
+            
+            return "View";
         } else {
             return null;
         }
@@ -139,6 +159,7 @@ public class AccidentadoController implements Serializable {
     public String update() {
         try {
             if (validarCreateUpdate()){
+                //currentV0.getAccidentado().setJornalesCaidosCollection(jornalesCaidos);
                 getFacade().edit(currentV0.getAccidentado());
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoUpdated"));
                 return "View";
@@ -196,6 +217,9 @@ public class AccidentadoController implements Serializable {
     private void recreateModel() {
         items = null;
         currentPersonal = null;
+        currentJC = null;
+        jornalesCaidos = null;
+        jornalesCaidosModel = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -250,6 +274,61 @@ public class AccidentadoController implements Serializable {
     public void setCurrentPersonal(Personal currentPersonal) {
         this.currentPersonal = currentPersonal;
     }
+
+    /*
+     * JORNALES CAIDOS
+     */
     
+    public void agregarJornalCaido(){
+        if ((currentJC.getDesde() != null) 
+            && (currentJC.getHasta() != null)
+            && (currentJC.getDiaPago() != null)){
+        
+            jornalCaidoF.completarValor(currentJC);
+            
+            current.getJornalesCaidosCollection().add(currentJC);
+            currentJC = null;
+            jornalesCaidos = null;
+            jornalesCaidosModel = null;
+        }
+    }
+    
+    public void borrarJornalCaido(){
+        int rowindex = jornalesCaidosModel.getRowIndex();
+        jornalesCaidos.remove(rowindex);
+        jornalesCaidosModel = null;
+    }
+    
+    public JornalCaido getCurrentJC() {
+        if (currentJC == null){
+            currentJC = new JornalCaido();
+            currentJC.setAccidentado(current);
+            currentJC.setDiaPago(new Date());
+            currentJC.setDesde(current.getDesde());
+            currentJC.setHasta(current.getHasta());
+        }
+        return currentJC;
+    }
+
+    public void setCurrentJC(JornalCaido currentJC) {
+        this.currentJC = currentJC;
+    }
+
+    public List<JornalCaido> getJornalesCaidos() {
+        if (jornalesCaidos == null){
+            jornalesCaidos = new ArrayList<JornalCaido>(current.getJornalesCaidosCollection());
+            Collections.sort(jornalesCaidos);
+            Collections.reverseOrder();
+        }
+        return jornalesCaidos;
+    }
+
+    public DataModel getJornalesCaidosModel() {
+        if (jornalesCaidosModel == null){
+            jornalesCaidosModel = new ListDataModel(getJornalesCaidos());
+        }
+        return jornalesCaidosModel;
+    }
+
     
 }

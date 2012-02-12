@@ -7,23 +7,13 @@ package com.orco.graneles.domain.personal;
 import com.orco.graneles.domain.salario.Sueldo;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -50,40 +40,53 @@ import javax.xml.bind.annotation.XmlRootElement;
                 + "AND a.desde <= :hasta "
                 + "AND (a.hasta IS NULL OR a.hasta >= :desde)")})
 public class Accidentado implements Serializable {
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "desde")
     @Temporal(TemporalType.DATE)
     private Date desde;
+    
     @Column(name = "hasta")
     @Temporal(TemporalType.DATE)
     private Date hasta;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "bruto")
     private BigDecimal bruto;
-    @Size(max = 256)
     
+    @Size(max = 10)
     @Column(name = "siniestro")
     private String siniestro;
     
     @Column(name = "descripcion_corta_accidente")
     private String descripcionCortaAccidente;
+    
     @JoinColumn(name = "libro_sueldo", referencedColumnName = "id")
     @ManyToOne
     private Sueldo libroSueldo;
+    
     @JoinColumn(name = "tarea", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Tarea tarea;
+    
     @JoinColumn(name = "categoria", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Categoria categoria;
+    
     @JoinColumn(name = "personal", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Personal personal;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accidentado", orphanRemoval = true)
+    private Collection<JornalCaido> jornalesCaidosCollection;
+    
+    
     public Accidentado() {
     }
 
@@ -97,22 +100,6 @@ public class Accidentado implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getDesde() {
-        return desde;
-    }
-
-    public void setDesde(Date desde) {
-        this.desde = desde;
-    }
-
-    public Date getHasta() {
-        return hasta;
-    }
-
-    public void setHasta(Date hasta) {
-        this.hasta = hasta;
     }
 
     public BigDecimal getBruto() {
@@ -196,6 +183,31 @@ public class Accidentado implements Serializable {
     @Override
     public String toString() {
         return "com.orco.graneles.domain.Accidentado[ id=" + id + " ]";
+    }
+
+    public Date getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Date desde) {
+        this.desde = desde;
+    }
+
+    public Date getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Date hasta) {
+        this.hasta = hasta;
+    }
+
+    @XmlTransient
+    public Collection<JornalCaido> getJornalesCaidosCollection() {
+        return jornalesCaidosCollection;
+    }
+
+    public void setJornalesCaidosCollection(Collection<JornalCaido> jornalesCaidosCollection) {
+        this.jornalesCaidosCollection = jornalesCaidosCollection;
     }
     
 }

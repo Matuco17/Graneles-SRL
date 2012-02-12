@@ -51,9 +51,12 @@ public abstract class ReporteGenerico {
             if (getUrlImagenes() != null){
                 for (int i = 0; i < getUrlImagenes().length; i++){
                     try {
-                        params.put(getUrlImagenes()[i], new FileInputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/" + getUrlImagenes()[i])));
+                        FileInputStream imagen = new FileInputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/" + getUrlImagenes()[i]));
+                        params.put(getUrlImagenes()[i], imagen);
                     } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                        e.printStackTrace();
+                    }  catch (IOException e){
+                        e.printStackTrace();
                     }
                 }
             }

@@ -162,6 +162,30 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                         periodo, conceptos, accidentado.getPersonal());
     }
     
+    /**
+     * Calcula el Valor neto del sueldo del accidetnado en cuestion
+     */
+    public BigDecimal calcularSueldoAccidentado(Date desde, Date hasta, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos){
+        
+        if (conceptoReciboAccidentadoCache == null){
+            conceptoReciboAccidentadoCache = conceptoReciboF.obtenerConcepto(
+                                                                fixedListF.find(TipoRecibo.HORAS),
+                                                                fixedListF.find(TipoValorConcepto.HORAS_HABILES));
+        }
+        
+        
+        int diasTrabajados = conceptoReciboF.calculoDiasAccidentado(desde, hasta, accidentado);
+        
+        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, diasTrabajados);
+        
+        
+        Sueldo sueldoCalculado = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
+                        new BigDecimal(diasTrabajados * 6),
+                        new BigDecimal(brutoCalculado),
+                        null, conceptos, accidentado.getPersonal());
+        
+        return sueldoCalculado.getTotalSueldoNeto();
+    }
     
     
     public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
