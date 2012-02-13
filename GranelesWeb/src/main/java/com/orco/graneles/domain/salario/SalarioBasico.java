@@ -44,6 +44,10 @@ import javax.xml.bind.annotation.XmlRootElement;
                         query = "SELECT s FROM SalarioBasico s "
                                 + "WHERE s.categoria = :categoria "
                                 + "AND s.tarea = :tarea"),
+    @NamedQuery(name = "SalarioBasico.findActivos", 
+                        query = "SELECT s FROM SalarioBasico s "
+                                + "WHERE s.desde <= :fecha "
+                                + "AND (s.hasta IS NULL OR s.hasta >= :fecha)"),
     @NamedQuery(name = "SalarioBasico.findActivo", 
                         query = "SELECT s FROM SalarioBasico s "
                                 + "WHERE s.categoria = :categoria "

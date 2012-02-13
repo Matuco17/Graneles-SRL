@@ -90,7 +90,7 @@
                     <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tte.tarea}" 
                                      valueChangeListener="#{embarqueController.seleccionarTarea}">
                         <p:ajax event="change" update="panTrabajadores"/>
-                        <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{embarqueController.tareasActivas}" var="tarea" itemLabel="#{tarea.toString()}"/>
                     </h:selectOneMenu>
 
                     <h:selectOneMenu id="horaDesde" value="#{embarqueController.currentTTE.tte.desde}"  
@@ -115,6 +115,7 @@
 
                     <h:commandButton id="btnAgregarTrabajador" 
                                      action="#{embarqueController.agregarTrabajador}"
+                                     disabled="#{!embarqueController.agregarTrabajadorHabilitado}"
                                      image="/faces/resources/images/new.png" >
                         <p:ajax update="panTrabajadores"/>
                     </h:commandButton>

@@ -112,5 +112,15 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
         }
     }
     
+    /**
+     * Devuelve los salarios activos de acuerdo a la fecha especificada
+     * @param fecha
+     * @return 
+     */
+    public List<SalarioBasico> obtenerSalariosActivos(Date fecha){
+        return getEntityManager().createNamedQuery("SalarioBasico.findActivos", SalarioBasico.class)
+                        .setParameter("fecha", fecha)
+                        .getResultList();
+    }
 }
 

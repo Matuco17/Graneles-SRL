@@ -14,6 +14,7 @@ import com.orco.graneles.model.carga.EmbarqueCargadorFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
+import com.orco.graneles.model.personal.TareaFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.reports.EmbarquePlanoCarga;
 import com.orco.graneles.reports.PlanillaTrabajadoresTurno;
@@ -24,11 +25,7 @@ import java.io.IOException;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -65,8 +62,7 @@ public class EmbarqueController implements Serializable {
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
     @EJB
-    private EmbarqueCargadorFacade embarqueCargadorF;
-    
+    private TareaFacade tareaF;
     
     
     private int selectedItemIndex;
@@ -84,6 +80,8 @@ public class EmbarqueController implements Serializable {
     private TrabajadorTurnoEmbarqueVO selectedTTE;
     private TurnoEmbarque currentTE;
     private boolean editarTurno;
+    private List<Tarea> tareasActivas;
+    private Map<Integer, List<Tarea>> mapTareasXCategoria; //Mapeo de tareas de acuerdo a la categoria
 
     //Variables de Archivo
     private DataModel archivosModel;
@@ -141,6 +139,8 @@ public class EmbarqueController implements Serializable {
         currentTEO = null;
         turnoObservaciones = null;
         turnoObservacionesModel = null;
+        mapTareasXCategoria = null;
+        tareasActivas = null;
     }
     
     private void tratarDeLevantarCarga(){
@@ -544,16 +544,24 @@ public class EmbarqueController implements Serializable {
     }
     
     public void seleccionarFecha(DateSelectEvent event) {  
-        getCurrentTE().setFecha(event.getDate());  
+        getCurrentTE().setFecha(event.getDate());
+        mapTareasXCategoria = null;
+        tareasActivas = null;
     }  
     
     public void seleccionarPersonal(ValueChangeEvent e){
         Personal personalSeleccionado = (Personal) e.getNewValue();
         getCurrentTTE().getTte().setPersonal(personalSeleccionado);
         getCurrentTTE().getTte().setPlanilla(currentTE);
-        if (personalSeleccionado.getCategoriaPrincipal() != null)
+        if (personalSeleccionado.getCategoriaPrincipal() != null){
             getCurrentTTE().getTte().setCategoria(personalSeleccionado.getCategoriaPrincipal());
-        
+            tareasActivas = getMapTareasXCategoria().get(personalSeleccionado.getCategoriaPrincipal().getId());
+            if (tareasActivas != null && tareasActivas.size() > 0){
+                getCurrentTTE().getTte().setTarea(tareasActivas.get(0));
+            } else {
+                getCurrentTTE().getTte().setTarea(null);
+            }
+        }
         //TODO: ASIGNAR DINAMICAMENTE LAS TAREAS PERMITIDAS DE ACUERDO AL SALARIO BASICO CARGADO:
         if (currentTE.getTurno() != null){
             //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
@@ -570,7 +578,21 @@ public class EmbarqueController implements Serializable {
     }
     
     public void seleccionarCategoria(ValueChangeEvent e){
-        getCurrentTTE().getTte().setCategoria((Categoria) e.getNewValue());
+        Categoria cat = (Categoria) e.getNewValue();
+        getCurrentTTE().getTte().setCategoria(cat);
+        tareasActivas = getMapTareasXCategoria().get(cat.getId());
+        //Seteo la tarea activa seleccionada, verifico que si ya tiene una y esta esta contenida dentro del nuevo listado, entonces no lo cambio
+        if (tareasActivas != null && tareasActivas.size() > 0){
+            if (getCurrentTTE().getTte().getTarea() == null){
+                getCurrentTTE().getTte().setTarea(tareasActivas.get(0));
+            } else {
+                if (!tareasActivas.contains(getCurrentTTE().getTte().getTarea())){
+                    getCurrentTTE().getTte().setTarea(tareasActivas.get(0));
+                }
+            }
+        } else {
+            getCurrentTTE().getTte().setTarea(null);
+        }
         actualizarSueldoTTE(getCurrentTTE());
     }
         
@@ -591,7 +613,25 @@ public class EmbarqueController implements Serializable {
             //Por ahora no hago nada ya que creo que no es necesario
         }
     }
+
+    public Map<Integer, List<Tarea>> getMapTareasXCategoria() {
+        if (mapTareasXCategoria == null && currentTE != null && currentTE.getFecha() != null){
+            mapTareasXCategoria = tareaF.obtenerTareasXCategoria(currentTE.getFecha());
+        }
+        return mapTareasXCategoria;
+    }
+
+    public List<Tarea> getTareasActivas() {
+        return tareasActivas;
+    }
     
+    public boolean getAgregarTrabajadorHabilitado(){
+        return currentTTE.getTte().getCategoria() != null &&
+            currentTTE.getTte().getHoras() != null &&
+            currentTTE.getTte().getPersonal() != null &&
+            currentTTE.getTte().getTarea() != null;
+    }
+        
     public void agregarTrabajador(){
         if (currentTTE.getTte().getCategoria() != null &&
             currentTTE.getTte().getHoras() != null &&
