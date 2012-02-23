@@ -35,6 +35,8 @@ public abstract class ReporteGenerico {
         return null;
     };
     
+    protected Map<String, Object> params = new HashMap<String, Object>();
+    
     /**
      * Metodo generico para la realizacion del reporte
      * @param ds Data source con la lista de los objetos del reporte
@@ -45,7 +47,6 @@ public abstract class ReporteGenerico {
     protected String printGenerico(JRBeanCollectionDataSource ds, String archivosJasper, String nombreArchivoPDF) {
         try
         {
-            Map<String, Object> params = new HashMap<String, Object>();
             
             //Cargo las imagenes del reporte
             if (getUrlImagenes() != null){

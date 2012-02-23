@@ -225,8 +225,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         return sueldos;
     }
-    
-    
+      
     public List<ProyeccionSacVacYAdelantosVO> obtenerProyecciones(int semestre, int anio){
         DateTime desde = null;
         DateTime hasta = null;
@@ -288,9 +287,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         
         return result;
     }
-    
-    
-    
     
     /**
      * Metodo que obtiene el primer día del periodo semestral en que se encunetra el sistema
@@ -368,9 +364,31 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return mapSueldoCreados;
     }
     
+    public List<Sueldo> obtenerSueldosAccidentados(Periodo periodo){
+        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo.getDesde(), periodo.getHasta());
+        
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        
+        Map<Long, Sueldo> mapSueldoCreados = new HashMap<Long, Sueldo>();
+                
+        for (Accidentado acc : listaAcc){
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras);
+            
+            //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
+            Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
+            if (sueldoCreadoAnterior != null){
+                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoAcc));
+            } else {
+                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoAcc);
+            }
+        }
+       
+        return new ArrayList<Sueldo>(mapSueldoCreados.values());
+    }
+    
     
     private Collection<Sueldo> generarSueldosMensuales(Periodo periodo){
-        List<Personal> listaMens = personalF.getPersonalMensualActivo();
+        //List<Personal> listaMens = personalF.getPersonalMensualActivo();
   
         /*
           Para cada Mensual 
@@ -390,88 +408,79 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      */
     public void generarSueldosPeriodo(Periodo periodo){
             
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
-            System.out.println("{" + (new Date()).toString() + "} " 
-                  + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
-         
-            Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
-        
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Levanto los conceptos de horas");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Levanto los conceptos de horas");
-            
-            //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
-            if (periodo.getSueldoCollection() != null){
-                for (Sueldo s : periodo.getSueldoCollection()){
-                    for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
-                        tte.setLibroSueldo(null);
-                        trabTurnoEmbarqueF.edit(tte);
-                    }
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
+        System.out.println("{" + (new Date()).toString() + "} " 
+              + "Inicio generacion de sueldos Periodo: " + periodo.getId() + " - " + periodo.getDescripcion());
+
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Levanto los conceptos de horas");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Levanto los conceptos de horas");
+
+        //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
+        if (periodo.getSueldoCollection() != null){
+            for (Sueldo s : periodo.getSueldoCollection()){
+                for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
+                    tte.setLibroSueldo(null);
+                    trabTurnoEmbarqueF.edit(tte);
                 }
-            
-                getEntityManager().flush();
-            
-                
-            /*    
-                for (Sueldo s : periodo.getSueldoCollection()){
-                    sueldoF.remove(s);
-                }
-                
-                getEntityManager().flush();
-            */
             }
-            
-            //limpio la lista de sueldos del periodo carga ya que se carga nuevamente y tiene que ser una operacion idempotente
-            periodo.setSueldoCollection(new ArrayList<Sueldo>());
-       
-            
-            //Persisto el periodo
-            persist(periodo);
 
             getEntityManager().flush();
-           
-            
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Reseteada del periodo");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Reseteada del periodo");
-            
-            
-            Map<Long, Sueldo> sueldosCalculados = generarSueldosTTE(periodo, conceptosHoras);
-        
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Sueldos de los Trabajadores de Turno generado");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Sueldos de los Trabajadores de Turno generado");
-            
-            sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
+        }
 
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Sueldos de los Accidentados generado");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Sueldos de los Accidentados generado");
-            
-            //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
-        
-            generarSueldosSACyVacaciones(periodo, sueldosCalculados, conceptosHoras);
+        //limpio la lista de sueldos del periodo carga ya que se carga nuevamente y tiene que ser una operacion idempotente
+        periodo.setSueldoCollection(new ArrayList<Sueldo>());
 
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Sac y Vacaciones Generado");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Sac y Vacaciones Generado");
-            
-            
-            persist(periodo);  
-            
-            
-            
-            //TODO: REALIZAR OTRAS MODIFICACIONES A OTRAS ENTIDADES QUE NO TENGAN QUE VER DIRECTAMENTE CON EL PERIODO PERO QUE AL CERRARSE SE BLOQUEAN
-            Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
-                    + "Fin del Proceso de Generacion de sueldos");
-            System.out.println("{" + (new Date()).toString() + "} " 
-                    + "Fin del Proceso de Generacion de sueldos");
+
+        //Persisto el periodo
+        persist(periodo);
+
+        getEntityManager().flush();
+
+
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Reseteada del periodo");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Reseteada del periodo");
+
+
+        Map<Long, Sueldo> sueldosCalculados = generarSueldosTTE(periodo, conceptosHoras);
+
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Sueldos de los Trabajadores de Turno generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Sueldos de los Trabajadores de Turno generado");
+
+        sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
+
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Sueldos de los Accidentados generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Sueldos de los Accidentados generado");
+
+        //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
+
+        generarSueldosSACyVacaciones(periodo, sueldosCalculados, conceptosHoras);
+
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Sac y Vacaciones Generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Sac y Vacaciones Generado");
+
+
+        persist(periodo);  
+
+
+
+        //TODO: REALIZAR OTRAS MODIFICACIONES A OTRAS ENTIDADES QUE NO TENGAN QUE VER DIRECTAMENTE CON EL PERIODO PERO QUE AL CERRARSE SE BLOQUEAN
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Fin del Proceso de Generacion de sueldos");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Fin del Proceso de Generacion de sueldos");
             
     }
     

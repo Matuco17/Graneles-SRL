@@ -8,6 +8,7 @@ import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
 import com.orco.graneles.reports.RecibosSueldoSacYVac;
+import com.orco.graneles.reports.RecibosSueldosAccidentados;
 import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import java.io.IOException;
 
@@ -52,6 +53,7 @@ public class PeriodoController implements Serializable {
     private String urlArchivoTxt;
     private String urlArchivoCierreMes;
     private String urlArchivoRecibosSacYVac;
+    private String urlArchivoRecibosAccidentados;
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
     private BigDecimal totalBruto;
@@ -158,6 +160,17 @@ public class PeriodoController implements Serializable {
             urlArchivoRecibosSacYVac = null;
         }
     }
+    
+    public void generarRecibosAcc(){
+        if (current != null){
+            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current);
+            
+            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc);
+            urlArchivoRecibosAccidentados = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoRecibosAccidentados = null;
+        }
+    }
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -244,6 +257,7 @@ public class PeriodoController implements Serializable {
         urlArchivoTxt = null;
         urlArchivoCierreMes = null;
         urlArchivoRecibosSacYVac = null;
+        urlArchivoRecibosAccidentados = null;
         selectedItemIndex = 1;
     }
     
@@ -454,7 +468,16 @@ public class PeriodoController implements Serializable {
     public void setUrlArchivoRecibosSacYVac(String urlArchivoRecibosSacYVac) {
         this.urlArchivoRecibosSacYVac = urlArchivoRecibosSacYVac;
     }
+
+    public String getUrlArchivoRecibosAccidentados() {
+        return urlArchivoRecibosAccidentados;
+    }
+
+    public void setUrlArchivoRecibosAccidentados(String urlArchivoRecibosAccidentados) {
+        this.urlArchivoRecibosAccidentados = urlArchivoRecibosAccidentados;
+    }
     
+        
     public Periodo getCurrent() {
         return current;
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroSueldos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="485" leftMargin="85" rightMargin="25" topMargin="99" bottomMargin="23">
 	<property name="ireport.zoom" value="1.6105100000000119"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="34"/>
+	<property name="ireport.x" value="231"/>
+	<property name="ireport.y" value="31"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -26,6 +26,9 @@
 	</field>
 	<field name="conceptoDescripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[conceptoDescripcion]]></fieldDescription>
+	</field>
+	<field name="conceptoRecibo" class="com.orco.graneles.domain.salario.ConceptoRecibo">
+		<fieldDescription><![CDATA[conceptoRecibo]]></fieldDescription>
 	</field>
 	<field name="cuil" class="java.lang.String">
 		<fieldDescription><![CDATA[cuil]]></fieldDescription>
@@ -66,11 +69,17 @@
 	<field name="ordenConcepto" class="java.lang.Integer">
 		<fieldDescription><![CDATA[ordenConcepto]]></fieldDescription>
 	</field>
+	<field name="periodoDesde" class="java.util.Date">
+		<fieldDescription><![CDATA[periodoDesde]]></fieldDescription>
+	</field>
+	<field name="periodoHasta" class="java.util.Date">
+		<fieldDescription><![CDATA[periodoHasta]]></fieldDescription>
+	</field>
 	<field name="sexo" class="java.lang.String">
 		<fieldDescription><![CDATA[sexo]]></fieldDescription>
 	</field>
-	<field name="totaRemunerativo" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[totaRemunerativo]]></fieldDescription>
+	<field name="sueldo" class="com.orco.graneles.domain.salario.Sueldo">
+		<fieldDescription><![CDATA[sueldo]]></fieldDescription>
 	</field>
 	<field name="totalDeductivo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalDeductivo]]></fieldDescription>
@@ -78,8 +87,23 @@
 	<field name="totalNoRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalNoRemunerativo]]></fieldDescription>
 	</field>
+	<field name="totalNoRemunerativoNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalNoRemunerativoNegativo]]></fieldDescription>
+	</field>
+	<field name="totalRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalRemunerativo]]></fieldDescription>
+	</field>
 	<field name="totalSueldoNeto" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalSueldoNeto]]></fieldDescription>
+	</field>
+	<field name="totalSueldoNetoString" class="java.lang.String">
+		<fieldDescription><![CDATA[totalSueldoNetoString]]></fieldDescription>
+	</field>
+	<field name="totalesNegativos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalesNegativos]]></fieldDescription>
+	</field>
+	<field name="totalesPositivos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalesPositivos]]></fieldDescription>
 	</field>
 	<field name="valorCalculado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorCalculado]]></fieldDescription>
@@ -90,8 +114,17 @@
 	<field name="valorIngresado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorIngresado]]></fieldDescription>
 	</field>
+	<field name="valorNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorNegativo]]></fieldDescription>
+	</field>
 	<field name="valorNoRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorNoRemunerativo]]></fieldDescription>
+	</field>
+	<field name="valorNoRemunerativoNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorNoRemunerativoNegativo]]></fieldDescription>
+	</field>
+	<field name="valorPositivo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorPositivo]]></fieldDescription>
 	</field>
 	<field name="valorRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorRemunerativo]]></fieldDescription>
@@ -237,14 +270,14 @@
 					<textElement textAlignment="Right">
 						<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totaRemunerativo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalRemunerativo}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="341" y="11" width="86" height="12"/>
 					<textElement textAlignment="Right">
 						<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totalDeductivo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalesNegativos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="256" y="22" width="86" height="12"/>
@@ -382,7 +415,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="DejaVu Sans Mono" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorDeductivo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorNegativo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

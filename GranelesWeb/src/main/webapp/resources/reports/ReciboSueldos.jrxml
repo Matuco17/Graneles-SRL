@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboSueldosSacYVac" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
-	<property name="ireport.zoom" value="1.331000000000004"/>
-	<property name="ireport.x" value="371"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.1435888100000087"/>
+	<property name="ireport.x" value="732"/>
+	<property name="ireport.y" value="62"/>
+	<parameter name="sac" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -18,11 +19,17 @@
 	<field name="categoria" class="java.lang.String">
 		<fieldDescription><![CDATA[categoria]]></fieldDescription>
 	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
 	<field name="conceptoCantidad" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[conceptoCantidad]]></fieldDescription>
 	</field>
 	<field name="conceptoDescripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[conceptoDescripcion]]></fieldDescription>
+	</field>
+	<field name="conceptoRecibo" class="com.orco.graneles.domain.salario.ConceptoRecibo">
+		<fieldDescription><![CDATA[conceptoRecibo]]></fieldDescription>
 	</field>
 	<field name="cuil" class="java.lang.String">
 		<fieldDescription><![CDATA[cuil]]></fieldDescription>
@@ -63,11 +70,17 @@
 	<field name="ordenConcepto" class="java.lang.Integer">
 		<fieldDescription><![CDATA[ordenConcepto]]></fieldDescription>
 	</field>
+	<field name="periodoDesde" class="java.util.Date">
+		<fieldDescription><![CDATA[periodoDesde]]></fieldDescription>
+	</field>
+	<field name="periodoHasta" class="java.util.Date">
+		<fieldDescription><![CDATA[periodoHasta]]></fieldDescription>
+	</field>
 	<field name="sexo" class="java.lang.String">
 		<fieldDescription><![CDATA[sexo]]></fieldDescription>
 	</field>
-	<field name="totaRemunerativo" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[totaRemunerativo]]></fieldDescription>
+	<field name="sueldo" class="com.orco.graneles.domain.salario.Sueldo">
+		<fieldDescription><![CDATA[sueldo]]></fieldDescription>
 	</field>
 	<field name="totalDeductivo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalDeductivo]]></fieldDescription>
@@ -75,8 +88,23 @@
 	<field name="totalNoRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalNoRemunerativo]]></fieldDescription>
 	</field>
+	<field name="totalNoRemunerativoNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalNoRemunerativoNegativo]]></fieldDescription>
+	</field>
+	<field name="totalRemunerativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalRemunerativo]]></fieldDescription>
+	</field>
 	<field name="totalSueldoNeto" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalSueldoNeto]]></fieldDescription>
+	</field>
+	<field name="totalSueldoNetoString" class="java.lang.String">
+		<fieldDescription><![CDATA[totalSueldoNetoString]]></fieldDescription>
+	</field>
+	<field name="totalesNegativos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalesNegativos]]></fieldDescription>
+	</field>
+	<field name="totalesPositivos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalesPositivos]]></fieldDescription>
 	</field>
 	<field name="valorCalculado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorCalculado]]></fieldDescription>
@@ -87,23 +115,20 @@
 	<field name="valorIngresado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorIngresado]]></fieldDescription>
 	</field>
+	<field name="valorNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorNegativo]]></fieldDescription>
+	</field>
 	<field name="valorNoRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorNoRemunerativo]]></fieldDescription>
 	</field>
+	<field name="valorNoRemunerativoNegativo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorNoRemunerativoNegativo]]></fieldDescription>
+	</field>
+	<field name="valorPositivo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorPositivo]]></fieldDescription>
+	</field>
 	<field name="valorRemunerativo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valorRemunerativo]]></fieldDescription>
-	</field>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="totalSueldoNetoString" class="java.lang.String">
-		<fieldDescription><![CDATA[totalSueldoNetoString]]></fieldDescription>
-	</field>
-	<field name="periodoDesde" class="java.util.Date">
-		<fieldDescription><![CDATA[periodoDesde]]></fieldDescription>
-	</field>
-	<field name="periodoHasta" class="java.util.Date">
-		<fieldDescription><![CDATA[periodoHasta]]></fieldDescription>
 	</field>
 	<group name="Sueldo" isStartNewPage="true" footerPosition="StackAtBottom" keepTogether="true">
 		<groupExpression><![CDATA[$F{apellidoNombre}]]></groupExpression>
@@ -213,11 +238,6 @@
 					<text><![CDATA[GRANELES S.R.L - Cárrega 3746 Ing. White -C.U.I.T.: 30-68807557-9]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="17" width="380" height="17"/>
-					<textElement verticalAlignment="Middle"/>
-					<text><![CDATA[Liquidación de jornales en concepto de S.A.C. y Vacaciones]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="0" y="34" width="46" height="17"/>
 					<textElement verticalAlignment="Middle"/>
 					<text><![CDATA[Desde:]]></text>
@@ -310,7 +330,9 @@
 					<text><![CDATA[GRANELES S.R.L - Cárrega 3746 Ing. White -C.U.I.T.: 30-68807557-9]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="422" y="17" width="380" height="17"/>
+					<reportElement x="422" y="17" width="380" height="17">
+						<printWhenExpression><![CDATA[$P{sac}]]></printWhenExpression>
+					</reportElement>
 					<textElement verticalAlignment="Middle"/>
 					<text><![CDATA[Liquidación de jornales en concepto de S.A.C. y Vacaciones]]></text>
 				</staticText>
@@ -396,6 +418,27 @@
 					</textElement>
 					<text><![CDATA[Hs/%]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="17" width="380" height="17">
+						<printWhenExpression><![CDATA[$P{sac}]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Liquidación de jornales en concepto de S.A.C. y Vacaciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="17" width="380" height="17">
+						<printWhenExpression><![CDATA[!($P{sac})]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Liquidación de jornales]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="422" y="17" width="380" height="17">
+						<printWhenExpression><![CDATA[!($P{sac})]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Liquidación de jornales]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -421,7 +464,7 @@
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totaRemunerativo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalesPositivos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="295" y="0" width="85" height="13"/>
@@ -429,7 +472,7 @@
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totalDeductivo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalesNegativos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="295" y="13" width="85" height="13"/>
@@ -514,7 +557,7 @@
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totaRemunerativo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalesPositivos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="717" y="0" width="85" height="13"/>
@@ -522,7 +565,7 @@
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{totalDeductivo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalesNegativos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
 					<reportElement x="717" y="13" width="85" height="13"/>
@@ -610,7 +653,7 @@
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorRemunerativo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorPositivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="295" y="0" width="85" height="17"/>
@@ -618,7 +661,7 @@
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorDeductivo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorNegativo}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="400" y="2" width="1" height="15"/>
@@ -648,7 +691,7 @@
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorRemunerativo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorPositivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement x="717" y="0" width="85" height="17"/>
@@ -656,7 +699,7 @@
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorDeductivo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorNegativo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

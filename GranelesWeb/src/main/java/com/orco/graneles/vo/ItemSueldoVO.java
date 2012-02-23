@@ -118,7 +118,33 @@ public class ItemSueldoVO {
         }
     }
     
-    public BigDecimal getTotaRemunerativo(){
+    public BigDecimal getValorNoRemunerativoNegativo(){
+        if (item.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO_NEGATIVO)){
+            return item.getValorCalculado();
+        } else {
+            return null;
+        }
+    }
+    
+    public BigDecimal getValorPositivo(){
+        if (item.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)
+            || item.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO)){
+            return item.getValorCalculado();
+        } else {
+            return null;
+        }
+    }
+    
+    public BigDecimal getValorNegativo(){
+        if (item.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.DEDUCTIVO)
+            || item.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO_NEGATIVO)){
+            return item.getValorCalculado();
+        } else {
+            return null;
+        }
+    }
+    
+    public BigDecimal getTotalRemunerativo(){
         return item.getSueldo().getTotalRemunerativo();
     }
     
@@ -130,6 +156,18 @@ public class ItemSueldoVO {
         return item.getSueldo().getTotalNoRemunerativo();
     }
     
+    public BigDecimal getTotalNoRemunerativoNegativo(){
+        return item.getSueldo().getTotalNoRemunerativoNegativo();
+    }
+    
+    public BigDecimal getTotalesPositivos(){
+        return getTotalRemunerativo().add(getTotalNoRemunerativo());
+    }
+    
+    public BigDecimal getTotalesNegativos(){
+        return getTotalDeductivo().add(getTotalNoRemunerativoNegativo());
+    }
+            
     public BigDecimal getTotalSueldoNeto(){
         return item.getSueldo().getTotalSueldoNeto();
     }

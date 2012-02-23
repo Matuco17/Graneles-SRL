@@ -7,6 +7,7 @@ package com.orco.graneles.model.salario;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Accidentado;
+import com.orco.graneles.domain.personal.JornalCaido;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
@@ -41,6 +42,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     ConceptoRecibo conceptoReciboSACCache;
     ConceptoRecibo conceptoReciboVacacionesCache;
     ConceptoRecibo conceptoReciboAccidentadoCache;
+    ConceptoRecibo conceptoReciboAdelantoCache;
     
     
     @EJB
@@ -149,6 +151,11 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                                                                 fixedListF.find(TipoRecibo.HORAS),
                                                                 fixedListF.find(TipoValorConcepto.HORAS_HABILES));
         }
+        if (conceptoReciboAdelantoCache == null){
+            conceptoReciboAdelantoCache = conceptoReciboF.obtenerConcepto(
+                                                                fixedListF.find(TipoRecibo.HORAS),
+                                                                fixedListF.find(TipoValorConcepto.ADELANTO));
+        }
         
         
         int diasTrabajados = conceptoReciboF.calculoDiasAccidentado(periodo.getDesde(), periodo.getHasta(), accidentado);
@@ -156,10 +163,37 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, diasTrabajados);
         
         
-        return crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
+        Sueldo sueldoAcc = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
                         new BigDecimal(diasTrabajados * 6),
                         new BigDecimal(brutoCalculado),
                         periodo, conceptos, accidentado.getPersonal());
+        
+        //Agrego los adelantos del periodo
+        if (accidentado.getJornalesCaidosCollection() != null && accidentado.getJornalesCaidosCollection().size() > 0){
+            BigDecimal totalAdelanto = BigDecimal.ZERO;
+            for (JornalCaido jc : accidentado.getJornalesCaidosCollection()){
+                if (jc.getDesde().before(periodo.getHasta()) || jc.getHasta().after(periodo.getDesde())){ //Tiene al menos 1 día en el periodo
+                    //De acuerdo a la fecha del jc, si este no esta dentro de los limites tomo al periodo como limite
+                    if (jc.getDesde().after(periodo.getDesde()) && jc.getHasta().before(periodo.getHasta())){
+                        totalAdelanto = totalAdelanto.add(calcularSueldoAccidentado(jc.getDesde(), jc.getHasta(), accidentado, conceptos));
+                    } else if (jc.getDesde().after(periodo.getDesde())){
+                        totalAdelanto = totalAdelanto.add(calcularSueldoAccidentado(jc.getDesde(), periodo.getHasta(), accidentado, conceptos));
+                    } else if (jc.getHasta().before(periodo.getHasta())){
+                        totalAdelanto = totalAdelanto.add(calcularSueldoAccidentado(periodo.getDesde(), jc.getHasta(), accidentado, conceptos));
+                    } else { //entra en el periodo
+                        totalAdelanto = totalAdelanto.add(calcularSueldoAccidentado(periodo.getDesde(), periodo.getHasta(), accidentado, conceptos));
+                    }  
+                }
+            }
+ 
+            if (!totalAdelanto.equals(BigDecimal.ZERO)){
+                //CREO EL ITEM DE SUELDO DE ACUEREDO AL ADELANTO 
+                itemSueldoF.crearItemSueldo(conceptoReciboAdelantoCache, null, totalAdelanto, sueldoAcc);
+            }            
+        }
+        
+        
+        return sueldoAcc;
     }
     
     /**

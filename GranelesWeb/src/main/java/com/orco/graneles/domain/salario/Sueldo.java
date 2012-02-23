@@ -101,10 +101,21 @@ public class Sueldo implements Serializable {
         return total;
     }
     
+    public BigDecimal getTotalNoRemunerativoNegativo(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        for (ItemsSueldo is : itemsSueldoCollection)
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO_NEGATIVO))
+                total = total.add(is.getValorCalculado());        
+        
+        return total;
+    }
+    
     public BigDecimal getTotalSueldoNeto(){
         return getTotalRemunerativo()
                 .subtract(getTotalDeductivo())
-                .add(getTotalNoRemunerativo());
+                .add(getTotalNoRemunerativo())
+                .subtract(getTotalNoRemunerativoNegativo());
     }
     
     public Sueldo(){

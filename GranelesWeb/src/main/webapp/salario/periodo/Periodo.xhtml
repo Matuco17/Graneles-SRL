@@ -69,6 +69,10 @@
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones" action="#{periodoController.generarRecibosSacYVac()}" rendered="#{periodoController.urlArchivoRecibosSacYVac == null}" />
                                <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" outcome="#{periodoController.urlArchivoRecibosSacYVac}"  rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />
                    
+                               <h:outputLabel value="Descargar Recibos de Sueldos Accidentados" />
+                               <h:commandButton value="Generar Recibos de Accidentados" action="#{periodoController.generarRecibosAcc()}" rendered="#{periodoController.urlArchivoRecibosAccidentados == null}" />
+                               <h:link id="lnkRecibosAcc" value="Recibos de Accidentados" outcome="#{periodoController.urlArchivoRecibosAccidentados}"  rendered="#{periodoController.urlArchivoRecibosAccidentados != null}" />
+                               
                            </h:panelGrid>
                            
                            <h:commandButton id="cmdProcesarPeriodo" 

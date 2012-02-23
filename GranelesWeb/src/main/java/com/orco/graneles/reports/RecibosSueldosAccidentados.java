@@ -15,12 +15,12 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  * Clase que genera el reporte de libro de sueldos
  * @author orco
  */
-public class RecibosSueldoSacYVac extends ReporteGenerico {
+public class RecibosSueldosAccidentados extends ReporteGenerico {
     
     private List<ItemSueldoVO> dataSource;
     private Periodo periodo;
     
-    public RecibosSueldoSacYVac(Periodo periodo, List<Sueldo> sueldos){
+    public RecibosSueldosAccidentados(Periodo periodo, List<Sueldo> sueldos){
         this.periodo = periodo;
         dataSource = new ArrayList<ItemSueldoVO>();
         
@@ -37,9 +37,9 @@ public class RecibosSueldoSacYVac extends ReporteGenerico {
     public String obtenerReportePDF() {
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dataSource);
         
-        params.put("sac", Boolean.TRUE);
+        params.put("sac", Boolean.FALSE);
         
-        return printGenerico(ds, "ReciboSueldos", "RecibosSacYVac_"+ periodo.getDescripcion());
+        return printGenerico(ds, "ReciboSueldos", "RecibosAccidentados_"+ periodo.getDescripcion());
     }
     
     
