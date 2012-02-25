@@ -38,8 +38,13 @@ public class ResumenCargaEmbarqueVO {
         totalesCargaEnBuque = new ArrayList<TotalesCargaVO>();
         totalesCargaPrevia = new ArrayList<TotalesCargaVO>();
         
+        int cantBodegas = 0;
+        if (embarque.getBuque().getBodegaCollection() != null && embarque.getBuque().getBodegaCollection().size() > 0){
+            cantBodegas = embarque.getBuque().getBodegaCollection().size();
+        }
+        
         //Realizo el proceso de calculos
-        totalCargadoXBodega = new BigDecimal[8];
+        totalCargadoXBodega = new BigDecimal[cantBodegas+1];
         for(int i = 0; i < totalCargadoXBodega.length; i++)
             totalCargadoXBodega[i] = BigDecimal.ZERO;
         
@@ -53,14 +58,14 @@ public class ResumenCargaEmbarqueVO {
             }
         }
         
-        cargasPrevias = new CargaPrevia[8];
+        cargasPrevias = new CargaPrevia[cantBodegas+1];
         for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
             cargasPrevias[cp.getBodega().getNro()] = cp;
             agregarAlListaTotal(totalesCargaPrevia, cp.getMercaderia().getDescripcion(), cp.getCarga());
             agregarAlListaTotal(totalesCargaEnBuque, cp.getMercaderia().getDescripcion(), cp.getCarga());
         }
         
-        totalEnBuqueXBodega = new BigDecimal[8];
+        totalEnBuqueXBodega = new BigDecimal[cantBodegas+1];
         for(int i = 1; i < totalEnBuqueXBodega.length; i++){
             if (cargasPrevias[i].getCarga() != null) {
                 totalEnBuqueXBodega[i] = cargasPrevias[i].getCarga().add(totalCargadoXBodega[i]);

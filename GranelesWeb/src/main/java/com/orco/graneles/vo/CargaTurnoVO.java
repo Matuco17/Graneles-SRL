@@ -31,7 +31,12 @@ public class CargaTurnoVO {
         this.ct = cargaTurno;
         this.resumenCargaEmbarque = resumenCargaEmbarque;
         
-        this.cargasXBodega = new BigDecimal[8];
+        int cantBodegas = 7;
+        if (cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection() != null && cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection().size() > 0){
+            cantBodegas = cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection().size();
+        }
+        
+        this.cargasXBodega = new BigDecimal[cantBodegas + 1];
         
         for (CargaTurnoCargas ctc : ct.getCargasCollection()){
             cargasXBodega[ctc.getNroBodega()] = ctc.getCarga();
