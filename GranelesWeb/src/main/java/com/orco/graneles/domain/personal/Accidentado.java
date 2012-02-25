@@ -60,7 +60,7 @@ public class Accidentado implements Serializable {
     @Column(name = "bruto")
     private BigDecimal bruto;
     
-    @Size(max = 10)
+    @Size(max = 12)
     @Column(name = "siniestro")
     private String siniestro;
     

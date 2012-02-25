@@ -44,6 +44,12 @@
             <h:outputLabel value="#{bundlePersonal.PersonalTitle_domicilio}" for="domicilio" />
             <p:inputText id="domicilio" value="#{personalController.selected.domicilio}" />
 
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_telefono}" for="telefono" />
+            <p:inputText id="telefono" value="#{personalController.selected.telefono}" />
+            
+            <h:outputLabel value="#{bundlePersonal.PersonalTitle_celular}" for="celular" />
+            <p:inputText id="celular" value="#{personalController.selected.celular}" />
+            
             <h:outputLabel value="#{bundlePersonal.PersonalTitle_fechaNacimiento}" for="fechaNacimiento" />
             <p:calendar id="fechaNacimiento" value="#{personalController.selected.fechaNacimiento}" title="#{bundlePersonal.PersonalTitle_fechaNacimiento}" pattern="dd/MM/yyyy"/>
 

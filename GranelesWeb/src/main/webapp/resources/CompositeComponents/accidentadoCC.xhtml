@@ -37,7 +37,7 @@
                 <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar || (accidentadoController.jornalesCaidos.size() > 0)}" />
 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_siniestro}" for="siniestro" />
-                <p:inputMask id="siniestro" value="#{accidentadoController.selected.siniestro}" mask="999999/999" readonly="#{!cc.attrs.editar}" />
+                <p:inputMask id="siniestro" value="#{accidentadoController.selected.siniestro}" mask="99999999/999" readonly="#{!cc.attrs.editar}" />
                 <h:outputText value="" />
                 <h:outputText value="" />
                 

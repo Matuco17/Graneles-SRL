@@ -14,17 +14,23 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <h:panelGrid columns="4" rendered="#{cc.attrs.editar}">
+        <h:panelGrid columns="6" rendered="#{cc.attrs.editar}">
             <h:outputLabel for="cargador" value="#{bundleCarga.EmbarqueCargadorTitle_cargador}" />
             <h:outputLabel for="minACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" />
             <h:outputLabel for="maxACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" />
+            <h:outputLabel for="comienzo" value="#{bundleCarga.EmbarqueCargadorTitle_comienzo}"  />
+            <h:outputLabel for="termino" value="#{bundleCarga.EmbarqueCargadorTitle_termino}"  />
             <h:outputText value="" />
 
+           
+            
             <h:selectOneMenu id="cargador" value="#{embarqueController.currentEC.cargador}" >
                 <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
             </h:selectOneMenu>
             <p:inputText id="minACargar" value="#{embarqueController.currentEC.minimo}" />
             <p:inputText id="maxACargar" value="#{embarqueController.currentEC.maximo}" />
+            <p:calendar id="comienzo" value="#{embarqueController.currentEC.comienzo}" pattern="dd/MM/yyyy HH:mm"/>
+            <p:calendar id="termino" value="#{embarqueController.currentEC.termino}" pattern="dd/MM/yyyy HH:mm"/>
             <h:commandButton 
                 image="/faces/resources/images/new.png" 
                 action="#{embarqueController.agregarCargador()}" 
@@ -65,7 +71,16 @@
                         <f:convertNumber maxFractionDigits="2" />
                     </h:outputText>
                 </f:facet>
-
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_comienzo}" style="text-align: center;">
+                <p:calendar value="#{cargador.comienzo}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
+                <h:outputText value="#{cargador.comienzo.toLocaleString()}" rendered="#{!cc.attrs.editar}" >
+                </h:outputText>   
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_termino}" style="text-align: center;">
+                <p:calendar value="#{cargador.termino}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" style="max-width: 10px;"/>
+                <h:outputText value="#{cargador.termino.toLocaleString()}" rendered="#{!cc.attrs.editar}" >
+                </h:outputText>   
             </p:column>
             <p:column rendered="#{cc.attrs.editar}">
                 <h:commandButton 

@@ -138,6 +138,15 @@ public class Personal implements Serializable {
     @Column(name = "url_foto")
     private String urlFoto;
     
+    @Size(max = 45)
+    @Column(name = "telefono")
+    private String telefono;
+       
+    @Size(max = 45)
+    @Column(name = "celular")
+    private String celular;
+
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
     private Collection<Sueldo> sueldoCollection;
     
@@ -350,6 +359,22 @@ public class Personal implements Serializable {
         this.urlFoto = urlFoto;
     }
 
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+    
     @XmlTransient
     public Collection<Sueldo> getSueldoCollection() {
         return sueldoCollection;

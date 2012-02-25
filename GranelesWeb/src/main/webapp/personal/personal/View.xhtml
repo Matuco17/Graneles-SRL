@@ -40,6 +40,12 @@
                     <h:outputLabel value="#{bundlePersonal.PersonalTitle_domicilio}" for="domicilio" />
                     <h:outputText id="domicilio" value="#{personalController.selected.domicilio}" />
                     
+                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_telefono}" for="telefono" />
+                    <h:outputText id="telefono" value="#{personalController.selected.telefono}" />
+
+                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_celular}" for="celular" />
+                    <h:outputText id="celular" value="#{personalController.selected.celular}" />
+     
                     <h:outputLabel value="#{bundlePersonal.PersonalTitle_fechaNacimiento}" for="fechaNacimiento" />
                     <h:outputText id="fechaNacimiento" value="#{personalController.selected.fechaNacimiento}" title="#{bundlePersonal.PersonalTitle_fechaNacimiento}" >
                          <f:convertDateTime pattern="dd/MM/yyyy"/> 

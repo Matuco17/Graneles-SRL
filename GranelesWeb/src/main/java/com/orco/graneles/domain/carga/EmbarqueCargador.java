@@ -7,6 +7,7 @@ package com.orco.graneles.domain.carga;
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,6 +45,16 @@ public class EmbarqueCargador implements Serializable {
     @JoinColumn(name = "cargador", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Empresa cargador;
+    
+    @Column(name = "comienzo")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date comienzo;
+    
+    @Column(name = "termino")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date termino;
+    
+    
 
     public EmbarqueCargador() {
     }
@@ -91,6 +102,24 @@ public class EmbarqueCargador implements Serializable {
     public void setCargador(Empresa cargador) {
         this.cargador = cargador;
     }
+
+    public Date getComienzo() {
+        return comienzo;
+    }
+
+    public void setComienzo(Date comienzo) {
+        this.comienzo = comienzo;
+    }
+
+    public Date getTermino() {
+        return termino;
+    }
+
+    public void setTermino(Date termino) {
+        this.termino = termino;
+    }
+    
+    
 
     @Override
     public int hashCode() {
