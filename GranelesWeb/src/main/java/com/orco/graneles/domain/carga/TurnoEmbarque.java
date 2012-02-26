@@ -52,6 +52,9 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     @Temporal(TemporalType.DATE)
     private Date fecha;
     
+    @Column(name = "nro_planilla")
+    private Integer nroPlanilla;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "turno", orphanRemoval = true)
     private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
     
@@ -104,6 +107,15 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     public void setTipo(TipoJornal tipo) {
         this.tipo = tipo;
     }
+
+    public Integer getNroPlanilla() {
+        return nroPlanilla;
+    }
+
+    public void setNroPlanilla(Integer nroPlanilla) {
+        this.nroPlanilla = nroPlanilla;
+    }
+       
 
     @XmlTransient
     public Collection<CargaTurno> getCargaTurnoCollection() {

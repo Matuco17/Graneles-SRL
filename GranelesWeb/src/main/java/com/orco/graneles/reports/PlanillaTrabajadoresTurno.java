@@ -65,11 +65,7 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
 
         @Override
         public int compare(TrabajadorTurnoEmbarqueVO o1, TrabajadorTurnoEmbarqueVO o2) {
-            if (o1.getCategoriaDescripcion().equals(o2.getCategoriaDescripcion())){
-                return o1.getApellido().compareToIgnoreCase(o2.getApellido());
-            } else {
-                return o1.getCategoriaDescripcion().compareTo(o2.getCategoriaDescripcion());
-            }
+            return o1.getValorBruto().compareTo(o2.getValorBruto());            
         }
         
     }

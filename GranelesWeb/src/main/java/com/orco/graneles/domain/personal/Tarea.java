@@ -45,28 +45,42 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tarea.findByPeligrosa2", query = "SELECT t FROM Tarea t WHERE t.peligrosa2 = :peligrosa2")})
 public class Tarea implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
+    
+    @Size(max = 45)
+    @Column(name = "abreviatura")
+    private String abreviatura;
+    
     @JoinColumn(name = "lugar", referencedColumnName = "id")
     @ManyToOne
     private FixedList lugar;
+    
     @Column(name = "insalubre")
     private Boolean insalubre;
+    
     @Column(name = "peligrosa")
     private Boolean peligrosa;
+    
     @Column(name = "peligrosa2")
     private Boolean peligrosa2;
+    
     @Column(name = "productiva")
     private Boolean productiva;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<SalarioBasico> salarioBasicoCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<Accidentado> accidentadoCollection;
 
@@ -133,6 +147,14 @@ public class Tarea implements Serializable {
         this.peligrosa2 = peligrosa2;
     }
 
+    public String getAbreviatura() {
+        return abreviatura;
+    }
+
+    public void setAbreviatura(String abreviatura) {
+        this.abreviatura = abreviatura;
+    }
+    
     @XmlTransient
     public Collection<SalarioBasico> getSalarioBasicoCollection() {
         return salarioBasicoCollection;

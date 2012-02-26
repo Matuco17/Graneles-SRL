@@ -129,6 +129,10 @@ public class TrabajadorTurnoEmbarqueVO {
         return tte.getPlanilla().getFecha();
     }
     
+    public Integer getNroPlanilla(){
+        return tte.getPlanilla().getNroPlanilla();
+    }
+    
     public String getTurnoDescripcion(){
         return tte.getPlanilla().getTurno().getDescripcion();
     }
@@ -156,6 +160,8 @@ public class TrabajadorTurnoEmbarqueVO {
     public String getTareaDescripcion(){
         if (tte.getDelegado()){
             return "Delegado";
+        } else if (tte.getTarea().getAbreviatura() != null && tte.getTarea().getAbreviatura().length() > 0) {
+            return tte.getTarea().getAbreviatura();
         } else {
             return tte.getTarea().getDescripcion();
         }

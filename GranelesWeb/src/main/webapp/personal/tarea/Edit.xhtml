@@ -15,6 +15,8 @@
                 <h:panelGrid columns="4">
                     <h:outputLabel value="#{bundlePersonal.TareaTitle_descripcion}" for="descripcion" />
                     <p:inputText id="descripcion" value="#{tareaController.selected.descripcion}" />
+                    <h:outputLabel value="#{bundlePersonal.TareaTitle_abreviatura}" for="abreviatura" />
+                    <p:inputText id="abreviatura" value="#{tareaController.selected.abreviatura}" />
                     <h:outputLabel value="#{bundlePersonal.TareaTitle_lugar}" for="lugar" />
                       <h:selectOneMenu id="tipoBuque" value="#{tareaController.selected.lugar}">
                         <f:selectItems value="#{fixedListController.lugarSelectOne}"/>

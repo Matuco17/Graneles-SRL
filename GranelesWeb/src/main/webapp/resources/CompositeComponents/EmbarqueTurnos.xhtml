@@ -14,12 +14,15 @@
     <!-- IMPLEMENTATION -->
     <co:implementation>
         <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
-            <p:column headerText="Fecha">
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}">
+                <h:outputText value="#{turno.nroPlanilla}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}">
                 <h:outputText value="#{turno.fecha}" >
                     <f:convertDateTime pattern="dd/MM/yyyy" />
                 </h:outputText>   
             </p:column>
-            <p:column headerText="Turno">
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}">
                 <h:outputText value="#{turno.turno.toString()}" />
             </p:column>
             <p:column style="width: 90px;">

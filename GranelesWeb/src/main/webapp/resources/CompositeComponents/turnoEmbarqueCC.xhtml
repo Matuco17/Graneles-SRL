@@ -19,14 +19,22 @@
 
         <div style="width: 800px; float:left;">
             <p:fieldset id="panDatosGenerales" toggleable="true" legend="Datos Generales">
-                <h:panelGrid columns="6" >
+                <h:panelGrid columns="8" >
                     <h:outputLabel value="#{bundleCarga.EmbarqueTitle_codigo}" />
                     <h:outputText value="#{cc.attrs.embarque.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}"/>
+                    
                     <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" />
                     <h:outputText value="#{cc.attrs.embarque.buque.toString()}" title="#{bundleCarga.EmbarqueTitle_buque}"/>
+                    
                     <h:outputLabel value="#{bundleCarga.EmbarqueTitle_destino}" />
                     <h:outputText value="#{cc.attrs.embarque.destino}" title="#{bundleCarga.EmbarqueTitle_destino}"/>
-
+                    
+                    <h:outputText value="" />
+                    <h:outputText value="" />
+                                                 
+                    <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}" for="nroPlanilla"  />
+                    <p:inputText id="nroPlanilla" value="#{embarqueController.currentTE.nroPlanilla}" />
+        
                     <h:outputLabel value="#{bundleCarga.TurnoEmbarqueTitle_turno}" for="turno"  />
                     <h:selectOneMenu id="turno" value="#{embarqueController.currentTE.turno}" disabled="#{!cc.attrs.editar}"
                                      valueChangeListener="#{embarqueController.seleccionarTurno}">
@@ -47,7 +55,7 @@
                         <p:ajax event="dateSelect" listener="#{embarqueController.seleccionarFecha}" />  
                     </p:calendar>
 
-                </h:panelGrid>
+                 </h:panelGrid>
             </p:fieldset>
 
             <p:fieldset id="panTrabajadores" toggleable="true" legend="Trabajadores"  >
@@ -221,7 +229,7 @@
                              label="Generar Planilla de Trabajadores"
                              value="Generar Planilla de Trabajadores"
                              rendered="#{embarqueController.urlReportePlanillaTrabajadores == null}" />
-                <h:link value="Resumen Total de Cargas por Coordinador" 
+                <h:link value="Planilla de Trabajadores" 
                         onclick="window.open('#{embarqueController.urlReportePlanillaTrabajadores}','Download');window.close();" 
                         rendered="#{embarqueController.urlReportePlanillaTrabajadores != null}" />
 

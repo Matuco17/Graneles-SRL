@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import javax.ejb.EJB;
+import javax.persistence.NoResultException;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -54,6 +55,19 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
         TurnoEmbarque te = new TurnoEmbarque();
         te.setEmbarque(embarque);
         te.setFecha(new Date());
+        
+        //Nro de Planilla
+        //Debo buscar el maximo nro de planilla existente y le agrego 1
+        Integer maximo = null;
+        try {
+            maximo = getEntityManager().createQuery("SELECT max(te.nroPlanilla) FROM TurnoEmbarque te ", Integer.class)
+                                        .getSingleResult();
+        } catch (NoResultException e) {            
+            maximo = 0;
+        }
+        te.setNroPlanilla(maximo + 1);
+        
+        
         return te;
     }
     
