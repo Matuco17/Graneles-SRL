@@ -104,7 +104,7 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
              (bodega.getCapacidadPiesCubicos().abs().doubleValue() > 0.1)){
             double factorEstiva = mercaderia.getFactorEstiba().doubleValue();
             double capPCubicos = bodega.getCapacidadPiesCubicos().doubleValue();
-            double resultado = (factorEstiva / capPCubicos) * 1000; //el 1000 es x 1000 kilos = tonelada
+            double resultado = (capPCubicos / factorEstiva) * 1000; //el 1000 es x 1000 kilos = tonelada
             //redondeo el resultado y lo dejo asi ya que es en kilos y no importan los deciamles
             return new BigDecimal(Math.round(resultado)); 
         } else {

@@ -26,7 +26,7 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
                                  selection="#{embarqueController.selected}" selectionMode="single">
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" filterBy="#{item.destino}" filterMatchMode="exact" >
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" filterBy="#{item.codigo}" filterMatchMode="contains" >
                             <h:outputText value="#{item.codigo}"/>
                         </p:column>
                         <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
