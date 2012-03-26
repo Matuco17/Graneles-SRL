@@ -487,7 +487,12 @@ public class EmbarqueController implements Serializable {
                   return null;
             }
             
-            currentTE.setCargaTurnoCollection(cargas);
+            Collection<CargaTurno> cts = new ArrayList<CargaTurno>();
+            for (CargaTurno ct : cargas){
+                if (ct.getCargador() != null)
+                    cts.add(ct);
+            }
+            currentTE.setCargaTurnoCollection(cts);
             
             List<TrabajadoresTurnoEmbarque> trabajadores = new ArrayList<TrabajadoresTurnoEmbarque>();
             for (TrabajadorTurnoEmbarqueVO tteVO : trabajadoresTurno){

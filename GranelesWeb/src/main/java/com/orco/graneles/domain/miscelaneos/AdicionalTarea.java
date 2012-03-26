@@ -16,5 +16,6 @@ public class AdicionalTarea {
     public static final int PELIGROSA = 141;
     public static final int PELIGROSA2 = 142;
     public static final int PRODUCTIVA = 143;
+    public static final int ESPECIALIDAD = 144;
     
 }

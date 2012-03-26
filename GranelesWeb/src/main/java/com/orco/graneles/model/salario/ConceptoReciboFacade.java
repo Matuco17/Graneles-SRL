@@ -159,6 +159,9 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 if (tte.getTarea().getProductiva()){
                     totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
                 }
+                if (tte.getTarea().getEspecidalidad()){
+                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.ESPECIALIDAD).getValorDefecto().doubleValue() / 100);
+                }
             }
             //Ahora aplico el valor del modificador del tipo de jornal
             totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
@@ -206,6 +209,12 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     conceptoProductiva += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setProductiva(new BigDecimal(conceptoProductiva));
                     totalConcepto += conceptoProductiva ;
+                }
+                if (tte.getTarea().getEspecidalidad()){
+                    double conceptoEspecialidad = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.ESPECIALIDAD).getValorDefecto().doubleValue() / 100);
+                    conceptoEspecialidad += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setEspecialidad(new BigDecimal(conceptoEspecialidad));
+                    totalConcepto += conceptoEspecialidad ;
                 }
             }
             //Ahora aplico el valor del modificador del tipo de jornal

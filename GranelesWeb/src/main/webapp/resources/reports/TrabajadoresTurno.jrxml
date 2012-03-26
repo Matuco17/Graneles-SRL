@@ -85,6 +85,9 @@
 	<field name="nroPlanilla" class="java.lang.Integer">
 		<fieldDescription><![CDATA[nroPlanilla]]></fieldDescription>
 	</field>
+	<field name="especialidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[especialidad]]></fieldDescription>
+	</field>
 	<variable name="nroOrden" class="java.lang.Integer" incrementType="Report" calculation="Count">
 		<initialValueExpression><![CDATA[1]]></initialValueExpression>
 	</variable>
@@ -427,7 +430,7 @@
 					<font size="9"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{peligrosa}.add($F{peligrosa2}).add($F{insalubre})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{peligrosa}.add($F{peligrosa2}).add($F{insalubre}).add($F{especialidad})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="622" y="0" width="50" height="15"/>

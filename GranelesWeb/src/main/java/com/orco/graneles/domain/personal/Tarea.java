@@ -75,6 +75,9 @@ public class Tarea implements Serializable {
     @Column(name = "productiva")
     private Boolean productiva;
     
+    @Column(name = "especialidad")
+    private Boolean especidalidad;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<SalarioBasico> salarioBasicoCollection;
     
@@ -147,6 +150,14 @@ public class Tarea implements Serializable {
         this.peligrosa2 = peligrosa2;
     }
 
+    public Boolean getEspecidalidad() {
+        return especidalidad;
+    }
+
+    public void setEspecidalidad(Boolean especidalidad) {
+        this.especidalidad = especidalidad;
+    }
+    
     public String getAbreviatura() {
         return abreviatura;
     }

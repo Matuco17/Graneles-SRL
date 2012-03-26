@@ -22,6 +22,7 @@ public class TrabajadorTurnoEmbarqueVO {
     private BigDecimal peligrosa;
     private BigDecimal peligrosa2;
     private BigDecimal productiva;
+    private BigDecimal especialidad;
     private BigDecimal valorBruto;
     private BigDecimal decreto;
     private BigDecimal valorTurno; //Neto
@@ -36,6 +37,7 @@ public class TrabajadorTurnoEmbarqueVO {
         peligrosa = BigDecimal.ZERO;
         peligrosa2 = BigDecimal.ZERO;
         productiva = BigDecimal.ZERO;
+        especialidad = BigDecimal.ZERO;
         valorBruto = BigDecimal.ZERO;
         decreto = BigDecimal.ZERO;
         valorTurno = BigDecimal.ZERO;
@@ -98,6 +100,16 @@ public class TrabajadorTurnoEmbarqueVO {
     public void setProductiva(BigDecimal productiva) {
         this.productiva = productiva;
     }
+
+    public BigDecimal getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(BigDecimal especialidad) {
+        this.especialidad = especialidad;
+    }
+    
+    
 
     public BigDecimal getValorBruto() {
         return valorBruto;
