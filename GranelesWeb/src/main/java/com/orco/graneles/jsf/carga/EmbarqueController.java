@@ -82,7 +82,8 @@ public class EmbarqueController implements Serializable {
     private boolean editarTurno;
     private List<Tarea> tareasActivas;
     private Map<Integer, List<Tarea>> mapTareasXCategoria; //Mapeo de tareas de acuerdo a la categoria
-
+    private String mensajeErrorTTE;
+    
     //Variables de Archivo
     private DataModel archivosModel;
     private List<ArchivoEmbarque> listaArchivos;
@@ -559,25 +560,39 @@ public class EmbarqueController implements Serializable {
     
     public void seleccionarPersonal(ValueChangeEvent e){
         Personal personalSeleccionado = (Personal) e.getNewValue();
-        getCurrentTTE().getTte().setPersonal(personalSeleccionado);
-        getCurrentTTE().getTte().setPlanilla(currentTE);
-        if (personalSeleccionado.getCategoriaPrincipal() != null){
-            getCurrentTTE().getTte().setCategoria(personalSeleccionado.getCategoriaPrincipal());
-            tareasActivas = getMapTareasXCategoria().get(personalSeleccionado.getCategoriaPrincipal().getId());
-            if (tareasActivas != null && tareasActivas.size() > 0){
-                getCurrentTTE().getTte().setTarea(tareasActivas.get(0));
-            } else {
-                getCurrentTTE().getTte().setTarea(null);
+        
+        //Primero verifico que no se encuentre en el listado, sino no hago nada
+        boolean estaPersonalEnLista = false;
+        for (TrabajadorTurnoEmbarqueVO tteVO : trabajadoresTurno){
+            if (tteVO.getTte().getPersonal().equals(personalSeleccionado))
+                estaPersonalEnLista = true;
+        }
+        
+        if (!estaPersonalEnLista){
+            getCurrentTTE().getTte().setPersonal(personalSeleccionado);
+            getCurrentTTE().getTte().setPlanilla(currentTE);
+            if (personalSeleccionado.getCategoriaPrincipal() != null){
+                getCurrentTTE().getTte().setCategoria(personalSeleccionado.getCategoriaPrincipal());
+                tareasActivas = getMapTareasXCategoria().get(personalSeleccionado.getCategoriaPrincipal().getId());
+                if (tareasActivas != null && tareasActivas.size() > 0){
+                    getCurrentTTE().getTte().setTarea(tareasActivas.get(0));
+                } else {
+                    getCurrentTTE().getTte().setTarea(null);
+                }
             }
+            //TODO: ASIGNAR DINAMICAMENTE LAS TAREAS PERMITIDAS DE ACUERDO AL SALARIO BASICO CARGADO:
+            if (currentTE.getTurno() != null){
+                //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
+                currentTTE.getTte().setDesde(new Integer(currentTE.getTurno().getDescripcion().substring(0, 2)));
+                currentTTE.getTte().setHasta(new Integer(currentTE.getTurno().getDescripcion().substring(3)));
+            }
+
+            actualizarSueldoTTE(getCurrentTTE());
+            mensajeErrorTTE = null;
+        } else {
+            currentTTE = null;
+            mensajeErrorTTE = "El trabajador " + personalSeleccionado.getApellido() + " ya se encuentra en la planilla.";
         }
-        //TODO: ASIGNAR DINAMICAMENTE LAS TAREAS PERMITIDAS DE ACUERDO AL SALARIO BASICO CARGADO:
-        if (currentTE.getTurno() != null){
-            //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
-            currentTTE.getTte().setDesde(new Integer(currentTE.getTurno().getDescripcion().substring(0, 2)));
-            currentTTE.getTte().setHasta(new Integer(currentTE.getTurno().getDescripcion().substring(3)));
-        }
-          
-        actualizarSueldoTTE(getCurrentTTE());
     }
     
     public void seleccionarTarea(ValueChangeEvent e){
@@ -615,11 +630,7 @@ public class EmbarqueController implements Serializable {
     }
     
     private void actualizarSueldoTTE(TrabajadorTurnoEmbarqueVO tteVO){
-        try {
-            tteVO.setValorTurno(new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(tteVO.getTte(), true)));
-        } catch (Exception e) {
-            //Por ahora no hago nada ya que creo que no es necesario
-        }
+        conceptoReciboF.agregarValoresSalariales(tteVO);
     }
 
     public Map<Integer, List<Tarea>> getMapTareasXCategoria() {
@@ -631,6 +642,24 @@ public class EmbarqueController implements Serializable {
 
     public List<Tarea> getTareasActivas() {
         return tareasActivas;
+    }
+    
+    public BigDecimal getTotalBrutoTE(){
+        BigDecimal totalBruto = BigDecimal.ZERO;
+        
+        for (TrabajadorTurnoEmbarqueVO tteVO : getTrabajadoresTurno())
+            totalBruto = totalBruto.add(tteVO.getValorBruto());
+        
+        return totalBruto;
+    }
+    
+    public BigDecimal getTotalNetoTE(){
+        BigDecimal totalNeto = BigDecimal.ZERO;
+        
+        for (TrabajadorTurnoEmbarqueVO tteVO : getTrabajadoresTurno())
+            totalNeto = totalNeto.add(tteVO.getValorTurno());
+        
+        return totalNeto;
     }
     
     public boolean getAgregarTrabajadorHabilitado(){
@@ -646,23 +675,26 @@ public class EmbarqueController implements Serializable {
             currentTTE.getTte().getPersonal() != null &&
             currentTTE.getTte().getTarea() != null){
         
-            getTrabajadoresTurno().add(0, currentTTE);
+            getTrabajadoresTurno().add(currentTTE);
+            Collections.sort(trabajadoresTurno);
             currentTTE = null;
             trabajadoresTurnoModel = null;
+            mensajeErrorTTE = null;
         } else {
-            //TODO: enviar mensaje de que falta algun que otro campo
+            mensajeErrorTTE = "Complete todos los campos para agregar el Trabajador";
         }
     }
         
     public void eliminarTrabajador() {
-        selectedItemIndex = getTrabajadoresTurnoModel().getRowIndex();
-        getTrabajadoresTurnoModel().setRowIndex(-1);
-        if (selectedItemIndex >= 0){
-            getTrabajadoresTurno().remove(selectedItemIndex);
+        if (selectedTTE != null){
+            getTrabajadoresTurno().remove(selectedTTE);
 
             trabajadoresTurnoModel = null;
             currentTTE = null;
             selectedTTE = null;
+            mensajeErrorTTE = null;
+        } else {
+            mensajeErrorTTE = "Seleccione un trabajador de la lista.";
         }
     }
     
@@ -702,12 +734,12 @@ public class EmbarqueController implements Serializable {
             if (getCurrentTE().getTrabajadoresTurnoEmbarqueCollection() != null){
                 trabajadoresTurno = new ArrayList<TrabajadorTurnoEmbarqueVO>();
                 for (TrabajadoresTurnoEmbarque tte : getCurrentTE().getTrabajadoresTurnoEmbarqueCollection()){
-                    trabajadoresTurno.add(new TrabajadorTurnoEmbarqueVO(tte, 
-                            new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(tte, true))));
+                    trabajadoresTurno.add(conceptoReciboF.calcularDiaTTE(tte, true));
                 }
             } else {
                trabajadoresTurno = new ArrayList<TrabajadorTurnoEmbarqueVO>();
-            }            
+            }
+            Collections.sort(trabajadoresTurno);
         }
         return trabajadoresTurno;
     }
@@ -722,6 +754,11 @@ public class EmbarqueController implements Serializable {
     public TrabajadorTurnoEmbarqueVO getSelectedTTE() {
         return selectedTTE;
     }
+
+    public String getMensajeErrorTTE() {
+        return mensajeErrorTTE;
+    }
+      
 
     public void setSelectedTTE(TrabajadorTurnoEmbarqueVO selectedTTE) {
         this.selectedTTE = selectedTTE;

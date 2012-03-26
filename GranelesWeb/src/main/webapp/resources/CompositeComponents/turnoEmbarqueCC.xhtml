@@ -17,8 +17,9 @@
     <!-- IMPLEMENTATION -->
     <co:implementation>
 
-        <div style="width: 800px; float:left;">
-            <p:fieldset id="panDatosGenerales" toggleable="true" legend="Datos Generales">
+        <p:accordionPanel multiple="true">
+            
+            <p:tab id="panDatosGenerales" title="Datos Generales">
                 <h:panelGrid columns="8" >
                     <h:outputLabel value="#{bundleCarga.EmbarqueTitle_codigo}" />
                     <h:outputText value="#{cc.attrs.embarque.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}"/>
@@ -56,142 +57,167 @@
                     </p:calendar>
 
                  </h:panelGrid>
-            </p:fieldset>
+            </p:tab>
 
-            <p:fieldset id="panTrabajadores" toggleable="true" legend="Trabajadores"  >
-                <h:panelGrid columns="9" rendered="#{cc.attrs.editar}">
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"  />
-                    <h:outputText value="" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}" />
-                    <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" />
-                    <h:outputText value="" />
-                    <h:outputText value="" />
-                    
+            <p:tab title="Trabajadores"  >
+                <h:panelGroup id="panTrabajadores">
+                    <h:panelGrid columns="10" rendered="#{cc.attrs.editar}">
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"  />
+                        <h:outputText value="" />
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" />
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" />
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}" />
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}" />
+                        <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" />
+                        <h:outputText value="" />
+                        <h:outputText value="" />
+                        <h:outputText value="" />
 
-                    <p:autoComplete value="#{embarqueController.currentTTE.tte.personal}" 
-                                completeMethod="#{personalController.completePersonal}"
-                                maxResults="15" 
-                                var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
-                                forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" 
-                                style="width: 100px;">  
-                         <p:ajax event="change" update="panTrabajadores"/>
-                    </p:autoComplete> 
+                        <p:autoComplete value="#{embarqueController.currentTTE.tte.personal}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" 
+                                    style="width: 100px;">  
+                             <p:ajax event="change" update="panTrabajadores"/>
+                        </p:autoComplete> 
 
-                    <c:choose>
-                        <c:when test="#{embarqueController.currentTTE.tte.personal != null}">
-                            <p:inputText id="personalNombre"  value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
-                        </c:when>
-                        <c:otherwise>
-                            <p:inputText id="personalNombre" readonly="true" style="min-width: 180px;" />
-                        </c:otherwise>
-                    </c:choose>
-                    
-                    <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.tte.categoria}" 
-                                     valueChangeListener="#{embarqueController.seleccionarCategoria}">
-                        <p:ajax event="change" update="panTrabajadores"/>
-                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
+                        <c:choose>
+                            <c:when test="#{embarqueController.currentTTE.tte.personal != null}">
+                                <p:inputText id="personalNombre"  value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
+                            </c:when>
+                            <c:otherwise>
+                                <p:inputText id="personalNombre" readonly="true" style="min-width: 180px;" />
+                            </c:otherwise>
+                        </c:choose>
 
-                    <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tte.tarea}" 
-                                     valueChangeListener="#{embarqueController.seleccionarTarea}">
-                        <p:ajax event="change" update="panTrabajadores"/>
-                        <f:selectItems value="#{embarqueController.tareasActivas}" var="tarea" itemLabel="#{tarea.toString()}"/>
-                    </h:selectOneMenu>
-
-                    <h:selectOneMenu id="horaDesde" value="#{embarqueController.currentTTE.tte.desde}"  
-                                     valueChangeListener="#{embarqueController.seleccionarDesde}">
-                        <p:ajax event="change" update="panTrabajadores"/>
-                        <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                            <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                        </c:forEach>
-                    </h:selectOneMenu>
-
-                    <h:selectOneMenu id="horaHasta" value="#{embarqueController.currentTTE.tte.hasta}"  
-                                     valueChangeListener="#{embarqueController.seleccionarHasta}">
-                        <p:ajax event="change" update="panTrabajadores"/>
-                        <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                            <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                        </c:forEach>
-                    </h:selectOneMenu>
-                    
-                    <p:inputText id="bruto" value="#{embarqueController.currentTTE.valorTurno}" readonly="true" style="width: 50px; text-align: right;" >
-                        <f:convertNumber maxFractionDigits="2" />
-                    </p:inputText>
-
-                    <h:commandButton id="btnAgregarTrabajador" 
-                                     action="#{embarqueController.agregarTrabajador}"
-                                     disabled="#{!embarqueController.agregarTrabajadorHabilitado}"
-                                     image="/faces/resources/images/new.png" >
-                        <p:ajax update="panTrabajadores"/>
-                    </h:commandButton>
-
-                    <h:commandButton id="btnEliminarTrabajador"
-                                         image="/faces/resources/images/destroy.png"
-                                         action="#{embarqueController.eliminarTrabajador}" >  
-                        <p:ajax update="panTrabajadores"/>
-                    </h:commandButton> 
-                    
-                </h:panelGrid>
-
-                <p:dataTable id="dtbTrabajadores" 
-                             value="#{embarqueController.trabajadoresTurnoModel}" var="item"
-                             rowKey="#{item.tte.personal.cuil}"
-                             selection="#{embarqueController.selectedTTE}" selectionMode="single">
-
-                    <p:column id="colCuil" headerText="#{bundlePersonal.PersonalTitle_cuil}" >
-                        <h:outputText value="#{item.tte.personal.cuil}" />
-                    </p:column>
-                    <p:column id="colNombre" headerText="#{bundlePersonal.PersonalTitle_apellido}" >
-                        <h:outputText value="#{item.tte.personal.apellido}" />
-                    </p:column>
-                    <p:column id="colCategoria" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" >
-                        <h:selectOneMenu id="selColCategoria" value="#{item.tte.categoria}"  disabled="#{!cc.attrs.editar}" >
-                            <f:selectItems value="#{categoriaController.itemsAvailableSelectMany}"/>
+                        <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.tte.categoria}" 
+                                         valueChangeListener="#{embarqueController.seleccionarCategoria}">
+                            <p:ajax event="change" update="panTrabajadores"/>
+                            <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
                         </h:selectOneMenu>
-                    </p:column>
-                    <p:column id="colTarea" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" >
-                        <h:selectOneMenu id="selColTarea" value="#{item.tte.tarea}"  disabled="#{!cc.attrs.editar}" >
-                            <f:selectItems value="#{tareaController.itemsAvailableSelectMany}"/>
+
+                        <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tte.tarea}" 
+                                         valueChangeListener="#{embarqueController.seleccionarTarea}">
+                            <p:ajax event="change" update="panTrabajadores"/>
+                            <f:selectItems value="#{embarqueController.tareasActivas}" var="tarea" itemLabel="#{tarea.toString()}"/>
                         </h:selectOneMenu>
-                    </p:column>
-                    <p:column id="colDesde" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}"  >
-                        <h:selectOneMenu id="selColDesde" value="#{item.tte.desde}" disabled="#{!cc.attrs.editar}" >
+
+                        <h:selectOneMenu id="horaDesde" value="#{embarqueController.currentTTE.tte.desde}"  
+                                         valueChangeListener="#{embarqueController.seleccionarDesde}">
+                            <p:ajax event="change" update="panTrabajadores"/>
                             <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                 <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                             </c:forEach>
                         </h:selectOneMenu>
-                    </p:column>
-                    <p:column id="colHasta" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}"  >
-                        <h:selectOneMenu id="selColHasta" value="#{item.tte.hasta}" disabled="#{!cc.attrs.editar}" >
+
+                        <h:selectOneMenu id="horaHasta" value="#{embarqueController.currentTTE.tte.hasta}"  
+                                         valueChangeListener="#{embarqueController.seleccionarHasta}">
+                            <p:ajax event="change" update="panTrabajadores"/>
                             <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                 <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                             </c:forEach>
                         </h:selectOneMenu>
-                    </p:column>
-                    <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
-                        <h:outputText value="#{item.valorTurno}" >
+
+                        <p:inputText id="bruto" value="#{embarqueController.currentTTE.valorBruto}" readonly="true" style="width: 50px; text-align: right;" >
                             <f:convertNumber maxFractionDigits="2" />
-                        </h:outputText>
-                    </p:column>  
-                    <p:column id="colDelegado" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_delegado}" style="text-align: center;" >
-                        <h:selectBooleanCheckbox value="#{item.tte.delegado}" disabled="#{!cc.attrs.editar}" />
-                    </p:column>  
-                </p:dataTable>
-            </p:fieldset>
+                        </p:inputText>
+
+                        <h:commandButton id="btnAgregarTrabajador" 
+                                         action="#{embarqueController.agregarTrabajador}"
+                                         disabled="#{!embarqueController.agregarTrabajadorHabilitado}"
+                                         image="/faces/resources/images/new.png" >
+                            <p:ajax update="panTrabajadores"/>
+                        </h:commandButton>
+
+                        <h:commandButton id="btnEliminarTrabajador"
+                                             image="/faces/resources/images/destroy.png"
+                                             action="#{embarqueController.eliminarTrabajador}" >  
+                            <p:ajax update="panTrabajadores"/>
+                        </h:commandButton> 
+
+                        <h:outputText value="#{embarqueController.mensajeErrorTTE}" style="color: red;" /> 
+                        
+                    </h:panelGrid>
+
+                    <p:dataTable value="#{embarqueController.trabajadoresTurnoModel}" var="item"
+                                 rowKey="#{item.tte.personal.cuil}"
+                                 selection="#{embarqueController.selectedTTE}" selectionMode="single"
+                                 paginator="false" rowIndexVar="indiceFila" 
+                                 sortBy="#{item.tte.planilla.id}">
+
+                        <p:ajax event="rowSelect" listener="#{embarqueController.onRowSelect}"  />
+
+                        <p:column id="colIndice" style="text-align: right;" >
+                            <h:outputText value="#{indiceFila + 1}" />
+                        </p:column>
+                        <p:column id="colCuil" headerText="#{bundlePersonal.PersonalTitle_cuil}" >
+                            <h:outputText value="#{item.tte.personal.cuil}" />
+                        </p:column>
+                        <p:column id="colNombre" headerText="#{bundlePersonal.PersonalTitle_apellido}" >
+                            <h:outputText value="#{item.tte.personal.apellido}" />
+                        </p:column>
+                        <p:column id="colCategoria" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" >
+                            <h:selectOneMenu id="selColCategoria" value="#{item.tte.categoria}"  disabled="#{!cc.attrs.editar}" >
+                                <f:selectItems value="#{categoriaController.itemsAvailableSelectMany}"/>
+                            </h:selectOneMenu>
+                        </p:column>
+                        <p:column id="colTarea" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" >
+                            <h:selectOneMenu id="selColTarea" value="#{item.tte.tarea}"  disabled="#{!cc.attrs.editar}" >
+                                <f:selectItems value="#{tareaController.itemsAvailableSelectMany}"/>
+                            </h:selectOneMenu>
+                        </p:column>
+                        <p:column id="colDesde" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}"  >
+                            <h:selectOneMenu id="selColDesde" value="#{item.tte.desde}" disabled="#{!cc.attrs.editar}" >
+                                <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </p:column>
+                        <p:column id="colHasta" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}"  >
+                            <h:selectOneMenu id="selColHasta" value="#{item.tte.hasta}" disabled="#{!cc.attrs.editar}" >
+                                <c:forEach begin="0" end="23" varStatus="hora" step="1">
+                                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </p:column>
+                        <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
+                            <h:outputText value="#{item.valorBruto}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>  
+                        <p:column id="colDelegado" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_delegado}" style="text-align: center;" >
+                            <h:selectBooleanCheckbox value="#{item.tte.delegado}" disabled="#{!cc.attrs.editar}" />
+                        </p:column>  
+
+                        <p:summaryRow >
+                            <p:column colspan="7" style="text-align: right;">
+                                Total Bruto | Neto:
+                            </p:column>
+                            <p:column style="text-align: right;">
+                                <h:outputText value="#{embarqueController.totalBrutoTE}" >
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="text-align: right;">
+                                <h:outputText value="#{embarqueController.totalNetoTE}" >
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </h:outputText>
+                            </p:column>
+                        </p:summaryRow>
+
+                    </p:dataTable>
+                </h:panelGroup>
+            </p:tab>
             
-            <p:fieldset id="panObservaciones" toggleable="true" legend="Observaciones" >
+            <p:tab id="panObservaciones" title="Observaciones" >
             
                 <o:turnoEmbarqueObservaciones editar="#{cc.attrs.editar}" />
             
-            </p:fieldset>
-        </div> 
-
-        <div style="width: 300px; float: left;">
-            <p:fieldset id="panCarga" legend="Carga" toggleable="true" style="width: 300px; float: left;" >
-                <p:accordionPanel style="width: 300px;">
+            </p:tab>
+        
+            <p:tab id="panCarga" title="Carga"  >
+                <p:accordionPanel>
                     <c:forEach items="#{embarqueController.cargas}" var="cargaTurno" >
                         <p:tab title="#{cargaTurno.cargador.toString()}" >
                             <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
@@ -222,9 +248,9 @@
                                  rendered="#{cc.attrs.editar}">
                 </h:commandButton>
 
-            </p:fieldset>
+            </p:tab>
 
-            <p:fieldset id="panReportes" legend="Reportes" toggleable="true" rendered="#{!cc.attrs.editar}" style="width: 300px; float: left;">
+            <p:tab id="panReportes" title="Reportes" rendered="#{!cc.attrs.editar}" >
                 <h:commandButton action="#{embarqueController.generarPlanillaTrabajdores()}"
                              label="Generar Planilla de Trabajadores"
                              value="Generar Planilla de Trabajadores"
@@ -234,9 +260,8 @@
                         rendered="#{embarqueController.urlReportePlanillaTrabajadores != null}" />
 
 
-            </p:fieldset>
-        </div>
-
-
+            </p:tab>
+        
+        </p:accordionPanel>
     </co:implementation>
 </html>

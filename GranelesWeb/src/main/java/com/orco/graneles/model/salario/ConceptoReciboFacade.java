@@ -52,6 +52,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     //Singletos que no se tienen que cargar de nuevo, solamente con una vez me alcanzan
     private Map<Integer, FixedList> mapAdicTarea = null;
 
+    private List<ConceptoRecibo> conceptosDeductivosHorasCache;
     
     Long personalCacheId;
     Double totalAcumuladoCache; //ultimo total acumulado, dependie del personalCache
@@ -223,10 +224,22 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         
         tteVO.setValorBruto(new BigDecimal(totalConcepto));
         tteVO.setJornalBasico(new BigDecimal(basicoBruto));
+        tteVO.setValorTurno(new BigDecimal(calcularNeto(tte.getPersonal(), totalConcepto)));
         
         return tteVO;
     }
     
+    /**
+     * Agrega los valores salariales al actual TteVO de acuerdo al metodo calcularDiaTTE
+     * @param tteVO 
+     */
+    public void agregarValoresSalariales(TrabajadorTurnoEmbarqueVO tteVO){
+        TrabajadorTurnoEmbarqueVO tteVOconValores = calcularDiaTTE(tteVO.getTte(), true);
+        
+        tteVO.setJornalBasico(tteVOconValores.getJornalBasico());
+        tteVO.setValorBruto(tteVOconValores.getValorBruto());
+        tteVO.setValorTurno(tteVOconValores.getValorTurno());
+    }
     
     
     protected Map<Integer, FixedList> getMapAdicTarea(){
@@ -325,7 +338,11 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             case TipoValorConcepto.JUBILACION:
                 return totalBruto * concepto.getValor().doubleValue() / 100; 
             case TipoValorConcepto.OBRA_SOCIAL:
-                return totalBruto * personal.getObraSocial().getAportes().doubleValue() / 100;
+                if (personal.getObraSocial() != null){
+                    return totalBruto * personal.getObraSocial().getAportes().doubleValue() / 100;
+                } else {
+                    return totalBruto * concepto.getValor().doubleValue() / 100;
+                }
             case TipoValorConcepto.SINDICATO:
                 if (personal.getSindicato()){
                     double porcSindicato = concepto.getValor().doubleValue();
@@ -340,6 +357,30 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             default:
                 return 0;
         }
+    }
+   
+    /**
+     * Calcula el valor neto sobre un bruto para el personal
+     * ATENCION: por ahora solo anda para trabajadores de Horas, no para mensual.
+     * @param personal
+     * @param bruto
+     * @return 
+     */
+    public double calcularNeto(Personal personal, double bruto){
+   
+        if (conceptosDeductivosHorasCache == null){
+            conceptosDeductivosHorasCache = obtenerConceptos(
+                                fixedListF.find(TipoRecibo.HORAS), 
+                                fixedListF.find(TipoConceptoRecibo.DEDUCTIVO));
+        }
+        
+        double neto = bruto;
+        
+        for (ConceptoRecibo cr : conceptosDeductivosHorasCache){
+            neto -= calcularValorConcepto(cr, bruto, personal);
+        }
+        
+        return neto;
     }
     
         /**

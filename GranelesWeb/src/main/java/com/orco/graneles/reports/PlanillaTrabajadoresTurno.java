@@ -49,7 +49,7 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
             tteVO.setObservaciones(observaciones);
         }
         
-        Collections.sort(trabajadores, new ComparadorTteVo());
+        Collections.sort(trabajadores);
     }
     
     

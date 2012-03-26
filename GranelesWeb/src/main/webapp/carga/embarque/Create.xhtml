@@ -13,18 +13,22 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <p:fieldset legend="Datos del Embarque" toggleable="true" style="width: 650px; float:left;">
+                <p:accordionPanel multiple="true">
                 
-                    <Cc:embarqueDatosGenerales nuevo="true" editar="true"/>
+                    <p:tab title="Datos del Embarque" >
+
+                        <Cc:embarqueDatosGenerales nuevo="true" editar="true"/>
+
+                    </p:tab>
+
+                    <p:tab  id="panCargaPrevia" title="Carga en Tránsito"  >
+
+                        <Cc:embarqueCargaPrevia nuevo="true" editar="true"/>
+
+                    </p:tab>
                 
-                </p:fieldset>
-                
-                <p:fieldset  id="panCargaPrevia" legend="Carga en Tránsito" toggleable="true" style="width: 350px; float: left;" >
-                
-                    <Cc:embarqueCargaPrevia nuevo="true" editar="true"/>
-                
-                </p:fieldset>
-                
+                </p:accordionPanel>     
+                    
                 <p:panel style="width: 100%; float: left;" >
                     <h:panelGrid columns="2" >
                         <h:commandButton action="#{embarqueController.create}"

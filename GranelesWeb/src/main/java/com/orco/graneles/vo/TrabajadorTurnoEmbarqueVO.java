@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author orco
  */
-public class TrabajadorTurnoEmbarqueVO {
+public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmbarqueVO> {
 
     private TrabajadoresTurnoEmbarque tte;
     
@@ -127,6 +127,8 @@ public class TrabajadorTurnoEmbarqueVO {
         this.decreto = decreto;
     }
     
+    
+    
     //DATOS DEL TTE PUENTEADOS PARA REPORTES
     
     public String getBuqueNombre(){
@@ -197,6 +199,16 @@ public class TrabajadorTurnoEmbarqueVO {
 
     public void setObservaciones(List<TurnoObservacionVO> observaciones) {
         this.observaciones = observaciones;
+    }
+
+    @Override
+    public int compareTo(TrabajadorTurnoEmbarqueVO o) {
+        if (this.tte.getCategoria().equals(o.tte.getCategoria())) {
+            return this.tte.getPersonal().getApellido().compareToIgnoreCase(o.tte.getPersonal().getApellido());
+        } else {
+            return this.tte.getPersonal().getCategoriaPrincipal().toString().compareToIgnoreCase(
+                    o.tte.getPersonal().getCategoriaPrincipal().toString());
+        }
     }
     
     
