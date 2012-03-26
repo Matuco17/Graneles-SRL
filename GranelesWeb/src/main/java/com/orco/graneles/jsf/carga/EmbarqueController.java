@@ -470,6 +470,8 @@ public class EmbarqueController implements Serializable {
         try {
             turnoEmbarqueF.remove(currentTE);
             current.getTurnoEmbarqueCollection().remove(currentTE);
+            ejbFacade.edit(current);
+            
             listaTurnos = null;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("TurnoEmbarqueDeleted"));
         } catch (Exception e) {
@@ -503,6 +505,7 @@ public class EmbarqueController implements Serializable {
                 current.getTurnoEmbarqueCollection().add(currentTE);
             
             turnoEmbarqueF.persist(currentTE);
+            ejbFacade.edit(current);
             
             listaTurnos = null;            
         }
