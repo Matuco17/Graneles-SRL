@@ -27,6 +27,9 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     private BigDecimal decreto;
     private BigDecimal valorTurno; //Neto
     
+    private BigDecimal totalBruto;
+    private BigDecimal totalNeto;
+    
     private List<TurnoObservacionVO> observaciones;
     
     public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte, BigDecimal valorTurno) {
@@ -193,6 +196,22 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
         return tte.getTarea().getLugar().getDescripcion();
     }
 
+    public BigDecimal getTotalBruto() {
+        return totalBruto;
+    }
+
+    public void setTotalBruto(BigDecimal totalBruto) {
+        this.totalBruto = totalBruto;
+    }
+
+    public BigDecimal getTotalNeto() {
+        return totalNeto;
+    }
+
+    public void setTotalNeto(BigDecimal totalNeto) {
+        this.totalNeto = totalNeto;
+    }
+
     public List<TurnoObservacionVO> getObservaciones() {
         return observaciones;
     }
@@ -200,7 +219,7 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     public void setObservaciones(List<TurnoObservacionVO> observaciones) {
         this.observaciones = observaciones;
     }
-
+    
     @Override
     public int compareTo(TrabajadorTurnoEmbarqueVO o) {
         if (this.tte.getCategoria().equals(o.tte.getCategoria())) {

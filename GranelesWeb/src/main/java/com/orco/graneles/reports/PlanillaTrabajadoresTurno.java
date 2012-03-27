@@ -40,6 +40,14 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
         this.planilla = planilla;
         this.trabajadores = trabajadoresPlanilla;
         
+        BigDecimal totalBruto = BigDecimal.ZERO;
+        BigDecimal totalNeto = BigDecimal.ZERO;
+        
+        for (TrabajadorTurnoEmbarqueVO tteVO : this.trabajadores){
+            totalBruto = totalBruto.add(tteVO.getValorBruto());
+            totalNeto = totalNeto.add(tteVO.getValorTurno());
+        }
+        
         List<TurnoObservacionVO> observaciones = new ArrayList<TurnoObservacionVO>();
         for (TurnoEmbarqueObservaciones teObs : planilla.getTurnoEmbarqueObservacionesCollection()){
             observaciones.add(new TurnoObservacionVO(teObs));
@@ -47,9 +55,11 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
         
         for (TrabajadorTurnoEmbarqueVO tteVO : this.trabajadores){
             tteVO.setObservaciones(observaciones);
+            tteVO.setTotalBruto(totalBruto);
+            tteVO.setTotalNeto(totalNeto);
         }
         
-        Collections.sort(trabajadores);
+        Collections.sort(trabajadores, new ComparadorTteVo());
     }
     
     
@@ -65,7 +75,11 @@ public class PlanillaTrabajadoresTurno extends ReporteGenerico {
 
         @Override
         public int compare(TrabajadorTurnoEmbarqueVO o1, TrabajadorTurnoEmbarqueVO o2) {
-            return o1.getValorBruto().compareTo(o2.getValorBruto());            
+            if (Math.abs(o1.getValorBruto().doubleValue() - o2.getValorBruto().doubleValue()) >= 0.01) {
+                return (-1) * o1.getValorBruto().compareTo(o2.getValorBruto());            
+            }   else {
+                return o1.getApellido().compareToIgnoreCase(o2.getApellido());
+            }
         }
         
     }
