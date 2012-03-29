@@ -15,9 +15,9 @@
     </co:interface>
 
     <!-- IMPLEMENTATION -->
-    <co:implementation>
+    <co:implementation >
 
-        <p:accordionPanel multiple="true">
+        <p:accordionPanel multiple="true" id="panTurno" >
             
             <p:tab id="panDatosGenerales" title="Datos Generales">
                 <h:panelGrid columns="8" >
@@ -59,11 +59,13 @@
                  </h:panelGrid>
             </p:tab>
 
-            <p:tab title="Trabajadores"  >
+            <p:tab title="Trabajadores" id="tabTrabajadores"   >
+                
+                
                 <h:panelGroup id="panTrabajadores">
                     <h:panelGrid columns="10" rendered="#{cc.attrs.editar}">
                         <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"  />
-                        <h:outputText value="" />
+                        <p:spacer width="180px" height="15px" />
                         <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" />
                         <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" />
                         <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}" />
@@ -73,47 +75,49 @@
                         <h:outputText value="" />
                         <h:outputText value="" />
 
-                        <p:autoComplete value="#{embarqueController.currentTTE.tte.personal}" 
+                        <p:autoComplete id="personal" 
+                                    value="#{embarqueController.currentTTE.tte.personal}" 
                                     completeMethod="#{personalController.completePersonal}"
                                     maxResults="15" 
                                     var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
                                     forceSelection="true" valueChangeListener="#{embarqueController.seleccionarPersonal}" 
-                                    style="width: 100px;">  
-                             <p:ajax event="change" update="panTrabajadores"/>
+                                    style="width: 100px;"
+                                    >  
+                            
+                            <p:ajax event="itemSelect" update="panTrabajadores" oncomplete="setearFoco('categoria');" />
+                            
                         </p:autoComplete> 
 
-                        <c:choose>
-                            <c:when test="#{embarqueController.currentTTE.tte.personal != null}">
-                                <p:inputText id="personalNombre"  value="#{embarqueController.currentTTE.tte.personal.toString()}" readonly="true" style="min-width: 180px;" />
-                            </c:when>
-                            <c:otherwise>
-                                <p:inputText id="personalNombre" readonly="true" style="min-width: 180px;" />
-                            </c:otherwise>
-                        </c:choose>
-
+                        <h:outputText id="personalNombre"   value="#{embarqueController.currentTTE.tte.personal.toString()}" style="width: 180px;" 
+                                      />
+                        
                         <h:selectOneMenu id="categoria" value="#{embarqueController.currentTTE.tte.categoria}" 
-                                         valueChangeListener="#{embarqueController.seleccionarCategoria}">
-                            <p:ajax event="change" update="panTrabajadores"/>
+                                         valueChangeListener="#{embarqueController.seleccionarCategoria}"
+                                         >
+                            <p:ajax event="change" update="panTrabajadores" oncomplete="setearFoco('tarea');" />
                             <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
                         </h:selectOneMenu>
 
                         <h:selectOneMenu id="tarea" value="#{embarqueController.currentTTE.tte.tarea}" 
-                                         valueChangeListener="#{embarqueController.seleccionarTarea}">
-                            <p:ajax event="change" update="panTrabajadores"/>
+                                         valueChangeListener="#{embarqueController.seleccionarTarea}"
+                                         onkeydown="apretarTecla('categoria', 'horaDesde');">
+                            <p:ajax event="change" update="panTrabajadores" oncomplete="setearFoco('horaDesde');" />
                             <f:selectItems value="#{embarqueController.tareasActivas}" var="tarea" itemLabel="#{tarea.toString()}"/>
                         </h:selectOneMenu>
 
                         <h:selectOneMenu id="horaDesde" value="#{embarqueController.currentTTE.tte.desde}"  
-                                         valueChangeListener="#{embarqueController.seleccionarDesde}">
-                            <p:ajax event="change" update="panTrabajadores"/>
+                                         valueChangeListener="#{embarqueController.seleccionarDesde}"
+                                         onkeydown="apretarTecla('tarea', 'horaHasta');">
+                            <p:ajax event="change" update="panTrabajadores" oncomplete="setearFoco('horaHasta');"/>
                             <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                 <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                             </c:forEach>
                         </h:selectOneMenu>
 
                         <h:selectOneMenu id="horaHasta" value="#{embarqueController.currentTTE.tte.hasta}"  
-                                         valueChangeListener="#{embarqueController.seleccionarHasta}">
-                            <p:ajax event="change" update="panTrabajadores"/>
+                                         valueChangeListener="#{embarqueController.seleccionarHasta}"
+                                         onkeydown="apretarTecla('horaDesde', 'btnAgregarTrabajador');">
+                            <p:ajax event="change" update="panTrabajadores" oncomplete="setearFoco('btnAgregarTrabajador');" />
                             <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                 <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                             </c:forEach>
@@ -126,8 +130,9 @@
                         <h:commandButton id="btnAgregarTrabajador" 
                                          action="#{embarqueController.agregarTrabajador}"
                                          disabled="#{!embarqueController.agregarTrabajadorHabilitado}"
-                                         image="/faces/resources/images/new.png" >
-                            <p:ajax update="panTrabajadores"/>
+                                         image="/faces/resources/images/new.png"
+                                         onkeydown="apretarTecla('horaHasta', 'personal');">
+                            <p:ajax update="panTrabajadores" oncomplete="setearFoco('personal');" />
                         </h:commandButton>
 
                         <h:commandButton id="btnEliminarTrabajador"
@@ -264,5 +269,35 @@
             </p:tab>
         
         </p:accordionPanel>
+        
+        
+        <script type="text/javascript" >
+            
+           function setearFoco(componentName){
+               jQuery("[name*='" + componentName + "']").focus();               
+           }
+            /*
+           jQuery(document).ready(function(){
+               bindearTeclas('personal','btnAgregarTrabajador','categoria');
+               bindearTeclas('categoria','personal','tarea');
+               bindearTeclas('tarea','categoria','horaDesde');
+               bindearTeclas('horaDesde','tarea','horaHasta');
+               bindearTeclas('horaHasta','horaDesde','btnAgregarTrabajador');
+               bindearTeclas('btnAgregarTrabajador','horaHasta','personal');
+           });
+            
+            
+           function bindearTeclas(componente, componentePrevio, componenteProximo){
+               jQuery("[name*='" + componente + "']").keydown(function (e){
+                   if (e.which == 37){
+                       jQuery("[name*='" + componentePrevio + "']").focus();
+                   } else if (e.which == 39) {
+                       jQuery("[name*='" + componenteProximo + "']").focus();
+                   }
+               });
+           } 
+            */
+        </script> 
+        
     </co:implementation>
 </html>
