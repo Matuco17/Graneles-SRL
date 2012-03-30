@@ -130,95 +130,154 @@ public class ResumenCargaEmbarqueVO {
     }
     
     //Cargas Turnos
+    private BigDecimal getCargado(int num){
+        if (totalCargadoXBodega.length > num && totalCargadoXBodega[num] != null){
+            return totalCargadoXBodega[num];
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
     public BigDecimal getCargadoBod1(){
-        return totalCargadoXBodega[1];
+        return getCargado(1);
     }
     public BigDecimal getCargadoBod2(){
-        return totalCargadoXBodega[2];
+        return getCargado(2);
     }
     public BigDecimal getCargadoBod3(){
-        return totalCargadoXBodega[3];
+        return getCargado(3);
     }
     public BigDecimal getCargadoBod4(){
-        return totalCargadoXBodega[4];
+        return getCargado(4);
     }
     public BigDecimal getCargadoBod5(){
-        return totalCargadoXBodega[5];
+        return getCargado(5);
     }
     public BigDecimal getCargadoBod6(){
-        return totalCargadoXBodega[6];
+        return getCargado(6);
     }
     public BigDecimal getCargadoBod7(){
-        return totalCargadoXBodega[7];
+        return getCargado(7);
+    }
+    public BigDecimal getCargadoBod8(){
+        return getCargado(8);
+    }
+    public BigDecimal getCargadoBod9(){
+        return getCargado(9);
     }
     
     //Carga Previa
+    private BigDecimal getCargaPrevia(int num){
+        if (cargasPrevias.length > num && cargasPrevias[num] != null){
+            return cargasPrevias[num].getCarga();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
+    
     public BigDecimal getCargaPreviaBod1(){
-        return cargasPrevias[1].getCarga();
+        return getCargaPrevia(1);
     }
     public BigDecimal getCargaPreviaBod2(){
-        return cargasPrevias[2].getCarga();
+        return getCargaPrevia(2);
     }
     public BigDecimal getCargaPreviaBod3(){
-        return cargasPrevias[3].getCarga();
+        return getCargaPrevia(3);
     }
     public BigDecimal getCargaPreviaBod4(){
-        return cargasPrevias[4].getCarga();
+        return getCargaPrevia(4);
     }
     public BigDecimal getCargaPreviaBod5(){
-        return cargasPrevias[5].getCarga();
+        return getCargaPrevia(5);
     }
     public BigDecimal getCargaPreviaBod6(){
-        return cargasPrevias[6].getCarga();
+        return getCargaPrevia(6);
     }
     public BigDecimal getCargaPreviaBod7(){
-        return cargasPrevias[7].getCarga();
+        return getCargaPrevia(7);
+    }
+    public BigDecimal getCargaPreviaBod8(){
+        return getCargaPrevia(8);
+    }
+    public BigDecimal getCargaPreviaBod9(){
+        return getCargaPrevia(9);
     }
     
     //Cargas Totales X Bodega
+    private BigDecimal getEnBuqueBod(int num){
+        if (totalEnBuqueXBodega.length > num && totalEnBuqueXBodega[num] != null){
+            return totalEnBuqueXBodega[num];
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
+    
     public BigDecimal getEnBuqueBod1(){
-        return totalEnBuqueXBodega[1];
+        return getEnBuqueBod(1);
     }
     public BigDecimal getEnBuqueBod2(){
-        return totalEnBuqueXBodega[2];
+        return getEnBuqueBod(2);
     }
     public BigDecimal getEnBuqueBod3(){
-        return totalEnBuqueXBodega[3];
+        return getEnBuqueBod(3);
     }
     public BigDecimal getEnBuqueBod4(){
-        return totalEnBuqueXBodega[4];
+        return getEnBuqueBod(4);
     }
     public BigDecimal getEnBuqueBod5(){
-        return totalEnBuqueXBodega[5];
+        return getEnBuqueBod(5);
     }
     public BigDecimal getEnBuqueBod6(){
-        return totalEnBuqueXBodega[6];
+        return getEnBuqueBod(6);
     }
     public BigDecimal getEnBuqueBod7(){
-        return totalEnBuqueXBodega[7];
+        return getEnBuqueBod(7);
+    }
+    public BigDecimal getEnBuqueBod8(){
+        return getEnBuqueBod(8);
+    }
+    public BigDecimal getEnBuqueBod9(){
+        return getEnBuqueBod(9);
     }
     
     //Mercaderia
+    private String getMercaderiaBod(int num){
+        if (cargasPrevias.length > num && cargasPrevias[num] != null){
+            return cargasPrevias[num].getMercaderia().getDescripcion();
+        } else {
+            return "N/A.";
+        }
+    }
+    
+    
     public String getMercaderiaBod1(){
-        return cargasPrevias[1].getMercaderia().getDescripcion();
+        return getMercaderiaBod(1);
     }
     public String getMercaderiaBod2(){
-        return cargasPrevias[2].getMercaderia().getDescripcion();
+        return getMercaderiaBod(2);
     }
     public String getMercaderiaBod3(){
-        return cargasPrevias[3].getMercaderia().getDescripcion();
+        return getMercaderiaBod(3);
     }
     public String getMercaderiaBod4(){
-        return cargasPrevias[4].getMercaderia().getDescripcion();
+        return getMercaderiaBod(4);
     }
     public String getMercaderiaBod5(){
-        return cargasPrevias[5].getMercaderia().getDescripcion();
+        return getMercaderiaBod(5);
     }
     public String getMercaderiaBod6(){
-        return cargasPrevias[6].getMercaderia().getDescripcion();
+        return getMercaderiaBod(6);
     }
     public String getMercaderiaBod7(){
-        return cargasPrevias[7].getMercaderia().getDescripcion();
+        return getMercaderiaBod(7);
+    }
+    public String getMercaderiaBod8(){
+        return getMercaderiaBod(8);
+    }
+    public String getMercaderiaBod9(){
+        return getMercaderiaBod(9);
     }
   
     //TOTALES

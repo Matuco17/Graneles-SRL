@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="0.9090909090909096"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="29"/>
 	<subDataset name="Table Dataset 1"/>
 	<parameter name="logoGraneles.jpg" class="java.io.InputStream"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -11,9 +11,6 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
 	<field name="cargaPreviaBod1" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[cargaPreviaBod1]]></fieldDescription>
 	</field>
@@ -34,6 +31,12 @@
 	</field>
 	<field name="cargaPreviaBod7" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[cargaPreviaBod7]]></fieldDescription>
+	</field>
+	<field name="cargaPreviaBod8" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cargaPreviaBod8]]></fieldDescription>
+	</field>
+	<field name="cargaPreviaBod9" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cargaPreviaBod9]]></fieldDescription>
 	</field>
 	<field name="cargadoBod1" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[cargadoBod1]]></fieldDescription>
@@ -56,7 +59,13 @@
 	<field name="cargadoBod7" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[cargadoBod7]]></fieldDescription>
 	</field>
-	<field name="class_1" class="java.lang.Class">
+	<field name="cargadoBod8" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cargadoBod8]]></fieldDescription>
+	</field>
+	<field name="cargadoBod9" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[cargadoBod9]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
 		<fieldDescription><![CDATA[class]]></fieldDescription>
 	</field>
 	<field name="embarqueCodigo" class="java.lang.Long">
@@ -64,6 +73,33 @@
 	</field>
 	<field name="embarqueId" class="java.lang.Long">
 		<fieldDescription><![CDATA[embarqueId]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod1]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod2" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod2]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod3" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod3]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod4" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod4]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod5" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod5]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod6" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod6]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod7" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod7]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod8" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod8]]></fieldDescription>
+	</field>
+	<field name="enBuqueBod9" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[enBuqueBod9]]></fieldDescription>
 	</field>
 	<field name="fechaReporte" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaReporte]]></fieldDescription>
@@ -89,6 +125,18 @@
 	<field name="mercaderiaBod7" class="java.lang.String">
 		<fieldDescription><![CDATA[mercaderiaBod7]]></fieldDescription>
 	</field>
+	<field name="mercaderiaBod8" class="java.lang.String">
+		<fieldDescription><![CDATA[mercaderiaBod8]]></fieldDescription>
+	</field>
+	<field name="mercaderiaBod9" class="java.lang.String">
+		<fieldDescription><![CDATA[mercaderiaBod9]]></fieldDescription>
+	</field>
+	<field name="nombreBuque" class="java.lang.String">
+		<fieldDescription><![CDATA[nombreBuque]]></fieldDescription>
+	</field>
+	<field name="puertoDestino" class="java.lang.String">
+		<fieldDescription><![CDATA[puertoDestino]]></fieldDescription>
+	</field>
 	<field name="totalCargaActual" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalCargaActual]]></fieldDescription>
 	</field>
@@ -98,9 +146,6 @@
 	<field name="totalPuertoAnterior" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalPuertoAnterior]]></fieldDescription>
 	</field>
-	<field name="puertoDestino" class="java.lang.String">
-		<fieldDescription><![CDATA[puertoDestino]]></fieldDescription>
-	</field>
 	<field name="totalesCargaActual" class="java.util.List">
 		<fieldDescription><![CDATA[totalesCargaActual]]></fieldDescription>
 	</field>
@@ -109,9 +154,6 @@
 	</field>
 	<field name="totalesCargaPrevia" class="java.util.List">
 		<fieldDescription><![CDATA[totalesCargaPrevia]]></fieldDescription>
-	</field>
-	<field name="nombreBuque" class="java.lang.String">
-		<fieldDescription><![CDATA[nombreBuque]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -125,7 +167,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="88" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
 				<reportElement x="31" y="12" width="151" height="20"/>
 				<textElement/>
@@ -164,464 +206,482 @@
 	<columnFooter>
 		<band height="201">
 			<rectangle>
-				<reportElement x="0" y="20" width="113" height="20"/>
+				<reportElement x="623" y="40" width="89" height="45"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="713" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="40" width="113" height="45"/>
+				<reportElement x="713" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="623" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="0" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="105" width="113" height="45"/>
+				<reportElement x="0" y="40" width="89" height="45"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="85" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="150" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="113" height="20"/>
+				<reportElement x="0" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="20" width="113" height="20"/>
+				<reportElement x="0" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="0" y="40" width="113" height="45"/>
+				<reportElement x="0" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="85" width="113" height="20"/>
+				<reportElement x="0" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="0" y="105" width="113" height="45"/>
+				<reportElement x="0" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="150" width="113" height="20"/>
+				<reportElement x="0" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="113" y="20" width="113" height="20"/>
+				<reportElement x="89" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="113" y="40" width="113" height="45"/>
+				<reportElement x="89" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="113" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="89" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="113" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="89" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="113" y="105" width="113" height="45"/>
+				<reportElement x="89" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="113" y="0" width="113" height="20"/>
+				<reportElement x="89" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="113" y="20" width="113" height="20"/>
+				<reportElement x="89" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="113" y="40" width="113" height="45"/>
+				<reportElement x="89" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="113" y="85" width="113" height="20"/>
+				<reportElement x="89" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="113" y="105" width="113" height="45"/>
+				<reportElement x="89" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="113" y="150" width="113" height="20"/>
+				<reportElement x="89" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="226" y="20" width="113" height="20"/>
+				<reportElement x="178" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="226" y="40" width="113" height="45"/>
+				<reportElement x="178" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="226" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="178" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="226" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="178" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="226" y="105" width="113" height="45"/>
+				<reportElement x="178" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="226" y="0" width="113" height="20"/>
+				<reportElement x="178" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="226" y="20" width="113" height="20"/>
+				<reportElement x="178" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="226" y="40" width="113" height="45"/>
+				<reportElement x="178" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="226" y="85" width="113" height="20"/>
+				<reportElement x="178" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="226" y="105" width="113" height="45"/>
+				<reportElement x="178" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="226" y="150" width="113" height="20"/>
+				<reportElement x="178" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="339" y="20" width="113" height="20"/>
+				<reportElement x="267" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="339" y="40" width="113" height="45"/>
+				<reportElement x="267" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="339" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="267" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="339" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="267" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="339" y="105" width="113" height="45"/>
+				<reportElement x="267" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="339" y="0" width="113" height="20"/>
+				<reportElement x="267" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="339" y="20" width="113" height="20"/>
+				<reportElement x="267" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod4}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="339" y="40" width="113" height="45"/>
+				<reportElement x="267" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="339" y="85" width="113" height="20"/>
+				<reportElement x="267" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="339" y="105" width="113" height="45"/>
+				<reportElement x="267" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="339" y="150" width="113" height="20"/>
+				<reportElement x="267" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="452" y="20" width="113" height="20"/>
+				<reportElement x="356" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="452" y="40" width="113" height="45"/>
+				<reportElement x="356" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="452" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="356" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="452" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="356" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="452" y="105" width="113" height="45"/>
+				<reportElement x="356" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="452" y="0" width="113" height="20"/>
+				<reportElement x="356" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[5]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="452" y="20" width="113" height="20"/>
+				<reportElement x="356" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="452" y="40" width="113" height="45"/>
+				<reportElement x="356" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="452" y="85" width="113" height="20"/>
+				<reportElement x="356" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="452" y="105" width="113" height="45"/>
+				<reportElement x="356" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="452" y="150" width="113" height="20"/>
+				<reportElement x="356" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="565" y="20" width="113" height="20"/>
+				<reportElement x="445" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="565" y="40" width="113" height="45"/>
+				<reportElement x="445" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="565" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="445" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="565" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="445" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="565" y="105" width="113" height="45"/>
+				<reportElement x="445" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="565" y="0" width="113" height="20"/>
+				<reportElement x="445" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[6]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="565" y="20" width="113" height="20"/>
+				<reportElement x="445" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod6}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="565" y="40" width="113" height="45"/>
+				<reportElement x="445" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod6}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="565" y="85" width="113" height="20"/>
+				<reportElement x="445" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="565" y="105" width="113" height="45"/>
+				<reportElement x="445" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod6}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="565" y="150" width="113" height="20"/>
+				<reportElement x="445" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="678" y="20" width="113" height="20"/>
+				<reportElement x="534" y="20" width="89" height="20"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="678" y="40" width="113" height="45"/>
+				<reportElement x="534" y="40" width="89" height="45"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="678" y="85" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="534" y="85" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="678" y="150" width="113" height="20" backcolor="#E6E6E6"/>
+				<reportElement x="534" y="150" width="89" height="20" backcolor="#E6E6E6"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="678" y="105" width="113" height="45"/>
+				<reportElement x="534" y="105" width="89" height="45"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="678" y="0" width="113" height="20"/>
+				<reportElement x="534" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[7]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="678" y="20" width="113" height="20"/>
+				<reportElement x="534" y="20" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="678" y="40" width="113" height="45"/>
+				<reportElement x="534" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargadoBod7}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="678" y="85" width="113" height="20"/>
+				<reportElement x="534" y="85" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement x="678" y="105" width="113" height="45"/>
+				<reportElement x="534" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargaPreviaBod7}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="678" y="150" width="113" height="20"/>
+				<reportElement x="534" y="150" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
@@ -631,6 +691,120 @@
 					<font size="11" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*All values are expressed in Kgs]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="623" y="85" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="623" y="40" width="89" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargadoBod8}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="623" y="150" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="623" y="0" width="89" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="623" y="20" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mercaderiaBod8}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="623" y="85" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BAHIA BLANCA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="623" y="105" width="89" height="45"/>
+			</rectangle>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="623" y="105" width="89" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargaPreviaBod8}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="623" y="150" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PTO. ANTERIOR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="713" y="85" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="713" y="40" width="89" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargadoBod9}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="713" y="150" width="89" height="20" backcolor="#E6E6E6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="712" y="0" width="89" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="713" y="20" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mercaderiaBod9}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="713" y="85" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BAHIA BLANCA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="712" y="105" width="89" height="45"/>
+			</rectangle>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="713" y="105" width="89" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargaPreviaBod9}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="713" y="150" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PTO. ANTERIOR]]></text>
 			</staticText>
 		</band>
 	</columnFooter>
