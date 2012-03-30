@@ -31,12 +31,10 @@ public class CargaTurnoVO {
         this.ct = cargaTurno;
         this.resumenCargaEmbarque = resumenCargaEmbarque;
         
-        int cantBodegas = 7;
-        if (cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection() != null && cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection().size() > 0){
-            cantBodegas = cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getBodegaCollection().size();
-        }
-        
-        this.cargasXBodega = new BigDecimal[cantBodegas + 1];
+        int cantBodegas = 9; //Cantidad de bodegas en el reporte
+        cargasXBodega = new BigDecimal[cantBodegas + 1];
+        for (int i = 0; i < cargasXBodega.length; i++)
+            cargasXBodega[i] = BigDecimal.ZERO;
         
         for (CargaTurnoCargas ctc : ct.getCargasCollection()){
             cargasXBodega[ctc.getNroBodega()] = ctc.getCarga();
@@ -83,6 +81,12 @@ public class CargaTurnoVO {
     public BigDecimal getCargaBodega7(){
         return cargasXBodega[7];
     }
+    public BigDecimal getCargaBodega8(){
+        return cargasXBodega[8];
+    }
+    public BigDecimal getCargaBodega9(){
+        return cargasXBodega[9];
+    }
     
     public BigDecimal getTotalCargaTurno(){
         BigDecimal total = BigDecimal.ZERO;
@@ -115,6 +119,12 @@ public class CargaTurnoVO {
     public BigDecimal getResumenCargadoBod7(){
         return resumenCargaEmbarque.getCargadoBod7();
     }
+    public BigDecimal getResumenCargadoBod8(){
+        return resumenCargaEmbarque.getCargadoBod8();
+    }
+    public BigDecimal getResumenCargadoBod9(){
+        return resumenCargaEmbarque.getCargadoBod9();
+    }
     
     //Carga Previa
     public BigDecimal getResumenCargaPreviaBod1(){
@@ -138,6 +148,12 @@ public class CargaTurnoVO {
     public BigDecimal getResumenCargaPreviaBod7(){
         return resumenCargaEmbarque.getCargaPreviaBod7();
     }
+    public BigDecimal getResumenCargaPreviaBod8(){
+        return resumenCargaEmbarque.getCargaPreviaBod8();
+    }
+    public BigDecimal getResumenCargaPreviaBod9(){
+        return resumenCargaEmbarque.getCargaPreviaBod9();
+    }
     
         //Carga Previa
     public BigDecimal getResumenCargaTotalBod1(){
@@ -160,6 +176,12 @@ public class CargaTurnoVO {
     }
     public BigDecimal getResumenCargaTotalBod7(){
         return resumenCargaEmbarque.getEnBuqueBod7();
+    }
+    public BigDecimal getResumenCargaTotalBod8(){
+        return resumenCargaEmbarque.getEnBuqueBod8();
+    }
+    public BigDecimal getResumenCargaTotalBod9(){
+        return resumenCargaEmbarque.getEnBuqueBod9();
     }
   
     //TOTALES
