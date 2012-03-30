@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,53 +13,26 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_descripcion}" for="descripcion" style="font-weight: bold;" />
-                    <p:inputText id="descripcion" value="#{buqueController.selected.descripcion}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_imo}" for="imo" style="font-weight: bold;" />
-                    <p:inputText id="imo" value="#{buqueController.selected.imo}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_eslora}" for="eslora" style="font-weight: bold;" />
-                    <p:inputText id="eslora" value="#{buqueController.selected.eslora}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_magna}" for="magna" style="font-weight: bold;" />
-                    <p:inputText id="magna" value="#{buqueController.selected.magna}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_puntal}" for="puntal" style="font-weight: bold;" />
-                    <p:inputText id="puntal" value="#{buqueController.selected.puntal}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_poseeGrua}" for="poseeGrua" style="font-weight: bold;" />
-                    <p:selectBooleanCheckbox id="poseeGrua" value="#{buqueController.selected.poseeGrua}" />
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_tipoBuque}" for="tipoBuque" style="font-weight: bold;" />
-                    <h:selectOneMenu id="tipoBuque" value="#{buqueController.selected.tipoBuque}" >
-                        <f:selectItems value="#{fixedListController.tipoBuqueSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundleCarga.BuqueTitle_tipoTapas}" for="tipoTapas" style="font-weight: bold;" />
-                    <h:selectOneMenu id="tipoTapas" value="#{buqueController.selected.tipoTapas}" >
-                        <f:selectItems value="#{fixedListController.tipoTapaBodegaSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
                 
-                <p:dataTable id="dtbBodegas" value="#{buqueController.bodegasModel}" var="item" style="width:250px;" >
-                    <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
-                        <h:outputText value="#{item.nro}" />
-                    </p:column>
-                    <p:column id="colCapacidadBodega" headerText="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" >
-                        <p:inputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" />
-                    </p:column>
-                </p:dataTable>
+                <Co:buque editar="true" />
                 
-                <h:panelGrid columns="2">
-                    <h:commandButton action="#{buqueController.create}"
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundleCarga.BuqueSaveLink}" 
-                                     title="#{bundleCarga.BuqueSaveLink}"
-                                     />
+                <p:panel style="float: left; width: 100%;">
+                    <h:panelGrid columns="2" >
+                        <h:commandButton action="#{buqueController.create}"
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundleCarga.BuqueSaveLink}" 
+                                         title="#{bundleCarga.BuqueSaveLink}"
+                                         />
 
-                    <h:commandButton action="#{buqueController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundleCarga.BuqueShowAllLink}"
-                                     title="#{bundleCarga.BuqueShowAllLink}"
-                                     immediate="true" 
-                                     />
+                        <h:commandButton action="#{buqueController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleCarga.BuqueShowAllLink}"
+                                         title="#{bundleCarga.BuqueShowAllLink}"
+                                         immediate="true" 
+                                         />
 
-                </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

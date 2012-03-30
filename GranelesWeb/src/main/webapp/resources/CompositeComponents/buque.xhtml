@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        
+            <p:panel style="float: left;">
+                <h:panelGrid columns="2" >
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_descripcion}" for="descripcion"  />
+                    <p:inputText id="descripcion" value="#{buqueController.selected.descripcion}" title="#{bundleCarga.BuqueTitle_descripcion}" rendered="#{cc.attrs.editar}" />
+                    <h:outputText value="#{buqueController.selected.descripcion}" title="#{bundleCarga.BuqueTitle_descripcion}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_imo}" for="imo"  />
+                    <p:inputText id="imo" value="#{buqueController.selected.imo}" title="#{bundleCarga.BuqueTitle_imo}" rendered="#{cc.attrs.editar}" />
+                    <h:outputText value="#{buqueController.selected.imo}" title="#{bundleCarga.BuqueTitle_imo}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_eslora}" for="eslora"  />
+                    <p:inputText id="eslora" value="#{buqueController.selected.eslora}" title="#{bundleCarga.BuqueTitle_eslora}" rendered="#{cc.attrs.editar}" />
+                    <h:outputText value="#{buqueController.selected.eslora}" title="#{bundleCarga.BuqueTitle_eslora}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_magna}" for="magna"  />
+                    <p:inputText id="magna" value="#{buqueController.selected.magna}" title="#{bundleCarga.BuqueTitle_magna}" rendered="#{cc.attrs.editar}" />
+                    <h:outputText value="#{buqueController.selected.magna}" title="#{bundleCarga.BuqueTitle_magna}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_puntal}" for="puntal"  />
+                    <p:inputText id="puntal" value="#{buqueController.selected.puntal}" title="#{bundleCarga.BuqueTitle_puntal}" rendered="#{cc.attrs.editar}" />
+                    <h:outputText value="#{buqueController.selected.puntal}" title="#{bundleCarga.BuqueTitle_puntal}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_poseeGrua}" for="poseeGrua"  />
+                    <p:selectBooleanCheckbox id="poseeGrua" value="#{buqueController.selected.poseeGrua}" disabled="#{!cc.attrs.editar}"  />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_tipoBuque}" for="tipoBuque"  />
+                    <h:selectOneMenu id="tipoBuque" value="#{buqueController.selected.tipoBuque}" rendered="#{cc.attrs.editar}">
+                        <f:selectItems value="#{fixedListController.tipoBuqueSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{buqueController.selected.tipoBuque.toString()}" title="#{bundleCarga.BuqueTitle_tipoBuque}" rendered="#{!cc.attrs.editar}" />
+
+                    <h:outputLabel value="#{bundleCarga.BuqueTitle_tipoTapas}" for="tipoTapas"  />
+                    <h:selectOneMenu id="tipoTapas" value="#{buqueController.selected.tipoTapas}" rendered="#{cc.attrs.editar}">
+                        <f:selectItems value="#{fixedListController.tipoTapaBodegaSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{buqueController.selected.tipoTapas.toString()}" title="#{bundleCarga.BuqueTitle_tipoTapas}" rendered="#{!cc.attrs.editar}" />
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="panBodegas" header="Bodegas" style="float: left;"  >
+
+                <h:panelGrid columns="2" rendered="#{cc.attrs.editar}" >
+                    <p:commandButton id="btnAgregarBodega" actionListener="#{buqueController.agregarBodega}" update="dtbBodegas"
+                                     icon="ui-icon-plus" title="Agregar Bodega" />
+                    <p:commandButton id="btnRestarBodega" actionListener="#{buqueController.restarBodega}" update="dtbBodegas"
+                                     icon="ui-icon-close" title="Quitar Bodega" />
+                </h:panelGrid>
+
+                <p:dataTable id="dtbBodegas" value="#{buqueController.bodegasModel}" var="item" style="width:250px;" >
+                    <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
+                        <h:outputText value="#{item.nro}" />
+                    </p:column>
+                    <p:column id="colCapacidadBodega" headerText="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" >
+                        <p:inputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{cc.attrs.editar}"/>
+                        <h:outputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{!cc.attrs.editar}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+    </co:implementation>
+</html>

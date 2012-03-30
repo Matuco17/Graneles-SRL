@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,59 +13,35 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputText value="#{bundleCarga.BuqueTitle_descripcion}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.descripcion}" title="#{bundleCarga.BuqueTitle_descripcion}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_imo}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.imo}" title="#{bundleCarga.BuqueTitle_imo}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_eslora}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.eslora}" title="#{bundleCarga.BuqueTitle_eslora}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_magna}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.magna}" title="#{bundleCarga.BuqueTitle_magna}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_puntal}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.puntal}" title="#{bundleCarga.BuqueTitle_puntal}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_poseeGrua}" style="font-weight: bold;"/>
-                    <p:selectBooleanCheckbox disabled="true" value="#{buqueController.selected.poseeGrua}" title="#{bundleCarga.BuqueTitle_poseeGrua}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_tipoBuque}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.tipoBuque.toString()}" title="#{bundleCarga.BuqueTitle_tipoBuque}"/>
-                    <h:outputText value="#{bundleCarga.BuqueTitle_tipoTapas}" style="font-weight: bold;"/>
-                    <h:outputText value="#{buqueController.selected.tipoTapas.toString()}" title="#{bundleCarga.BuqueTitle_tipoTapas}"/>
-                </h:panelGrid>
                 
-                <p:dataTable id="dtbBodegas" value="#{buqueController.bodegasModel}" var="item" style="width:250px;" >
-                    <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
-                        <h:outputText value="#{item.nro}" />
-                    </p:column>
-                    <p:column id="colCapacidadBodega" headerText="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" >
-                        <h:outputText value="#{item.capacidadPiesCubicos}" style="text-align: right;"/>
-                    </p:column>
-                </p:dataTable>
+                <Co:buque editar="false" />
 
+                <p:panel style="float: left; width: 100%;">
+                    <h:panelGrid columns="4">
+                        <h:commandButton action="#{buqueController.destroyAndView}" 
+                                         image="/faces/resources/images/destroy.png" 
+                                         value="#{bundleCarga.BuqueDestroyLink}"
+                                         title="#{bundleCarga.BuqueDestroyLink}"
+                                         onclick="return confirm('¿Esta seguro que desea eliminar este Buque?');" 
+                                         />
 
-                <h:panelGrid columns="4">
-                    <h:commandButton action="#{buqueController.destroyAndView}" 
-                                     image="/faces/resources/images/destroy.png" 
-                                     value="#{bundleCarga.BuqueDestroyLink}"
-                                     title="#{bundleCarga.BuqueDestroyLink}"
-                                     onclick="return confirm('¿Esta seguro que desea eliminar este Buque?');" 
-                                     />
-
-                    <h:commandButton action="Edit" 
-                                     image="/faces/resources/images/edit.png" 
-                                     value="#{bundleCarga.BuqueEditLink}"
-                                     title="#{bundleCarga.BuqueEditLink}"
-                                     />
-                    <h:commandButton action="#{buqueController.prepareCreate}" 
-                                     image="/faces/resources/images/new.png" 
-                                     value="#{bundleCarga.BuqueCreateLink}"
-                                     title="#{bundleCarga.BuqueCreateLink}"
-                                     />
-                    <h:commandButton action="#{buqueController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundleCarga.BuqueShowAllLink}"
-                                     title="#{bundleCarga.BuqueShowAllLink}"
-                                     />
-                </h:panelGrid>
+                        <h:commandButton action="Edit" 
+                                         image="/faces/resources/images/edit.png" 
+                                         value="#{bundleCarga.BuqueEditLink}"
+                                         title="#{bundleCarga.BuqueEditLink}"
+                                         />
+                        <h:commandButton action="#{buqueController.prepareCreate}" 
+                                         image="/faces/resources/images/new.png" 
+                                         value="#{bundleCarga.BuqueCreateLink}"
+                                         title="#{bundleCarga.BuqueCreateLink}"
+                                         />
+                        <h:commandButton action="#{buqueController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleCarga.BuqueShowAllLink}"
+                                         title="#{bundleCarga.BuqueShowAllLink}"
+                                         />
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

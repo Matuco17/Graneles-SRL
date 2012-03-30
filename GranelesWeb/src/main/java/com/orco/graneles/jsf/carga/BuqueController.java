@@ -157,6 +157,24 @@ public class BuqueController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleCarga").getString("PersistenceErrorOccured"));
         }
     }
+    
+    public void agregarBodega(){
+        Bodega bod = new Bodega();
+                    bod.setNro(getBodegas().size() + 1);
+                    bod.setCapacidadPiesCubicos(BigDecimal.ZERO);
+                    bod.setBuque(current);
+                    getBodegas().add(bod);
+        current.setBodegaCollection(getBodegas());
+    }
+    
+    public void restarBodega(){
+        if (getBodegas().size() > 0){
+            getBodegas().remove(getBodegas().size() - 1);
+            current.setBodegaCollection(getBodegas());
+        }
+    }
+    
+    
 
     public DataModel getItems() {
         if (items == null) {
