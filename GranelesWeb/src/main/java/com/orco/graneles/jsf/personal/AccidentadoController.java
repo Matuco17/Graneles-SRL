@@ -315,7 +315,7 @@ public class AccidentadoController implements Serializable {
     }
 
     public List<JornalCaido> getJornalesCaidos() {
-        if (jornalesCaidos == null){
+        if (jornalesCaidos == null && current != null && current.getJornalesCaidosCollection() != null){
             jornalesCaidos = new ArrayList<JornalCaido>(current.getJornalesCaidosCollection());
             Collections.sort(jornalesCaidos);
             Collections.reverseOrder();
