@@ -53,7 +53,9 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
         acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin, null);
         acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin, null);
         
-        return new BigDecimal(acumulado);
+        double acumuladoNeto = conceptoReciboF.calcularNeto(personal, acumulado);
+        
+        return new BigDecimal(acumuladoNeto);
     }
     
     /**

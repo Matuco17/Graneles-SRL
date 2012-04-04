@@ -440,6 +440,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta);
                            
                 return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
+                
                                 
             case TipoRecibo.MENSUAL:
                 //Busco el Mayor de los sueldos y divido x la cantidad de días
