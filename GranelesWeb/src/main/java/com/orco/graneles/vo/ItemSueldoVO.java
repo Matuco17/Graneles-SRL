@@ -19,9 +19,11 @@ import java.util.Date;
 public class ItemSueldoVO {
     
     private ItemsSueldo item;
+    private Boolean oficial;
     
-    public ItemSueldoVO(ItemsSueldo itemSueldo){
+    public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial){
         item = itemSueldo;
+        this.oficial = oficial;
     }
     
     public Integer getOrdenConcepto(){
@@ -157,19 +159,19 @@ public class ItemSueldoVO {
     }
     
     public BigDecimal getTotalRemunerativo(){
-        return item.getSueldo().getTotalRemunerativo();
+        return item.getSueldo().getTotalRemunerativo(oficial);
     }
     
     public BigDecimal getTotalDeductivo(){
-        return item.getSueldo().getTotalDeductivo();
+        return item.getSueldo().getTotalDeductivo(oficial);
     }
     
     public BigDecimal getTotalNoRemunerativo(){
-        return item.getSueldo().getTotalNoRemunerativo();
+        return item.getSueldo().getTotalNoRemunerativo(oficial);
     }
     
     public BigDecimal getTotalNoRemunerativoNegativo(){
-        return item.getSueldo().getTotalNoRemunerativoNegativo();
+        return item.getSueldo().getTotalNoRemunerativoNegativo(oficial);
     }
     
     public BigDecimal getTotalesPositivos(){
@@ -181,7 +183,7 @@ public class ItemSueldoVO {
     }
             
     public BigDecimal getTotalSueldoNeto(){
-        return item.getSueldo().getTotalSueldoNeto();
+        return item.getSueldo().getTotalSueldoNeto(oficial);
     }
     
     public String getTotalSueldoNetoString(){

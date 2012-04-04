@@ -75,22 +75,22 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append("00");
         
         //Remuneration Total (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo()));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true)));
         
         //Remuneracion Imponible Aportes (15)
-        linea.append(formatearImporte15(sdo.getTotalSueldoNeto()));
+        linea.append(formatearImporte15(sdo.getTotalSueldoNeto(true)));
         
         //Remuneracion Imponible Contribuciones (15)
-        linea.append(formatearImporte15(sdo.getTotalSueldoNeto()));
+        linea.append(formatearImporte15(sdo.getTotalSueldoNeto(true)));
         
         //Asignaciones Familiares Pagadas (15)
         linea.append(formatearImporte15(BigDecimal.ZERO));
         
         //Importe Aporte SIJP (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.11f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.11f)))); 
         
         //Importe aporte INSSJP (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.03f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.03f)))); 
         
         //Importe aporte Adicional SS (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
@@ -102,7 +102,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Importe Neto Total Aportes SS (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.143f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.143f)))); 
         
         //Importe aporte OS (15)
         linea.append(formatearImporte15(SueldoFacade.obtenerMontoXConcepto(sdo, TipoValorConcepto.OBRA_SOCIAL))); 
@@ -111,40 +111,40 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Importe Aporte ANSSAL (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.003f))));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.003f))));
         
         //Importe Excedente Aportes OS (15)
         linea.append(formatearImporte15(BigDecimal.ZERO));
         
         //Importe Total Aportes OS (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.027f))));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.027f))));
         
         //Importe Contribucion SIJP (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.1017f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.1017f)))); 
         
         //Importe Contribucion INSSJP (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.015f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.015f)))); 
         
         //Importe Contribucion FNE (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.0089f))));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.0089f))));
         
         //Importe Contribuion Asig Familiares (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.0444f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.0444f)))); 
         
         //Importe Total Contribuciones (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.176f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.176f)))); 
         
         //Importe Contribicion OS (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.054f))));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.054f))));
         
         //Importe Contribucion ANSSAL (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.006f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.006f)))); 
         
         //Provincia Localidad (50)
         linea.append(StringUtils.rightPad("BUENOS AIRES-RESTO PROVINCIA DE BUENOS AIRES", 50, " "));
         
         //Importe Total Contribuciones OS (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.054f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.054f)))); 
         
         //Codigo de Siniestrado (2)
         linea.append("00");
@@ -153,16 +153,16 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append("0"); 
         
         //Remuneracion Imponible 3 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Remuneracion Imponible 4 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo()));
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true)));
         
         //Aporte adicional OS (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Capital de recomposición LRT (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.00001f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.00001f)))); 
         
         //Tipo Emplesa (1)
         linea.append("0"); 
@@ -213,7 +213,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append("00"); 
         
         //Remuneracion Imponible 5 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Marca Convencionado
         linea.append(" "); 
@@ -225,7 +225,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); //TODO: VER COMO COMPLETAR Dto1273INSSJP
         
         //Remuneracion Imponible 6 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Aporte diferencial SIJIP (15)
         linea.append(formatearImporte15(BigDecimal.ZERO));
@@ -245,19 +245,19 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
                                 3)); 
         
         //Sueldo Dto 788_05 Rem 8 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo().multiply(new BigDecimal(0.000012f)))); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.000012f)))); 
         
         //Aportes SS Dto 788_05 (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); //TODO: VER COMO COMPLETAR Aportes SS Dto 788_05
         
         //Remuneracion Imponible 7 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Aportes Res 33_41_SSS (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); //TODO: VER COMO COMPLETAR Aportes Res 33_41_SSS
         
         //Remuneracion Imponible 8 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Conceptos no Remunerativos (15)
         linea.append(formatearImporte15(BigDecimal.ZERO));
@@ -269,7 +269,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Remuneracion Imponible 9 (15)
-        linea.append(formatearImporte15(sdo.getTotalRemunerativo())); 
+        linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Cantidad de Horas Trabajadas (3)
         linea.append(StringUtils.right("000" + 

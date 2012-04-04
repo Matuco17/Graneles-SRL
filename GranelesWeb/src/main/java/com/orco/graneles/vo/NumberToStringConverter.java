@@ -62,6 +62,13 @@ public class NumberToStringConverter {
   
   public static String numeroACastellano( long n  ){
     String resultado = "";
+    boolean esNegativo = false;
+    
+    if (n < 0){
+        esNegativo = true;
+        n = (-1) * n;
+    }
+    
     int grupo = 0;
     while ( n != 0 && grupo < _grupos.length ) {
       long fragmento = n % 1000000;
@@ -94,6 +101,11 @@ public class NumberToStringConverter {
       }
       grupo++;
     }
+    
+    if (esNegativo){
+        resultado = "menos " + resultado;
+    }
+    
     return resultado;
   }
   

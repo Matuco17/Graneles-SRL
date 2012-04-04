@@ -28,7 +28,7 @@ public class RecibosSueldosAccidentados extends ReporteGenerico {
         for(Sueldo s : sueldos){
             for (ItemsSueldo is : s.getItemsSueldoCollection()){
                 if (!oficial || is.getConceptoRecibo().getOficial()){
-                    dataSource.add(new ItemSueldoVO(is));
+                    dataSource.add(new ItemSueldoVO(is, oficial));
                 }
             }
         }

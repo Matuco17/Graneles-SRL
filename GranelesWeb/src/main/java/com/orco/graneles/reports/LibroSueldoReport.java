@@ -28,7 +28,7 @@ public class LibroSueldoReport extends ReporteGenerico {
         for(Sueldo s : periodo.getSueldoCollection()){
             for (ItemsSueldo is : s.getItemsSueldoCollection()){
                 if (is.getConceptoRecibo().getOficial()){
-                    dataSource.add(new ItemSueldoVO(is));
+                    dataSource.add(new ItemSueldoVO(is, true));
                 }
             }
         }    

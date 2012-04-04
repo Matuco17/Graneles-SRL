@@ -141,8 +141,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     s = sueldoF.mergeSueldos(s, sueldoVacaciones);
                 }
                 
-                //TODO: AQUI AGREGO LOS CONCEPTOS DE ADELANTOS DE AGUINALDOS
-                
+                //Agrego los adelantos correspondientes a todo el periodo
+                sueldoF.agregarAdelanto(s);
                 
                 break;
             case TipoRecibo.MENSUAL:
@@ -296,23 +296,46 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @return 
      */
     public Date obtenerFechaInicioPeriodoSemestralActual(){
-        Calendar calHoy = new GregorianCalendar();
-        Calendar calInicio = new GregorianCalendar();
-        
-        calInicio.set(Calendar.DAY_OF_MONTH, 1);
-        calInicio.set(Calendar.HOUR_OF_DAY, 0);
-        calInicio.set(Calendar.MINUTE, 0);
-        calInicio.set(Calendar.SECOND, 0);
-        calInicio.set(Calendar.MILLISECOND, 0);
-        if (calHoy.get(Calendar.MONTH) <= Calendar.JUNE){
-            calInicio.set(Calendar.MONTH, Calendar.JANUARY);
-        } else {
-            calInicio.set(Calendar.MONTH, Calendar.JULY);
-        }
-        
-        return calInicio.getTime();
+        return obtenerFechaInicioPeriodoSemestral(new Date());
     }
    
+      /**
+     * Obtiene la fecha inicio de un semestre de acuerdo a la fecha de periodo pasado
+     * @param fecha
+     * @return 
+     */
+    public Date obtenerFechaInicioPeriodoSemestral(Date fecha){
+        DateTime dtFecha = new DateTime(fecha);
+        DateTime dtInicio = null;
+        
+        if (dtFecha.getMonthOfYear() <= DateTimeConstants.JUNE){
+            dtInicio = new DateTime(dtFecha.getYear(), DateTimeConstants.JANUARY, 1, 0, 0);
+        } else {
+            dtInicio = new DateTime(dtFecha.getYear(), DateTimeConstants.JULY, 1, 0, 0);
+        }
+        
+        return dtInicio.toDate();
+    }
+    
+    /**
+     * Obtiene la fecha fin de un semestre de acuerdo a la fecha de periodo pasado
+     * @param fecha
+     * @return 
+     */
+    public Date obtenerFechaFinPeriodoSemestral(Date fecha){
+        DateTime dtFecha = new DateTime(fecha);
+        DateTime dtInicio = null;
+        
+        if (dtFecha.getMonthOfYear() <= DateTimeConstants.JUNE){
+            dtInicio = new DateTime(dtFecha.getYear(), DateTimeConstants.JUNE, 30, 0, 0);
+        } else {
+            dtInicio = new DateTime(dtFecha.getYear(), DateTimeConstants.DECEMBER, 31, 0, 0);
+        }
+        
+        return dtInicio.toDate();
+    }
+    
+    
     private Map<Long, Sueldo> generarSueldosTTE(Periodo periodo, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
         List<TrabajadoresTurnoEmbarque> listaTTE = trabTurnoEmbarqueF.getTrabajadoresPeriodo(periodo);
         Map<Long, Sueldo> mapSueldosXIdPers = new HashMap<Long, Sueldo>();

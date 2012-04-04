@@ -71,51 +71,63 @@ public class Sueldo implements Serializable {
     /*
      * Propiedades Extendidas
      */
-    public BigDecimal getTotalRemunerativo(){
+    public BigDecimal getTotalRemunerativo(boolean oficial){
         BigDecimal total = BigDecimal.ZERO;
         
         for (ItemsSueldo is : itemsSueldoCollection)
-            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO))
-                total = total.add(is.getValorCalculado());        
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                if (!oficial || is.getConceptoRecibo().getOficial()){
+                    total = total.add(is.getValorCalculado());        
+                }
+            }
         
         return total;
     }
     
-    public BigDecimal getTotalDeductivo(){
+    public BigDecimal getTotalDeductivo(boolean oficial){
         BigDecimal total = BigDecimal.ZERO;
         
         for (ItemsSueldo is : itemsSueldoCollection)
-            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.DEDUCTIVO))
-                total = total.add(is.getValorCalculado());        
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.DEDUCTIVO)){
+                if (!oficial || is.getConceptoRecibo().getOficial()){
+                    total = total.add(is.getValorCalculado());        
+                }
+            }
         
         return total;
     }
     
-    public BigDecimal getTotalNoRemunerativo(){
+    public BigDecimal getTotalNoRemunerativo(boolean oficial){
         BigDecimal total = BigDecimal.ZERO;
         
         for (ItemsSueldo is : itemsSueldoCollection)
-            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO))
-                total = total.add(is.getValorCalculado());        
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO)){
+                if (!oficial || is.getConceptoRecibo().getOficial()){
+                    total = total.add(is.getValorCalculado());        
+                }
+            }
         
         return total;
     }
     
-    public BigDecimal getTotalNoRemunerativoNegativo(){
+    public BigDecimal getTotalNoRemunerativoNegativo(boolean oficial){
         BigDecimal total = BigDecimal.ZERO;
         
         for (ItemsSueldo is : itemsSueldoCollection)
-            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO_NEGATIVO))
-                total = total.add(is.getValorCalculado());        
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.NO_REMUNERATIVO_NEGATIVO)){
+                if (!oficial || is.getConceptoRecibo().getOficial()){
+                    total = total.add(is.getValorCalculado());        
+                }
+            }
         
         return total;
     }
     
-    public BigDecimal getTotalSueldoNeto(){
-        return getTotalRemunerativo()
-                .subtract(getTotalDeductivo())
-                .add(getTotalNoRemunerativo())
-                .subtract(getTotalNoRemunerativoNegativo());
+    public BigDecimal getTotalSueldoNeto(boolean oficial){
+        return getTotalRemunerativo(oficial)
+                .subtract(getTotalDeductivo(oficial))
+                .add(getTotalNoRemunerativo(oficial))
+                .subtract(getTotalNoRemunerativoNegativo(oficial));
     }
     
     public Sueldo(){

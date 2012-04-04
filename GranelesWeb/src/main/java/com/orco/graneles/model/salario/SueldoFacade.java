@@ -246,7 +246,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                         new BigDecimal(brutoCalculado),
                         null, conceptos, accidentado.getPersonal());
         
-        return sueldoCalculado.getTotalSueldoNeto();
+        return sueldoCalculado.getTotalSueldoNeto(false);
     }
     
     
