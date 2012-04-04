@@ -141,6 +141,9 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     s = sueldoF.mergeSueldos(s, sueldoVacaciones);
                 }
                 
+                //TODO: AQUI AGREGO LOS CONCEPTOS DE ADELANTOS DE AGUINALDOS
+                
+                
                 break;
             case TipoRecibo.MENSUAL:
                 //TODO: COMPLETAR

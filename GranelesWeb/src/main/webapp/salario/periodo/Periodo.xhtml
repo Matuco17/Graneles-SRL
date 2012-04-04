@@ -43,12 +43,12 @@
                            <h:panelGrid columns="2">
                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_descripcion}"/>
                                <h:outputText value="#{periodoController.selected.descripcion}" title="#{bundleSalario.PeriodoTitle_descripcion}"/>
+                               
+                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
+                               <h:inputText id="oLfolioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
 
-                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_folioLibro}" for="folioLibro" />
-                                <h:inputText id="oLfolioLibro" value="#{periodoController.selected.folioLibro}" title="#{bundleSalario.PeriodoTitle_folioLibro}" />
-
-                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
-                                <h:inputText id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
+                               <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
+                               <h:inputText id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
 
                                <h:outputLabel value="Cantidad de Sueldos Cargados" />
                                <h:outputText id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
@@ -68,10 +68,18 @@
                                <h:outputLabel value="Descargar Recibos de Sueldos SAC y Vacaciones" />
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones" action="#{periodoController.generarRecibosSacYVac()}" rendered="#{periodoController.urlArchivoRecibosSacYVac == null}" />
                                <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" outcome="#{periodoController.urlArchivoRecibosSacYVac}"  rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />
-                   
+
+                               <h:outputText value="" />
+                               <h:commandButton value="Generar Recibos de SAC y Vacaciones Oficiales" action="#{periodoController.generarRecibosSacYVacOficiales()}" rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales == null}" />
+                               <h:link id="lnkRecibosSACyVacOficial" value="Recibos de SAC y Vacaciones Oficiales" outcome="#{periodoController.urlArchivoRecibosSavYVacOficiales}"  rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales != null}" />
+
                                <h:outputLabel value="Descargar Recibos de Sueldos Accidentados" />
                                <h:commandButton value="Generar Recibos de Accidentados" action="#{periodoController.generarRecibosAcc()}" rendered="#{periodoController.urlArchivoRecibosAccidentados == null}" />
                                <h:link id="lnkRecibosAcc" value="Recibos de Accidentados" outcome="#{periodoController.urlArchivoRecibosAccidentados}"  rendered="#{periodoController.urlArchivoRecibosAccidentados != null}" />
+                               
+                               <h:outputText value="" />
+                               <h:commandButton value="Generar Recibos de Accidentados Oficiales" action="#{periodoController.generarRecibosAccOficiales()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales == null}" />
+                               <h:link id="lnkRecibosAccOficial" value="Recibos de Accidentados Oficiales" outcome="#{periodoController.urlArchivoRecibosAccidentadosOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales != null}" />
                                
                            </h:panelGrid>
                            

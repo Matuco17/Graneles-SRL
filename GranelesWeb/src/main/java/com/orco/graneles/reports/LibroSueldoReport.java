@@ -25,10 +25,14 @@ public class LibroSueldoReport extends ReporteGenerico {
         dataSource = new ArrayList<ItemSueldoVO>();
         
         //Agrego todos los items del periodo para el reporte
-        for(Sueldo s : periodo.getSueldoCollection())
-            for (ItemsSueldo is : s.getItemsSueldoCollection())
-                dataSource.add(new ItemSueldoVO(is));
-                
+        for(Sueldo s : periodo.getSueldoCollection()){
+            for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                if (is.getConceptoRecibo().getOficial()){
+                    dataSource.add(new ItemSueldoVO(is));
+                }
+            }
+        }    
+            
         //Ordeno antes de devolver todo
         Collections.sort(dataSource, new ComparadorItems());
     }

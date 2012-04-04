@@ -24,5 +24,6 @@ public class TipoValorConcepto {
     public static final int DIAS_TRABAJO = 109;
     public static final int SINDICATO = 110;
     public static final int SIN_CONCEPTO = 111;
-    public static final int ADELANTO = 112;
+    public static final int ADELANTO_AGUINALDO = 112;
+    public static final int ADELANTO_ACCIDENTADO = 113;
 }

@@ -51,29 +51,46 @@ public class ConceptoRecibo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 45)
     @Column(name = "concepto")
     private String concepto;
+    
     @Column(name = "version_activa")
     private Boolean versionActiva;
+    
     @Column(name = "version")
     private Integer version;
+    
     @Column(name = "orden")
     private Integer orden;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
     private BigDecimal valor;
+    
     @Column(name = "calculado")
     private Boolean calculado;
+    
+    @Size(max = 3)
+    @Column(name = "sufijo_cantidad")
+    private String sufijoCantidad;
+    
+    @Column(name = "oficial")
+    private Boolean oficial;
+    
     @JoinColumn(name = "tipo_recibo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private FixedList tipoRecibo;
+    
     @JoinColumn(name = "tipo_valor", referencedColumnName = "id")
     @ManyToOne
     private FixedList tipoValor;
+    
     @JoinColumn(name = "tipo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private FixedList tipo;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conceptoRecibo")
     private Collection<ItemsSueldo> itemsSueldoCollection;
 
@@ -140,6 +157,22 @@ public class ConceptoRecibo implements Serializable {
         this.calculado = calculado;
     }
 
+    public Boolean getOficial() {
+        return oficial;
+    }
+
+    public void setOficial(Boolean oficial) {
+        this.oficial = oficial;
+    }
+
+    public String getSufijoCantidad() {
+        return sufijoCantidad;
+    }
+
+    public void setSufijoCantidad(String sufijoCantidad) {
+        this.sufijoCantidad = sufijoCantidad;
+    }
+    
     public FixedList getTipoRecibo() {
         return tipoRecibo;
     }

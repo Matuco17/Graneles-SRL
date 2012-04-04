@@ -54,6 +54,8 @@ public class PeriodoController implements Serializable {
     private String urlArchivoCierreMes;
     private String urlArchivoRecibosSacYVac;
     private String urlArchivoRecibosAccidentados;
+    private String urlArchivoRecibosSavYVacOficiales;
+    private String urlArchivoRecibosAccidentadosOficiales;
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
     private BigDecimal totalBruto;
@@ -154,10 +156,21 @@ public class PeriodoController implements Serializable {
         if (current != null){
             List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
             
-            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac);
+            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, false);
             urlArchivoRecibosSacYVac = reporte.obtenerReportePDF();
         } else {
             urlArchivoRecibosSacYVac = null;
+        }
+    }
+    
+    public void generarRecibosSacYVacOficiales(){
+        if (current != null){
+            List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
+            
+            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, true);
+            urlArchivoRecibosSavYVacOficiales = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoRecibosSavYVacOficiales = null;
         }
     }
     
@@ -165,10 +178,21 @@ public class PeriodoController implements Serializable {
         if (current != null){
             List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current);
             
-            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc);
+            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, false);
             urlArchivoRecibosAccidentados = reporte.obtenerReportePDF();
         } else {
             urlArchivoRecibosAccidentados = null;
+        }
+    }
+    
+    public void generarRecibosAccOficiales(){
+        if (current != null){
+            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current);
+            
+            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, true);
+            urlArchivoRecibosAccidentadosOficiales = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoRecibosAccidentadosOficiales = null;
         }
     }
 
@@ -258,6 +282,8 @@ public class PeriodoController implements Serializable {
         urlArchivoCierreMes = null;
         urlArchivoRecibosSacYVac = null;
         urlArchivoRecibosAccidentados = null;
+        urlArchivoRecibosSavYVacOficiales = null;
+        urlArchivoRecibosAccidentadosOficiales = null;
         selectedItemIndex = 1;
     }
     
@@ -476,7 +502,22 @@ public class PeriodoController implements Serializable {
     public void setUrlArchivoRecibosAccidentados(String urlArchivoRecibosAccidentados) {
         this.urlArchivoRecibosAccidentados = urlArchivoRecibosAccidentados;
     }
-    
+
+    public String getUrlArchivoRecibosAccidentadosOficiales() {
+        return urlArchivoRecibosAccidentadosOficiales;
+    }
+
+    public void setUrlArchivoRecibosAccidentadosOficiales(String urlArchivoRecibosAccidentadosOficiales) {
+        this.urlArchivoRecibosAccidentadosOficiales = urlArchivoRecibosAccidentadosOficiales;
+    }
+
+    public String getUrlArchivoRecibosSavYVacOficiales() {
+        return urlArchivoRecibosSavYVacOficiales;
+    }
+
+    public void setUrlArchivoRecibosSavYVacOficiales(String urlArchivoRecibosSavYVacOficiales) {
+        this.urlArchivoRecibosSavYVacOficiales = urlArchivoRecibosSavYVacOficiales;
+    }
         
     public Periodo getCurrent() {
         return current;

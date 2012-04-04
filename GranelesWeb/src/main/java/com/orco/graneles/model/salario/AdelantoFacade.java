@@ -6,6 +6,7 @@ package com.orco.graneles.model.salario;
 
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Adelanto;
+import com.orco.graneles.domain.salario.Sueldo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -80,6 +81,17 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
     }
     
     
-    
+    /**
+     * Busca todos los adelantos correspondientes al sueldo en cuestion.
+     * @param s
+     * @return 
+     */
+    public List<Adelanto> obtenerAdelantosSueldo(Sueldo s){
+        return getEntityManager().createNamedQuery("Adelanto.findByFechaPersonalDesdeHasta", Adelanto.class)
+                .setParameter("personal", s.getPersonal())
+                .setParameter("desde", s.getPeriodo().getDesde())
+                .setParameter("hasta", s.getPeriodo().getHasta())
+                .getResultList();
+    }
     
 }

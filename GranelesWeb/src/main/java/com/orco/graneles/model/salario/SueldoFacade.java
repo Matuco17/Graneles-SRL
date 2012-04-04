@@ -20,6 +20,7 @@ import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,13 +43,16 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     ConceptoRecibo conceptoReciboSACCache;
     ConceptoRecibo conceptoReciboVacacionesCache;
     ConceptoRecibo conceptoReciboAccidentadoCache;
-    ConceptoRecibo conceptoReciboAdelantoCache;
+    ConceptoRecibo conceptoReciboAdelantoAccidentadoCache;
+    ConceptoRecibo conceptoReciboAdelantoAguinaldoCache;
     
     
     @EJB
     private ItemsSueldoFacade itemSueldoF;
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    private AdelantoFacade adelantoF;
     @EJB
     private FixedListFacade fixedListF;
 
@@ -151,10 +155,10 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                                                                 fixedListF.find(TipoRecibo.HORAS),
                                                                 fixedListF.find(TipoValorConcepto.HORAS_HABILES));
         }
-        if (conceptoReciboAdelantoCache == null){
-            conceptoReciboAdelantoCache = conceptoReciboF.obtenerConcepto(
+        if (conceptoReciboAdelantoAccidentadoCache == null){
+            conceptoReciboAdelantoAccidentadoCache = conceptoReciboF.obtenerConcepto(
                                                                 fixedListF.find(TipoRecibo.HORAS),
-                                                                fixedListF.find(TipoValorConcepto.ADELANTO));
+                                                                fixedListF.find(TipoValorConcepto.ADELANTO_ACCIDENTADO));
         }
         
         
@@ -187,14 +191,38 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             }
  
             if (!totalAdelanto.equals(BigDecimal.ZERO)){
-                //CREO EL ITEM DE SUELDO DE ACUEREDO AL ADELANTO 
-                itemSueldoF.crearItemSueldo(conceptoReciboAdelantoCache, null, totalAdelanto, sueldoAcc);
+                //CREO EL ITEM DE SUELDO DE ACUEREDO AL ADELANTO_AGUINALDO 
+                itemSueldoF.crearItemSueldo(conceptoReciboAdelantoAccidentadoCache, null, totalAdelanto, sueldoAcc);
             }            
         }
         
         
         return sueldoAcc;
     }
+    
+    public void agregarAdelanto(Sueldo s){
+        
+        if (conceptoReciboAdelantoAguinaldoCache == null || !conceptoReciboAdelantoAguinaldoCache.getTipoRecibo().equals(s.getPersonal().getTipoRecibo())){
+            conceptoReciboAdelantoAguinaldoCache = conceptoReciboF.obtenerConcepto(
+                                                                        s.getPersonal().getTipoRecibo(), 
+                                                                        fixedListF.find(TipoValorConcepto.ADELANTO_AGUINALDO));
+        }
+ 
+        //Debo buscar los adelantos cedidos en el periodo, y los agrego
+        List<Adelanto> adelantos = adelantoF.obtenerAdelantosSueldo(s);
+        
+        if (adelantos.size() > 0){
+            BigDecimal totalAdelantos = BigDecimal.ZERO;
+            for (Adelanto a : adelantoF.obtenerAdelantosSueldo(s)){
+                totalAdelantos = totalAdelantos.add(a.getValor());
+            }
+            
+            //Agrego el item al sueldo;
+            itemSueldoF.crearItemSueldo(conceptoReciboAdelantoAguinaldoCache, null, totalAdelantos, s);
+        }
+        
+    }
+    
     
     /**
      * Calcula el Valor neto del sueldo del accidetnado en cuestion

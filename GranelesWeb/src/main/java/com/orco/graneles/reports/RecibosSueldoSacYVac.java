@@ -20,14 +20,18 @@ public class RecibosSueldoSacYVac extends ReporteGenerico {
     private List<ItemSueldoVO> dataSource;
     private Periodo periodo;
     
-    public RecibosSueldoSacYVac(Periodo periodo, List<Sueldo> sueldos){
+    public RecibosSueldoSacYVac(Periodo periodo, List<Sueldo> sueldos, boolean oficial){
         this.periodo = periodo;
         dataSource = new ArrayList<ItemSueldoVO>();
         
         //Agrego todos los items del periodo para el reporte
-        for(Sueldo s : sueldos)
-            for (ItemsSueldo is : s.getItemsSueldoCollection())
-                dataSource.add(new ItemSueldoVO(is));
+        for(Sueldo s : sueldos){
+            for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                if (!oficial || is.getConceptoRecibo().getOficial()){
+                    dataSource.add(new ItemSueldoVO(is));
+                }
+            }
+        }
                 
         //Ordeno antes de devolver todo
         Collections.sort(dataSource, new ComparadorItems());

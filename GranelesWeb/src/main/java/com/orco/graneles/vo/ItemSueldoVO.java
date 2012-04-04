@@ -28,7 +28,7 @@ public class ItemSueldoVO {
         return item.getConceptoRecibo().getOrden();
     }
     
-      public BigInteger getNroPrimeraHoja(){
+    public BigInteger getNroPrimeraHoja(){
         return item.getSueldo().getPeriodo().getNroPrimeraHoja();
     }
 
@@ -79,7 +79,11 @@ public class ItemSueldoVO {
     }
     
     public String getEstadoCivil(){
-        return item.getSueldo().getPersonal().getEstadoCivil().getDescripcion();
+        if (item.getSueldo().getPersonal().getEstadoCivil() != null) {
+            return item.getSueldo().getPersonal().getEstadoCivil().getDescripcion();
+        } else {
+            return null;
+        }
     }
     
     public String getConceptoDescripcion(){
@@ -92,6 +96,14 @@ public class ItemSueldoVO {
     
     public String getLegajo(){
         return item.getSueldo().getPersonal().getRegistro();
+    }
+    
+    public String getSufijoCantidad(){
+        return item.getConceptoRecibo().getSufijoCantidad();
+    }
+    
+    public Boolean getConceptoOficial(){
+        return item.getConceptoRecibo().getOficial();
     }
     
     public BigDecimal getValorRemunerativo(){
