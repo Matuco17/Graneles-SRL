@@ -28,7 +28,7 @@
 
                     <h:outputLabel value="#{bundleSalario.AdelantoTitle_recibo}" for="recibo"/>
                     <h:link id="recibo" value="#{bundleSalario.AdelantoTitle_reciboLink}" 
-                            onclick="window.open('#{adelantoController.urlRecibo}','Download');window.close();" />
+                            onclick="window.open('#{adelantoController.urlRecibo}','Download');window.close();" rendered="#{adelantoController.urlRecibo != null}" />
                     
                 </h:panelGrid>
 

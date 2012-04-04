@@ -295,6 +295,11 @@ public class PeriodoController implements Serializable {
                 //Una vez subido todo, genero nuevamente el pdf
                 urlArchivoPDF = null;
                 urlArchivoTxt = null;
+                urlArchivoCierreMes = null;
+                urlArchivoRecibosSacYVac = null;
+                urlArchivoRecibosAccidentados = null;
+                urlArchivoRecibosSavYVacOficiales = null;
+                urlArchivoRecibosAccidentadosOficiales = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (Exception e) {
