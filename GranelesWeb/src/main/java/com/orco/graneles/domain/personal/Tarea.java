@@ -8,6 +8,7 @@ import com.orco.graneles.domain.salario.SalarioBasico;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -76,7 +77,7 @@ public class Tarea implements Serializable {
     private Boolean productiva;
     
     @Column(name = "especialidad")
-    private Boolean especidalidad;
+    private BigDecimal especidalidad;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tarea")
     private Collection<SalarioBasico> salarioBasicoCollection;
@@ -150,11 +151,11 @@ public class Tarea implements Serializable {
         this.peligrosa2 = peligrosa2;
     }
 
-    public Boolean getEspecidalidad() {
+    public BigDecimal getEspecidalidad() {
         return especidalidad;
     }
 
-    public void setEspecidalidad(Boolean especidalidad) {
+    public void setEspecidalidad(BigDecimal especidalidad) {
         this.especidalidad = especidalidad;
     }
     
