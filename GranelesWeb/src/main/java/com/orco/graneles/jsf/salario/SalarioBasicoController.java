@@ -76,10 +76,14 @@ public class SalarioBasicoController implements Serializable {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SalarioBasicoCreated"));
             return "View";
+        
+        } catch (RuntimeException e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
             return null;
-        }
+        } 
     }
 
     public String prepareEdit() {
@@ -97,6 +101,9 @@ public class SalarioBasicoController implements Serializable {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SalarioBasicoUpdated"));
             return "View";
+        } catch (RuntimeException e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
             return null;

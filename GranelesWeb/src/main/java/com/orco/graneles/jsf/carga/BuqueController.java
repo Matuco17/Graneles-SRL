@@ -68,6 +68,9 @@ public class BuqueController implements Serializable {
 
     public String prepareView() {
         if (current != null){
+            bodegas = null;
+            
+            bodegasModel = null;
             //current = (Buque) getItems().getRowData();
             //selectedItemIndex = getItems().getRowIndex();
             return "View";
@@ -78,6 +81,11 @@ public class BuqueController implements Serializable {
 
     public String prepareCreate() {
         current = new Buque();
+        
+         bodegas = null;
+            
+        bodegasModel = null;
+          
         selectedItemIndex = -1;
         return "Create";
     }
@@ -104,6 +112,9 @@ public class BuqueController implements Serializable {
 */    
     public String prepareEdit() {
         if (current != null){
+            
+            bodegas = null;
+            bodegasModel = null;
             //current = (Buque) getItems().getRowData();
             //selectedItemIndex = getItems().getRowIndex();
             return "Edit";

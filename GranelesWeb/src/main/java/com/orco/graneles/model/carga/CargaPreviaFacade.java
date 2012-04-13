@@ -51,7 +51,7 @@ public class CargaPreviaFacade extends AbstractFacade<CargaPrevia> {
     
     public List<CargaPrevia> obtenerCargasPrevias(Buque buque, Mercaderia mercaderia, Embarque embarque){
          List<CargaPrevia> cargas = null;
-        if (embarque.getId() != null && embarque.getCargaPreviaCollection() != null){
+        if (embarque.getId() != null && embarque.getCargaPreviaCollection() != null && embarque.getCargaPreviaCollection().size() > 0){
             //Asigno por defecto la mercaderia a las cargas previas que no tengan mercaderia asignada
             for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
                 if (cp.getMercaderia() == null){

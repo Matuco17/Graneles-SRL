@@ -120,7 +120,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             desdeCalculado = new DateTime(accidentado.getDesde());
         }
         
-        if (accidentado.getHasta().before(hasta)){
+        if (accidentado.getHasta() != null && accidentado.getHasta().before(hasta)){
             hastaCalculado = new DateTime(accidentado.getHasta()).plusDays(1);
         } else {
             hastaCalculado = new DateTime(hasta).plusDays(1);
@@ -225,6 +225,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         tteVO.setValorBruto(new BigDecimal(totalConcepto));
         tteVO.setJornalBasico(new BigDecimal(basicoBruto));
         tteVO.setValorTurno(new BigDecimal(calcularNeto(tte.getPersonal(), totalConcepto)));
+        
         
         return tteVO;
     }

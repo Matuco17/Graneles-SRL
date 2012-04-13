@@ -30,7 +30,8 @@
                 <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
             </p:column>
             <p:column id="colCarga" headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
-                <p:inputText value="#{item.carga}" style="text-align: right;" />
+                <h:outputText value="#{item.carga}" style="text-align: right;" rendered="#{!cc.attrs.editar}" />
+                <p:inputText value="#{item.carga}" style="text-align: right;" rendered="#{cc.attrs.editar}" />
             </p:column>
         </p:dataTable>
     </co:implementation>
