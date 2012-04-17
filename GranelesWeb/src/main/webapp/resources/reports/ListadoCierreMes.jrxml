@@ -31,6 +31,9 @@
 	<variable name="brutoSinSacYVacaciones_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
 		<variableExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></variableExpression>
 	</variable>
+	<variable name="brutoSinSacYVacaciones_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></variableExpression>
+	</variable>
 	<group name="categoria" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{categoriaId}]]></groupExpression>
 		<groupHeader>
@@ -85,28 +88,27 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
+			<band height="38">
 				<rectangle>
 					<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
 				<rectangle>
 					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
-				<textField pattern="#,##0.00">
+				<textField evaluationTime="Group" evaluationGroup="categoria" pattern="#,##0.00">
 					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<paragraph leftIndent="4" rightIndent="4"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_1}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField>
 					<reportElement x="119" y="0" width="293" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
-						<paragraph leftIndent="4" rightIndent="4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Total Categoría]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA["Total Categoría " + $F{categoriaDescripcion}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -176,8 +178,8 @@
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch">
+	<summary>
+		<band height="50">
 			<rectangle>
 				<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
 				<graphicElement>
@@ -190,14 +192,6 @@
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField pattern="#,##0.00">
-				<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-					<paragraph leftIndent="4" rightIndent="4"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_1}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="119" y="0" width="293" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -206,6 +200,14 @@
 				</textElement>
 				<text><![CDATA[TOTAL GENERAL]]></text>
 			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="412" y="0" width="133" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_2}]]></textFieldExpression>
+			</textField>
 		</band>
-	</columnFooter>
+	</summary>
 </jasperReport>

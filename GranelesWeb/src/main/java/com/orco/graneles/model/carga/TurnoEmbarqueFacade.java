@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
@@ -92,7 +93,7 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
             if (conceptosHoras.get(TipoConceptoRecibo.DEDUCTIVO) != null){
                 for (ConceptoRecibo cr : conceptosHoras.get(TipoConceptoRecibo.DEDUCTIVO)){
                     double cantidadConcepto = conceptoReciboF.calcularValorConcepto(cr, tteVO.getValorBruto().doubleValue(), tte.getPersonal());
-                    valorNeto = valorNeto.subtract(new BigDecimal(cantidadConcepto));
+                    valorNeto = valorNeto.subtract(new Moneda(cantidadConcepto));
                 }
             }
                 
@@ -101,8 +102,8 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
             if (conceptosHoras.get(TipoConceptoRecibo.NO_REMUNERATIVO) != null){
                 for (ConceptoRecibo cr : conceptosHoras.get(TipoConceptoRecibo.NO_REMUNERATIVO)){
                     double cantidadConcepto = conceptoReciboF.calcularValorConcepto(cr, tteVO.getValorBruto().doubleValue(), tte.getPersonal());
-                    noRemunerativo = noRemunerativo.add(new BigDecimal(cantidadConcepto));
-                    valorNeto = valorNeto.add(new BigDecimal(cantidadConcepto));
+                    noRemunerativo = noRemunerativo.add(new Moneda(cantidadConcepto));
+                    valorNeto = valorNeto.add(new Moneda(cantidadConcepto));
                 }
             }
             

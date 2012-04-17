@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -234,7 +235,7 @@ public class PersonalFacade extends AbstractFacade<Personal> {
 
                     //Descuento Judicial
                     if (filaActual.getCell(0) != null)
-                        personalActual.setDescuentoJudicial(new BigDecimal(new Double(filaActual.getCell(23).getNumericCellValue())));
+                        personalActual.setDescuentoJudicial(new Moneda(new Double(filaActual.getCell(23).getNumericCellValue())));
 
                     
                     //TODO: FALTA VER CON FAMILIA (11)

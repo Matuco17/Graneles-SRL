@@ -308,7 +308,9 @@ public class EmbarqueController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
+            List<Embarque> embarques = getFacade().findAll();
+            Collections.sort(embarques, new ComparadorEmbarques());
+            items = new ListDataModel(embarques);
         }
         return items;
     }
@@ -971,4 +973,13 @@ public class EmbarqueController implements Serializable {
    */
 
 
+  private class ComparadorEmbarques implements Comparator<Embarque>{
+
+        @Override
+        public int compare(Embarque o1, Embarque o2) {
+            return o2.getCodigo().compareTo(o1.getCodigo());
+        }
+      
+  } 
+    
 }

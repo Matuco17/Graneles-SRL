@@ -190,7 +190,9 @@ public class AdelantoController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
+            List<Adelanto> adelantos = getFacade().findAll();
+            Collections.sort(adelantos, new ComparadorAdelanto());
+            items = new ListDataModel(adelantos);
         }
         return items;
     }
@@ -284,7 +286,7 @@ public class AdelantoController implements Serializable {
 
         @Override
         public int compare(Adelanto o1, Adelanto o2) {
-            return o1.getFecha().compareTo(o2.getFecha());
+            return o2.getFecha().compareTo(o1.getFecha());
         }
         
     }

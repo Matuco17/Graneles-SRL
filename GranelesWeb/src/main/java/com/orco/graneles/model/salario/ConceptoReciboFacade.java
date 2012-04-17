@@ -17,12 +17,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
@@ -190,31 +192,31 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 if (tte.getTarea().getInsalubre()){
                     double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
                     conceptoInsalubre += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setInsalubre(new BigDecimal(conceptoInsalubre));
+                    tteVO.setInsalubre(new Moneda(conceptoInsalubre));
                     totalConcepto += conceptoInsalubre ;
                 }
                 if (tte.getTarea().getPeligrosa()){
                     double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
                     conceptoPeligrosa += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setPeligrosa(new BigDecimal(conceptoPeligrosa));
+                    tteVO.setPeligrosa(new Moneda(conceptoPeligrosa));
                     totalConcepto += conceptoPeligrosa ;
                 }
                 if (tte.getTarea().getPeligrosa2()){
                     double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
                     conceptoPeligrosa2 += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setPeligrosa2(new BigDecimal(conceptoPeligrosa2));
+                    tteVO.setPeligrosa2(new Moneda(conceptoPeligrosa2));
                     totalConcepto += conceptoPeligrosa2;
                 }
                 if (tte.getTarea().getProductiva()){
                     double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
                     conceptoProductiva += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setProductiva(new BigDecimal(conceptoProductiva));
+                    tteVO.setProductiva(new Moneda(conceptoProductiva));
                     totalConcepto += conceptoProductiva ;
                 }
                 if (tte.getTarea().getEspecidalidad() != null && (tte.getTarea().getEspecidalidad().compareTo(BigDecimal.ZERO) > 0)){
                     double conceptoEspecialidad = basicoBruto * (tte.getTarea().getEspecidalidad().doubleValue() / 100);
                     conceptoEspecialidad += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setEspecialidad(new BigDecimal(conceptoEspecialidad));
+                    tteVO.setEspecialidad(new Moneda(conceptoEspecialidad));
                     totalConcepto += conceptoEspecialidad ;
                 }
             }
@@ -222,9 +224,9 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
         }
         
-        tteVO.setValorBruto(new BigDecimal(totalConcepto));
-        tteVO.setJornalBasico(new BigDecimal(basicoBruto));
-        tteVO.setValorTurno(new BigDecimal(calcularNeto(tte.getPersonal(), totalConcepto)));
+        tteVO.setValorBruto(new Moneda(totalConcepto));
+        tteVO.setJornalBasico(new Moneda(basicoBruto));
+        tteVO.setValorTurno(new Moneda(calcularNeto(tte.getPersonal(), totalConcepto)));
         
         
         return tteVO;
@@ -397,18 +399,18 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             case TipoValorConcepto.FIJO:
                 return null;
             case TipoValorConcepto.PORCENTUAL:
-                return new BigDecimal(concepto.getValor().doubleValue()); 
+                return new Moneda(concepto.getValor().doubleValue()); 
             case TipoValorConcepto.JUBILACION:
-                return new BigDecimal(concepto.getValor().doubleValue()); 
+                return new Moneda(concepto.getValor().doubleValue()); 
             case TipoValorConcepto.OBRA_SOCIAL:
-                return new BigDecimal(concepto.getValor().doubleValue()); 
+                return new Moneda(concepto.getValor().doubleValue()); 
             case TipoValorConcepto.SINDICATO:
                 if (personal.getSindicato()){
                     double porcSindicato = concepto.getValor().doubleValue();
                     if (personal.getCategoriaPrincipal().getSindicato() != null){
                         porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();
                     }
-                return new BigDecimal(porcSindicato); 
+                return new Moneda(porcSindicato); 
                 } else {
                     return BigDecimal.ZERO;
                 }

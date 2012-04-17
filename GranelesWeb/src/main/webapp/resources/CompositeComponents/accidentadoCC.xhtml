@@ -112,7 +112,7 @@
                     <h:commandButton 
                         image="/faces/resources/images/destroy.png"
                         onclick="return confirm('¿Esta seguro que desea eliminar este Adelanto?');" 
-                        action="#{embarqueController.destroyTE}" 
+                        action="#{accidentadoController.borrarJornalCaido()}" 
                         title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
                         value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
                         rendered="#{cc.attrs.editar}"

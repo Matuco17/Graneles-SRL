@@ -209,7 +209,9 @@ public class AccidentadoController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
+            List<Accidentado> accidentados = getFacade().findAll();
+            Collections.sort(accidentados, new ComparadorAccidentado());
+            items = new ListDataModel(accidentados);
         }
         return items;
     }
@@ -330,5 +332,21 @@ public class AccidentadoController implements Serializable {
         return jornalesCaidosModel;
     }
 
+    
+    private class ComparadorAccidentado implements Comparator<Accidentado>{
+
+        @Override
+        public int compare(Accidentado o1, Accidentado o2) {
+            if (o1.getHasta() != null && o2.getHasta() != null){
+                return o2.getHasta().compareTo(o1.getHasta());
+            } else if (o1.getHasta() == null && o2.getHasta() != null){
+                return -1;
+            } else if (o1.getHasta() != null && o2.getHasta() == null){
+                return 1;
+            } else {
+                return o2.getDesde().compareTo(o1.getDesde());
+            }
+        }
+    }     
     
 }

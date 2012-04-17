@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -55,7 +56,7 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
         
         double acumuladoNeto = conceptoReciboF.calcularNeto(personal, acumulado);
         
-        return new BigDecimal(acumuladoNeto);
+        return new Moneda(acumuladoNeto);
     }
     
     /**

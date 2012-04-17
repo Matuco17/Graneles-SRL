@@ -78,7 +78,7 @@ public class SalarioBasicoController implements Serializable {
             return "View";
         
         } catch (RuntimeException e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, e.getMessage());
             return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
@@ -102,7 +102,7 @@ public class SalarioBasicoController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SalarioBasicoUpdated"));
             return "View";
         } catch (RuntimeException e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, e.getMessage());
             return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));

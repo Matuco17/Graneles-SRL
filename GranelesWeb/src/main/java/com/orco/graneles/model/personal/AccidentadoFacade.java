@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.vo.NuevoAccidentadoVO;
@@ -84,8 +85,8 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
             accVO.getAccidentado().setCategoria(accVO.getUltimoTurnoTrabajado().getCategoria());
             accVO.getAccidentado().setTarea(accVO.getUltimoTurnoTrabajado().getTarea());
             
-            accVO.setSueldoDiaConAdicionales(new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, true)));
-            accVO.setSueldoDiaSinAdicionales(new BigDecimal(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, false)));
+            accVO.setSueldoDiaConAdicionales(new Moneda(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, true)));
+            accVO.setSueldoDiaSinAdicionales(new Moneda(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, false)));
         }
         return accVO;
     }

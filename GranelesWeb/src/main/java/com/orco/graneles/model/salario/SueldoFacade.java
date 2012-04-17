@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
@@ -135,7 +136,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             
             return crearSueldoXItemBruto(tte.getPlanilla().getTipo().getConceptoRecibo(),
                     new BigDecimal(tte.getHoras()), 
-                    new BigDecimal(totalConcepto),
+                    new Moneda(totalConcepto),
                     periodo, conceptos, tte.getPersonal());
         }
         return null;
@@ -169,7 +170,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         Sueldo sueldoAcc = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
                         new BigDecimal(diasTrabajados * 6),
-                        new BigDecimal(brutoCalculado),
+                        new Moneda(brutoCalculado),
                         periodo, conceptos, accidentado.getPersonal());
         
         //Agrego los adelantos del periodo
@@ -243,7 +244,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         Sueldo sueldoCalculado = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
                         new BigDecimal(diasTrabajados * 6),
-                        new BigDecimal(brutoCalculado),
+                        new Moneda(brutoCalculado),
                         null, conceptos, accidentado.getPersonal());
         
         return sueldoCalculado.getTotalSueldoNeto(false);
@@ -264,7 +265,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache);
         
         return crearSueldoXItemBruto(conceptoReciboSACCache, null, 
-                                new BigDecimal(calculadoSAC),
+                                new Moneda(calculadoSAC),
                                 periodo, conceptos, personal);
         
     }
@@ -282,7 +283,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta, conceptoReciboVacacionesCache);
         
         return crearSueldoXItemBruto(conceptoReciboVacacionesCache, null,
-                    new BigDecimal(calculadoVacaciones),
+                    new Moneda(calculadoVacaciones),
                     periodo, conceptos, personal);
     
     }
@@ -367,28 +368,28 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                     int tipoJornal = planillas.get(planilla).getTipoJornal(); 
                     
                     //Cantidad del bruto
-                    registroActual[tipoJornal].setCantidadBruto(registroActual[tipoJornal].getCantidadBruto().add(new BigDecimal(new Double(filaActual.getCell(5).getNumericCellValue()))));
+                    registroActual[tipoJornal].setCantidadBruto(registroActual[tipoJornal].getCantidadBruto().add(new Moneda(new Double(filaActual.getCell(5).getNumericCellValue()))));
                                        
                     //Sueldo bruto
-                    registroActual[tipoJornal].setSueldoBruto(registroActual[tipoJornal].getSueldoBruto().add(new BigDecimal(new Double(filaActual.getCell(6).getNumericCellValue()))));
+                    registroActual[tipoJornal].setSueldoBruto(registroActual[tipoJornal].getSueldoBruto().add(new Moneda(new Double(filaActual.getCell(6).getNumericCellValue()))));
                     
                     //Jubilacion
-                    registroActual[tipoJornal].setJubilacion(registroActual[tipoJornal].getJubilacion().add(new BigDecimal(new Double(filaActual.getCell(19).getNumericCellValue()))));
+                    registroActual[tipoJornal].setJubilacion(registroActual[tipoJornal].getJubilacion().add(new Moneda(new Double(filaActual.getCell(19).getNumericCellValue()))));
                     
                     //Obra social
-                    registroActual[tipoJornal].setObraSocial(registroActual[tipoJornal].getObraSocial().add(new BigDecimal(new Double(filaActual.getCell(20).getNumericCellValue()))));
+                    registroActual[tipoJornal].setObraSocial(registroActual[tipoJornal].getObraSocial().add(new Moneda(new Double(filaActual.getCell(20).getNumericCellValue()))));
                     
                     //Fondo Comp
-                    registroActual[tipoJornal].setFondoComp(registroActual[tipoJornal].getFondoComp().add(new BigDecimal(new Double(filaActual.getCell(21).getNumericCellValue()))));
+                    registroActual[tipoJornal].setFondoComp(registroActual[tipoJornal].getFondoComp().add(new Moneda(new Double(filaActual.getCell(21).getNumericCellValue()))));
                     
                     //Sindicato
-                    registroActual[tipoJornal].setSindicato(registroActual[tipoJornal].getSindicato().add(new BigDecimal(new Double(filaActual.getCell(22).getNumericCellValue()))));
+                    registroActual[tipoJornal].setSindicato(registroActual[tipoJornal].getSindicato().add(new Moneda(new Double(filaActual.getCell(22).getNumericCellValue()))));
                     
                     //No Remunerativo
-                    registroActual[tipoJornal].setNoRemunerativo(registroActual[tipoJornal].getNoRemunerativo().add(new BigDecimal(new Double(filaActual.getCell(23).getNumericCellValue()))));
+                    registroActual[tipoJornal].setNoRemunerativo(registroActual[tipoJornal].getNoRemunerativo().add(new Moneda(new Double(filaActual.getCell(23).getNumericCellValue()))));
                     
                     //Dto Judicial
-                    registroActual[tipoJornal].setDtoJudicial(registroActual[tipoJornal].getDtoJudicial().add(new BigDecimal(new Double(filaActual.getCell(24).getNumericCellValue()))));
+                    registroActual[tipoJornal].setDtoJudicial(registroActual[tipoJornal].getDtoJudicial().add(new Moneda(new Double(filaActual.getCell(24).getNumericCellValue()))));
                   
                     //Agrego el registro al mapa de registros
                     registros.put(cuilExcel, registroActual);
@@ -435,26 +436,26 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                     int tipoPagoFeri = new Double(filaActual.getCell(2).getNumericCellValue()).intValue();
                                      
                     //Cantidad
-                    registroActual[tipoPagoFeri].setCantidadBruto(registroActual[tipoPagoFeri].getCantidadBruto().add(new BigDecimal(new Double(filaActual.getCell(11).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setCantidadBruto(registroActual[tipoPagoFeri].getCantidadBruto().add(new Moneda(new Double(filaActual.getCell(11).getNumericCellValue()))));
                     
                     //Sueldo bruto
-                    registroActual[tipoPagoFeri].setSueldoBruto(registroActual[tipoPagoFeri].getSueldoBruto().add(new BigDecimal(new Double(filaActual.getCell(5).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setSueldoBruto(registroActual[tipoPagoFeri].getSueldoBruto().add(new Moneda(new Double(filaActual.getCell(5).getNumericCellValue()))));
                     
                     //Jubilacion
-                    registroActual[tipoPagoFeri].setJubilacion(registroActual[tipoPagoFeri].getJubilacion().add(new BigDecimal(new Double(filaActual.getCell(7).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setJubilacion(registroActual[tipoPagoFeri].getJubilacion().add(new Moneda(new Double(filaActual.getCell(7).getNumericCellValue()))));
                     
                     //Obra social
-                    registroActual[tipoPagoFeri].setObraSocial(registroActual[tipoPagoFeri].getObraSocial().add(new BigDecimal(new Double(filaActual.getCell(10).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setObraSocial(registroActual[tipoPagoFeri].getObraSocial().add(new Moneda(new Double(filaActual.getCell(10).getNumericCellValue()))));
                     
                     //Fondo Comp
-                    registroActual[tipoPagoFeri].setFondoComp(registroActual[tipoPagoFeri].getFondoComp().add(new BigDecimal(new Double(filaActual.getCell(9).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setFondoComp(registroActual[tipoPagoFeri].getFondoComp().add(new Moneda(new Double(filaActual.getCell(9).getNumericCellValue()))));
                     
                     //Sindicato
-                    registroActual[tipoPagoFeri].setSindicato(registroActual[tipoPagoFeri].getSindicato().add(new BigDecimal(new Double(filaActual.getCell(8).getNumericCellValue()))));
+                    registroActual[tipoPagoFeri].setSindicato(registroActual[tipoPagoFeri].getSindicato().add(new Moneda(new Double(filaActual.getCell(8).getNumericCellValue()))));
                     
                     //No Remunerativo
                     if (filaActual.getCell(15) != null)
-                        registroActual[tipoPagoFeri].setNoRemunerativo(registroActual[tipoPagoFeri].getNoRemunerativo().add(new BigDecimal(new Double(filaActual.getCell(15).getNumericCellValue()))));
+                        registroActual[tipoPagoFeri].setNoRemunerativo(registroActual[tipoPagoFeri].getNoRemunerativo().add(new Moneda(new Double(filaActual.getCell(15).getNumericCellValue()))));
                     
                     //Dto Judicial
                     if (filaActual.getCell(16) != null)

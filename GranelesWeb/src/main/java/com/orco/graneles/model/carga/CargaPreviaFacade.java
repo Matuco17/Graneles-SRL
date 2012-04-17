@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 /**
@@ -38,32 +39,45 @@ public class CargaPreviaFacade extends AbstractFacade<CargaPrevia> {
         List<CargaPrevia> cargas = new ArrayList<CargaPrevia>();
         
         for (Bodega bodega : buque.getBodegaCollection()){
-            CargaPrevia carga = new CargaPrevia();
-            carga.setBodega(bodega);
-            carga.setMercaderia(mercaderia);
-            carga.setEmbarque(embarque);
+            CargaPrevia carga = nuevaCargaPrevia(bodega, mercaderia, embarque);
             cargas.add(carga);
         }
         Collections.sort(cargas);                
         return cargas;
     }
+
+    private CargaPrevia nuevaCargaPrevia(Bodega bodega, Mercaderia mercaderia, Embarque embarque) {
+        CargaPrevia carga = new CargaPrevia();
+        carga.setBodega(bodega);
+        carga.setMercaderia(mercaderia);
+        carga.setEmbarque(embarque);
+        return carga;
+    }
     
     
     public List<CargaPrevia> obtenerCargasPrevias(Buque buque, Mercaderia mercaderia, Embarque embarque){
-         List<CargaPrevia> cargas = null;
-        if (embarque.getId() != null && embarque.getCargaPreviaCollection() != null && embarque.getCargaPreviaCollection().size() > 0){
-            //Asigno por defecto la mercaderia a las cargas previas que no tengan mercaderia asignada
+        CargaPrevia[] cargasPrevias = new CargaPrevia[buque.getBodegaCollection().size()];
+
+        //Asigno por defecto la mercaderia a las cargas previas que no tengan mercaderia asignada
+        //Y los pongo en el arreglo para agregar las cp que falten o pisar las que sobren
+        if (embarque.getCargaPreviaCollection() != null){ 
             for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
                 if (cp.getMercaderia() == null){
                     cp.setMercaderia(mercaderia);    
                 }                
+                cargasPrevias[cp.getBodega().getNro() - 1] = cp;
             }
-            cargas = new ArrayList<CargaPrevia>(embarque.getCargaPreviaCollection());
-        } else {
-            cargas = cargarNuevaPorBuque(buque, mercaderia, embarque);
         }
-        Collections.sort(cargas);
-        return cargas;
+
+        //Si no encuentro una cp para cada bodega del buque, le creo una nueva
+        for (Bodega bod : buque.getBodegaCollection()){
+            if (cargasPrevias[bod.getNro() - 1 ] == null){
+                cargasPrevias[bod.getNro() - 1] = nuevaCargaPrevia(bod, mercaderia, embarque);
+            }
+        }
+            
+        Arrays.sort(cargasPrevias);
+        return Arrays.asList(cargasPrevias);
     }
     
 }
