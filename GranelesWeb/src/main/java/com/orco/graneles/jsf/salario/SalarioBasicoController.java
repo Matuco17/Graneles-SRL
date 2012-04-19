@@ -2,11 +2,13 @@ package com.orco.graneles.jsf.salario;
 
 import com.orco.graneles.domain.salario.SalarioBasico;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.NegocioException;
 import com.orco.graneles.model.salario.SalarioBasicoFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -76,13 +78,9 @@ public class SalarioBasicoController implements Serializable {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SalarioBasicoCreated"));
             return "View";
-        
-        } catch (RuntimeException e) {
-            JsfUtil.addErrorMessage(e, e.getMessage());
-            return null;
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
-            return null;
+        } catch (EJBException e) {
+            JsfUtil.addErrorMessage(e, e.getCause().getMessage());
+            return null;        
         } 
     }
 
@@ -101,13 +99,10 @@ public class SalarioBasicoController implements Serializable {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SalarioBasicoUpdated"));
             return "View";
-        } catch (RuntimeException e) {
-            JsfUtil.addErrorMessage(e, e.getMessage());
-            return null;
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
-            return null;
-        }
+        } catch (EJBException e) {
+            JsfUtil.addErrorMessage(e, e.getCause().getMessage());
+            return null;        
+        } 
     }
 
     public String destroy() {
@@ -143,23 +138,7 @@ public class SalarioBasicoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
-
+   
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());;

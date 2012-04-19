@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.NegocioException;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -36,7 +37,7 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
     @Override
     public void create(SalarioBasico entity) {
         if (existeSalario(entity)){
-            throw new RuntimeException("Ya existe un Salario definido para los datos seleccionados");
+            throw new NegocioException("Ya existe un Salario definido para los datos seleccionados");
         } else {
             super.create(entity);
         }
@@ -45,7 +46,7 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
     @Override
     public void edit(SalarioBasico entity) {
         if (existeSalario(entity)){
-            throw new RuntimeException("Ya existe un Salario definido para los datos seleccionados");
+            throw new NegocioException("Ya existe un Salario definido para los datos seleccionados");
         } else {
             super.edit(entity);
         }
