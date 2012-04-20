@@ -131,7 +131,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     public Sueldo calcularSueldoTTE(Periodo periodo, TrabajadoresTurnoEmbarque tte, Map<Integer, List<ConceptoRecibo>> conceptos) {
         //Concepto remunerativo unico dependiente de la cantidad de horas
         if (tte.getHoras() > 0){
-            double totalConcepto = conceptoReciboF.calcularDiaTrabajadoTTE(tte, true);
+            double totalConcepto = conceptoReciboF.calcularDiaBrutoTTE(tte, true);
             //Agrego el valor del total del concepto al valor del total del bruto
             
             return crearSueldoXItemBruto(tte.getPlanilla().getTipo().getConceptoRecibo(),

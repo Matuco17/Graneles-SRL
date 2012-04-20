@@ -44,5 +44,5 @@ public class Moneda extends BigDecimal {
         super(val);
         this.setScale(2, RoundingMode.HALF_UP);
     }
-
+    
 }

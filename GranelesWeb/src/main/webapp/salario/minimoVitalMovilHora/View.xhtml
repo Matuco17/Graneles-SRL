@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewMinimoVitalMovilHoraTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundleSalario.MinimoVitalMovilHoraTitle_desde}" for="desde"   />
+                    <p:calendar id="desde" value="#{minimoVitalMovilHoraController.selected.desde}"  disabled="true"  title="#{bundleSalario.MinimoVitalMovilHoraTitle_desde}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleSalario.MinimoVitalMovilHoraTitle_hasta}" for="hasta"  />
+                    <p:calendar id="hasta" value="#{minimoVitalMovilHoraController.selected.hasta}"  disabled="true"  title="#{bundleSalario.MinimoVitalMovilHoraTitle_hasta}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleSalario.MinimoVitalMovilHoraTitle_valor}" for="valor"  />
+                    <p:inputText id="valor" value="#{minimoVitalMovilHoraController.selected.valor}"  disabled="true"  />
+                      
+               </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{minimoVitalMovilHoraController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.MinimoVitalMovilHoraDestroyLink}"
+                                     title="#{bundleSalario.MinimoVitalMovilHoraDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este MinimoVitalMovilHora?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.MinimoVitalMovilHoraEditLink}"
+                                     title="#{bundleSalario.MinimoVitalMovilHoraEditLink}"
+                                     />
+                    <h:commandButton action="#{minimoVitalMovilHoraController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.MinimoVitalMovilHoraCreateLink}"
+                                     title="#{bundleSalario.MinimoVitalMovilHoraCreateLink}"
+                                     />
+                    <h:commandButton action="#{minimoVitalMovilHoraController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.MinimoVitalMovilHoraShowAllLink}"
+                                     title="#{bundleSalario.MinimoVitalMovilHoraShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

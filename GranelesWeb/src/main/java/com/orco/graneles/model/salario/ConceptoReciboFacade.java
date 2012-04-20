@@ -8,10 +8,7 @@ import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.Personal;
-import com.orco.graneles.domain.salario.ConceptoRecibo;
-import com.orco.graneles.domain.salario.ItemsSueldo;
-import com.orco.graneles.domain.salario.SalarioBasico;
-import com.orco.graneles.domain.salario.Sueldo;
+import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +26,8 @@ import java.util.*;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.management.monitor.MonitorSettingException;
+import org.jfree.data.time.Month;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 /**
@@ -49,6 +48,8 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     private TrabajadoresTurnoEmbarqueFacade tteF;
     @EJB
     private AccidentadoFacade accidentadoF;
+    @EJB
+    private MinimoVitalMovilHoraFacade minVitalMovilF;
     
         
     //Singletos que no se tienen que cargar de nuevo, solamente con una vez me alcanzan
@@ -77,7 +78,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
                 }
 
-                totalAcumulado += calcularDiaTTE(salarioActivo, tte, true);
+                totalAcumulado += calcularDiaBrutoTTE(salarioActivo, tte, true);
             }
 
             List<Accidentado> accs = accidentadoF.getAccidentadosPeriodoYPersonal(desde, hasta, personal);
@@ -141,41 +142,35 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         return diasTrabajados;
     }
     
-    protected double calcularDiaTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
+    protected double calcularDiaBrutoTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
         if (salario == null){
             return 0.0;
         } else {
-            //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
-            double basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-            double totalConcepto = basicoBruto; //resultado de la suma del concepto
-            //Realizo el agregado de los modificadores de tarea
-            if (incluirAdicionales){
-                if (tte.getTarea().getInsalubre()){
-                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
-                }
-                if (tte.getTarea().getPeligrosa()){
-                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-                }
-                if (tte.getTarea().getPeligrosa2()){
-                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-                }
-                if (tte.getTarea().getProductiva()){
-                    totalConcepto += basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-                }
-                if (tte.getTarea().getEspecidalidad() != null && (tte.getTarea().getEspecidalidad().compareTo(BigDecimal.ZERO) > 0)){
-                    totalConcepto += basicoBruto * (tte.getTarea().getEspecidalidad().doubleValue() / 100);
-                }
-            }
-            //Ahora aplico el valor del modificador del tipo de jornal
-            totalConcepto += totalConcepto * tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-            totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
-            return totalConcepto;
+            return calcularDiaCompletoTTTE(salario, tte, incluirAdicionales).getValorBruto().doubleValue();
         }
     }
     
-    public TrabajadorTurnoEmbarqueVO calcularDiaTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+        /**
+     * Metodo que calcula el valor total del dia trabajado para el Trabajador
+     * @param tte
+     * @param mapAdicTarea
+     * @return 
+     */
+    public double calcularDiaBrutoTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
+        //Esto significa que debo realizar el calculo del total bruto con el salario basico
+        //Obtengo el salario correspondiente al tte
         SalarioBasico salario = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+        return calcularDiaBrutoTTE(salario, tte, incluirAdicionales);
+    }
+    
+    public TrabajadorTurnoEmbarqueVO calcularDiaTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
+        SalarioBasico salario = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+        return calcularDiaCompletoTTTE(salario, tte, incluirAdicionales);
+    }
+     
+    
+    public TrabajadorTurnoEmbarqueVO calcularDiaCompletoTTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
+        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
         
         double basicoBruto = 0.0;
         double totalConcepto = 0.0; //resultado de la suma del concepto
@@ -226,8 +221,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         
         tteVO.setValorBruto(new Moneda(totalConcepto));
         tteVO.setJornalBasico(new Moneda(basicoBruto));
-        tteVO.setValorTurno(new Moneda(calcularNeto(tte.getPersonal(), totalConcepto)));
+        tteVO.setDescuentoJudicial(new Moneda(calcularDescuentoJudicial(tte, totalConcepto)));
         
+        Moneda neto = (new Moneda(calcularNeto(tte.getPersonal(), totalConcepto) - tteVO.getDescuentoJudicial().doubleValue()));
+        tteVO.setValorTurno(neto);
         
         return tteVO;
     }
@@ -244,6 +241,30 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         tteVO.setValorTurno(tteVOconValores.getValorTurno());
     }
     
+    
+   /**
+     * Metodo que calcula el descuento judicial del TTE
+     * @param tte entrada de trabajador en la planilla
+     * @param bruto valor bruto calculado con anterioridad 
+     * @return el monto del descuento judicial
+     */
+    private double calcularDescuentoJudicial(TrabajadoresTurnoEmbarque tte, double bruto){
+        if (tte.getPersonal().getDescuentoJudicial() != null 
+                && tte.getPersonal().getDescuentoJudicial().doubleValue() >= 0.01){
+            
+            //Primero obtengo el minimo vital y movil correspondiente
+            MinimoVitalMovilHora mvm = minVitalMovilF.obtenerMinimoVitalMovilHoraActivo(tte.getPlanilla().getFecha());
+            
+            if (mvm != null){
+                double totalMVM = mvm.getValor().doubleValue() * tte.getHoras().doubleValue();
+                        
+                double netoAAplicarDesc = bruto - totalMVM;
+                
+                return netoAAplicarDesc * tte.getPersonal().getDescuentoJudicial().doubleValue() / 100;
+            }
+        }
+        return 0.0;
+    }
     
     protected Map<Integer, FixedList> getMapAdicTarea(){
         if (mapAdicTarea == null){
@@ -311,18 +332,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                                    .getResultList().get(0);
     }
     
-    /**
-     * Metodo que calcula el valor total del dia trabajado para el Trabajador
-     * @param tte
-     * @param mapAdicTarea
-     * @return 
-     */
-    public double calcularDiaTrabajadoTTE(TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        //Esto significa que debo realizar el calculo del total bruto con el salario basico
-        //Obtengo el salario correspondiente al tte
-        SalarioBasico salario = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
-        return calcularDiaTTE(salario, tte, incluirAdicionales);
-    }
+
     
     /**
      * Metodo que devuelve el valor calculado de acuerdo al concepto, puede ser un simple porcentaje o algo + complejo
@@ -386,7 +396,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         return neto;
     }
     
-        /**
+    /**
      * Metodo que devuelve la cantidad de acuerdo al concepto
      * @param concepto
      * @param totalBruto

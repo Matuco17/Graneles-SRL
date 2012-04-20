@@ -186,8 +186,13 @@
                                 </c:forEach>
                             </h:selectOneMenu>
                         </p:column>
-                        <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
+                        <p:column id="colValorBruto" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorBruto}" style="text-align: right;" >
                             <h:outputText value="#{item.valorBruto}" >
+                                <f:convertNumber maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>  
+                        <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
+                            <h:outputText value="#{item.valorTurno}" >
                                 <f:convertNumber maxFractionDigits="2" />
                             </h:outputText>
                         </p:column>  

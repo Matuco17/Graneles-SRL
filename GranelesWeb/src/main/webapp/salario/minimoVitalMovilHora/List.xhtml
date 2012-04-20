@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{minimoVitalMovilHoraController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ListMinimoVitalMovilHoraTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleSalario.ListMinimoVitalMovilHoraEmpty}" rendered="#{minimoVitalMovilHoraController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{minimoVitalMovilHoraController.items.rowCount > 0}">
+                    <p:dataTable value="#{minimoVitalMovilHoraController.items}" 
+                                 var="item" rowKey="#{item.id}"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{minimoVitalMovilHoraController.selected}" selectionMode="single">
+                        <p:column headerText ="#{bundleSalario.MinimoVitalMovilHoraTitle_desde}" >
+                            <h:outputText value="#{item.desde}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText ="#{bundleSalario.MinimoVitalMovilHoraTitle_hasta}">
+                            <h:outputText value="#{item.hasta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText ="#{bundleSalario.MinimoVitalMovilHoraTitle_valor}">
+                            <h:outputText value="#{item.valor}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{minimoVitalMovilHoraController.prepareCreate}" 
+                    value="#{bundleSalario.MinimoVitalMovilHoraCreateLink}"
+                    title="#{bundleSalario.MinimoVitalMovilHoraCreateLink}"
+                    />
+                   <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{minimoVitalMovilHoraController.prepareView}" 
+                                value="#{bundleSalario.MinimoVitalMovilHoraViewLink}"
+                                title="#{bundleSalario.MinimoVitalMovilHoraViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{minimoVitalMovilHoraController.prepareEdit}" 
+                                value="#{bundleSalario.MinimoVitalMovilHoraEditLink}"
+                                title="#{bundleSalario.MinimoVitalMovilHoraEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este MinimoVitalMovilHora?');" 
+                                action="#{minimoVitalMovilHoraController.destroy}" 
+                                title="#{bundleSalario.MinimoVitalMovilHoraDestroyLink}"
+                                value="#{bundleSalario.MinimoVitalMovilHoraDestroyLink}"
+                                />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

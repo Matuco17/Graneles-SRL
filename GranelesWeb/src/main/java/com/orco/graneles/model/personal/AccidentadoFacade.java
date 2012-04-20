@@ -85,8 +85,8 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
             accVO.getAccidentado().setCategoria(accVO.getUltimoTurnoTrabajado().getCategoria());
             accVO.getAccidentado().setTarea(accVO.getUltimoTurnoTrabajado().getTarea());
             
-            accVO.setSueldoDiaConAdicionales(new Moneda(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, true)));
-            accVO.setSueldoDiaSinAdicionales(new Moneda(conceptoReciboF.calcularDiaTrabajadoTTE(ultimoTTE, false)));
+            accVO.setSueldoDiaConAdicionales(new Moneda(conceptoReciboF.calcularDiaBrutoTTE(ultimoTTE, true)));
+            accVO.setSueldoDiaSinAdicionales(new Moneda(conceptoReciboF.calcularDiaBrutoTTE(ultimoTTE, false)));
         }
         return accVO;
     }

@@ -26,6 +26,7 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     private BigDecimal valorBruto;
     private BigDecimal decreto;
     private BigDecimal valorTurno; //Neto
+    private BigDecimal descuentoJudicial;
     
     private BigDecimal totalBruto;
     private BigDecimal totalNeto;
@@ -44,6 +45,7 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
         valorBruto = BigDecimal.ZERO;
         decreto = BigDecimal.ZERO;
         valorTurno = BigDecimal.ZERO;
+        descuentoJudicial = BigDecimal.ZERO;
         
     }
 
@@ -129,7 +131,14 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     public void setDecreto(BigDecimal decreto) {
         this.decreto = decreto;
     }
-    
+
+    public BigDecimal getDescuentoJudicial() {
+        return descuentoJudicial;
+    }
+
+    public void setDescuentoJudicial(BigDecimal descuentoJudicial) {
+        this.descuentoJudicial = descuentoJudicial;
+    }
     
     
     //DATOS DEL TTE PUENTEADOS PARA REPORTES
