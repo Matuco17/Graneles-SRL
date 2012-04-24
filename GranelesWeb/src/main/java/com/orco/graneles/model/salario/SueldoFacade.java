@@ -46,6 +46,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     ConceptoRecibo conceptoReciboAccidentadoCache;
     ConceptoRecibo conceptoReciboAdelantoAccidentadoCache;
     ConceptoRecibo conceptoReciboAdelantoAguinaldoCache;
+    ConceptoRecibo conceptoReciboDtoJudicialCache;
     
     
     @EJB
@@ -134,10 +135,15 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             double totalConcepto = conceptoReciboF.calcularDiaBrutoTTE(tte, true);
             //Agrego el valor del total del concepto al valor del total del bruto
             
-            return crearSueldoXItemBruto(tte.getPlanilla().getTipo().getConceptoRecibo(),
+            Sueldo s = crearSueldoXItemBruto(tte.getPlanilla().getTipo().getConceptoRecibo(),
                     new BigDecimal(tte.getHoras()), 
                     new Moneda(totalConcepto),
                     periodo, conceptos, tte.getPersonal());
+            
+            //Agrego ademas el descuento judicial
+            agregarDescuentoJudicial(tte, totalConcepto, s);
+                    
+            return s;
         }
         return null;
     }
@@ -288,6 +294,27 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     
     }
     
+    /**
+     * Método que agrega el dto judicial si este es mayor a cero en el cálculo
+     * @param tte
+     * @param totalConcepto
+     * @param s 
+     */
+    private void agregarDescuentoJudicial(TrabajadoresTurnoEmbarque tte, double totalConcepto, Sueldo s) {
+        
+        if (conceptoReciboDtoJudicialCache == null){
+            conceptoReciboDtoJudicialCache = conceptoReciboF.obtenerConcepto(
+                                                fixedListF.find(TipoRecibo.HORAS),
+                                                fixedListF.find(TipoValorConcepto.DESCUENTO_JUDICIAL));
+        }
+        
+        double valorDescuentoJudicial = conceptoReciboF.calcularDescuentoJudicial(tte, totalConcepto);
+        
+        if (valorDescuentoJudicial > 0.01){
+            itemSueldoF.crearItemSueldo(conceptoReciboDtoJudicialCache, null, 
+                                        new Moneda(valorDescuentoJudicial), s);
+        }
+    }
     
     public List<Sueldo> obtenerSueldos(Personal personal, Date desde, Date hasta){
         //TODO: HACER
@@ -530,6 +557,8 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         return total;
     }
+
+
     
     
 }

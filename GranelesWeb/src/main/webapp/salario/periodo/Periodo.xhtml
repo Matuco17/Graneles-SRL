@@ -50,6 +50,15 @@
                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" for="nroPrimeraHoja" />
                                <h:inputText id="oLnroPrimeraHoja" value="#{periodoController.selected.nroPrimeraHoja}" title="#{bundleSalario.PeriodoTitle_nroPrimeraHoja}" />
 
+                               <h:outputText value="" />
+                               <h:commandButton id="cmdProcesarPeriodo" 
+                                             value="Procesar periodo"
+                                             action="#{periodoController.procesarPeriodoConDatosSistema()}"
+                                             onclick="return confirm('Atención: Este proceso puede tardar varios minutos. ¿Desea continuar?');" 
+                                             style="width: 100%; font-weight: bold;"
+                                             />
+                               
+                               
                                <h:outputLabel value="Cantidad de Sueldos Cargados" />
                                <h:outputText id="cantSueldos" value="#{periodoController.selected.sueldoCollection.size()}" />
 
@@ -83,12 +92,7 @@
                                
                            </h:panelGrid>
                            
-                           <h:commandButton id="cmdProcesarPeriodo" 
-                                             value="Procesar periodo"
-                                             action="#{periodoController.procesarPeriodoConDatosSistema()}"
-                                             onclick="return confirm('Atención: Este proceso puede tardar varios minutos. ¿Desea continuar?');" 
-                                
-                                             />
+                           
                         </h:form>                    
                    </p:panel>
                 <div style="float: left; width: 350px;">

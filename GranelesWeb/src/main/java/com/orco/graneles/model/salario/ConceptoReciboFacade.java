@@ -248,7 +248,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * @param bruto valor bruto calculado con anterioridad 
      * @return el monto del descuento judicial
      */
-    private double calcularDescuentoJudicial(TrabajadoresTurnoEmbarque tte, double bruto){
+    public double calcularDescuentoJudicial(TrabajadoresTurnoEmbarque tte, double bruto){
         if (tte.getPersonal().getDescuentoJudicial() != null 
                 && tte.getPersonal().getDescuentoJudicial().doubleValue() >= 0.01){
             

@@ -36,15 +36,15 @@ public class ItemsSueldoFacade extends AbstractFacade<ItemsSueldo> {
      */
     public void crearItemSueldo(ConceptoRecibo concepto,BigDecimal cantidad, BigDecimal valor, Sueldo sueldo) {
         //Item Sueldo Bruto
-        ItemsSueldo itemBruto = new ItemsSueldo();
-        itemBruto.setConceptoRecibo(concepto);
-        itemBruto.setValorCalculado(valor);
-        itemBruto.setValorIngresado(valor);
-        itemBruto.setCantidad(cantidad);
-        itemBruto.setSueldo(sueldo);
+        ItemsSueldo is = new ItemsSueldo();
+        is.setConceptoRecibo(concepto);
+        is.setValorCalculado(valor);
+        is.setValorIngresado(valor);
+        is.setCantidad(cantidad);
+        is.setSueldo(sueldo);
         if (sueldo.getItemsSueldoCollection() == null)
             sueldo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
-        sueldo.getItemsSueldoCollection().add(itemBruto);
+        sueldo.getItemsSueldoCollection().add(is);
     }
     
 }

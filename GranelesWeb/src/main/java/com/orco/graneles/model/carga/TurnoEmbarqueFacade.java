@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.Moneda;
+import com.orco.graneles.model.NegocioException;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
@@ -161,6 +162,8 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
             }
         } catch (Exception e) {
             turnos = null;
+            e.printStackTrace();
+            throw new NegocioException(e.getMessage());
         }
         
         
