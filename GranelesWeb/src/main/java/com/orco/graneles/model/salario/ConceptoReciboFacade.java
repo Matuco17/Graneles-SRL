@@ -120,7 +120,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         if (accidentado.getDesde().before(desde)) {
             desdeCalculado = new DateTime(desde);
         } else {
-            desdeCalculado = new DateTime(accidentado.getDesde());
+            desdeCalculado = (new DateTime(accidentado.getDesde())).plusDays(1); //Ya que se calcula con un día despues del día de accidente
         }
         
         if (accidentado.getHasta() != null && accidentado.getHasta().before(hasta)){
@@ -130,7 +130,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         }
         //OBS: le sumo un dia ya que la comparacion es solamente isBefore y no tengo el equal en la fecha.
                 
-        //calculo los dias de acuerdo al periodo limite impuesto
+        //calculo los dias de acuerdo al periodo limite impuesto 
         DateTime currentFecha = desdeCalculado;
         while (currentFecha.isBefore(hastaCalculado)){
             if (currentFecha.getDayOfWeek() != DateTimeConstants.SATURDAY){

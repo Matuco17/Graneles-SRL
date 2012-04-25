@@ -9,6 +9,8 @@ import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.Personal;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -25,6 +27,15 @@ public class NuevoAccidentadoVO implements Serializable {
     public NuevoAccidentadoVO(TrabajadoresTurnoEmbarque ultimoTurnoTrabajado, Accidentado accidentado) {
         this.ultimoTurnoTrabajado = ultimoTurnoTrabajado;
         this.accidentado = accidentado;
+    }
+    
+    public Date getFechaDesdePago(){
+        DateTime desde = new DateTime(accidentado.getDesde());
+        return desde.plusDays(1).toDate();
+    }
+    
+    public Date getFechaHastaPago(){
+        return accidentado.getHasta();
     }
     
     public Accidentado getAccidentado() {

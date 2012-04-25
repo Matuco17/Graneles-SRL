@@ -73,8 +73,8 @@
                 <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_desde}" for="adelantoDesde" />
                 <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_hasta}" for="adelantoHasta" />
                 
-                <p:calendar id="adelantoDesde" value="#{accidentadoController.currentJC.desde}" mode="inline" mindate="#{accidentadoController.selected.desde}" maxdate="#{accidentadoController.selected.hasta}" /> 
-                <p:calendar id="adelantoHasta" value="#{accidentadoController.currentJC.hasta}" mode="inline" mindate="#{accidentadoController.selected.desde}" maxdate="#{accidentadoController.selected.hasta}" /> 
+                <p:calendar id="adelantoDesde" value="#{accidentadoController.currentJC.desde}" mode="inline" mindate="#{accidentadoController.selectedVO.fechaDesdePago}" maxdate="#{accidentadoController.selectedVO.fechaHastaPago}" /> 
+                <p:calendar id="adelantoHasta" value="#{accidentadoController.currentJC.hasta}" mode="inline" mindate="#{accidentadoController.selectedVO.fechaDesdePago}" maxdate="#{accidentadoController.selectedVO.fechaHastaPago}" /> 
             </h:panelGrid>
             <h:panelGrid columns="3" rendered="${cc.attrs.editar}">
             
