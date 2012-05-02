@@ -4,6 +4,7 @@ import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.fileExport.LibroSueldosAFIP;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
@@ -37,6 +38,9 @@ public class PeriodoController implements Serializable {
     private DataModel items = null;
     @EJB
     private PeriodoFacade ejbFacade;
+    @EJB
+    private LibroExcelFacade libroExcelF;
+    
     private int selectedItemIndex;
 
     // Datos para el formulario de Periodo (Libro de Sueldos
@@ -320,7 +324,7 @@ public class PeriodoController implements Serializable {
                     && fileCargaReg.getFileName() != null && fileCargaReg.getFileName().length() > 3
                     && filePagoFeri.getFileName() != null && filePagoFeri.getFileName().length() > 3){ 
                     //Llamo a completar el periodo
-                    getFacade().completarPeríodo(fileAltas.getInputstream(),
+                    libroExcelF.completarPeríodo(fileAltas.getInputstream(),
                                             filePlanillas.getInputstream(), 
                                             fileCargaReg.getInputstream(), 
                                             filePagoFeri.getInputstream(),
