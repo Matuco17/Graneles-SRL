@@ -509,4 +509,8 @@ public class Personal implements Serializable {
         return this.apellido;
     }
     
+    public String getCuilApellidoYNombre(){
+        return this.cuil + " - " + this.apellido;
+    }
+    
 }

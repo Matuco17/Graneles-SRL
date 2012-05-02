@@ -172,7 +172,7 @@ public class PersonalController implements Serializable {
         List<Personal> suggestions = new ArrayList<Personal>();  
           
         for(Personal p : getTodoElPersonal()) {  
-            if(p.getCuil().contains(query) || p.getApellido().contains(query))  
+            if(p.getCuil().contains(query) || p.getApellido().toUpperCase().contains(query.toUpperCase()))  
                 suggestions.add(p);  
         }  
           

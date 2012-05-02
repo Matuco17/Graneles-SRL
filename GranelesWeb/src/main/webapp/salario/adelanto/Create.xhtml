@@ -17,11 +17,10 @@
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal" />
                         <p:autoComplete value="#{adelantoController.currentPersonal}" 
                                     completeMethod="#{personalController.completePersonal}"
-                                    maxResults="15" 
-                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    maxResults="15" size="60" minQueryLength="2"
+                                    var="p" itemLabel="#{p.cuilApellidoYNombre}" itemValue="#{p}"  
                                     forceSelection="true"  >  
-                        </p:autoComplete> 
-
+                        </p:autoComplete>
                         
                         <h:outputLabel value="" />
 
