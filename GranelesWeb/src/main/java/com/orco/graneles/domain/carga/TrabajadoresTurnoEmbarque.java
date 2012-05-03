@@ -9,7 +9,6 @@ import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.personal.Tarea;
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -197,7 +195,9 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.TrabajadoresTurnoEmbarque[ id=" + id + " ]";
+        return "Planilla: " + this.getPlanilla().getNroPlanilla() 
+                + ", Tarea: " + this.getTarea().toString() 
+                + ", Categoria: " + this.getCategoria().toString();
     }
     
 }

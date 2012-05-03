@@ -17,30 +17,32 @@
                 <Co:accidentadoCC editar="false" nuevo="false"/>
          
 
-                <h:panelGrid columns="4">
-                    <h:commandButton action="#{accidentadoController.destroyAndView}" 
-                                     image="/faces/resources/images/destroy.png" 
-                                     value="#{bundlePersonal.AccidentadoDestroyLink}"
-                                     title="#{bundlePersonal.AccidentadoDestroyLink}"
-                                     onclick="return confirm('¿Esta seguro que desea eliminar este Accidentado?');" 
-                                     />
+                 <p:panel style="width: 100%; display: inline-block;">
+                    <h:panelGrid columns="4">
+                        <h:commandButton action="#{accidentadoController.destroyAndView}" 
+                                         image="/faces/resources/images/destroy.png" 
+                                         value="#{bundlePersonal.AccidentadoDestroyLink}"
+                                         title="#{bundlePersonal.AccidentadoDestroyLink}"
+                                         onclick="return confirm('¿Esta seguro que desea eliminar este Accidentado?');" 
+                                         />
 
-                    <h:commandButton action="Edit" 
-                                     image="/faces/resources/images/edit.png" 
-                                     value="#{bundlePersonal.AccidentadoEditLink}"
-                                     title="#{bundlePersonal.AccidentadoEditLink}"
-                                     />
-                    <h:commandButton action="#{accidentadoController.prepareCreate}" 
-                                     image="/faces/resources/images/new.png" 
-                                     value="#{bundlePersonal.AccidentadoCreateLink}"
-                                     title="#{bundlePersonal.AccidentadoCreateLink}"
-                                     />
-                    <h:commandButton action="#{accidentadoController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundlePersonal.AccidentadoShowAllLink}"
-                                     title="#{bundlePersonal.AccidentadoShowAllLink}"
-                                     />
-                </h:panelGrid>
+                        <h:commandButton action="Edit" 
+                                         image="/faces/resources/images/edit.png" 
+                                         value="#{bundlePersonal.AccidentadoEditLink}"
+                                         title="#{bundlePersonal.AccidentadoEditLink}"
+                                         />
+                        <h:commandButton action="#{accidentadoController.prepareCreate}" 
+                                         image="/faces/resources/images/new.png" 
+                                         value="#{bundlePersonal.AccidentadoCreateLink}"
+                                         title="#{bundlePersonal.AccidentadoCreateLink}"
+                                         />
+                        <h:commandButton action="#{accidentadoController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundlePersonal.AccidentadoShowAllLink}"
+                                         title="#{bundlePersonal.AccidentadoShowAllLink}"
+                                         />
+                    </h:panelGrid>
+                 </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

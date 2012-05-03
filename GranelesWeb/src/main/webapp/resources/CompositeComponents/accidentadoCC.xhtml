@@ -15,17 +15,21 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <p:fieldset id="panAccidentado" legend="Accidentado" toggleable="true" >
-            <h:panelGrid columns="4">
+        <p:panel id="panAccidentado" header="Datos Accidentado" style="max-width: 500px; float: left;" >
+            <h:panelGrid columns="3">
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personalSeleccionado}" />
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.cuil}" />
                 <h:outputText value="#{accidentadoController.selectedVO.accidentado.personal.apellido}" />
-                <h:outputText value="" />
-                
+            </h:panelGrid> 
+            <h:panelGrid columns="2">                
+                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_trabajoRealizado}" for="trabajoRealizado" />
+                <h:outputText id="trabajoRealizado" value="#{accidentadoController.selectedVO.accidentado.trabajoRealizado.toString()}"  />
+         
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_tarea}" for="tarea" />
                 <h:selectOneMenu id="tarea" value="#{accidentadoController.selected.tarea}"  disabled="#{!cc.attrs.editar}">
                     <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
+                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_categoria}" for="categoria" />
                 <h:selectOneMenu id="categoria" value="#{accidentadoController.selected.categoria}"  disabled="#{!cc.attrs.editar}">
                     <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
@@ -33,23 +37,23 @@
                 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_desde}" for="desde" />
                 <p:calendar id="desde" value="#{accidentadoController.selected.desde}" title="#{bundlePersonal.AccidentadoTitle_desde}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar || (accidentadoController.jornalesCaidos.size() > 0)}" />
+                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_hasta}" for="hasta" />
-                <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" disabled="#{!cc.attrs.editar || (accidentadoController.jornalesCaidos.size() > 0)}" />
+                <p:calendar id="hasta" value="#{accidentadoController.selected.hasta}" title="#{bundlePersonal.AccidentadoTitle_hasta}" pattern="dd/MM/yyyy" />
 
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_siniestro}" for="siniestro" />
                 <p:inputMask id="siniestro" value="#{accidentadoController.selected.siniestro}" mask="99999999/999" readonly="#{!cc.attrs.editar}" />
-                <h:outputText value="" />
-                <h:outputText value="" />
                 
                 <h:outputLabel for="incluirAdicionales" value="#{bundlePersonal.AccidentadoTitle_incluirAdicionales}" />
                 <p:selectBooleanCheckbox id="incluirAdicionales" value="#{accidentadoController.selected.incluirAdicionales}" disabled="#{!cc.attrs.editar}" />
             </h:panelGrid>
-            <h:panelGrid columns="1" >
+            <h:panelGrid columns="1">
                 <c:if test="#{cc.attrs.editar}" >
                     <p:commandButton id="recalcular" actionListener="#{accidentadoController.recalcularAccidentado()}" 
                                      update="panAccidentado" value="Recalcular" />
                 </c:if>
-
+                
+                
                 <h:outputLabel value="Sueldos aplicados" for="dtbSueldos" />
                 <p:dataTable id="dtbSueldos" value="#{accidentadoController.selectedVO.sueldos}" var="sueldo" >
                     <p:column headerText="Desde" >
@@ -77,8 +81,8 @@
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_descripcionCortaAccidente}" for="descripcionCortaAccidente" />
                 <p:inputTextarea id="descripcionCortaAccidente" value="#{accidentadoController.selected.descripcionCortaAccidente}" style="width: 400px; height: 120px;" disabled="#{!cc.attrs.editar}" />
             </h:panelGrid>
-        </p:fieldset>
-        <p:fieldset id="panAdelantos" legend="Adelantos" rendered="${!cc.attrs.nuevo}" toggleable="true" >
+        </p:panel>
+        <p:panel id="panAdelantos" header="Adelantos" rendered="${!cc.attrs.nuevo}" style="max-width: 380px; float: left;" >
             <h:panelGrid columns="2" rendered="${cc.attrs.editar}">
                 
                 <h:outputLabel value="#{bundlePersonal.JornalCaidoTitle_desde}" for="adelantoDesde" />
@@ -131,6 +135,6 @@
                     <h:link value="Recibo" onclick="window.open('#{jornalCaido.urlRecibo}','Recibo');window.close();" rendered="#{!cc.attrs.editar}" />
                 </p:column>
             </p:dataTable>
-        </p:fieldset>
+        </p:panel>
     </co:implementation>
 </html>

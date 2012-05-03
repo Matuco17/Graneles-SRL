@@ -17,7 +17,7 @@
                  <h:panelGrid columns="4">
                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_personal}" for="personal" />
                     
-                    <p:autoComplete value="#{accidentadoController.currentPersonal}" 
+                    <p:autoComplete id="personal" value="#{accidentadoController.currentPersonal}" 
                                     completeMethod="#{personalController.completePersonal}"
                                     maxResults="15" 
                                     var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
@@ -36,21 +36,23 @@
             <h:form>
                 <Co:accidentadoCC editar="true" nuevo="true"/>
                 
-                <h:panelGrid columns="2">
-                    <h:commandButton action="#{accidentadoController.create}"
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundlePersonal.AccidentadoSaveLink}" 
-                                     title="#{bundlePersonal.AccidentadoSaveLink}"
-                                     />
+                <p:panel style="width: 100%; display: inline-block;">
+                    <h:panelGrid columns="2">
+                        <h:commandButton action="#{accidentadoController.create}"
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundlePersonal.AccidentadoSaveLink}" 
+                                         title="#{bundlePersonal.AccidentadoSaveLink}"
+                                         />
 
-                    <h:commandButton action="#{accidentadoController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundlePersonal.AccidentadoShowAllLink}"
-                                     title="#{bundlePersonal.AccidentadoShowAllLink}"
-                                     immediate="true" 
-                                     />
+                        <h:commandButton action="#{accidentadoController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundlePersonal.AccidentadoShowAllLink}"
+                                         title="#{bundlePersonal.AccidentadoShowAllLink}"
+                                         immediate="true" 
+                                         />
 
-                </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

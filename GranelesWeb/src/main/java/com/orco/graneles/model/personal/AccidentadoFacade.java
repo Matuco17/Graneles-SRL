@@ -85,14 +85,17 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
         
         if (accidentado.getTrabajoRealizado() == null){
             accidentado.setTrabajoRealizado(trabTurnoF.getUltimoTrabajoRealizado(accidentado.getPersonal(), accidentado.getDesde()));
+           
+             //Completo de acuerdo al ultimo turno los elementos del accidentado automaticamente
+            if (accidentado.getTrabajoRealizado() != null){
+                accidentado.setCategoria(accidentado.getTrabajoRealizado().getCategoria());
+                accidentado.setTarea(accidentado.getTrabajoRealizado().getTarea());
+            }
         }
         
         AccidentadoVO accVO = new AccidentadoVO(accidentado);
         
         if (accidentado.getTrabajoRealizado() != null){
-            //Completo de acuerdo al ultimo turno los elementos del accidentado automaticamente
-            accVO.getAccidentado().setCategoria(accidentado.getTrabajoRealizado() .getCategoria());
-            accVO.getAccidentado().setTarea(accidentado.getTrabajoRealizado().getTarea());
             
             //Ahora busco todos los salarios que van a existir
             accVO.setSueldos(new ArrayList<SueldoAccidentadoVO>());

@@ -18,6 +18,8 @@ import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.AccidentadoFacade;
+import com.orco.graneles.vo.AccidentadoVO;
+import com.orco.graneles.vo.SueldoAccidentadoVO;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -83,7 +85,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
 
             List<Accidentado> accs = accidentadoF.getAccidentadosPeriodoYPersonal(desde, hasta, personal);
             for (Accidentado acc : accs){
-                totalAcumulado += calculoSueldoAccidentado(acc, calculoDiasAccidentado(desde, hasta, acc)); 
+                totalAcumulado += calculoSueldoAccidentado(acc, desde, hasta); 
             }
 
             //Completo los cache para aminorar los calculos
@@ -95,13 +97,38 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     }
 
     /**
-     * Calcula el sueldo del accidentado de acuerdo a su valor y los dias trabajados
+     * Calcula el sueldo del accidentado de acuerdo a su valor desde una fecha hasta la otra
      * @param accidentado
-     * @param diasTrabajados
+     * @param desde fecha inicio del cálculo
+     * @param hasta fecha final del calculo
      * @return 
      */
-    public double calculoSueldoAccidentado(Accidentado accidentado, int diasTrabajados){
-        return accidentado.getBruto().doubleValue() * diasTrabajados;
+    public double calculoSueldoAccidentado(Accidentado accidentado, Date desde, Date hasta){
+        AccidentadoVO accVO = accidentadoF.completarAccidentado(accidentado);
+        
+        double acumulado = 0.0;
+        
+        //Por cada uno de los salarios aplicados, veo cuales tienen que ser aplicados en el periodo de tiempo
+        for (SueldoAccidentadoVO saVO : accVO.getSueldos()){
+            if (saVO.getDesde().before(hasta) || saVO.getDesde().equals(hasta)){
+                if (saVO.getHasta() == null || saVO.getHasta().after(desde) || saVO.getHasta().equals(desde)){
+                    
+                    //Calculo las fechas que se aplica sobre el periodo en cuestion el salario
+                    Date saDesde = (saVO.getDesde().before(desde)) ? desde : saVO.getDesde();
+                    Date saHasta = (saVO.getHasta().after(hasta)) ? hasta : saVO.getHasta();
+                    
+                    int diasTrabajados = calculoDiasAccidentado(saDesde, saHasta, accidentado);
+                    
+                    if (accidentado.getIncluirAdicionales() != null && accidentado.getIncluirAdicionales()){
+                        acumulado += saVO.getBrutoConAdicionales().doubleValue() * diasTrabajados;
+                    } else {
+                        acumulado += saVO.getBrutoSinAdicionales().doubleValue() * diasTrabajados;
+                    }
+                }
+            }
+        }
+        
+        return acumulado;
     }
     
     /**

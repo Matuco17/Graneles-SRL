@@ -111,6 +111,7 @@ public class AccidentadoController implements Serializable {
 
     public String prepareCreate() {
         currentV0 = null;
+        current = null;
         selectedItemIndex = -1;
         return "Create";
     }

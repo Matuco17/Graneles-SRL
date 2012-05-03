@@ -17,26 +17,28 @@
                 <Co:accidentadoCC editar="true" nuevo="false"/>
                
                 
-                <h:panelGrid columns="3">
+                 <p:panel style="width: 100%; display: inline-block;">
+                    <h:panelGrid columns="3">
 
-                    <h:commandButton action="#{accidentadoController.update}" 
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundle.AccidentadoSaveLink}"
-                                     title="#{bundle.AccidentadoSaveLink}"
-                                     />
-                    <h:commandButton action="View" 
-                                     value="#{bundle.AccidentadoViewLink}" 
-                                     image="/faces//resources/images/view.png" 
-                                     immediate="true"
-                                     title="#{bundle.AccidentadoViewLink}"
-                                     />
-                    <h:commandButton action="#{accidentadoController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundle.AccidentadoShowAllLink}"
-                                     immediate="true"
-                                     title="#{bundle.AccidentadoShowAllLink}"
-                                     />
-                </h:panelGrid>                 
+                        <h:commandButton action="#{accidentadoController.update}" 
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundle.AccidentadoSaveLink}"
+                                         title="#{bundle.AccidentadoSaveLink}"
+                                         />
+                        <h:commandButton action="View" 
+                                         value="#{bundle.AccidentadoViewLink}" 
+                                         image="/faces//resources/images/view.png" 
+                                         immediate="true"
+                                         title="#{bundle.AccidentadoViewLink}"
+                                         />
+                        <h:commandButton action="#{accidentadoController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundle.AccidentadoShowAllLink}"
+                                         immediate="true"
+                                         title="#{bundle.AccidentadoShowAllLink}"
+                                         />
+                    </h:panelGrid>                 
+                 </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

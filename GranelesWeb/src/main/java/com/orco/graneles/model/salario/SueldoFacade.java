@@ -171,7 +171,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         int diasTrabajados = conceptoReciboF.calculoDiasAccidentado(periodo.getDesde(), periodo.getHasta(), accidentado);
         
-        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, diasTrabajados);
+        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, periodo.getDesde(), periodo.getHasta());
         
         
         Sueldo sueldoAcc = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
@@ -245,7 +245,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         int diasTrabajados = conceptoReciboF.calculoDiasAccidentado(desde, hasta, accidentado);
         
-        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, diasTrabajados);
+        double brutoCalculado = conceptoReciboF.calculoSueldoAccidentado(accidentado, desde, hasta);
         
         
         Sueldo sueldoCalculado = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
