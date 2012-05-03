@@ -53,11 +53,13 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
     /**
      * Metodo que devuelve el último trabajo realizado por el personal correpondiente
      * @param personal
+     * @param fecha fecha límite para tener en cuenta el trabajo realizado
      * @return 
      */
-    public TrabajadoresTurnoEmbarque getUltimoTrabajoRealizado(Personal personal){
+    public TrabajadoresTurnoEmbarque getUltimoTrabajoRealizado(Personal personal, Date fecha){
         List<TrabajadoresTurnoEmbarque> listaTrabajos = getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPersonalFechaDesc", TrabajadoresTurnoEmbarque.class)
                                                     .setParameter("personal", personal)
+                                                    .setParameter("fecha", fecha)
                                                     .getResultList();
         
         if (listaTrabajos != null && listaTrabajos.size() > 0){

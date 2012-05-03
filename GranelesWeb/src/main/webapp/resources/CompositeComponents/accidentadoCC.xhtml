@@ -41,28 +41,39 @@
                 <h:outputText value="" />
                 <h:outputText value="" />
                 
-                <c:if test="#{cc.attrs.editar}" >
-                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioConAdicionales}" for="calculadoConAdicionales" />
-                    <p:inputText style="text-align: right;" readonly="true" id="calculadoConAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaConAdicionales}" >
-                        <f:convertNumber maxFractionDigits="2" />
-                    </p:inputText>
-                    <h:outputText value="" />
-                    <h:outputText value="" />
-
-                    <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_salarioSinAdicionales}" for="calculadoSinAdicionales" />
-                    <p:inputText style="text-align: right;" readonly="true" id="calculadoSinAdicionales" value="#{accidentadoController.selectedVO.sueldoDiaSinAdicionales}" >
-                        <f:convertNumber maxFractionDigits="2" />
-                    </p:inputText>
-                    <h:outputText value="" />
-                    <h:outputText value="" />
-                </c:if>
-
-                <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_bruto}" for="bruto" />
-                <p:inputText  style="text-align: right;" id="bruto" value="#{accidentadoController.selected.bruto}" readonly="#{!cc.attrs.editar}" >
-                    <f:convertNumber maxFractionDigits="2" />
-                </p:inputText>
+                <h:outputLabel for="incluirAdicionales" value="#{bundlePersonal.AccidentadoTitle_incluirAdicionales}" />
+                <p:selectBooleanCheckbox id="incluirAdicionales" value="#{accidentadoController.selected.incluirAdicionales}" disabled="#{!cc.attrs.editar}" />
             </h:panelGrid>
             <h:panelGrid columns="1" >
+                <c:if test="#{cc.attrs.editar}" >
+                    <p:commandButton id="recalcular" actionListener="#{accidentadoController.recalcularAccidentado()}" 
+                                     update="panAccidentado" value="Recalcular" />
+                </c:if>
+
+                <h:outputLabel value="Sueldos aplicados" for="dtbSueldos" />
+                <p:dataTable id="dtbSueldos" value="#{accidentadoController.selectedVO.sueldos}" var="sueldo" >
+                    <p:column headerText="Desde" >
+                        <h:outputText value="#{sueldo.desde}" >
+                            <f:convertDateTime pattern="dd/MM/yy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Hasta" >
+                        <h:outputText value="#{sueldo.hasta}" >
+                            <f:convertDateTime pattern="dd/MM/yy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Sin Adicionales" >
+                        <h:outputText value="#{sueldo.brutoSinAdicionales}" >
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Con Adicionales" >
+                        <h:outputText value="#{sueldo.brutoConAdicionales}" >
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_descripcionCortaAccidente}" for="descripcionCortaAccidente" />
                 <p:inputTextarea id="descripcionCortaAccidente" value="#{accidentadoController.selected.descripcionCortaAccidente}" style="width: 400px; height: 120px;" disabled="#{!cc.attrs.editar}" />
             </h:panelGrid>

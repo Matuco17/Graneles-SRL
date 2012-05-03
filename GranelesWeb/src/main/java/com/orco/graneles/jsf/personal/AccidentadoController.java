@@ -7,7 +7,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.JornalCaidoFacade;
 import com.orco.graneles.reports.ReciboJornalCaído;
-import com.orco.graneles.vo.NuevoAccidentadoVO;
+import com.orco.graneles.vo.AccidentadoVO;
 
 import java.io.Serializable;
 import java.util.*;
@@ -28,7 +28,7 @@ public class AccidentadoController implements Serializable {
 
     private Accidentado current;
     private Personal currentPersonal;
-    private NuevoAccidentadoVO currentV0;
+    private AccidentadoVO currentV0;
     private DataModel items = null;
     
     @EJB
@@ -63,9 +63,9 @@ public class AccidentadoController implements Serializable {
         current = selected;
     }
     
-    public NuevoAccidentadoVO getSelectedVO(){
+    public AccidentadoVO getSelectedVO(){
         if (currentV0 == null) {
-            currentV0 = new NuevoAccidentadoVO(null, getSelected());
+            currentV0 = new AccidentadoVO(getSelected());
         }
         return currentV0;
     }
@@ -73,7 +73,7 @@ public class AccidentadoController implements Serializable {
     public void crearDatosAccidentado(){
         if (currentPersonal != null){
             currentV0.getAccidentado().setPersonal(currentPersonal);
-            currentV0 = ejbFacade.calcularNuevoAccidentado(currentV0.getAccidentado());
+            currentV0 = ejbFacade.completarAccidentado(currentV0.getAccidentado());
         }
     }
     
@@ -85,6 +85,10 @@ public class AccidentadoController implements Serializable {
         recreateModel();
         return "List";
     }
+    
+    public void recalcularAccidentado(){
+        currentV0 = ejbFacade.completarAccidentado(currentV0.getAccidentado());
+    }
 
     public String prepareView() {
         //current = (Accidentado) getItems().getRowData();
@@ -95,7 +99,9 @@ public class AccidentadoController implements Serializable {
             for (JornalCaido jc : current.getJornalesCaidosCollection()){
                 ReciboJornalCaído recibo = new ReciboJornalCaído(jc);
                 jc.setUrlRecibo(recibo.obtenerReportePDF());
-            }            
+            }        
+            
+            currentV0 = ejbFacade.completarAccidentado(current);
             
             return "View";
         } else {
@@ -112,7 +118,7 @@ public class AccidentadoController implements Serializable {
     public String prepareEdit() {
         if (current != null){
             //current = (Accidentado) getItems().getRowData();
-            currentV0 = ejbFacade.calcularNuevoAccidentado(current);
+            currentV0 = ejbFacade.completarAccidentado(current);
             //selectedItemIndex = getItems().getRowIndex();
             return "Edit";
         } else {

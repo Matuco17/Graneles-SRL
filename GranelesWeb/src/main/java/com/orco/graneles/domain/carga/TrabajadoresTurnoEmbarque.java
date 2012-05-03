@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPersonalFechaDesc",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t "
                             + " WHERE t.personal = :personal "
+                            + " AND (:fecha IS NULL OR t.planilla.fecha <= :fecha)"
                             + " ORDER BY t.planilla.fecha DESC ")})
 public class TrabajadoresTurnoEmbarque implements Serializable {
     private static final long serialVersionUID = 1L;

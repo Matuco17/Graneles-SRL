@@ -48,13 +48,17 @@ import javax.xml.bind.annotation.XmlRootElement;
                         query = "SELECT s FROM SalarioBasico s "
                                 + "WHERE s.desde <= :fecha "
                                 + "AND (s.hasta IS NULL OR s.hasta >= :fecha)"),
+    @NamedQuery(name = "SalarioBasico.findXCatYTar", 
+                        query = "SELECT s FROM SalarioBasico s "
+                                + "WHERE s.categoria = :categoria "
+                                + "AND s.tarea = :tarea "),
     @NamedQuery(name = "SalarioBasico.findActivo", 
                         query = "SELECT s FROM SalarioBasico s "
                                 + "WHERE s.categoria = :categoria "
                                 + "AND s.tarea = :tarea "
                                 + "AND s.desde <= :fecha "
                                 + "AND (s.hasta IS NULL OR s.hasta >= :fecha)")})
-public class SalarioBasico implements Serializable {
+public class SalarioBasico implements Serializable, Comparable<SalarioBasico> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -166,6 +170,11 @@ public class SalarioBasico implements Serializable {
     @Override
     public String toString() {
         return "com.orco.graneles.domain.SalarioBasico[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(SalarioBasico o) {
+        return desde.compareTo(o.desde);
     }
     
 }

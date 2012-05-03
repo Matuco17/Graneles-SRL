@@ -214,9 +214,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     tteVO.setEspecialidad(new Moneda(conceptoEspecialidad));
                     totalConcepto += conceptoEspecialidad ;
                 }
+                
+                //Ahora aplico el valor del modificador del tipo de jornal
+                totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
             }
-            //Ahora aplico el valor del modificador del tipo de jornal
-            totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
         }
         
         tteVO.setValorBruto(new Moneda(totalConcepto));

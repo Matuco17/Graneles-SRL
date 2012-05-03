@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.personal;
 
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.salario.Sueldo;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -58,6 +59,7 @@ public class Accidentado implements Serializable {
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "bruto")
+    @Deprecated
     private BigDecimal bruto;
     
     @Size(max = 12)
@@ -67,8 +69,12 @@ public class Accidentado implements Serializable {
     @Column(name = "descripcion_corta_accidente")
     private String descripcionCortaAccidente;
     
+    @Column(name = "incluir_adicionales")
+    private Boolean incluirAdicionales;
+    
     @JoinColumn(name = "libro_sueldo", referencedColumnName = "id")
     @ManyToOne
+    @Deprecated
     private Sueldo libroSueldo;
     
     @JoinColumn(name = "tarea", referencedColumnName = "id")
@@ -86,6 +92,9 @@ public class Accidentado implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accidentado", orphanRemoval = true)
     private Collection<JornalCaido> jornalesCaidosCollection;
     
+    @JoinColumn(name = "trabajo_realizado", referencedColumnName = "id")
+    @ManyToOne
+    private TrabajadoresTurnoEmbarque trabajoRealizado;
     
     public Accidentado() {
     }
@@ -117,6 +126,16 @@ public class Accidentado implements Serializable {
     public void setDescripcionCortaAccidente(String descripcionCortaAccidente) {
         this.descripcionCortaAccidente = descripcionCortaAccidente;
     }
+
+    public Boolean getIncluirAdicionales() {
+        return incluirAdicionales;
+    }
+
+    public void setIncluirAdicionales(Boolean incluirAdicionales) {
+        this.incluirAdicionales = incluirAdicionales;
+    }
+    
+    
 
     public Sueldo getLibroSueldo() {
         return libroSueldo;
@@ -156,6 +175,14 @@ public class Accidentado implements Serializable {
 
     public void setSiniestro(String siniestro) {
         this.siniestro = siniestro;
+    }
+
+    public TrabajadoresTurnoEmbarque getTrabajoRealizado() {
+        return trabajoRealizado;
+    }
+
+    public void setTrabajoRealizado(TrabajadoresTurnoEmbarque trabajoRealizado) {
+        this.trabajoRealizado = trabajoRealizado;
     }
     
     

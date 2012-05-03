@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.NegocioException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -123,5 +125,50 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
                         .setParameter("fecha", fecha)
                         .getResultList();
     }
+    
+    
+    /**
+     * Obtiene los salarios activos dados una o 2 fechas
+     * @param tarea (obligatorio)
+     * @param categoria (obligatorio)
+     * @param desde (obligatorio)
+     * @param hasta (opcional)
+     * @return 
+     */ 
+    public List<SalarioBasico> obtenerSalarios(Tarea tarea, Categoria categoria, Date desde, Date hasta){
+        try {
+            List<SalarioBasico> result = new ArrayList<SalarioBasico>();
+            List<SalarioBasico> salarios = getEntityManager().createNamedQuery("SalarioBasico.findXCatYTar", SalarioBasico.class)
+                        .setParameter("categoria", categoria)
+                        .setParameter("tarea", tarea)
+                        .getResultList();
+            
+            
+            for (SalarioBasico sb : salarios){
+                if (sb.getHasta() != null && hasta != null){
+                    if (sb.getDesde().before(hasta) || sb.getDesde().equals(hasta) || sb.getHasta().after(desde) || sb.getHasta().equals(desde)){
+                        result.add(sb);
+                    }                    
+                } else if (sb.getHasta() == null && hasta != null){
+                    if (sb.getDesde().before(hasta) || sb.getDesde().equals(hasta)){
+                        result.add(sb);
+                    }
+                } else if (sb.getHasta() != null && hasta == null){
+                    if (desde.before(sb.getHasta()) || desde.equals(sb.getHasta())){
+                        result.add(sb);
+                    }
+                } else if (sb.getHasta() == null && hasta == null){
+                    result.add(sb);
+                }
+            }
+          
+            Collections.sort(result);
+            
+            return result;
+        } catch (NoResultException e) {
+            return new ArrayList<SalarioBasico>();
+        }
+    }
+    
 }
 

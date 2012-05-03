@@ -10,22 +10,24 @@ import com.orco.graneles.domain.personal.Personal;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import org.joda.time.DateTime;
 
 /**
  *
  * @author orco
  */
-public class NuevoAccidentadoVO implements Serializable {
+public class AccidentadoVO implements Serializable {
     
     
     private TrabajadoresTurnoEmbarque ultimoTurnoTrabajado;
-    private BigDecimal sueldoDiaSinAdicionales;
-    private BigDecimal sueldoDiaConAdicionales;
+    
+    private List<SueldoAccidentadoVO> sueldos;
+    
     private Accidentado accidentado;
 
-    public NuevoAccidentadoVO(TrabajadoresTurnoEmbarque ultimoTurnoTrabajado, Accidentado accidentado) {
-        this.ultimoTurnoTrabajado = ultimoTurnoTrabajado;
+    public AccidentadoVO(Accidentado accidentado) {
+        this.ultimoTurnoTrabajado = accidentado.getTrabajoRealizado();
         this.accidentado = accidentado;
     }
     
@@ -46,23 +48,16 @@ public class NuevoAccidentadoVO implements Serializable {
         this.accidentado = accidentado;
     }
 
-
-    public BigDecimal getSueldoDiaConAdicionales() {
-        return sueldoDiaConAdicionales;
+    public List<SueldoAccidentadoVO> getSueldos() {
+        return sueldos;
     }
 
-    public void setSueldoDiaConAdicionales(BigDecimal sueldoDiaConAdicionales) {
-        this.sueldoDiaConAdicionales = sueldoDiaConAdicionales;
+    public void setSueldos(List<SueldoAccidentadoVO> sueldos) {
+        this.sueldos = sueldos;
     }
 
-    public BigDecimal getSueldoDiaSinAdicionales() {
-        return sueldoDiaSinAdicionales;
-    }
-
-    public void setSueldoDiaSinAdicionales(BigDecimal sueldoDiaSinAdicionales) {
-        this.sueldoDiaSinAdicionales = sueldoDiaSinAdicionales;
-    }
-
+    
+ 
     public TrabajadoresTurnoEmbarque getUltimoTurnoTrabajado() {
         return ultimoTurnoTrabajado;
     }
