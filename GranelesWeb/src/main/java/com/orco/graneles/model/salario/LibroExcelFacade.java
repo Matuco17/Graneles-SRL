@@ -87,7 +87,8 @@ public class LibroExcelFacade  {
     private static int ID_ConceptoExtra100 = 11;
     private static int ID_ConceptoExtra150 = 12;
     private static int ID_ConceptoExtra300 = 13;
-    private static int CANTIDAD_CONCEPTOS = 13;
+    private static int ID_ConceptoAccidentadoART = 26;
+    private static int CANTIDAD_CONCEPTOS = 26;
     
     
     
@@ -100,6 +101,7 @@ public class LibroExcelFacade  {
     public static final int TIPO_PAGOFERI_FERIADO = 5;
     public static final int TIPO_PAGOFERI_VACACIONES = 6;
     public static final int TIPO_PAGOFERI_SAC = 7;
+    
     
     /**
      * Carga los datos del período, cargando y actualizando los datos de los trabajadores
@@ -220,8 +222,8 @@ public class LibroExcelFacade  {
                                 cantidades[ID_ConceptoExtra300] = cantidades[ID_ConceptoExtra300].add(registros[i].getCantidadBruto());
                                 break;
                             case TIPO_PAGOFERI_ACCIDENTADO:
-                                valores[ID_ConceptoSueldoBruto] = valores[ID_ConceptoSueldoBruto].add(registros[i].getSueldoBruto());
-                                cantidades[ID_ConceptoSueldoBruto] = cantidades[ID_ConceptoSueldoBruto].add(registros[i].getCantidadBruto());
+                                valores[ID_ConceptoAccidentadoART] = valores[ID_ConceptoAccidentadoART].add(registros[i].getSueldoBruto());
+                                cantidades[ID_ConceptoAccidentadoART] = cantidades[ID_ConceptoAccidentadoART].add(registros[i].getCantidadBruto());
                                 break;
                             case TIPO_PAGOFERI_FERIADO:
                                 valores[ID_ConceptoSueldoBruto] = valores[ID_ConceptoSueldoBruto].add(registros[i].getSueldoBruto());

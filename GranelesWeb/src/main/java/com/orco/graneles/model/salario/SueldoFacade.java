@@ -160,7 +160,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         if (conceptoReciboAccidentadoCache == null){
             conceptoReciboAccidentadoCache = conceptoReciboF.obtenerConcepto(
                                                                 fixedListF.find(TipoRecibo.HORAS),
-                                                                fixedListF.find(TipoValorConcepto.HORAS_HABILES));
+                                                                fixedListF.find(TipoValorConcepto.PAGOS_ACCIDENTADO_ART));
         }
         if (conceptoReciboAdelantoAccidentadoCache == null){
             conceptoReciboAdelantoAccidentadoCache = conceptoReciboF.obtenerConcepto(
@@ -175,7 +175,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         
         Sueldo sueldoAcc = crearSueldoXItemBruto(conceptoReciboAccidentadoCache, 
-                        new BigDecimal(diasTrabajados * 6),
+                        new BigDecimal(diasTrabajados),
                         new Moneda(brutoCalculado),
                         periodo, conceptos, accidentado.getPersonal());
         

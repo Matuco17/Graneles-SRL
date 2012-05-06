@@ -24,7 +24,7 @@
             <h:panelGrid columns="2">                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_trabajoRealizado}" for="trabajoRealizado" />
                 <h:outputText id="trabajoRealizado" value="#{accidentadoController.selectedVO.accidentado.trabajoRealizado.toString()}"  />
-         
+                                
                 <h:outputLabel value="#{bundlePersonal.AccidentadoTitle_tarea}" for="tarea" />
                 <h:selectOneMenu id="tarea" value="#{accidentadoController.selected.tarea}"  disabled="#{!cc.attrs.editar}">
                     <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>

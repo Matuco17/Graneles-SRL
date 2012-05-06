@@ -109,20 +109,22 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         double acumulado = 0.0;
         
         //Por cada uno de los salarios aplicados, veo cuales tienen que ser aplicados en el periodo de tiempo
-        for (SueldoAccidentadoVO saVO : accVO.getSueldos()){
-            if (saVO.getDesde().before(hasta) || saVO.getDesde().equals(hasta)){
-                if (saVO.getHasta() == null || saVO.getHasta().after(desde) || saVO.getHasta().equals(desde)){
-                    
-                    //Calculo las fechas que se aplica sobre el periodo en cuestion el salario
-                    Date saDesde = (saVO.getDesde().before(desde)) ? desde : saVO.getDesde();
-                    Date saHasta = (saVO.getHasta().after(hasta)) ? hasta : saVO.getHasta();
-                    
-                    int diasTrabajados = calculoDiasAccidentado(saDesde, saHasta, accidentado);
-                    
-                    if (accidentado.getIncluirAdicionales() != null && accidentado.getIncluirAdicionales()){
-                        acumulado += saVO.getBrutoConAdicionales().doubleValue() * diasTrabajados;
-                    } else {
-                        acumulado += saVO.getBrutoSinAdicionales().doubleValue() * diasTrabajados;
+        if (accVO.getSueldos() != null){
+            for (SueldoAccidentadoVO saVO : accVO.getSueldos()){
+                if (saVO.getDesde().before(hasta) || saVO.getDesde().equals(hasta)){
+                    if (saVO.getHasta() == null || saVO.getHasta().after(desde) || saVO.getHasta().equals(desde)){
+
+                        //Calculo las fechas que se aplica sobre el periodo en cuestion el salario
+                        Date saDesde = (saVO.getDesde().before(desde)) ? desde : saVO.getDesde();
+                        Date saHasta = (saVO.getHasta() == null || saVO.getHasta().after(hasta)) ? hasta : saVO.getHasta();
+
+                        int diasTrabajados = calculoDiasAccidentado(saDesde, saHasta, accidentado);
+
+                        if (accidentado.getIncluirAdicionales() != null && accidentado.getIncluirAdicionales()){
+                            acumulado += saVO.getBrutoConAdicionales().doubleValue() * diasTrabajados;
+                        } else {
+                            acumulado += saVO.getBrutoSinAdicionales().doubleValue() * diasTrabajados;
+                        }
                     }
                 }
             }
@@ -160,7 +162,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         //calculo los dias de acuerdo al periodo limite impuesto 
         DateTime currentFecha = desdeCalculado;
         while (currentFecha.isBefore(hastaCalculado)){
-            if (currentFecha.getDayOfWeek() != DateTimeConstants.SATURDAY){
+            if (currentFecha.getDayOfWeek() != DateTimeConstants.SUNDAY){
                 diasTrabajados++;
             }
             currentFecha = currentFecha.plusDays(1);

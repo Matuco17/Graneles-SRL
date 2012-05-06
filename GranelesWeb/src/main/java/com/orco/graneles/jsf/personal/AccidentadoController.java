@@ -1,4 +1,4 @@
-package com.orco.graneles.jsf.personal;
+ package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.JornalCaido;
@@ -140,8 +140,8 @@ public class AccidentadoController implements Serializable {
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_categoria"));
             return false;
         }
-        if (getSelectedVO().getAccidentado().getBruto() == null){
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_bruto"));
+         if (getSelectedVO().getAccidentado().getTrabajoRealizado() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoRequiredMessage_trabajoRealizado"));
             return false;
         }
         //Paso todas la validaciones
@@ -166,7 +166,7 @@ public class AccidentadoController implements Serializable {
     public String update() {
         try {
             if (validarCreateUpdate()){
-                //currentV0.getAccidentado().setJornalesCaidosCollection(jornalesCaidos);
+                currentV0.getAccidentado().setJornalesCaidosCollection(jornalesCaidos);
                 getFacade().edit(currentV0.getAccidentado());
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoUpdated"));
                 return "View";

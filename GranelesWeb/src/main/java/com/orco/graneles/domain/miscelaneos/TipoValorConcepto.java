@@ -27,4 +27,5 @@ public class TipoValorConcepto {
     public static final int ADELANTO_AGUINALDO = 112;
     public static final int ADELANTO_ACCIDENTADO = 113;
     public static final int DESCUENTO_JUDICIAL = 114;
+    public static final int PAGOS_ACCIDENTADO_ART = 115;
 }
