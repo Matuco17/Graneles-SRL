@@ -31,5 +31,9 @@
             <base-name>/BundleMiscelaneos</base-name>
             <var>bundleMiscelaneos</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/BundleSeguridad</base-name>
+            <var>bundleSeguridad</var>
+        </resource-bundle>
     </application>
 </faces-config>

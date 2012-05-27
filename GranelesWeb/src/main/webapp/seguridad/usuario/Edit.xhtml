@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSeguridad.UsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_username}" for="username" />
+                    <p:inputText id="username" value="#{usuarioController.selected.username}" title="#{bundleSeguridad.UsuarioTitle_username}" required="true" requiredMessage="#{bundleSeguridad.EditUsuarioRequiredMessage_username}"/>
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_apellido}" for="apellido" />
+                    <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" title="#{bundleSeguridad.UsuarioTitle_apellido}" required="true" requiredMessage="#{bundleSeguridad.EditUsuarioRequiredMessage_apellido}"/>
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_nombre}" for="nombre" />
+                    <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" title="#{bundleSeguridad.UsuarioTitle_nombre}" />
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_email}" for="email" />
+                    <p:inputText id="email" value="#{usuarioController.selected.email}" title="#{bundleSeguridad.UsuarioTitle_email}" />
+                
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_password}"  />
+                    <p:password id="password" value="#{usuarioController.passwordnew}"  />
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_passwordconfirm}"  />
+                    <p:password id="passwordconfirm" value="#{usuarioController.passwordnewConfirmation}" />
+                  
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_grupoCollection}" for="grupoCollection" />
+                    <p:selectManyCheckbox value="#{usuarioController.selected.grupoCollection}" layout="pageDirection"
+                                          converter="#{grupoController.grupoConverter}" >
+                        <f:selectItems value="#{grupoController.itemsAvailableSelectMany}"  />
+                    </p:selectManyCheckbox>
+                    
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+
+                    <h:commandButton action="#{usuarioController.update}" 
+                                     image="../../resources/images/save.png" 
+                                     value="#{bundleSeguridad.EditUsuarioSaveLink}"
+                                     title="#{bundleSeguridad.EditUsuarioSaveLink}"
+                                     />
+                    <h:commandButton action="View" 
+                                     value="#{bundleSeguridad.EditUsuarioViewLink}" 
+                                     image="../../resources/images/view.png" 
+                                     immediate="true"
+                                     title="#{bundleSeguridad.EditUsuarioViewLink}"
+                                     />
+                    <h:commandButton action="#{usuarioController.prepareList}"
+                                     image="../../resources/images/viewAll.png" 
+                                     value="#{bundleSeguridad.EditUsuarioShowAllLink}"
+                                     immediate="true"
+                                     title="#{bundleSeguridad.EditUsuarioShowAllLink}"
+                                     />
+                </h:panelGrid>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

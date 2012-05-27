@@ -38,7 +38,7 @@
                 </h:form>
             </p:panel>
             <p:panel id="panPeriodoSeleccionado" style="float: left;" rendered="#{periodoController.current != null}">
-                   <p:panel id="panPeridoView" header="Información" style="float: left; width: 450px;">
+                   <p:panel id="panPeridoView" header="Información" style="float: left; width: 550px;">
                        <h:form>
                            <h:panelGrid columns="2">
                                <h:outputLabel value="#{bundleSalario.PeriodoTitle_descripcion}"/>
@@ -95,9 +95,9 @@
                            
                         </h:form>                    
                    </p:panel>
-                <div style="float: left; width: 350px;">
+                <div  >
                     
-                   <p:panel id="panPeridoEdit" header="Cargar Libro de Sueldos desde programa anterior" rendered="#{periodoController.current != null}" >
+                    <p:panel id="panPeridoEdit" header="Cargar Libro de Sueldos desde programa anterior" rendered="false" >
                         <h:form enctype="multipart/form-data">
                             <h:panelGrid columns="2" >
 

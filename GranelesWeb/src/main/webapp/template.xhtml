@@ -8,59 +8,64 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>
-            <ui:insert name="title">Graneles</ui:insert></title>
-<h:outputStylesheet name="css/jsfcrud.css"/>
-        
+            <ui:insert name="title">Graneles</ui:insert>
+        </title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
         <h:outputStylesheet name="css/theme.css"/>
     </h:head>
 
     <h:body>
-        <div style="width: 35%;">
-            
-        </div>
-        <div style="width: 63%" >
+        <div style="float:left; width: 100%;">
+            <p:graphicImage value="Graneles S.R.L." url="/faces/resources/images/logoMinimo.jpg" style="float: left; height: 55px" />
+            <div style="float: right; display: block; font-size: medium;" >
+                <h:form>
+                <h:commandLink action="#{loginController.logout()}" value="Salir" />
+                </h:form>
+            </div>
             <p:messages showDetail="false" />
         </div>
-        <p>
-            <h:form>
-               <p:menubar  >  
-                    <p:submenu label="Ingreso" >  
-                        <p:menuitem value="Personal" url="/faces/personal/personal/List.xhtml" />  
-                        <p:menuitem value="Accidentados"  url="/faces/personal/accidentado/List.xhtml" />
-                        <p:menuitem value="Embarques" url="/faces/carga/embarque/List.xhtml" />
-                        <p:menuitem value="Hacer Adelanto" url="/faces/salario/adelanto/Create.xhtml" />
-                     </p:submenu>
-                    <p:submenu label="Listados" >
-                        <p:menuitem value="Periodo Mensual" url="/faces/salario/periodo/Periodo.xhtml" />
-                        <p:menuitem value="Adelantos" url ="/faces/salario/adelanto/List.xhtml" />
-                        <p:menuitem value="Proyeccion SAC y Vacaciones" url="/faces/salario/periodo/ProyeccionSacYVacaciones.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Facturación" >  
-                    </p:submenu>
-                    <p:submenu label="Tablas" >  
-                        <p:menuitem value="Categorias" url="/faces/personal/categoria/List.xhtml" />  
-                        <p:menuitem value="Sindicatos" url="/faces/personal/sindicato/List.xhtml" />  
-                        <p:menuitem value="Obras Sociales" url="/faces/personal/obraSocial/List.xhtml" />  
-                        <p:menuitem value="Buques" url="/faces/carga/buque/List.xhtml" />  
-                        <p:menuitem value="Muelles" url="/faces/carga/muelle/List.xhtml" />  
-                        <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" />
-                        <p:menuitem value="Salarios Básicos" url="/faces/salario/salarioBasico/List.xhtml" />
-                        <p:menuitem value="Mercaderías" url="/faces/carga/mercaderia/List.xhtml" />
-                        <p:menuitem value="Empresas" url="/faces/facturacion/empresa/List.xhtml" />
-                        <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" />
-                        <p:menuitem value="Mínimo Vital y Movil Hora" url="/faces/salario/minimoVitalMovilHora/List.xhtml" />
-                    </p:submenu>                    
-                </p:menubar>
-            </h:form>
-        </p>
-        <h1>
-            <ui:insert name="title">Default Title</ui:insert>
-        </h1>
-        <p>
+        <div style="float:left; width: 100%;">
+                <h:form>
+                   <p:menubar  >  
+                        <p:submenu label="Ingreso" >  
+                            <p:menuitem value="Personal" url="/faces/personal/personal/List.xhtml" />  
+                            <p:menuitem value="Accidentados"  url="/faces/personal/accidentado/List.xhtml" />
+                            <p:menuitem value="Embarques" url="/faces/carga/embarque/List.xhtml" />
+                            <p:menuitem value="Hacer Adelanto" url="/faces/salario/adelanto/Create.xhtml" />
+                         </p:submenu>
+                        <p:submenu label="Listados" >
+                            <p:menuitem value="Periodo Mensual" url="/faces/salario/periodo/Periodo.xhtml" />
+                            <p:menuitem value="Adelantos" url ="/faces/salario/adelanto/List.xhtml" />
+                            <p:menuitem value="Proyeccion SAC y Vacaciones" url="/faces/salario/periodo/ProyeccionSacYVacaciones.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Facturación" >  
+                        </p:submenu>
+                        <p:submenu label="Tablas" >  
+                            <p:menuitem value="Buques" url="/faces/carga/buque/List.xhtml" />  
+                            <p:menuitem value="Categorias" url="/faces/personal/categoria/List.xhtml" />  
+                            <p:menuitem value="Empresas" url="/faces/facturacion/empresa/List.xhtml" />
+                            <p:menuitem value="Muelles" url="/faces/carga/muelle/List.xhtml" />  
+                            <p:menuitem value="Mercaderías" url="/faces/carga/mercaderia/List.xhtml" />
+                            <p:menuitem value="Mínimo Vital y Movil Hora" url="/faces/salario/minimoVitalMovilHora/List.xhtml" />
+                            <p:menuitem value="Obras Sociales" url="/faces/personal/obraSocial/List.xhtml" />  
+                            <p:menuitem value="Salarios Básicos" url="/faces/salario/salarioBasico/List.xhtml" />
+                            <p:menuitem value="Sindicatos" url="/faces/personal/sindicato/List.xhtml" />  
+                            <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" />
+                            <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" />
+                        </p:submenu>                    
+                    </p:menubar>
+                </h:form>
+        </div>
             
-            <ui:insert name="body">Default Body</ui:insert>
-        </p>
-        
+        <div>
+            <h1>
+                <ui:insert name="title">Default Title</ui:insert>
+            </h1>
+            <p>
+
+                <ui:insert name="body">Default Body</ui:insert>
+            </p>
+        </div>
     </h:body>
 
 </html>

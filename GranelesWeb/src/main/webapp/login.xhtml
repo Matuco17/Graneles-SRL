@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+      <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>
+            <ui:insert name="title">Inicio de Sesión</ui:insert>
+        </title>
+        
+      </h:head>      
+    <h:body>
+        
+     
+        <div style="position: absolute; left: 50%; top: 50%; height: 500px; margin-top: -250px; width: 400px; margin-left: -200px;">  
+            <div style="display: block; text-align: center" >
+                <p:graphicImage value="Graneles" url="/faces/resources/images/logoMinimo.jpg" />
+            </div>
+          <br/>
+          <br/>
+          <h:form>              
+            <h:panelGrid columns="2" >
+                <h:outputText value="Nombre de Usuario:" />
+                <p:inputText value="#{loginController.username}" />
+                <h:outputText value="Contraseña:" />
+                <p:password value="#{loginController.password}" feedback="false"  />
+                <h:outputText value="" />
+                <h:commandButton value="Ingresar" action="#{loginController.login()}" style="text-align: center;" />
+            </h:panelGrid>
+          </h:form>
+          <br />
+          <div style="display: block; float: left; color: #cd0a0a;">
+            <p:messages  />
+          </div>
+          <br />
+          <br />
+          <div style="display: block; text-align: center" >
+            <p:graphicImage value="B.A.Technology S.A." url="/faces/resources/images/logoBAT.png" style=" height: 80px" />
+          </div>
+         </div>
+         
+    </h:body>           
+</html>
+
+
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSeguridad.UsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundleSeguridad.UsuarioTitle_username}"/>
+                    <h:outputText value="#{usuarioController.selected.username}" title="#{bundleSeguridad.UsuarioTitle_username}"/>
+                    <h:outputText value="#{bundleSeguridad.UsuarioTitle_apellido}"/>
+                    <h:outputText value="#{usuarioController.selected.apellido}" title="#{bundleSeguridad.UsuarioTitle_apellido}"/>
+                    <h:outputText value="#{bundleSeguridad.UsuarioTitle_nombre}"/>
+                    <h:outputText value="#{usuarioController.selected.nombre}" title="#{bundleSeguridad.UsuarioTitle_nombre}"/>
+                    <h:outputText value="#{bundleSeguridad.UsuarioTitle_email}"/>
+                    <h:outputText value="#{usuarioController.selected.email}" title="#{bundleSeguridad.UsuarioTitle_email}"/>
+                </h:panelGrid>
+
+                <h:outputText value="#{bundleSeguridad.UsuarioTitle_grupoCollection}"/>
+                <p:dataList value="#{usuarioController.selected.grupoCollection}" var="grupo" itemType="disc" >
+                    #{grupo.toString()}
+                </p:dataList>
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{usuarioController.destroyAndView}" 
+                                     image="../../resources/images/destroy.png" 
+                                     value="#{bundleSeguridad.ViewUsuarioDestroyLink}"
+                                     title="#{bundleSeguridad.ViewUsuarioDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Usuario?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="../../resources/images/edit.png" 
+                                     value="#{bundleSeguridad.ViewUsuarioEditLink}"
+                                     title="#{bundleSeguridad.ViewUsuarioEditLink}"
+                                     />
+                    <h:commandButton action="#{usuarioController.prepareCreate}" 
+                                     image="../../resources/images/new.png" 
+                                     value="#{bundleSeguridad.ViewUsuarioCreateLink}"
+                                     title="#{bundleSeguridad.ViewUsuarioCreateLink}"
+                                     />
+                    <h:commandButton action="#{usuarioController.prepareList}"
+                                     image="../../resources/images/viewAll.png" 
+                                     value="#{bundleSeguridad.ViewUsuarioShowAllLink}"
+                                     title="#{bundleSeguridad.ViewUsuarioShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

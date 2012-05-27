@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{usuarioController.init()}"></f:event>  
+    </f:metadata>     
+    
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSeguridad.ListUsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleSeguridad.ListUsuarioEmpty}" rendered="#{usuarioController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{usuarioController.items.rowCount > 0}">
+                    
+                <p:dataTable value="#{usuarioController.items}" var="item" >
+                        <p:column headerText="#{bundleSeguridad.UsuarioTitle_apellido}">
+                            <h:outputText value="#{item.apellido}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_nombre}">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_username}">
+                            <h:outputText value="#{item.username}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_email}">
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column>
+                            <h:commandButton 
+                                image="../../resources/images/view.png" 
+                                action="#{usuarioController.prepareView}" 
+                                value="#{bundleSeguridad.ListUsuarioViewLink}"
+                                title="#{bundleSeguridad.ListUsuarioViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="../../resources/images/edit.png" 
+                                action="#{usuarioController.prepareEdit}" 
+                                value="#{bundleSeguridad.ListUsuarioEditLink}"
+                                title="#{bundleSeguridad.ListUsuarioEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="../../resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Usuario?');" 
+                                action="#{usuarioController.destroy}" 
+                                title="#{bundleSeguridad.ListUsuarioDestroyLink}"
+                                value="#{bundleSeguridad.ListUsuarioDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                    
+                </h:panelGroup>
+                <h:commandButton 
+                    image="../../resources/images/new.png" 
+                    action="#{usuarioController.prepareCreate}" 
+                    value="#{bundleSeguridad.ListUsuarioCreateLink}"
+                    title="#{bundleSeguridad.ListUsuarioCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

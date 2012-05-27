@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSeguridad.UsuarioTitleitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_username}" for="username" />
+                    <p:inputText id="username" value="#{usuarioController.selected.username}" required="true" requiredMessage="#{bundleSeguridad.CreateUsuarioRequiredMessage_username}"/>
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_apellido}" for="apellido" />
+                    <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" required="true" requiredMessage="#{bundleSeguridad.CreateUsuarioRequiredMessage_apellido}"/>
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_nombre}" for="nombre" />
+                    <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" />
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_email}" for="email" />
+                    <p:inputText id="email" value="#{usuarioController.selected.email}" />
+                    
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_password}"  />
+                    <p:password id="password" value="#{usuarioController.passwordnew}" />
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_passwordconfirm}"  />
+                    <p:password id="passwordconfirm" value="#{usuarioController.passwordnewConfirmation}" />
+                    
+                    
+                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_grupoCollection}" for="grupoCollection" />
+                    <p:selectManyCheckbox value="#{usuarioController.selected.grupoCollection}" layout="pageDirection"
+                                          converter="#{grupoController.grupoConverter}" >
+                        <f:selectItems value="#{grupoController.itemsAvailableSelectMany}"  />
+                    </p:selectManyCheckbox>
+                    
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <h:commandButton action="#{usuarioController.create}"
+                                     image="../../resources/images/save.png" 
+                                     value="#{bundleSeguridad.CreateUsuarioSaveLink}" 
+                                     title="#{bundleSeguridad.CreateUsuarioSaveLink}"
+                                     />
+
+                    <h:commandButton action="#{usuarioController.prepareList}"
+                                     image="../../resources/images/viewAll.png" 
+                                     value="#{bundleSeguridad.CreateUsuarioShowAllLink}"
+                                     title="#{bundleSeguridad.CreateUsuarioShowAllLink}"
+                                     immediate="true" 
+                                     />
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
