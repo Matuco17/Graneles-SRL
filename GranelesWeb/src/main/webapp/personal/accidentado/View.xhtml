@@ -24,6 +24,7 @@
                                          value="#{bundlePersonal.AccidentadoDestroyLink}"
                                          title="#{bundlePersonal.AccidentadoDestroyLink}"
                                          onclick="return confirm('¿Esta seguro que desea eliminar este Accidentado?');" 
+                                         rendered="#{loginController.esGerente()}"
                                          />
 
                         <h:commandButton action="Edit" 

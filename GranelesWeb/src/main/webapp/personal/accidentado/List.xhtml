@@ -86,6 +86,7 @@
                                 action="#{accidentadoController.destroy}" 
                                 title="#{bundlePersonal.AccidentadoDestroyLink}"
                                 value="#{bundlePersonal.AccidentadoDestroyLink}"
+                                rendered="#{loginController.esGerente()}"
                                 />
                 </h:panelGrid>
             </h:form>

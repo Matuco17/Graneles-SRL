@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_username}" for="username" />
+            <p:inputText id="username" value="#{usuarioController.selected.username}" title="#{bundleSeguridad.UsuarioTitle_username}" required="true" requiredMessage="#{bundleSeguridad.EditUsuarioRequiredMessage_username}"/>
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_apellido}" for="apellido" />
+            <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" title="#{bundleSeguridad.UsuarioTitle_apellido}" required="true" requiredMessage="#{bundleSeguridad.EditUsuarioRequiredMessage_apellido}"/>
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_nombre}" for="nombre" />
+            <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" title="#{bundleSeguridad.UsuarioTitle_nombre}" />
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_email}" for="email" />
+            <p:inputText id="email" value="#{usuarioController.selected.email}" title="#{bundleSeguridad.UsuarioTitle_email}" />
+
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_password}"  />
+            <p:password id="password" value="#{usuarioController.passwordnew}"  />
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_passwordConfirm}"  />
+            <p:password id="passwordconfirm" value="#{usuarioController.passwordnewConfirmation}" />
+
+            <h:outputLabel value="#{bundleSeguridad.UsuarioTitle_grupoCollection}" for="grupoCollection" />
+            <p:selectManyCheckbox value="#{usuarioController.selected.grupoCollection}" layout="pageDirection"
+                                  converter="#{grupoController.grupoConverter}" >
+                <f:selectItems value="#{grupoController.itemsAvailableSelectMany}"  />
+            </p:selectManyCheckbox>
+
+        </h:panelGrid>
+    </cc:implementation>
+</html>

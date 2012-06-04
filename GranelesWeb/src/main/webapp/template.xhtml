@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -27,7 +28,7 @@
         <div style="float:left; width: 100%;">
                 <h:form>
                    <p:menubar  >  
-                        <p:submenu label="Ingreso" >  
+                       <p:submenu label="Ingreso" >  
                             <p:menuitem value="Personal" url="/faces/personal/personal/List.xhtml" />  
                             <p:menuitem value="Accidentados"  url="/faces/personal/accidentado/List.xhtml" />
                             <p:menuitem value="Embarques" url="/faces/carga/embarque/List.xhtml" />
@@ -38,21 +39,24 @@
                             <p:menuitem value="Adelantos" url ="/faces/salario/adelanto/List.xhtml" />
                             <p:menuitem value="Proyeccion SAC y Vacaciones" url="/faces/salario/periodo/ProyeccionSacYVacaciones.xhtml" />
                         </p:submenu>
-                        <p:submenu label="Facturación" >  
+                        <p:submenu label="Facturación" rendered="false" >  
                         </p:submenu>
                         <p:submenu label="Tablas" >  
                             <p:menuitem value="Buques" url="/faces/carga/buque/List.xhtml" />  
-                            <p:menuitem value="Categorias" url="/faces/personal/categoria/List.xhtml" />  
+                            <p:menuitem value="Categorias" url="/faces/personal/categoria/List.xhtml" rendered="#{loginController.esGerente()}"/>  
                             <p:menuitem value="Empresas" url="/faces/facturacion/empresa/List.xhtml" />
-                            <p:menuitem value="Muelles" url="/faces/carga/muelle/List.xhtml" />  
+                            <p:menuitem value="Muelles" url="/faces/carga/muelle/List.xhtml" rendered="#{loginController.esGerente()}"/>  
                             <p:menuitem value="Mercaderías" url="/faces/carga/mercaderia/List.xhtml" />
-                            <p:menuitem value="Mínimo Vital y Movil Hora" url="/faces/salario/minimoVitalMovilHora/List.xhtml" />
-                            <p:menuitem value="Obras Sociales" url="/faces/personal/obraSocial/List.xhtml" />  
-                            <p:menuitem value="Salarios Básicos" url="/faces/salario/salarioBasico/List.xhtml" />
-                            <p:menuitem value="Sindicatos" url="/faces/personal/sindicato/List.xhtml" />  
-                            <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" />
-                            <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" />
-                        </p:submenu>                    
+                            <p:menuitem value="Mínimo Vital y Movil Hora" url="/faces/salario/minimoVitalMovilHora/List.xhtml" rendered="#{loginController.esAdministrador()}" />
+                            <p:menuitem value="Obras Sociales" url="/faces/personal/obraSocial/List.xhtml" rendered="#{loginController.esGerente()}" />  
+                            <p:menuitem value="Salarios Básicos" url="/faces/salario/salarioBasico/List.xhtml" rendered="#{loginController.esGerente()}" />
+                            <p:menuitem value="Sindicatos" url="/faces/personal/sindicato/List.xhtml" rendered="#{loginController.esGerente()}" />  
+                            <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" rendered="#{loginController.esGerente()}" />
+                            <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" rendered="#{loginController.esGerente()}" />
+                        </p:submenu>    
+                        <p:submenu label="Administrador" rendered="#{loginController.esAdministrador()}" >
+                            <p:menuitem value="Usuarios" url="/faces/seguridad/usuario/List.xhtml" />
+                        </p:submenu>
                     </p:menubar>
                 </h:form>
         </div>

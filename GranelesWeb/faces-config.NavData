@@ -3,8 +3,8 @@
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
         <Node id="carga/mercaderia/List.xhtml" x="2650" y="300" zoom="true"/>
-        <Node id="carga/cargaTurno/Create.xhtml" x="1400" y="1050" zoom="true"/>
         <Node id="personal/tarea/Edit.xhtml" x="900" y="900" zoom="true"/>
+        <Node id="carga/cargaTurno/Create.xhtml" x="1400" y="1050" zoom="true"/>
         <Node id="facturacion/factura/View.xhtml" x="400" y="150" zoom="true"/>
         <Node id="miscelaneos/list/List.xhtml" x="3150" y="600" zoom="true"/>
         <Node id="personal/categoriaSecundaria/List.xhtml" x="3400" y="300" zoom="true"/>
@@ -19,32 +19,32 @@
         <Node id="personal/accidentado/View.xhtml" x="1150" y="150" zoom="true"/>
         <Node id="salario/periodo/Edit.xhtml" x="2150" y="900" zoom="true"/>
         <Node id="carga/embarque/Create.xhtml" x="2400" y="450" zoom="true"/>
-        <Node id="personal/personal/View.xhtml" x="2400" y="600" zoom="true"/>
         <Node id="facturacion/lineaFactura/View.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="personal/personal/View.xhtml" x="2400" y="600" zoom="true"/>
         <Node id="personal/obraSocial/List.xhtml" x="1900" y="600" zoom="true"/>
         <Node id="salario/conceptoRecibo/View.xhtml" x="2650" y="150" zoom="true"/>
-        <Node id="carga/mercaderia/View.xhtml" x="2900" y="450" zoom="true"/>
         <Node id="personal/obraSocial/View.xhtml" x="1400" y="600" zoom="true"/>
+        <Node id="carga/mercaderia/View.xhtml" x="2900" y="450" zoom="true"/>
         <Node id="personal/obraSocial/Edit.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="carga/buque/View.xhtml" x="1650" y="300" zoom="true"/>
         <Node id="salario/periodo/Periodo.xhtml" x="400" y="600" zoom="true"/>
         <Node id="carga/cargaTurno/List.xhtml" x="900" y="150" zoom="true"/>
         <Node id="carga/muelle/Create.xhtml" x="2650" y="600" zoom="true"/>
         <Node id="miscelaneos/list/Create.xhtml" x="2650" y="900" zoom="true"/>
-        <Node id="carga/mercaderia/Create.xhtml" x="150" y="1050" zoom="true"/>
         <Node id="personal/personal/List.xhtml" x="3650" y="150" zoom="true"/>
+        <Node id="carga/mercaderia/Create.xhtml" x="150" y="1050" zoom="true"/>
         <Node id="salario/sueldo/View.xhtml" x="2150" y="450" zoom="true"/>
         <Node id="miscelaneos/fixedList/Edit.xhtml" x="2900" y="600" zoom="true"/>
         <Node id="miscelaneos/list/Edit.xhtml" x="150" y="300" zoom="true"/>
         <Node id="template.xhtml" x="2650" y="450" zoom="true"/>
-        <Node id="carga/archivoEmbarque/Edit.xhtml" x="3150" y="450" zoom="true"/>
         <Node id="salario/salarioBasico/View.xhtml" x="400" y="1950" zoom="true"/>
+        <Node id="carga/archivoEmbarque/Edit.xhtml" x="3150" y="450" zoom="true"/>
         <Node id="personal/categoria/List.xhtml" x="2900" y="300" zoom="true"/>
         <Node id="carga/embarque/Edit.xhtml" x="900" y="1200" zoom="true"/>
         <Node id="personal/sindicato/List.xhtml" x="400" y="2100" zoom="true"/>
         <Node id="carga/puerto/List.xhtml" x="1900" y="900" zoom="true"/>
-        <Node id="salario/adelanto/Edit.xhtml" x="650" y="1950" zoom="true"/>
         <Node id="carga/cargaPrevia/Create.xhtml" x="1150" y="1200" zoom="true"/>
+        <Node id="salario/adelanto/Edit.xhtml" x="650" y="1950" zoom="true"/>
         <Node id="salario/feriado/View.xhtml" x="150" y="1650" zoom="true"/>
         <Node id="carga/archivoEmbarque/Create.xhtml" x="400" y="1650" zoom="true"/>
         <Node id="carga/turnoEmbarque/Edit.xhtml" x="900" y="300" zoom="true"/>
@@ -57,28 +57,28 @@
         <Node id="personal/accidentado/Edit.xhtml" x="400" y="900" zoom="true"/>
         <Node id="miscelaneos/list/View.xhtml" x="3400" y="450" zoom="true"/>
         <Node id="salario/itemsSueldo/List.xhtml" x="1400" y="450" zoom="true"/>
-        <Node id="carga/muelle/List.xhtml" x="1650" y="750" zoom="true"/>
         <Node id="miscelaneos/fixedList/List.xhtml" x="1150" y="1500" zoom="true"/>
+        <Node id="carga/muelle/List.xhtml" x="1650" y="750" zoom="true"/>
         <Node id="salario/conceptoRecibo/List.xhtml" x="3150" y="300" zoom="true"/>
         <Node id="personal/tarea/List.xhtml" x="1150" y="1650" zoom="true"/>
-        <Node id="facturacion/empresa/Edit.xhtml" x="2150" y="600" zoom="true"/>
         <Node id="carga/buque/Create.xhtml" x="1650" y="450" zoom="true"/>
-        <Node id="personal/categoria/Edit.xhtml" x="1150" y="1350" zoom="true"/>
+        <Node id="facturacion/empresa/Edit.xhtml" x="2150" y="600" zoom="true"/>
         <Node id="salario/tipoJornal/List.xhtml" x="3900" y="150" zoom="true"/>
+        <Node id="personal/categoria/Edit.xhtml" x="1150" y="1350" zoom="true"/>
         <Node id="salario/tipoJornal/Create.xhtml" x="2900" y="750" zoom="true"/>
         <Node id="facturacion/factura/List.xhtml" x="2150" y="1050" zoom="true"/>
         <Node id="personal/tarea/Create.xhtml" x="1400" y="750" zoom="true"/>
-        <Node id="facturacion/empresa/List.xhtml" x="400" y="1050" zoom="true"/>
         <Node id="resources/CompositeComponents/turnoEmbarqueCC.xhtml" x="2150" y="1200" zoom="true"/>
+        <Node id="facturacion/empresa/List.xhtml" x="400" y="1050" zoom="true"/>
         <Node id="salario/adelanto/List.xhtml" x="1150" y="450" zoom="true"/>
         <Node id="personal/categoria/Create.xhtml" x="1400" y="1350" zoom="true"/>
         <Node id="carga/embarque/View.xhtml" x="1150" y="1050" zoom="true"/>
         <Node id="personal/obraSocial/Create.xhtml" x="650" y="150" zoom="true"/>
-        <Node id="personal/categoria/View.xhtml" x="650" y="600" zoom="true"/>
         <Node id="personal/categoriaSecundaria/Create.xhtml" x="1150" y="900" zoom="true"/>
+        <Node id="personal/categoria/View.xhtml" x="650" y="600" zoom="true"/>
         <Node id="personal/personal/Edit.xhtml" x="2150" y="750" zoom="true"/>
-        <Node id="salario/tipoJornal/Edit.xhtml" x="3650" y="300" zoom="true"/>
         <Node id="salario/tipoJornal/View.xhtml" x="2400" y="1050" zoom="true"/>
+        <Node id="salario/tipoJornal/Edit.xhtml" x="3650" y="300" zoom="true"/>
         <Node id="carga/puerto/Create.xhtml" x="650" y="900" zoom="true"/>
         <Node id="facturacion/lineaFactura/Edit.xhtml" x="650" y="1650" zoom="true"/>
         <Node id="salario/itemsSueldo/View.xhtml" x="650" y="1800" zoom="true"/>
@@ -107,13 +107,13 @@
         <Node id="salario/itemsSueldo/Create.xhtml" x="150" y="1200" zoom="true"/>
         <Node id="carga/bodega/Create.xhtml" x="1900" y="1050" zoom="true"/>
         <Node id="carga/embarque/List.xhtml" x="1400" y="300" zoom="true"/>
-        <Node id="facturacion/factura/Create.xhtml" x="1150" y="750" zoom="true"/>
         <Node id="salario/conceptoRecibo/Edit.xhtml" x="2400" y="300" zoom="true"/>
+        <Node id="facturacion/factura/Create.xhtml" x="1150" y="750" zoom="true"/>
         <Node id="carga/puerto/Edit.xhtml" x="400" y="1200" zoom="true"/>
         <Node id="salario/adelanto/View.xhtml" x="2150" y="300" zoom="true"/>
-        <Node id="miscelaneos/fixedList/Create.xhtml" x="1650" y="600" zoom="true"/>
-        <Node id="carga/mercaderia/Edit.xhtml" x="900" y="1500" zoom="true"/>
         <Node id="salario/periodo/View.xhtml" x="900" y="1650" zoom="true"/>
+        <Node id="carga/mercaderia/Edit.xhtml" x="900" y="1500" zoom="true"/>
+        <Node id="miscelaneos/fixedList/Create.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="carga/bodega/View.xhtml" x="1400" y="1200" zoom="true"/>
         <Node id="carga/trabajadoresTurnoEmbarque/Create.xhtml" x="900" y="1800" zoom="true"/>
         <Node id="carga/puerto/View.xhtml" x="1900" y="150" zoom="true"/>

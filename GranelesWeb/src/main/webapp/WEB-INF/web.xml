@@ -84,7 +84,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Acceso de Iniciativas el resto que puede ser usado por el usuario</web-resource-name>
+            <web-resource-name>rol usuario</web-resource-name>
             <url-pattern>/faces/carga/embarque/*</url-pattern>
             <url-pattern>/faces/salario/adelanto/*</url-pattern>
             <url-pattern>/faces/personal/personal/*</url-pattern>
@@ -99,7 +99,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Aceso de Estadisticas y Reportes </web-resource-name>
+            <web-resource-name>Rol gerente </web-resource-name>
             <url-pattern>/faces/carga/muelle/*</url-pattern>
             <url-pattern>/faces/carga/mercaderia/*</url-pattern>
             <url-pattern>/faces/carga/puerto/*</url-pattern>

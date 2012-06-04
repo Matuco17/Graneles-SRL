@@ -25,7 +25,8 @@
                                      image="/faces/resources/images/destroy.png" 
                                      value="#{bundleCarga.MercaderiaDestroyLink}"
                                      title="#{bundleCarga.MercaderiaDestroyLink}"
-                                     onclick="return confirm('¿Esta seguro que desea eliminar este Mercaderia?');" 
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Mercaderia?');"
+                                     rendered="#{loginController.esGerente()}"
                                      />
 
                     <h:commandButton action="Edit" 

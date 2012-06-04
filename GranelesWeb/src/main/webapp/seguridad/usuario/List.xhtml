@@ -23,36 +23,36 @@
                         <p:column headerText="#{bundleSeguridad.UsuarioTitle_apellido}">
                             <h:outputText value="#{item.apellido}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_nombre}">
+                        <p:column headerText="#{bundleSeguridad.UsuarioTitle_nombre}">
                             <h:outputText value="#{item.nombre}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_username}">
+                        <p:column headerText="#{bundleSeguridad.UsuarioTitle_username}">
                             <h:outputText value="#{item.username}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSeguridad.ListUsuarioTitle_email}">
+                        <p:column headerText="#{bundleSeguridad.UsuarioTitle_email}">
                             <h:outputText value="#{item.email}"/>
                         </p:column>
                         <p:column>
                             <h:commandButton 
                                 image="../../resources/images/view.png" 
                                 action="#{usuarioController.prepareView}" 
-                                value="#{bundleSeguridad.ListUsuarioViewLink}"
-                                title="#{bundleSeguridad.ListUsuarioViewLink}"
+                                value="#{bundleSeguridad.UsuarioViewLink}"
+                                title="#{bundleSeguridad.UsuarioViewLink}"
                                 />
 
                             <h:commandButton 
                                 image="../../resources/images/edit.png" 
                                 action="#{usuarioController.prepareEdit}" 
-                                value="#{bundleSeguridad.ListUsuarioEditLink}"
-                                title="#{bundleSeguridad.ListUsuarioEditLink}"
+                                value="#{bundleSeguridad.UsuarioEditLink}"
+                                title="#{bundleSeguridad.UsuarioEditLink}"
                                 />
 
                             <h:commandButton 
                                 image="../../resources/images/destroy.png"
                                 onclick="return confirm('¿Esta seguro que desea eliminar este Usuario?');" 
                                 action="#{usuarioController.destroy}" 
-                                title="#{bundleSeguridad.ListUsuarioDestroyLink}"
-                                value="#{bundleSeguridad.ListUsuarioDestroyLink}"
+                                title="#{bundleSeguridad.UsuarioDestroyLink}"
+                                value="#{bundleSeguridad.UsuarioDestroyLink}"
                                 />
                         </p:column>
                     </p:dataTable>

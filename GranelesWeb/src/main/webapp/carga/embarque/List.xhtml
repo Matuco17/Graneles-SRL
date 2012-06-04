@@ -73,6 +73,7 @@
                         action="#{embarqueController.destroy}" 
                         title="#{bundleCarga.EmbarqueDestroyLink}"
                         value="#{bundleCarga.EmbarqueDestroyLink}"
+                        rendered="#{loginController.esGerente()}" 
                         />
                 </h:panelGrid>
             </h:form>

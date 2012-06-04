@@ -38,6 +38,7 @@
                                      value="#{bundleFacturacion.EmpresaDestroyLink}"
                                      title="#{bundleFacturacion.EmpresaDestroyLink}"
                                      onclick="return confirm('¿Esta seguro que desea eliminar este Empresa?');" 
+                                     rendered="#{loginController.esGerente()}"
                                      />
 
                     <h:commandButton action="Edit" 

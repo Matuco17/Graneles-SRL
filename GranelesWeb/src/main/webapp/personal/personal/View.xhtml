@@ -103,7 +103,8 @@
                                      image="/faces/resources/images/destroy.png" 
                                      value="#{bundlePersonal.PersonalDestroyLink}"
                                      title="#{bundlePersonal.PersonalDestroyLink}"
-                                     onclick="return confirm('¿Esta seguro que desea eliminar este Personal?');" 
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este Personal?');"
+                                     rendered="#{loginController.esGerente()}"
                                      />
 
                     <h:commandButton action="Edit" 

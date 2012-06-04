@@ -67,6 +67,7 @@
                         action="#{buqueController.destroy}" 
                         title="#{bundleCarga.BuqueDestroyLink}"
                         value="#{bundleCarga.BuqueDestroyLink}"
+                        rendered="#{loginController.esGerente()}"
                         />
                     </h:panelGrid>
             </h:form>

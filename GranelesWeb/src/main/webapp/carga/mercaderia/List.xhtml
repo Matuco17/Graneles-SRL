@@ -54,6 +54,7 @@
                                 action="#{mercaderiaController.destroy}" 
                                 title="#{bundleCarga.MercaderiaDestroyLink}"
                                 value="#{bundleCarga.MercaderiaDestroyLink}"
+                                rendered="#{loginController.esGerente()}"
                                 />
                         </p:column>
                     </p:dataTable>

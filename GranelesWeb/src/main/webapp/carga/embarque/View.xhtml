@@ -88,6 +88,7 @@
                                          value="#{bundleCarga.EmbarqueDestroyLink}"
                                          title="#{bundleCarga.EmbarqueDestroyLink}"
                                          onclick="return confirm('¿Esta seguro que desea eliminar este Embarque?');" 
+                                         rendered="#{loginController.esGerente()}" 
                                          />
 
                         <h:commandButton action="Edit" 

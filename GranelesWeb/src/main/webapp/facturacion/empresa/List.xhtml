@@ -67,6 +67,7 @@
                                 action="#{empresaController.destroy}" 
                                 title="#{bundleFacturacion.EmpresaDestroyLink}"
                                 value="#{bundleFacturacion.EmpresaDestroyLink}"
+                                rendered="#{loginController.esGerente()}"
                                 />
                             
                 </h:panelGrid>

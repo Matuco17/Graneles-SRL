@@ -47,7 +47,8 @@
                     action="#{embarqueController.destroyTE}" 
                     title="#{bundleCarga.TurnoEmbarqueDestroyLink}"
                     value="#{bundleCarga.TurnoEmbarqueDestroyLink}"
-                    rendered="#{cc.attrs.editar}"
+                    rendered="#{cc.attrs.editar && loginController.esGerente()}"
+                    
                     />
             </p:column>
         </p:dataTable>

@@ -4,37 +4,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundleSeguridad.UsuarioTitleitle}"></h:outputText>
+            <h:outputText value="#{bundleSeguridad.CreateUsuarioTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_username}" for="username" />
-                    <p:inputText id="username" value="#{usuarioController.selected.username}" required="true" requiredMessage="#{bundleSeguridad.CreateUsuarioRequiredMessage_username}"/>
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_apellido}" for="apellido" />
-                    <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" required="true" requiredMessage="#{bundleSeguridad.CreateUsuarioRequiredMessage_apellido}"/>
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_nombre}" for="nombre" />
-                    <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" />
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_email}" for="email" />
-                    <p:inputText id="email" value="#{usuarioController.selected.email}" />
-                    
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_password}"  />
-                    <p:password id="password" value="#{usuarioController.passwordnew}" />
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_passwordconfirm}"  />
-                    <p:password id="passwordconfirm" value="#{usuarioController.passwordnewConfirmation}" />
-                    
-                    
-                    <h:outputLabel value="#{bundleSeguridad.UsuarioTitleitle_grupoCollection}" for="grupoCollection" />
-                    <p:selectManyCheckbox value="#{usuarioController.selected.grupoCollection}" layout="pageDirection"
-                                          converter="#{grupoController.grupoConverter}" >
-                        <f:selectItems value="#{grupoController.itemsAvailableSelectMany}"  />
-                    </p:selectManyCheckbox>
-                    
-                </h:panelGrid>
+                
+                <cc:usuario/>
+                
                 <h:panelGrid columns="2">
                     <h:commandButton action="#{usuarioController.create}"
                                      image="../../resources/images/save.png" 

@@ -23,6 +23,7 @@
                                          value="#{bundleCarga.BuqueDestroyLink}"
                                          title="#{bundleCarga.BuqueDestroyLink}"
                                          onclick="return confirm('¿Esta seguro que desea eliminar este Buque?');" 
+                                         rendered="#{loginController.esGerente()}"
                                          />
 
                         <h:commandButton action="Edit" 
