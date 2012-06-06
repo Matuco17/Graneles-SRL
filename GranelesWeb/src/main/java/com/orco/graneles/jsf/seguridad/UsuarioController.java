@@ -87,14 +87,14 @@ public class UsuarioController implements Serializable {
         try {
             if (confirmarYAsignarPassword()){
                 getFacade().create(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/bundleSeguridad").getString("UsuarioCreated"));
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSeguridad").getString("UsuarioCreated"));
                 return "View";
             } else {
                 return null;
             }
         } catch (Exception e) {
             e.getCause().printStackTrace();
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/bundleSeguridad").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSeguridad").getString("PersistenceErrorOccured"));
             return null;
         }
     }
@@ -111,13 +111,13 @@ public class UsuarioController implements Serializable {
         try {
             if (confirmarYAsignarPassword()){
                 getFacade().edit(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/bundleSeguridad").getString("UsuarioUpdated"));
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSeguridad").getString("UsuarioUpdated"));
                 return "View";
             } else {
                 return null;
             }
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/bundleSeguridad").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSeguridad").getString("PersistenceErrorOccured"));
             return null;
         }
     }
@@ -145,9 +145,9 @@ public class UsuarioController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/bundleSeguridad").getString("UsuarioDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSeguridad").getString("UsuarioDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/bundleSeguridad").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSeguridad").getString("PersistenceErrorOccured"));
         }
     }
 
@@ -182,7 +182,7 @@ public class UsuarioController implements Serializable {
             resultado = true;
         } else {
             //Los password escritos no son iguales, tiro un cartel de error y no valido
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/bundleSeguridad").getString("ConfirmationPasswordInvalid"));
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleSeguridad").getString("ConfirmationPasswordInvalid"));
             resultado = true;
         }
         

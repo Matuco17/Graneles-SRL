@@ -16,14 +16,18 @@
     </h:head>
 
     <h:body>
-        <div style="float:left; width: 100%;">
-            <p:graphicImage value="Graneles S.R.L." url="/faces/resources/images/logoMinimo.jpg" style="float: left; height: 55px" />
-            <div style="float: right; display: block; font-size: medium;" >
+        <div style="position:relative; display:table; width: 100%; padding-bottom: 5px;">
+            <span style="position:relative; float:left; width:85px; padding">
+                <p:graphicImage value="Graneles S.R.L." url="/faces/resources/images/logoMinimo.jpg" style="height: 55px" />
+            </span>
+            <span style="position:relative; float:left;">
+                <p:messages showDetail="false" />
+            </span>
+            <span style="position:relative; float:right; padding-top: 20px;">
                 <h:form>
-                <h:commandLink action="#{loginController.logout()}" value="Salir" />
+                    <h:commandButton action="#{loginController.logout()}" value="Salir"/>
                 </h:form>
-            </div>
-            <p:messages showDetail="false" />
+            </span>            
         </div>
         <div style="float:left; width: 100%;">
                 <h:form>
