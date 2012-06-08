@@ -61,10 +61,6 @@ public class Sueldo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER, mappedBy="sueldo", orphanRemoval = true)
     private Collection<ItemsSueldo> itemsSueldoCollection;
 
-    
-    @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.PERSIST)
-    private Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection;
-    
     @OneToMany(mappedBy = "libroSueldo", cascade = CascadeType.PERSIST)
     private Collection<Accidentado> accidentadoCollection;
     
@@ -170,15 +166,6 @@ public class Sueldo implements Serializable {
         this.personal = personal;
     }
 
-    @XmlTransient
-    public Collection<TrabajadoresTurnoEmbarque> getTrabajadoresTurnoEmbarqueCollection() {
-        return trabajadoresTurnoEmbarqueCollection;
-    }
-
-    public void setTrabajadoresTurnoEmbarqueCollection(Collection<TrabajadoresTurnoEmbarque> trabajadoresTurnoEmbarqueCollection) {
-        this.trabajadoresTurnoEmbarqueCollection = trabajadoresTurnoEmbarqueCollection;
-    }
-    
     @XmlTransient
     public Collection<Accidentado> getAccidentadoCollection() {
         return accidentadoCollection;

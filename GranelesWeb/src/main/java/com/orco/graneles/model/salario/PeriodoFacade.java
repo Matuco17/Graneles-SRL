@@ -350,13 +350,11 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoF.mergeSueldos(sueldoTTEAnterior, sueldoTTE));
                
                 sueldoF.edit(sueldoTTEAnterior);
-                tte.setLibroSueldo(sueldoTTEAnterior);
                 trabTurnoEmbarqueF.edit(tte);                
             } else {
                 mapSueldosXIdPers.put(tte.getPersonal().getId(), sueldoTTE);
                
                 sueldoF.create(sueldoTTE);
-                tte.setLibroSueldo(sueldoTTE);
                 periodo.getSueldoCollection().add(sueldoTTE);
                 trabTurnoEmbarqueF.edit(tte);                
             }
@@ -448,13 +446,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
 
         //Debo setear todos las relaciones con sueldos para remover las FK que compliquen sobre elementos a no borrar (y si existen otras entidades)
         if (periodo.getSueldoCollection() != null){
-            for (Sueldo s : periodo.getSueldoCollection()){
-                for (TrabajadoresTurnoEmbarque tte : s.getTrabajadoresTurnoEmbarqueCollection()){
-                    tte.setLibroSueldo(null);
-                    trabTurnoEmbarqueF.edit(tte);
-                }
-            }
-
             getEntityManager().flush();
         }
 

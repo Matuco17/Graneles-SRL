@@ -60,10 +60,6 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @Column(name = "delegado")
     private Boolean delegado;    
     
-    @JoinColumn(name = "libro_sueldo", referencedColumnName = "id", nullable = true)
-    @ManyToOne
-    private Sueldo libroSueldo;
-    
     @JoinColumn(name = "tarea", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Tarea tarea;
@@ -133,14 +129,6 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
         this.delegado = delegado;
     }
     
-    public Sueldo getLibroSueldo() {
-        return libroSueldo;
-    }
-
-    public void setLibroSueldo(Sueldo libroSueldo) {
-        this.libroSueldo = libroSueldo;
-    }
-
     public Tarea getTarea() {
         return tarea;
     }

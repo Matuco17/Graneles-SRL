@@ -43,6 +43,10 @@ public class LoginController {
             usuarioLogueado = usuarioF.find(username);
             
             if (usuarioLogueado != null){
+                if (request.getUserPrincipal() != null){
+                    request.logout();
+                }
+                
                 request.login(username, password);     
                 
                 username = null;

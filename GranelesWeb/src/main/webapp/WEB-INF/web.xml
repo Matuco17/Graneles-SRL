@@ -74,6 +74,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Resources</web-resource-name>
+            <url-pattern>/faces/template.xhtml</url-pattern>
             <url-pattern>/faces/resources/css/*</url-pattern>
             <url-pattern>/faces/resources/images/*</url-pattern>
             <url-pattern>/faces/resources/plaintext/*</url-pattern>
@@ -127,7 +128,7 @@
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMINISTRADOR</role-name>
+            <role-name>USUARIO</role-name>
         </auth-constraint>
     </security-constraint>
     
