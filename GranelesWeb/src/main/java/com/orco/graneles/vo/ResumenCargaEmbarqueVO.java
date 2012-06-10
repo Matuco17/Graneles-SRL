@@ -67,7 +67,7 @@ public class ResumenCargaEmbarqueVO {
         
         totalEnBuqueXBodega = new BigDecimal[cantBodegas+1];
         for(int i = 1; i < totalEnBuqueXBodega.length; i++){
-            if (cargasPrevias[i].getCarga() != null) {
+            if (cargasPrevias[i] != null && cargasPrevias[i].getCarga() != null) {
                 totalEnBuqueXBodega[i] = cargasPrevias[i].getCarga().add(totalCargadoXBodega[i]);
             } else {
                 totalEnBuqueXBodega[i] = BigDecimal.ZERO.add(totalCargadoXBodega[i]);
@@ -77,7 +77,7 @@ public class ResumenCargaEmbarqueVO {
         //Pto, atenterior
         totalCargaPrevia = BigDecimal.ZERO;
         for(int i = 1; i < cargasPrevias.length; i++){
-            if (cargasPrevias[i].getCarga() != null)
+            if (cargasPrevias[i] != null && cargasPrevias[i].getCarga() != null)
                 totalCargaPrevia = totalCargaPrevia.add(cargasPrevias[i].getCarga());
         }
         

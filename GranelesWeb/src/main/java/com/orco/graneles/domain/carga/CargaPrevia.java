@@ -139,7 +139,7 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
 
     @Override
     public int compareTo(CargaPrevia o) {
-        if (this.getBodega() != null && o.getBodega() != null){
+        if (o != null && this.getBodega() != null && o.getBodega() != null){
             if (this.getBodega().getBuque().equals(o.getBodega().getBuque())){
                 return this.getBodega().compareTo(o.getBodega());
             } else {
