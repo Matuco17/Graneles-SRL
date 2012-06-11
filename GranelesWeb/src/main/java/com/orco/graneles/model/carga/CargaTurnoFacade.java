@@ -45,22 +45,33 @@ public class CargaTurnoFacade extends AbstractFacade<CargaTurno> {
         cargaTurno.setCargador(tembarque.getEmbarque().getCoordinador());
         cargaTurno.setCargasCollection(new ArrayList<CargaTurnoCargas>());
         
+        completarCargas(tembarque, cargaTurno);
+        
+        return cargaTurno;
+    }
+
+    private void completarCargas(TurnoEmbarque tembarque, CargaTurno cargaTurno) {
         for (CargaPrevia cargaOriginal : tembarque.getEmbarque().getCargaPreviaCollection()){
             CargaTurnoCargas cargaTC = new CargaTurnoCargas();
             cargaTC.setCargaOriginalBodega(cargaOriginal);
             cargaTC.setCarga(BigDecimal.ZERO);
             cargaTC.setCargaTurno(cargaTurno);
             cargaTurno.getCargasCollection().add(cargaTC);
-        }                
-        
-        return cargaTurno;
+        }
     }
     
         
     public List<CargaTurno> obtenerCargas(TurnoEmbarque tembarque){
          List<CargaTurno> cargas = null;
         if (tembarque.getId() != null && tembarque.getCargaTurnoCollection() != null && tembarque.getCargaTurnoCollection().size() > 0){
+            
+            for (CargaTurno ct : tembarque.getCargaTurnoCollection()){
+                if (ct.getCargasCollection() == null || ct.getCargasCollection().size() == 0){
+                    completarCargas(tembarque, ct);
+                }
+            }            
             cargas = new ArrayList<CargaTurno>(tembarque.getCargaTurnoCollection());
+        
         } else {
             cargas = new ArrayList<CargaTurno>();
             cargas.add(cargarNuevaPorBuque(tembarque));

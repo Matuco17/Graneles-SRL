@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.zoom" value="0.9090909090909096"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="29"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="Table Dataset 1"/>
 	<parameter name="logoGraneles.jpg" class="java.io.InputStream"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -261,7 +261,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="0" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -275,7 +275,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="0" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -327,7 +327,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod2}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="89" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -341,7 +341,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="89" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -393,7 +393,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod3}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="178" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -407,7 +407,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="178" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -459,7 +459,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod4}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="267" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -473,7 +473,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="267" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -525,7 +525,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod5}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="356" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -539,7 +539,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="356" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -591,7 +591,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod6}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="445" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -605,7 +605,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="445" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -657,7 +657,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mercaderiaBod7}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="534" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -671,7 +671,7 @@
 				</textElement>
 				<text><![CDATA[BAHIA BLANCA]]></text>
 			</staticText>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="534" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -690,7 +690,7 @@
 				<textElement>
 					<font size="11" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[*All values are expressed in Kgs]]></text>
+				<text><![CDATA[*All values are expressed in Tons]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="623" y="85" width="89" height="20" backcolor="#E6E6E6"/>
@@ -698,7 +698,7 @@
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="623" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -735,7 +735,7 @@
 			<rectangle>
 				<reportElement x="623" y="105" width="89" height="45"/>
 			</rectangle>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="623" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -755,7 +755,7 @@
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="713" y="40" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
@@ -792,7 +792,7 @@
 			<rectangle>
 				<reportElement x="712" y="105" width="89" height="45"/>
 			</rectangle>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="713" y="105" width="89" height="45"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>

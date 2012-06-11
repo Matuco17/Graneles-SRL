@@ -32,10 +32,10 @@ public class EmbarqueCargador implements Serializable {
     private Long id;
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "minimo", precision = 19, scale = 4)
+    @Column(name = "minimo")
     private BigDecimal minimo;
     
-    @Column(name = "maximo", precision = 19, scale = 4)
+    @Column(name = "maximo")
     private BigDecimal maximo;
     
     @JoinColumn(name = "embarque", referencedColumnName = "id", nullable = false)

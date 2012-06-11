@@ -48,27 +48,27 @@
             </p:column>
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" style="text-align: right;" >
                 <p:inputText value="#{cargador.minimo}" rendered="#{cc.attrs.editar}">
-                    <f:convertNumber maxFractionDigits="2" />
+                    <f:convertNumber maxFractionDigits="3" />
                 </p:inputText>                
                 <h:outputText value="#{cargador.minimo}" rendered="#{!cc.attrs.editar}" >
-                    <f:convertNumber maxFractionDigits="2" />
+                    <f:convertNumber maxFractionDigits="3" />
                 </h:outputText>
                 <f:facet name="footer" >
                     <h:outputText value="#{embarqueController.selected.minACargar}" >
-                        <f:convertNumber maxFractionDigits="2" />
+                        <f:convertNumber maxFractionDigits="3" />
                     </h:outputText>
                 </f:facet>
             </p:column>
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" style="text-align: right;">
                 <p:inputText value="#{cargador.maximo}" rendered="#{cc.attrs.editar}">
-                    <f:convertNumber maxFractionDigits="2" />
+                    <f:convertNumber maxFractionDigits="3" />
                 </p:inputText>                
                 <h:outputText value="#{cargador.maximo}" rendered="#{!cc.attrs.editar}" >
-                    <f:convertNumber maxFractionDigits="2" />
+                    <f:convertNumber maxFractionDigits="3" />
                 </h:outputText>
                 <f:facet name="footer" >
                     <h:outputText value="#{embarqueController.selected.maxACargar}" >
-                        <f:convertNumber maxFractionDigits="2" />
+                        <f:convertNumber maxFractionDigits="3" />
                     </h:outputText>
                 </f:facet>
             </p:column>
