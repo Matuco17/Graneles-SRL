@@ -49,6 +49,8 @@ public class UsuarioController implements Serializable {
 
     public void init(){
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_ADMINISTRADOR);
     }
     
     public Usuario getSelected() {

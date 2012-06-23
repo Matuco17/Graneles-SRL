@@ -25,7 +25,7 @@
         </filter-class>
     </filter>
  
-     <filter-mapping>
+    <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -34,11 +34,13 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -74,57 +76,15 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Resources</web-resource-name>
-            <url-pattern>/faces/template.xhtml</url-pattern>
             <url-pattern>/faces/resources/css/*</url-pattern>
             <url-pattern>/faces/resources/images/*</url-pattern>
-            <url-pattern>/faces/resources/plaintext/*</url-pattern>
-            <url-pattern>/faces/resources/reports/*</url-pattern>
-            <url-pattern>/faces/resources/uploadedFiles/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
 
+    <!-- El constraint de seguridad solo se va a aplicar a los usuarios logueados, cada detalle se aplica pagina x pagina -->    
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>rol usuario</web-resource-name>
-            <url-pattern>/faces/carga/embarque/*</url-pattern>
-            <url-pattern>/faces/salario/adelanto/*</url-pattern>
-            <url-pattern>/faces/personal/personal/*</url-pattern>
-            <url-pattern>/faces/personal/accidentado/*</url-pattern>
-            <url-pattern>/faces/carga/buque/*</url-pattern>
-            <url-pattern>/faces/salario/periodo/*</url-pattern><!--Solo se le debe permitir acceder a los reportes-->
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>USUARIO</role-name>
-        </auth-constraint>
-    </security-constraint>    
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Rol gerente </web-resource-name>
-            <url-pattern>/faces/carga/muelle/*</url-pattern>
-            <url-pattern>/faces/carga/mercaderia/*</url-pattern>
-            <url-pattern>/faces/carga/puerto/*</url-pattern>
-            <url-pattern>/faces/facturacion/empresa/*</url-pattern>
-            <url-pattern>/faces/personal/categoria/*</url-pattern>
-            <url-pattern>/faces/personal/obraSocial/*</url-pattern>
-            <url-pattern>/faces/personal/sindicato/*</url-pattern>
-            <url-pattern>/faces/personal/tarea/*</url-pattern>
-            <url-pattern>/faces/salario/feriado/*</url-pattern>
-            <url-pattern>/faces/salario/periodo/*</url-pattern>
-            <url-pattern>/faces/salario/minimoVitalMovilHora/*</url-pattern>
-            <url-pattern>/faces/salario/conceptoRecibo/*</url-pattern>
-            <url-pattern>/faces/salario/salarioBasico/*</url-pattern>
-            <url-pattern>/faces/salario/tipoJornal/*</url-pattern>
-            <url-pattern>/faces/seguridad/usuario/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>GERENTE</role-name>
-        </auth-constraint>
-    </security-constraint>     
-        
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>El resto, Solo administrador</web-resource-name>
+            <web-resource-name>Ingreso</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>

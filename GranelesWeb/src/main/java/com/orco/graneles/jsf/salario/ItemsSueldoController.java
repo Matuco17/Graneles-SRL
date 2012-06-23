@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.salario;
 
 import com.orco.graneles.domain.salario.ItemsSueldo;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.ItemsSueldoFacade;
 
@@ -32,6 +33,8 @@ public class ItemsSueldoController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(null);
     }
 
     public ItemsSueldo getSelected() {

@@ -7,6 +7,7 @@ import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.TipoJornal;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaPreviaFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
@@ -175,6 +176,8 @@ public class EmbarqueController implements Serializable {
         
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public Embarque getSelected() {

@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Factura;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.FacturaFacade;
 
@@ -32,6 +33,8 @@ public class FacturaController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(null);
     }
 
     public Factura getSelected() {

@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Sindicato;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.SindicatoFacade;
 
@@ -32,6 +33,8 @@ public class SindicatoController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public Sindicato getSelected() {

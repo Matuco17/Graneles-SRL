@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.ObraSocial;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.ObraSocialFacade;
 
@@ -32,6 +33,8 @@ public class ObraSocialController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public ObraSocial getSelected() {

@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.miscelaneos;
 
 import com.orco.graneles.domain.miscelaneos.List;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.ListFacade;
 
@@ -32,6 +33,8 @@ public class ListController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_ADMINISTRADOR);
     }
 
     public List getSelected() {

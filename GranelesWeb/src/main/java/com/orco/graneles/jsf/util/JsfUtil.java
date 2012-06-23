@@ -1,6 +1,11 @@
 package com.orco.graneles.jsf.util;
 
+import com.orco.graneles.domain.seguridad.Grupo;
+import com.orco.graneles.jsf.carga.ArchivoEmbarqueController;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,6 +26,20 @@ public class JsfUtil {
             items[i++] = new SelectItem(x, x.toString());
         }
         return items;
+    }
+    
+    /**
+     * Metodo que verifica que si no tenes el menor rol requerido, el sistema te manda un acceso denegado
+     * @param rol si rol es nulo, se le niega todo el acceso
+     */
+    public static void minimoRolRequerido(String rol){
+         try {
+            if (rol == null || !FacesContext.getCurrentInstance().getExternalContext().isUserInRole(rol)){
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/GranelesWeb/faces/accessDenied.xhtml");
+            }            
+        } catch (IOException ex) {
+            Logger.getLogger(ArchivoEmbarqueController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void addErrorMessage(Exception ex, String defaultMsg) {

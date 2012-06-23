@@ -3,9 +3,12 @@ package com.orco.graneles.jsf.carga;
 import com.orco.graneles.domain.carga.CargaPrevia;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaPreviaFacade;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,6 +35,8 @@ public class CargaPreviaController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(null);
     }
 
     public CargaPrevia getSelected() {

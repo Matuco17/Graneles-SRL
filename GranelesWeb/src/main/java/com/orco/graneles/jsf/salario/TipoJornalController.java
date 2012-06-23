@@ -4,6 +4,7 @@ import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
 import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.domain.salario.TipoJornal;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
@@ -41,6 +42,8 @@ public class TipoJornalController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public TipoJornal getSelected() {

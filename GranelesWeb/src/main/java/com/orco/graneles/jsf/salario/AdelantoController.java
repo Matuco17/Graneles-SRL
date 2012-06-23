@@ -4,6 +4,7 @@ import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Adelanto;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
@@ -52,6 +53,8 @@ public class AdelantoController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public void recreateModelCreate() {

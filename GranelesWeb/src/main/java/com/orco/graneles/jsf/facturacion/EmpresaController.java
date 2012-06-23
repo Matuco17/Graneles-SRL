@@ -2,6 +2,7 @@ package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.miscelaneos.TipoEmpresa;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.EmpresaFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
@@ -36,6 +37,8 @@ public class EmpresaController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public Empresa getSelected() {

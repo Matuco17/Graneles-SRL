@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Categoria;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.CategoriaFacade;
 
@@ -32,6 +33,8 @@ public class CategoriaController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public Categoria getSelected() {

@@ -3,6 +3,7 @@
 import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.JornalCaido;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.JornalCaidoFacade;
@@ -49,6 +50,8 @@ public class AccidentadoController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public Accidentado getSelected() {

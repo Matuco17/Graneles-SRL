@@ -2,6 +2,7 @@ package com.orco.graneles.jsf.salario;
 
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.fileExport.LibroSueldosAFIP;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.LibroExcelFacade;
@@ -72,6 +73,8 @@ public class PeriodoController implements Serializable {
     }
 
     public void init() {
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
+        
         Calendar calHoy = new GregorianCalendar();
         this.anio = calHoy.get(Calendar.YEAR);
         this.mes = calHoy.get(Calendar.MONTH) + 1;

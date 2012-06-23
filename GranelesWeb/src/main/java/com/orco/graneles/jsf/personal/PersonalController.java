@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.personal;
 
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.PersonalFacade;
 
@@ -38,6 +39,8 @@ public class PersonalController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public Personal getSelected() {

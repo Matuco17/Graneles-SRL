@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.salario;
 
 import com.orco.graneles.domain.salario.Feriado;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.FeriadoFacade;
 
@@ -34,6 +35,8 @@ public class FeriadoController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(null);
     }
 
     public Feriado getSelected() {

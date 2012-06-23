@@ -2,6 +2,7 @@ package com.orco.graneles.jsf.carga;
 
 import com.orco.graneles.domain.carga.Bodega;
 import com.orco.graneles.domain.carga.Buque;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.BuqueFacade;
 
@@ -49,6 +50,8 @@ public class BuqueController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public Buque getSelected() {

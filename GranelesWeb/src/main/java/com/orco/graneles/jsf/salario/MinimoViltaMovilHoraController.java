@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.salario;
 
 import com.orco.graneles.domain.salario.MinimoVitalMovilHora;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.NegocioException;
 import com.orco.graneles.model.salario.MinimoVitalMovilHoraFacade;
@@ -34,6 +35,8 @@ public class MinimoViltaMovilHoraController implements Serializable {
 
     public void init() {
         recreateModel();
+        
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public MinimoVitalMovilHora getSelected() {
