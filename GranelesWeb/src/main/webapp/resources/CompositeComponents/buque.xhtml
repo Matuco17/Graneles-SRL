@@ -56,7 +56,15 @@
 
             <p:panel id="panBodegas" header="Bodegas" style="float: left;"  >
 
-                <h:panelGrid columns="2" rendered="#{cc.attrs.editar}" >
+                <h:panelGrid columns="2"  >
+                    <h:outputLabel value="Capacidad en" />
+                    <h:selectOneMenu id="selectorCapacidad" value="#{buqueController.capacidadPiesCubicos}" valueChangeListener="#{buqueController.seleccionarCapacidad}" >
+                        <p:ajax event="change" update="dtbBodegas" />
+                        <f:selectItem itemValue="true" itemLabel="Pies Cúbicos" />
+                        <f:selectItem itemValue="false" itemLabel="Metros Cúbicos" />
+                    </h:selectOneMenu>                     
+                </h:panelGrid>
+                <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
                     <p:commandButton id="btnAgregarBodega" actionListener="#{buqueController.agregarBodega}" update="dtbBodegas"
                                      icon="ui-icon-plus" title="Agregar Bodega" />
                     <p:commandButton id="btnRestarBodega" actionListener="#{buqueController.restarBodega}" update="dtbBodegas"
@@ -67,9 +75,21 @@
                     <p:column id="colNroBodega" headerText="#{bundleCarga.BodegaTitle_nro}" >
                         <h:outputText value="#{item.nro}" />
                     </p:column>
-                    <p:column id="colCapacidadBodega" headerText="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" >
-                        <p:inputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{cc.attrs.editar}"/>
-                        <h:outputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{!cc.attrs.editar}"/>
+                    <p:column id="colCapacidadBodegaPies" headerText="#{bundleCarga.BodegaTitle_capacidadPiesCubicos}" rendered="#{buqueController.capacidadPiesCubicos}" >
+                        <p:inputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{cc.attrs.editar}">
+                            <f:convertNumber maxFractionDigits="5" />
+                        </p:inputText>
+                        <h:outputText value="#{item.capacidadPiesCubicos}" style="text-align: right;" rendered="#{!cc.attrs.editar}">
+                                <f:convertNumber maxFractionDigits="5" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column id="colCapacidadBodegaMetros" headerText="#{bundleCarga.BodegaTitle_capacidadMetrosCubicos}" rendered="#{!buqueController.capacidadPiesCubicos}" >
+                        <p:inputText value="#{item.capacidadMetrosCubicos}" style="text-align: right;" rendered="#{cc.attrs.editar}">
+                                <f:convertNumber maxFractionDigits="5" />
+                        </p:inputText>
+                        <h:outputText value="#{item.capacidadMetrosCubicos}" style="text-align: right;" rendered="#{!cc.attrs.editar}">
+                                <f:convertNumber maxFractionDigits="5" />
+                        </h:outputText>
                     </p:column>
                 </p:dataTable>
             </p:panel>

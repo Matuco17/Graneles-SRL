@@ -47,6 +47,8 @@ public class Bodega implements Serializable, Comparable<Bodega> {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "capacidad_pies_cubicos")
     private BigDecimal capacidadPiesCubicos;
+   
+    transient private BigDecimal capacidadMetrosCubicos;
     
     @JoinColumn(name = "buque", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -86,6 +88,14 @@ public class Bodega implements Serializable, Comparable<Bodega> {
         this.capacidadPiesCubicos = capacidadPiesCubicos;
     }
 
+    public BigDecimal getCapacidadMetrosCubicos() {
+        return capacidadMetrosCubicos;
+    }
+
+    public void setCapacidadMetrosCubicos(BigDecimal capacidadMetrosCubicos) {
+        this.capacidadMetrosCubicos = capacidadMetrosCubicos;
+    }
+    
     public Buque getBuque() {
         return buque;
     }

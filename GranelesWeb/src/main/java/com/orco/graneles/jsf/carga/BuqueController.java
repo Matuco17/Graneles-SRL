@@ -7,6 +7,7 @@ import com.orco.graneles.model.carga.BuqueFacade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -27,6 +29,8 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "buqueController")
 @SessionScoped
 public class BuqueController implements Serializable {
+    private static final double COEFICIENTE_M3_TO_P3 = 0.028316847;
+    private static final double COEFICIENTE_P3_TO_M3 = 35.3146662126613;
 
     private Buque current;
     private DataModel items = null;
@@ -36,6 +40,8 @@ public class BuqueController implements Serializable {
     private List<Bodega> bodegas;
     private DataModel bodegasModel;
     private static final int CANTIDAD_BODEGAS = 9;
+    
+    private Boolean capacidadPiesCubicos;
     
     
     public BuqueController() {
@@ -55,6 +61,26 @@ public class BuqueController implements Serializable {
 
     public void setSelected(Buque selected){
         current = selected;
+    }
+
+    private void corregirCapacidad() {
+        if (capacidadPiesCubicos){
+            for (Bodega b : bodegas){
+                if (b.getCapacidadPiesCubicos() == null){
+                    b.setCapacidadMetrosCubicos(BigDecimal.ZERO);
+                } else {
+                    b.setCapacidadMetrosCubicos(b.getCapacidadPiesCubicos().multiply(new BigDecimal(COEFICIENTE_M3_TO_P3)));
+                }
+            }
+        } else {
+            for (Bodega b : bodegas){
+                if (b.getCapacidadMetrosCubicos() == null){
+                    b.setCapacidadPiesCubicos(BigDecimal.ZERO);
+                } else {
+                    b.setCapacidadPiesCubicos(b.getCapacidadMetrosCubicos().multiply(new BigDecimal(COEFICIENTE_P3_TO_M3)));
+                }
+            }
+        }
     }
     
     private BuqueFacade getFacade() {
@@ -93,6 +119,7 @@ public class BuqueController implements Serializable {
     public String create() {
         try {
             //asignarBodegas();
+            corregirCapacidad();
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("BuqueCreated"));
             return "View";
@@ -126,6 +153,7 @@ public class BuqueController implements Serializable {
     public String update() {
         try {
             //asignarBodegas();
+            corregirCapacidad();            
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleCarga").getString("BuqueUpdated"));
             return "View";
@@ -196,6 +224,7 @@ public class BuqueController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        capacidadPiesCubicos = Boolean.TRUE;
     }
     
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -264,7 +293,14 @@ public class BuqueController implements Serializable {
         }
         return bodegas;
     }
+    
 
+    public void seleccionarCapacidad(ValueChangeEvent e){
+        capacidadPiesCubicos = (Boolean) e.getOldValue();
+        corregirCapacidad();
+        capacidadPiesCubicos = (Boolean) e.getNewValue();
+    }
+    
     public void setBodegas(List<Bodega> bodegas) {
         this.bodegas = bodegas;
     }
@@ -275,7 +311,15 @@ public class BuqueController implements Serializable {
         return bodegasModel;
     }
 
- 
+    public Boolean getCapacidadPiesCubicos() {
+        return capacidadPiesCubicos;
+    }
+
+    public void setCapacidadPiesCubicos(Boolean capacidadPiesCubicos) {
+        this.capacidadPiesCubicos = capacidadPiesCubicos;
+    }
+
+    
     
     
 }
