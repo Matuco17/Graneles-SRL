@@ -1027,9 +1027,9 @@ public class EmbarqueController implements Serializable {
             if (o1.getConsolidado() && o2.getConsolidado()){
                 return o2.getCodigo().compareTo(o1.getCodigo());
             } else if (!o1.getConsolidado() && !o2.getConsolidado()){
-                return o1.getEta().compareTo(o2.getEta());
+                return o2.getEta().compareTo(o1.getEta());
             } else {
-                return o1.getId().compareTo(o2.getId());
+                return o2.getId().compareTo(o1.getId());
             }
         }
       

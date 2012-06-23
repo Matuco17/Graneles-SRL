@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{embarqueController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Anuncios"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">    
+                <h:panelGroup>
+                    <p:dataTable value="#{embarqueController.itemsNoConsolidados}" 
+                                 var="item" rowKey="#{item.id}"
+                                 paginator="true" rows="20"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20"
+                                 selection="#{embarqueController.selectedNoConsolidado}" selectionMode="single">
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" >
+                            <h:outputText value="#{item.eta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}"  >
+                             <h:outputText value="#{item.buque.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_coordinador}" >
+                            <h:outputText value="#{item.coordinador.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_destino}" >
+                            <h:outputText value="#{item.destino}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" >
+                            <h:outputText value="#{item.mercaderia.toString()}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>                 
+            </h:form>
+        </ui:define>
+        
+        
+    </ui:composition>
+
+</html>
