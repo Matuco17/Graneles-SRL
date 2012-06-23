@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Embarque.findByBoya11", query = "SELECT e FROM Embarque e WHERE e.boya11 = :boya11"),
     @NamedQuery(name = "Embarque.findByInicioNavegacion", query = "SELECT e FROM Embarque e WHERE e.inicioNavegacion = :inicioNavegacion"),
     @NamedQuery(name = "Embarque.findByAtco", query = "SELECT e FROM Embarque e WHERE e.atco = :atco"),
+    @NamedQuery(name = "Embarque.findByConsolidado", query = "SELECT e FROM Embarque e WHERE e.consolidado = :consolidado"),
     @NamedQuery(name = "Embarque.findByAna", query = "SELECT e FROM Embarque e WHERE e.ana = :ana"),
     @NamedQuery(name = "Embarque.findByIb", query = "SELECT e FROM Embarque e WHERE e.ib = :ib"),
     @NamedQuery(name = "Embarque.findByCzo", query = "SELECT e FROM Embarque e WHERE e.czo = :czo"),
@@ -112,6 +113,15 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @Size(max = 128)
     @Column(name = "boletos_por")
     private String boletosPor;
+    
+    @Column(name = "eta")
+    @Temporal(TemporalType.DATE)
+    private Date eta;
+    
+    @Column(name  = "consolidado")
+    private Boolean consolidado;
+    
+    transient private Boolean consolidadoEnBusqueda;
     
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
     @ManyToOne
@@ -276,6 +286,23 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         this.boletosPor = boletosPor;
     }
 
+    public Boolean getConsolidado() {
+        return consolidado;
+    }
+
+    public void setConsolidado(Boolean consolidado) {
+        this.consolidado = consolidado;
+    }
+
+    public Date getEta() {
+        return eta;
+    }
+
+    public void setEta(Date eta) {
+        this.eta = eta;
+    }
+    
+    
     public BigDecimal getMaxACargar() {
         BigDecimal max = BigDecimal.ZERO;
         
@@ -347,6 +374,16 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     public void setBuque(Buque buque) {
         this.buque = buque;
     }
+
+    public Boolean getConsolidadoEnBusqueda() {
+        return consolidadoEnBusqueda;
+    }
+
+    public void setConsolidadoEnBusqueda(Boolean consolidadoEnBusqueda) {
+        this.consolidadoEnBusqueda = consolidadoEnBusqueda;
+    }
+    
+    
 
     @XmlTransient
     public Collection<EmbarqueCargador> getEmbarqueCargadoresCollection() {

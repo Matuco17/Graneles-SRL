@@ -17,35 +17,62 @@
             <h:outputText value="#{bundleCarga.ListEmbarqueTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:outputText escape="false" value="#{bundleCarga.ListEmbarqueEmpty}" rendered="#{embarqueController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{embarqueController.items.rowCount > 0}">
-                    <p:dataTable value="#{embarqueController.items}" 
-                                 var="item" rowKey="#{item.id}"
-                                 paginator="true" rows="10"
-                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15"
-                                 selection="#{embarqueController.selected}" selectionMode="single">
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" filterBy="#{item.codigo}" filterMatchMode="contains" >
-                            <h:outputText value="#{item.codigo}"/>
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
-                             <h:outputText value="#{item.buque.toString()}"/>
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
-                            <h:outputText value="#{item.muelle.toString()}"/>
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
-                            <h:outputText value="#{item.mercaderia.toString()}"/>
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_control}" filterBy="#{item.control}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableControladoresSelectOne}" >
-                            <h:outputText value="#{item.control.toString()}" />
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.EmbarqueTitle_fumigacion}" filterBy="#{item.fumigacion}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableFumigadoresSelectOne}" >
-                            <h:outputText value="#{item.fumigacion.toString()}" />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
+            <h:form styleClass="jsfcrud_list_form">                
+                <p:tabView >
+                    <p:tab id="panConsolidados" title="Consolidados" rendered="#{embarqueController.itemsConsolidados.rowCount > 0}">
+                        <p:dataTable value="#{embarqueController.itemsConsolidados}" 
+                                     var="item" rowKey="#{item.id}"
+                                     paginator="true" rows="10"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{embarqueController.selectedConsolidado}" selectionMode="single">
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" filterBy="#{item.codigo}" filterMatchMode="contains" >
+                                <h:outputText value="#{item.codigo}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
+                                 <h:outputText value="#{item.buque.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.muelle.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.mercaderia.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_control}" filterBy="#{item.control}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableControladoresSelectOne}" >
+                                <h:outputText value="#{item.control.toString()}" />
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_fumigacion}" filterBy="#{item.fumigacion}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableFumigadoresSelectOne}" >
+                                <h:outputText value="#{item.fumigacion.toString()}" />
+                            </p:column>                        
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab id="panNoConsolidados" title="No Consolidados" rendered="#{embarqueController.itemsNoConsolidados.rowCount > 0}">
+                        <p:dataTable value="#{embarqueController.itemsNoConsolidados}" 
+                                     var="item" rowKey="#{item.id}"
+                                     paginator="true" rows="10"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{embarqueController.selectedNoConsolidado}" selectionMode="single">
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" >
+                                <h:outputText value="#{item.eta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
+                                 <h:outputText value="#{item.buque.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.muelle.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.mercaderia.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_destino}" filterBy="#{item.destino}" filterMatchMode="contains" >
+                                <h:outputText value="#{item.destino}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
                 <h:panelGrid columns="4">
                     <h:commandButton 
                         image="/faces/resources/images/new.png" 
@@ -78,6 +105,8 @@
                 </h:panelGrid>
             </h:form>
         </ui:define>
+        
+        
     </ui:composition>
 
 </html>

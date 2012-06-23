@@ -15,24 +15,44 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <h:panelGrid columns="4" >
-            <h:outputLabel for="codigo" value="#{bundleCarga.EmbarqueTitle_codigo}" />
+        <h:panelGrid columns="4" id="panDatosGenerales" >
+            <h:outputLabel for="consolidado" value="#{bundleCarga.EmbarqueTitle_consolidado}"  />
+            <p:selectBooleanCheckbox id="consolidado" value="#{embarqueController.selected.consolidado}" valueChangeListener="#{embarqueController.accionConsolidado}" disabled="#{embarqueController.selected.consolidadoEnBusqueda or !cc.attrs.editar}"  >
+                <p:ajax event="change" update="panDatosGenerales"/>
+            </p:selectBooleanCheckbox>
+            <h:outputText value="" />
+            <h:outputText value="" />
+        
+            <h:outputLabel for="codigo" value="#{bundleCarga.EmbarqueTitle_codigo}" rendered="#{embarqueController.selected.consolidado}" />
             <c:choose>
                 <c:when test="#{cc.attrs.nuevo}">
-                    <p:inputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}" />
+                    <p:inputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}" rendered="#{embarqueController.selected.consolidado}" />
                 </c:when>
                 <c:otherwise>
-                    <h:outputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}"  />
+                    <h:outputText id="codigo" value="#{embarqueController.selected.codigo}" title="#{bundleCarga.EmbarqueTitle_codigo}" rendered="#{embarqueController.selected.consolidado}" />
                 </c:otherwise>
             </c:choose>
             
+            <h:outputLabel for="eta" value="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" />
+            <c:choose>
+                <c:when test="#{cc.attrs.editar}">
+                    <p:calendar id="eta" value="#{embarqueController.selected.eta}" title="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" />
+                </c:when>
+                <c:otherwise>
+                    <h:outputText id="eta" value="#{embarqueController.selected.eta}" title="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </c:otherwise>
+            </c:choose>
+            
+            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" for="buque"  />
             <c:choose>
-                <c:when test="#{cc.attrs.nuevo}">
+                <c:when test="#{cc.attrs.nuevo or (cc.attrs.editar and !embarqueController.selected.consolidado) }">
                    <h:selectOneMenu id="buque" value="#{embarqueController.selected.buque}" title="#{bundleCarga.EmbarqueTitle_buque}"  
                                     valueChangeListener="#{embarqueController.seleccionarBuque}" onchange="submit()" >
                         <f:selectItems value="#{buqueController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
+                   </h:selectOneMenu>
                 </c:when>
                 <c:otherwise>
                    <h:outputText id="buque" value="#{embarqueController.selected.buque.toString()}" title="#{bundleCarga.EmbarqueTitle_buque}"  />

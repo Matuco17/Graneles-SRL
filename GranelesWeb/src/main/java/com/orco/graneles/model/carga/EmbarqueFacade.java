@@ -15,11 +15,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.NegocioException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
@@ -34,6 +36,31 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
     
     @EJB
     private ArchivoEmbarqueFacade archivoEmbarqueFacade;
+
+    /**
+     * Método que busca el mayor embarque del año en cuestión, de ahi 
+     * @return 
+     */
+    private Long maximoValorCodigoEmbarque(GregorianCalendar fechaAprox) {
+        //Codigo
+        //Debo buscar el maximo codigo de este año y devuelvo uno más, si no encuentro entonces es el primero
+        int anio = (fechaAprox).get(Calendar.YEAR);
+        Long maximo = null;
+        try {
+            maximo = getEntityManager().createQuery("SELECT max(e.codigo) "
+                                                   + "FROM Embarque e "
+                                                   + "WHERE e.codigo < :limiteSuperior "
+                                                   + "AND e.codigo > :limiteInferior ", Long.class)
+                                        .setParameter("limiteSuperior", (anio + 1) * 1000)
+                                        .setParameter("limiteInferior", anio * 1000)
+                                        .getSingleResult();
+        } catch (NoResultException e) {            
+            maximo = null;
+        }
+        if (maximo == null)  
+            maximo = new Long(anio * 1000);
+        return maximo;
+    }
     
 
     protected EntityManager getEntityManager() {
@@ -51,29 +78,25 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
      */
     public Embarque crearNuevoEmbarque(){
         Embarque nuevoEmbarque = new Embarque();
-        
-        //Codigo
-        //Debo buscar el maximo codigo de este año y devuelvo uno más, si no encuentro entonces es el primero
-        int anio = (new GregorianCalendar()).get(Calendar.YEAR);
-        Long maximo = null;
-        try {
-            maximo = getEntityManager().createQuery("SELECT max(e.codigo) "
-                                                   + "FROM Embarque e "
-                                                   + "WHERE e.codigo < :limiteSuperior "
-                                                   + "AND e.codigo > :limiteInferior ", Long.class)
-                                        .setParameter("limiteSuperior", (anio + 1) * 1000)
-                                        .setParameter("limiteInferior", anio * 1000)
-                                        .getSingleResult();
-        } catch (NoResultException e) {            
-            maximo = null;
-        }
-        if (maximo == null)  
-            maximo = new Long(anio * 1000);
+        Long maximo = maximoValorCodigoEmbarque(new GregorianCalendar());
         
         nuevoEmbarque.setCodigo(maximo + 1);
-        
+        nuevoEmbarque.setConsolidado(Boolean.TRUE);
+        nuevoEmbarque.setConsolidadoEnBusqueda(Boolean.FALSE);
         
         return nuevoEmbarque;
+    }
+    
+    /**
+     * Se encarga de setear las propiedades respectivos si esta consolidado como no el embarque
+     * @param embarque 
+     */
+    public void setearConsolidado(Embarque embarque){
+        if (embarque.getConsolidado()){
+            embarque.setCodigo(maximoValorCodigoEmbarque(new GregorianCalendar()) + 1);
+        } else {
+            embarque.setCodigo(null);
+        }
     }
     
     /**
@@ -115,6 +138,45 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
                 Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public Embarque find(Object id) {
+        Embarque embarque = super.find(id);
+    
+        embarque.setConsolidadoEnBusqueda(embarque.getConsolidado());
+        
+        return embarque;
+    }
+
+    @Override
+    public List<Embarque> findAll() {
+        List<Embarque> embarques = super.findAll();
+        
+        for (Embarque e : embarques)
+            e.setConsolidadoEnBusqueda(e.getConsolidado());
+        
+        return embarques;
+    }
+    
+    public List<Embarque> findByConsolidado(Boolean consolidado){
+        List<Embarque> embarques = getEntityManager().createNamedQuery("Embarque.findByConsolidado", Embarque.class)
+                                        .setParameter("consolidado", consolidado)
+                                        .getResultList();
+        
+        for (Embarque e : embarques)
+            e.setConsolidadoEnBusqueda(e.getConsolidado());
+        
+        return embarques;
+    }
+
+    @Override
+    public void edit(Embarque entity) {
+        if (entity.getConsolidadoEnBusqueda() && !entity.getConsolidado()){
+            throw new NegocioException("No se puede desconosolidar un embarque previamente consolidado");
+        }
+        
+        super.edit(entity);
     }
     
 }

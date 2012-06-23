@@ -27,7 +27,7 @@
                         
                     </p:tab>
                     
-                    <p:tab id="panTurnos" title="Turnos" >
+                    <p:tab id="panTurnos" title="Turnos" rendered="#{embarqueController.selected.consolidado}" >
                    
                         <Cc:EmbarqueTurnos editar="false" />
 
@@ -45,7 +45,7 @@
                         
                     </p:tab>    
                 
-                    <p:tab title="Reportes">
+                    <p:tab title="Reportes" rendered="#{embarqueController.selected.consolidado}">
                         <h:panelGrid columns="3">
                                 <h:commandButton action="#{embarqueController.generarReportePlano()}"
                                              label="Generar Plano de Carga"

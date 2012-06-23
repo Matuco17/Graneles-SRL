@@ -48,7 +48,8 @@ import org.primefaces.model.UploadedFile;
 public class EmbarqueController implements Serializable {
 
     private Embarque current;
-    private DataModel items = null;
+    private DataModel itemsConsolidados = null;
+    private DataModel itemsNoConsolidados = null;
     @EJB
     private EmbarqueFacade ejbFacade;
     @EJB
@@ -112,7 +113,8 @@ public class EmbarqueController implements Serializable {
     }
 
     private void recreateModel() {
-        items = null;
+        itemsConsolidados = null;
+        itemsNoConsolidados = null;
     }
     
     private void recreateModelEmbarqueIndividual(){
@@ -142,6 +144,11 @@ public class EmbarqueController implements Serializable {
         turnoObservacionesModel = null;
         mapTareasXCategoria = null;
         tareasActivas = null;
+    }
+    
+    public void accionConsolidado(ValueChangeEvent e){
+        current.setConsolidado((Boolean) e.getNewValue());
+        ejbFacade.setearConsolidado(current);        
     }
     
     private void tratarDeLevantarCarga(){
@@ -178,24 +185,55 @@ public class EmbarqueController implements Serializable {
         return current;
     }
     
-    public void setSelected(Embarque selected){
-        current = selected;
+    public Embarque getSelectedConsolidado(){
+        if (getSelected().getConsolidado()){
+            return getSelected();
+        } else {
+            return null;
+        }        
     }
+    
+    public void setSelectedConsolidado(Embarque selected){
+        if (selected != null){
+            current = selected;
+        }       
+    }
+    
+    public Embarque getSelectedNoConsolidado(){
+        if (!getSelected().getConsolidado()){
+            return getSelected();
+        } else {
+            return null;
+        }        
+    }
+    
+    public void setSelectedNoConsolidado(Embarque selected){
+        if (selected != null){
+            current = selected;
+        }       
+    }
+    
+    
     
     public boolean validarCampos(){
         boolean validar = true;
-        if (getSelected().getCodigo() == null){
+        if (getSelected().getConsolidado() && getSelected().getCodigo() == null){
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_codigo"));
             validar = false;
         }
         
-        if (getSelected().getBuque() == null){
+        if (getSelected().getConsolidado() && getSelected().getBuque() == null){
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_buque"));
             validar = false;
         }
         
-        if (getSelected().getMuelle() == null){
+        if (getSelected().getConsolidado() && getSelected().getMuelle() == null){
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_muelle"));
+            validar = false;
+        }
+        
+        if (!getSelected().getConsolidado() && getSelected().getEta() == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleCarga").getString("EmbarqueRequiredMessage_eta"));
             validar = false;
         }
         
@@ -291,7 +329,7 @@ public class EmbarqueController implements Serializable {
         if (selectedItemIndex >= 0) {
             return "View";
         } else {
-            // all items were removed - go back to list
+            // all itemsConsolidados were removed - go back to list
             recreateModel();
             return "List";
         }
@@ -306,13 +344,22 @@ public class EmbarqueController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
-        if (items == null) {
-            List<Embarque> embarques = getFacade().findAll();
+    public DataModel getItemsConsolidados() {
+        if (itemsConsolidados == null) {
+            List<Embarque> embarques = getFacade().findByConsolidado(Boolean.TRUE);
             Collections.sort(embarques, new ComparadorEmbarques());
-            items = new ListDataModel(embarques);
+            itemsConsolidados = new ListDataModel(embarques);
         }
-        return items;
+        return itemsConsolidados;
+    }
+    
+    public DataModel getItemsNoConsolidados() {
+        if (itemsNoConsolidados == null) {
+            List<Embarque> embarques = getFacade().findByConsolidado(Boolean.FALSE);
+            Collections.sort(embarques, new ComparadorEmbarques());
+            itemsNoConsolidados = new ListDataModel(embarques);
+        }
+        return itemsNoConsolidados;
     }
     
     public void generarReportePlano(){
@@ -977,7 +1024,13 @@ public class EmbarqueController implements Serializable {
 
         @Override
         public int compare(Embarque o1, Embarque o2) {
-            return o2.getCodigo().compareTo(o1.getCodigo());
+            if (o1.getConsolidado() && o2.getConsolidado()){
+                return o2.getCodigo().compareTo(o1.getCodigo());
+            } else if (!o1.getConsolidado() && !o2.getConsolidado()){
+                return o1.getEta().compareTo(o2.getEta());
+            } else {
+                return o1.getId().compareTo(o2.getId());
+            }
         }
       
   } 
