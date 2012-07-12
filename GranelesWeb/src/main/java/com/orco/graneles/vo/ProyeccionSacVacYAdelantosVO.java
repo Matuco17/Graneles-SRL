@@ -17,6 +17,7 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
     private BigDecimal proyeccionBruto;
     private BigDecimal proyeccionNeto;
     private BigDecimal totalAdelantos;
+    private BigDecimal proyeccionNetoConAdelantos;
     
 
     public ProyeccionSacVacYAdelantosVO(Personal personal) {
@@ -24,6 +25,7 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
         proyeccionBruto = BigDecimal.ZERO;
         proyeccionNeto = BigDecimal.ZERO;
         totalAdelantos = BigDecimal.ZERO;
+        proyeccionNetoConAdelantos = BigDecimal.ZERO;
     }
 
     public Personal getPersonal() {
@@ -53,6 +55,16 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
     public void setTotalAdelantos(BigDecimal totalAdelantos) {
         this.totalAdelantos = totalAdelantos;
     }
+
+    public BigDecimal getProyeccionNetoConAdelantos() {
+        return proyeccionNetoConAdelantos;
+    }
+
+    public void setProyeccionNetoConAdelantos(BigDecimal proyeccionNetoConAdelantos) {
+        this.proyeccionNetoConAdelantos = proyeccionNetoConAdelantos;
+    }
+    
+    
 
     @Override
     public int compareTo(ProyeccionSacVacYAdelantosVO o) {

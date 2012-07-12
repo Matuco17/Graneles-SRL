@@ -96,6 +96,10 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
         AccidentadoVO accVO = new AccidentadoVO(accidentado);
         
         if (accidentado.getTrabajoRealizado() != null){
+            if (accidentado.getDesde() == null){
+                accidentado.setDesde(accidentado.getTrabajoRealizado().getPlanilla().getFecha());
+            }
+            
             
             //Ahora busco todos los salarios que van a existir
             accVO.setSueldos(new ArrayList<SueldoAccidentadoVO>());

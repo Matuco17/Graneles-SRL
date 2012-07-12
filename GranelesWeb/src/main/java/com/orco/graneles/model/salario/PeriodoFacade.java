@@ -268,6 +268,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 }
 
                 if (currentProyeccion.getProyeccionBruto().doubleValue() > 0){
+                    currentProyeccion.setProyeccionNetoConAdelantos(BigDecimal.ZERO.add(currentProyeccion.getProyeccionNeto()));
                     proyecciones.put(p.getId(), currentProyeccion);
                 }
             }
@@ -281,6 +282,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             }
             
             proyeccion.setTotalAdelantos(proyeccion.getTotalAdelantos().add(a.getValor()));
+            proyeccion.setProyeccionNetoConAdelantos(proyeccion.getProyeccionNetoConAdelantos().subtract(a.getValor()));
             
             proyecciones.put(a.getPersonal().getId(), proyeccion);
         }

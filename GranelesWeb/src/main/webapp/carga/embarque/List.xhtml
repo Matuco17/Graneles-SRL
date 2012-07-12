@@ -17,9 +17,9 @@
             <h:outputText value="#{bundleCarga.ListEmbarqueTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">                
-                <p:tabView >
-                    <p:tab id="panConsolidados" title="Consolidados" rendered="#{embarqueController.itemsConsolidados.rowCount > 0}">
+            <p:tabView >
+                <p:tab id="panConsolidados" title="Consolidados" rendered="#{embarqueController.itemsConsolidados.rowCount > 0}">
+                    <h:form styleClass="jsfcrud_list_form">                
                         <p:dataTable value="#{embarqueController.itemsConsolidados}" 
                                      var="item" rowKey="#{item.id}"
                                      paginator="true" rows="10"
@@ -45,35 +45,8 @@
                                 <h:outputText value="#{item.fumigacion.toString()}" />
                             </p:column>                        
                         </p:dataTable>
-                    </p:tab>
-                    <p:tab id="panNoConsolidados" title="No Consolidados" rendered="#{embarqueController.itemsNoConsolidados.rowCount > 0}">
-                        <p:dataTable value="#{embarqueController.itemsNoConsolidados}" 
-                                     var="item" rowKey="#{item.id}"
-                                     paginator="true" rows="10"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     selection="#{embarqueController.selectedNoConsolidado}" selectionMode="single">
-                            <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" >
-                                <h:outputText value="#{item.eta}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
-                                 <h:outputText value="#{item.buque.toString()}"/>
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
-                                <h:outputText value="#{item.muelle.toString()}"/>
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
-                                <h:outputText value="#{item.mercaderia.toString()}"/>
-                            </p:column>
-                            <p:column headerText="#{bundleCarga.EmbarqueTitle_destino}" filterBy="#{item.destino}" filterMatchMode="contains" >
-                                <h:outputText value="#{item.destino}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </p:tab>
-                </p:tabView>
-                <h:panelGrid columns="4">
+                        
+                        <h:panelGrid columns="4">
                     <h:commandButton 
                         image="/faces/resources/images/new.png" 
                         action="#{embarqueController.prepareCreate}" 
@@ -103,7 +76,70 @@
                         rendered="#{loginController.esGerente()}" 
                         />
                 </h:panelGrid>
-            </h:form>
+                    </h:form>
+                </p:tab>
+                <p:tab id="panNoConsolidados" title="No Consolidados" rendered="#{embarqueController.itemsNoConsolidados.rowCount > 0}">
+                    <h:form styleClass="jsfcrud_list_form">                
+                        <p:dataTable value="#{embarqueController.itemsNoConsolidados}" 
+                                     var="item" rowKey="#{item.id}"
+                                     paginator="true" rows="10"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{embarqueController.selectedNoConsolidado}" selectionMode="single">
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" >
+                                <h:outputText value="#{item.eta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
+                                 <h:outputText value="#{item.buque.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.muelle.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_mercaderia}" filterBy="#{item.mercaderia}" filterMatchMode="exact" filterOptions="#{mercaderiaController.itemsAvailableSelectOne}" >
+                                <h:outputText value="#{item.mercaderia.toString()}"/>
+                            </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_destino}" filterBy="#{item.destino}" filterMatchMode="contains" >
+                                <h:outputText value="#{item.destino}"/>
+                            </p:column>
+                        </p:dataTable>
+                        
+                        <h:panelGrid columns="4">
+                    <h:commandButton 
+                        image="/faces/resources/images/new.png" 
+                        action="#{embarqueController.prepareCreate}" 
+                        value="#{bundleCarga.EmbarqueCreateLink}"
+                        title="#{bundleCarga.EmbarqueCreateLink}"
+                        />
+                    <h:commandButton 
+                        image="/faces/resources/images/view.png" 
+                        action="#{embarqueController.prepareView}" 
+                        value="#{bundleCarga.EmbarqueViewLink}"
+                        title="#{bundleCarga.EmbarqueViewLink}"
+                        />
+
+                    <h:commandButton 
+                        image="/faces/resources/images/edit.png" 
+                        action="#{embarqueController.prepareEdit}" 
+                        value="#{bundleCarga.EmbarqueEditLink}"
+                        title="#{bundleCarga.EmbarqueEditLink}"
+                        />
+
+                    <h:commandButton 
+                        image="/faces/resources/images/destroy.png"
+                        onclick="return confirm('¿Esta seguro que desea eliminar este Embarque?');" 
+                        action="#{embarqueController.destroy}" 
+                        title="#{bundleCarga.EmbarqueDestroyLink}"
+                        value="#{bundleCarga.EmbarqueDestroyLink}"
+                        rendered="#{loginController.esGerente()}" 
+                        />
+                </h:panelGrid>
+                    </h:form>
+                </p:tab>
+            </p:tabView>
+                
+            
         </ui:define>
         
         

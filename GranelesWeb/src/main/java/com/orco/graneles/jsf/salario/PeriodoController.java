@@ -66,6 +66,7 @@ public class PeriodoController implements Serializable {
     private BigDecimal totalBruto;
     private BigDecimal totalNeto;
     private BigDecimal totalAdelantos;
+    private BigDecimal totalNetoConAdelantos;
     
     
     public PeriodoController() {
@@ -98,11 +99,13 @@ public class PeriodoController implements Serializable {
         totalBruto = BigDecimal.ZERO;
         totalNeto = BigDecimal.ZERO;
         totalAdelantos = BigDecimal.ZERO;
+        totalNetoConAdelantos = BigDecimal.ZERO;
                 
         for (ProyeccionSacVacYAdelantosVO p : proyeccionesSacYVacaciones){
             totalBruto = totalBruto.add(p.getProyeccionBruto());
             totalNeto = totalNeto.add(p.getProyeccionNeto());
             totalAdelantos = totalAdelantos.add(p.getTotalAdelantos());
+            totalNetoConAdelantos = totalNetoConAdelantos.add(p.getProyeccionNetoConAdelantos());
         }
     }
     
@@ -550,6 +553,11 @@ public class PeriodoController implements Serializable {
     public BigDecimal getTotalNeto() {
         return totalNeto;
     }
+
+    public BigDecimal getTotalNetoConAdelantos() {
+        return totalNetoConAdelantos;
+    }
+    
     
     
 }
