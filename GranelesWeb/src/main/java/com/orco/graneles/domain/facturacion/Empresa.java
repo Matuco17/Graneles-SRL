@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -98,6 +99,8 @@ public class Empresa implements Serializable {
 
     @OneToMany(mappedBy = "cargador")
     private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
+    
+    transient private UploadedFile logoFile;
     
     public Empresa() {
     }
@@ -238,5 +241,15 @@ public class Empresa implements Serializable {
     public void setTurnoEmbarqueObservacionesCollection(Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection) {
         this.turnoEmbarqueObservacionesCollection = turnoEmbarqueObservacionesCollection;
     }
+
+    public UploadedFile getLogoFile() {
+        return logoFile;
+    }
+
+    public void setLogoFile(UploadedFile logoFile) {
+        this.logoFile = logoFile;
+    }
+    
+    
     
 }

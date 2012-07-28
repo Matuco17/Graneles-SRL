@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+        <cc:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div style="float: left;">
+            <h:panelGrid columns="4">
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_nombre}" for="nombre"  />
+                <p:inputText id="nombre" value="#{empresaController.selected.nombre}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_direccion}" for="direccion"  />
+                <p:inputText id="direccion" value="#{empresaController.selected.direccion}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_cuit}" for="cuit"  />
+                <p:inputText id="cuit" value="#{empresaController.selected.cuit}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_cuidad}" for="cuidad"  />
+                <p:inputText id="cuidad" value="#{empresaController.selected.cuidad}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_telefono}" for="telefono"  />
+                <p:inputText id="telefono" value="#{empresaController.selected.telefono}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_mail}" for="mail"  />
+                <p:inputText id="mail" value="#{empresaController.selected.mail}" readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_web}" for="web"  />
+                <p:inputText id="web" value="#{empresaController.selected.web}"  readonly="#{!cc.attrs.editar}" />
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_tipoEmpresa}" for="tipoEmpresa"  />
+                <h:selectOneMenu id="tipoEmpresa" value="#{empresaController.selected.tipoEmpresa}" required="true" requiredMessage="#{bundleFacturacion.EmpresaRequiredMessage_tipoEmpresa}" disabled="#{!cc.attrs.editar}">
+                    <f:selectItems value="#{fixedListController.tipoEmpresaSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_logo}" for="logo" rendered="#{cc.attrs.editar}" />
+                <p:fileUpload id="logo" value="#{empresaController.logoFile}" mode="simple"  rendered="#{cc.attrs.editar}" />
+            </h:panelGrid>
+        </div>
+        <c:if test="#{!cc.attrs.nuevo}" >
+            <div style="float: left; margin-bottom: 5px;"  >
+                <img src="~/../../../resources/uploadedFiles/logosEmpresas/#{empresaController.selected.id}" 
+                     alt="Logo" style="max-height: 150px;"  />
+            </div>
+        </c:if>
+    </cc:implementation>
+</html>

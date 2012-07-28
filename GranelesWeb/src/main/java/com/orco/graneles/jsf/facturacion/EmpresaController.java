@@ -7,8 +7,10 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.EmpresaFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -19,6 +21,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringUtils;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "empresaController")
 @SessionScoped
@@ -32,6 +36,31 @@ public class EmpresaController implements Serializable {
     private FixedListFacade fixedListF;
     private int selectedItemIndex;
 
+    private UploadedFile logoFile;
+    
+    private void saveLogo(){        
+        if (StringUtils.isNotEmpty(logoFile.getFileName())){
+            FileOutputStream fos = null;
+            try {
+                String pathBaseArchivos = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+                
+                fos = new FileOutputStream(pathBaseArchivos + "resources/uploadedFiles/logosEmpresas/" + getSelected().getId());
+                fos.write(logoFile.getContents());
+                
+            } catch (IOException ex) {
+                Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        }        
+    }
+    
+    
     public EmpresaController() {
     }
 
@@ -81,6 +110,7 @@ public class EmpresaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            saveLogo();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("EmpresaCreated"));
             return "View";
         } catch (Exception e) {
@@ -102,6 +132,7 @@ public class EmpresaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
+            saveLogo();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("EmpresaUpdated"));
             return "View";
         } catch (Exception e) {
@@ -213,4 +244,14 @@ public class EmpresaController implements Serializable {
             }
         }
     }
+
+    public UploadedFile getLogoFile() {
+        return logoFile;
+    }
+
+    public void setLogoFile(UploadedFile logoFile) {
+        this.logoFile = logoFile;
+    }
+    
+    
 }

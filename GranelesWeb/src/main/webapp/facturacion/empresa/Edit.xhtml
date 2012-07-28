@@ -4,54 +4,40 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundleFacturacion.EditEmpresaTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_nombre}" for="nombre"  />
-                    <p:inputText id="nombre" value="#{empresaController.selected.nombre}" title="#{bundleFacturacion.EmpresaTitle_nombre}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_direccion}" for="direccion"  />
-                    <p:inputText id="direccion" value="#{empresaController.selected.direccion}" title="#{bundleFacturacion.EmpresaTitle_direccion}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_cuit}" for="cuit"  />
-                    <p:inputText id="cuit" value="#{empresaController.selected.cuit}" title="#{bundleFacturacion.EmpresaTitle_cuit}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_cuidad}" for="cuidad"  />
-                    <p:inputText id="cuidad" value="#{empresaController.selected.cuidad}" title="#{bundleFacturacion.EmpresaTitle_cuidad}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_telefono}" for="telefono"  />
-                    <p:inputText id="telefono" value="#{empresaController.selected.telefono}" title="#{bundleFacturacion.EmpresaTitle_telefono}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_mail}" for="mail"  />
-                    <p:inputText id="mail" value="#{empresaController.selected.mail}" title="#{bundleFacturacion.EmpresaTitle_mail}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_web}" for="web"  />
-                    <p:inputText id="web" value="#{empresaController.selected.web}" title="#{bundleFacturacion.EmpresaTitle_web}" />
-                    <h:outputLabel value="#{bundleFacturacion.EmpresaTitle_tipoEmpresa}" for="tipoEmpresa"  />
-                    <h:selectOneMenu id="tipoEmpresa" value="#{empresaController.selected.tipoEmpresa}"  required="true" requiredMessage="#{bundleFacturacion.EmpresaRequiredMessage_tipoEmpresa}">
-                        <f:selectItems value="#{fixedListController.tipoEmpresaSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:panelGrid columns="3">
+            <h:form enctype="multipart/form-data">
+               
+                <Co:empresaCC editar="true" nuevo="false"/>
+                                
+                <p:panel style="float:left; width: 100%" >
+                 <h:panelGrid columns="3">
 
-                    <h:commandButton action="#{empresaController.update}" 
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundleFacturacion.EmpresaSaveLink}"
-                                     title="#{bundleFacturacion.EmpresaSaveLink}"
-                                     />
-                    <h:commandButton action="View" 
-                                     value="#{bundleFacturacion.EmpresaViewLink}" 
-                                     image="/faces//resources/images/view.png" 
-                                     immediate="true"
-                                     title="#{bundleFacturacion.EmpresaViewLink}"
-                                     />
-                    <h:commandButton action="#{empresaController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundleFacturacion.EmpresaShowAllLink}"
-                                     immediate="true"
-                                     title="#{bundleFacturacion.EmpresaShowAllLink}"
-                                     />
-                </h:panelGrid>                 
+                        <h:commandButton action="#{empresaController.update}" 
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundleFacturacion.EmpresaSaveLink}"
+                                         title="#{bundleFacturacion.EmpresaSaveLink}"
+                                         />
+                        <h:commandButton action="View" 
+                                         value="#{bundleFacturacion.EmpresaViewLink}" 
+                                         image="/faces//resources/images/view.png" 
+                                         immediate="true"
+                                         title="#{bundleFacturacion.EmpresaViewLink}"
+                                         />
+                        <h:commandButton action="#{empresaController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleFacturacion.EmpresaShowAllLink}"
+                                         immediate="true"
+                                         title="#{bundleFacturacion.EmpresaShowAllLink}"
+                                         />
+                    </h:panelGrid>                 
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>
