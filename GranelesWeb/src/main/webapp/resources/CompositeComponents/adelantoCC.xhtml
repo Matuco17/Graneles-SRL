@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:panel id="panAdelanto" style="width: 350px; height: 300px;  float: left;"  >
+            <h:panelGrid columns="2">
+                <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
+                <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
+                <h:outputText value="" />
+                <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
+
+
+                <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
+                <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}" pattern="dd/MM/yyyy"
+                            required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_fecha}"/>
+
+
+                <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorMaximo}" for="valorMaximo" />
+                <p:inputText id="valorMaximo" readonly="true" value="#{adelantoController.valorMaximoCalculado}" style="text-align: right;" >
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>
+
+                <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorTotalAdelantos}" for="valorTotal" />
+                <p:inputText id="valorTotal" readonly="true" value="#{adelantoController.valorTotalAdelantos}" style="text-align: right;" >
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>
+
+                <h:outputLabel value="#{bundleSalario.AdelantoTitle_valorADar}" for="valor" />
+                <p:inputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_valor}">
+                    <f:convertNumber maxFractionDigits="2" />
+                </p:inputText>
+
+            </h:panelGrid>
+        </p:panel>
+        <p:panel id="panAdelantosPrevios" header="#{bundleSalario.AdelantoTitle_adelantosPrevios}" style="width: 280px; height: 300px; float: left;" >
+            <p:dataTable id="dtbAdelantos" value="#{adelantoController.adelantosPersonalModel}" var="adelanto" 
+                         paginator="true" rows="8" paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} "
+                         >
+                <p:column headerText="#{bundleSalario.AdelantoTitle_fecha}" style="text-align: center;" >
+                    <h:outputText value="#{adelanto.fecha}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>    
+                </p:column>
+                <p:column headerText="#{bundleSalario.AdelantoTitle_valor}" style="text-align: right;" >
+                    <h:outputText value="#{adelanto.valor}"/>
+                </p:column>                        
+            </p:dataTable>
+        </p:panel>
+    </cc:implementation>
+</html>

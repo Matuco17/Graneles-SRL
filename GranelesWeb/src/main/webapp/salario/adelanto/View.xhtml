@@ -32,7 +32,7 @@
                     
                 </h:panelGrid>
 
-                <h:panelGrid columns="3">
+                <h:panelGrid columns="4">
                     <h:commandButton action="#{adelantoController.destroyAndView}" 
                                      image="/faces/resources/images/destroy.png" 
                                      value="#{bundleSalario.AdelantoDestroyLink}"
@@ -40,13 +40,12 @@
                                      onclick="return confirm('¿Esta seguro que desea eliminar este Adelanto?');" 
                                      rendered="#{loginController.esGerente()}"
                                      />
-                    <!--
                     <h:commandButton action="Edit" 
                                      image="/faces/resources/images/edit.png" 
                                      value="#{bundleSalario.AdelantoEditLink}"
                                      title="#{bundleSalario.AdelantoEditLink}"
+                                     rendered="#{loginController.esAdministrador()}"
                                      />
-                    -->
                     <h:commandButton action="#{adelantoController.prepareCreate}" 
                                      image="/faces/resources/images/new.png" 
                                      value="#{bundleSalario.AdelantoCreateLink}"

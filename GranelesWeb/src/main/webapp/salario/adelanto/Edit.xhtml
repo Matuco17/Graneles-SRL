@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
@@ -12,42 +13,31 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_id}" for="id" style="font-weight: bold;" />
-                    <p:inputText id="id" value="#{adelantoController.selected.id}" title="#{bundleSalario.AdelantoTitle_id}" />
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha" style="font-weight: bold;" />
-                    <p:calendar id="fecha" value="#{adelantoController.selected.fecha}" title="#{bundleSalario.AdelantoTitle_fecha}"  showOn="button">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </p:calendar>
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_concepto}" for="concepto" style="font-weight: bold;" />
-                    <p:selectOneMenu id="concepto" value="#{adelantoController.selected.concepto}"   style="width:100%;">
-                        <f:selectItems value="#{fixedListController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal" style="font-weight: bold;" />
-                    <p:selectOneMenu id="personal" value="#{adelantoController.selected.personal}"  required="true" requiredMessage="#{bundleSalario.AdelantoRequiredMessage_personal}" style="width:100%;">
-                        <f:selectItems value="#{personalController.itemsAvailableSelectOne}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <h:panelGrid columns="3">
+                
+                <Co:adelantoCC />
+                
+                <p:panel id="panAcciones" style="width: 100%; float: left;" >
+                    <h:panelGrid columns="3" >
 
-                    <h:commandButton action="#{adelantoController.update}" 
-                                     image="/faces/resources/images/save.png" 
-                                     value="#{bundleSalario.AdelantoSaveLink}"
-                                     title="#{bundleSalario.AdelantoSaveLink}"
-                                     />
-                    <h:commandButton action="View" 
-                                     value="#{bundleSalario.AdelantoViewLink}" 
-                                     image="/faces//resources/images/view.png" 
-                                     immediate="true"
-                                     title="#{bundleSalario.AdelantoViewLink}"
-                                     />
-                    <h:commandButton action="#{adelantoController.prepareList}"
-                                     image="/faces/resources/images/viewAll.png" 
-                                     value="#{bundleSalario.AdelantoShowAllLink}"
-                                     immediate="true"
-                                     title="#{bundleSalario.AdelantoShowAllLink}"
-                                     />
-                </h:panelGrid>                 
+                        <h:commandButton action="#{adelantoController.update}" 
+                                         image="/faces/resources/images/save.png" 
+                                         value="#{bundleSalario.AdelantoSaveLink}"
+                                         title="#{bundleSalario.AdelantoSaveLink}"
+                                         />
+                        <h:commandButton action="View" 
+                                         value="#{bundleSalario.AdelantoViewLink}" 
+                                         image="/faces//resources/images/view.png" 
+                                         immediate="true"
+                                         title="#{bundleSalario.AdelantoViewLink}"
+                                         />
+                        <h:commandButton action="#{adelantoController.prepareList}"
+                                         image="/faces/resources/images/viewAll.png" 
+                                         value="#{bundleSalario.AdelantoShowAllLink}"
+                                         immediate="true"
+                                         title="#{bundleSalario.AdelantoShowAllLink}"
+                                         />
+                    </h:panelGrid>   
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

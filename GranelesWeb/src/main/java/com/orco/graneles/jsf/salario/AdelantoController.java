@@ -66,19 +66,22 @@ public class AdelantoController implements Serializable {
         if (currentPersonal != null){
             //No realizo la asignacion directa ya que puede ser que tengan datos desactualizados la lista de personal por el cache
             getSelected().setPersonal(personalF.find(currentPersonal.getId()));
-            valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(currentPersonal);
-            
-            List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(currentPersonal);
-            Collections.sort(adelantos, new ComparadorAdelanto());
-            adelantosPersonalModel = new ListDataModel(adelantos);
-
-            valorTotalAdelantos = BigDecimal.ZERO;
-            for (Adelanto a : adelantos){
-                valorTotalAdelantos = valorTotalAdelantos.add(a.getValor());
-            }
-            
+            calcularMaximosYAdelantos();
             getSelected().setValor(valorMaximoCalculado.subtract(valorTotalAdelantos));
             getSelected().setFecha(new Date());
+        }
+    }
+
+    private void calcularMaximosYAdelantos() {
+        valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(getSelected().getPersonal());
+        
+        List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(getSelected().getPersonal());
+        Collections.sort(adelantos, new ComparadorAdelanto());
+        adelantosPersonalModel = new ListDataModel(adelantos);
+
+        valorTotalAdelantos = BigDecimal.ZERO;
+        for (Adelanto a : adelantos){
+            valorTotalAdelantos = valorTotalAdelantos.add(a.getValor());
         }
     }
    
@@ -137,9 +140,8 @@ public class AdelantoController implements Serializable {
     }
 
     public String prepareEdit() {
-        //current = (Adelanto) getItems().getRowData();
-        //selectedItemIndex = getItems().getRowIndex();
         if (current != null){
+            calcularMaximosYAdelantos();
             return "Edit";
         } else {
             return null;
