@@ -10,6 +10,7 @@ import com.orco.graneles.domain.salario.TipoJornal;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaPreviaFacade;
+import com.orco.graneles.model.carga.CargaTurnoCargasFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.EmbarqueCargadorFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
@@ -62,6 +63,8 @@ public class EmbarqueController implements Serializable {
     private ConceptoReciboFacade conceptoReciboF;
     @EJB
     private TareaFacade tareaF;
+    @EJB
+    private CargaTurnoCargasFacade cargaTurnoCargasF;
     
     
     private int selectedItemIndex;
@@ -921,7 +924,7 @@ public class EmbarqueController implements Serializable {
         if (cargadoresModel.getRowData() != null){
             EmbarqueCargador embarqueCargador = (EmbarqueCargador) cargadoresModel.getRowData();
             
-            DeclaracionJuradaExportador declaracion = new DeclaracionJuradaExportador(embarqueCargador.getCargador(), current);
+            DeclaracionJuradaExportador declaracion = new DeclaracionJuradaExportador(embarqueCargador.getCargador(), current, cargaTurnoCargasF);
             embarqueCargador.setUrlDeclaracionJurada(declaracion.obtenerReportePDF()); 
            
             cargadoresModel = null;            

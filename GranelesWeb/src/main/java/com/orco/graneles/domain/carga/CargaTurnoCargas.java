@@ -30,7 +30,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "CargaTurnoCargas.findAll", query = "SELECT c FROM CargaTurnoCargas c"),
     @NamedQuery(name = "CargaTurnoCargas.findById", query = "SELECT c FROM CargaTurnoCargas c WHERE c.id = :id"),
-    @NamedQuery(name = "CargaTurnoCargas.findByCarga", query = "SELECT c FROM CargaTurnoCargas c WHERE c.carga = :carga")})
+    @NamedQuery(name = "CargaTurnoCargas.findByCarga", query = "SELECT c FROM CargaTurnoCargas c WHERE c.carga = :carga"),
+    @NamedQuery(name = "CargaTurnoCargas.findByEmbarqueYExportador", 
+        query = "SELECT c "
+                + "FROM CargaTurnoCargas c "
+                + "WHERE c.cargaTurno.cargador = :cargador "
+                + "AND c.cargaTurno.turnoEmbarque.embarque = :embarque ")
+})
 public class CargaTurnoCargas implements Serializable, Comparable<CargaTurnoCargas> {
     private static final long serialVersionUID = 1L;
     @Id

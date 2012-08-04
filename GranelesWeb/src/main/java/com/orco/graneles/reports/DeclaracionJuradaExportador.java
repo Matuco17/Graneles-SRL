@@ -6,6 +6,7 @@ package com.orco.graneles.reports;
 
 import com.orco.graneles.domain.carga.*;
 import com.orco.graneles.domain.facturacion.Empresa;
+import com.orco.graneles.model.carga.CargaTurnoCargasFacade;
 import com.orco.graneles.vo.ResumenExportadorVO;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -25,18 +27,39 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
     private List<ResumenExportadorVO> dataSource;
     private Empresa exportador;
     private Embarque embarque;
+    
+   
+    private CargaTurnoCargasFacade cargaTurnoCargasF;
 
-    public DeclaracionJuradaExportador(Empresa exportador, Embarque embarque) {
+    public DeclaracionJuradaExportador(Empresa exportador, Embarque embarque, CargaTurnoCargasFacade ctcFacade) {
         this.exportador = exportador;
         this.embarque = embarque;
+        this.cargaTurnoCargasF = ctcFacade;
         
         dataSource = new ArrayList<ResumenExportadorVO>();
         Map<Integer, ResumenExportadorVO> mapDataSource = new HashMap<Integer, ResumenExportadorVO>();
         Set<Mercaderia> mercaderiasCargador = new HashSet<Mercaderia>();
         BigDecimal totalCargas = BigDecimal.ZERO;
         
+        for (CargaTurnoCargas ctc : cargaTurnoCargasF.obtenerCargas(exportador, embarque)){
+            if (ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
+                ResumenExportadorVO rExpVO = mapDataSource.get(ctc.getNroBodega());
+                if (rExpVO == null){
+                    rExpVO = new ResumenExportadorVO(ctc.getNroBodega(), embarque, exportador, ctc.getMercaderiaBodega());
+                }
+
+                mercaderiasCargador.add(ctc.getMercaderiaBodega());
+                rExpVO.setCarga(rExpVO.getCarga().add(ctc.getCarga()));
+                totalCargas = totalCargas.add(ctc.getCarga());
+
+
+                mapDataSource.put(ctc.getNroBodega(), rExpVO);
+            }
+        }
+        
         //No realizo la busqueda x base ya que la tengo todo precargado
         //Busco por cada cargaTurnoCarga del exportador en cuestion
+        /*
         for (TurnoEmbarque te : embarque.getTurnoEmbarqueCollection()){
             for (CargaTurno ct : te.getCargaTurnoCollection()){
                 if (ct.getCargador().equals(exportador)){
@@ -57,7 +80,7 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
                     }
                 }
             }
-        }
+        }*/
         
         //termino de generar la lista y paso los valores de carga a kilos
         totalCargas = totalCargas.multiply(new BigDecimal(1000L));
