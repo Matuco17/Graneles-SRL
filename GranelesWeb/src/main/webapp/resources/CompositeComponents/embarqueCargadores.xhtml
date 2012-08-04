@@ -74,13 +74,19 @@
             </p:column>
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_comienzo}" style="text-align: center;">
                 <p:calendar value="#{cargador.comienzo}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
-                <h:outputText value="#{cargador.comienzo.toLocaleString()}" rendered="#{!cc.attrs.editar}" >
+                <h:outputText value="#{cargador.comienzo}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                 </h:outputText>   
             </p:column>
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_termino}" style="text-align: center;">
                 <p:calendar value="#{cargador.termino}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" style="max-width: 10px;"/>
-                <h:outputText value="#{cargador.termino.toLocaleString()}" rendered="#{!cc.attrs.editar}" >
+                <h:outputText value="#{cargador.termino}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                 </h:outputText>   
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_destino}" >
+                <p:inputText value="#{cargador.destino}" rendered="#{cc.attrs.editar}" />
+                <h:outputText value="#{cargador.destino}" rendered="#{!cc.attrs.editar}" />
             </p:column>
             <p:column rendered="#{cc.attrs.editar}">
                 <h:commandButton 

@@ -6,6 +6,7 @@ package com.orco.graneles.vo;
 
 import com.orco.graneles.domain.carga.CargaTurnoCargas;
 import com.orco.graneles.domain.carga.Embarque;
+import com.orco.graneles.domain.carga.EmbarqueCargador;
 import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.math.BigDecimal;
@@ -21,25 +22,23 @@ public class ResumenExportadorVO implements Comparable<ResumenExportadorVO> {
     private Integer nroBodega;
     private BigDecimal carga;
     private Mercaderia mercaderiaBodega;
-    private Embarque embarque;
+    private EmbarqueCargador embarqueCargador;
     private Set<Mercaderia> mercaderiasCargadas;
     private BigDecimal totalCargas;
-    private Empresa exportador;
     
-    public ResumenExportadorVO(Integer nroBodega, Embarque embarque, Empresa exportador, Mercaderia mercaderiaBodega) {
+    public ResumenExportadorVO(Integer nroBodega, EmbarqueCargador embarqueCargador, Mercaderia mercaderiaBodega) {
         this.carga = BigDecimal.ZERO;
-        this.embarque = embarque;
+        this.embarqueCargador = embarqueCargador;
         this.mercaderiaBodega = mercaderiaBodega;
-        this.exportador = exportador;
         this.nroBodega = nroBodega;
     }
     
     public String getPuerto(){
-        return embarque.getMuelle().getPuerto().getNombre().toUpperCase();
+        return embarqueCargador.getEmbarque().getMuelle().getPuerto().getNombre().toUpperCase();
     }
     
     public String getBuque(){
-        return embarque.getBuque().getDescripcion().toUpperCase();
+        return embarqueCargador.getEmbarque().getBuque().getDescripcion().toUpperCase();
     }
     
     public String getMercaderiasLineal(){
@@ -55,11 +54,11 @@ public class ResumenExportadorVO implements Comparable<ResumenExportadorVO> {
     }
     
     public String getExportador(){
-        return exportador.getNombre().toUpperCase();
+        return embarqueCargador.getCargador().getNombre().toUpperCase();
     }
     
     public String getDestino(){
-        return embarque.getDestino().toUpperCase();
+        return (embarqueCargador.getDestino() != null) ? embarqueCargador.getDestino().toUpperCase() : "";
     }
     
     public Integer getNroBodega(){
@@ -87,7 +86,7 @@ public class ResumenExportadorVO implements Comparable<ResumenExportadorVO> {
     }
 
     public String getOrigenMercaderia(){
-        return embarque.getOrigenMercaderia();
+        return embarqueCargador.getEmbarque().getOrigenMercaderia();
     }
     
     @Override

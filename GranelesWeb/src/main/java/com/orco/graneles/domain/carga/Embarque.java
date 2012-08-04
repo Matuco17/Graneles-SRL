@@ -331,7 +331,8 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         
         if (this.getEmbarqueCargadoresCollection() != null){
             for (EmbarqueCargador ec : this.getEmbarqueCargadoresCollection()){
-                max = max.add(ec.getMaximo());
+                if (ec.getMaximo() != null)
+                    max = max.add(ec.getMaximo());
             }
         }
         
@@ -343,7 +344,8 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         
         if (this.getEmbarqueCargadoresCollection() != null){
             for (EmbarqueCargador ec : this.getEmbarqueCargadoresCollection()){
-                min = min.add(ec.getMinimo());
+                if (ec.getMinimo() != null)
+                    min = min.add(ec.getMinimo());
             }
         }
         

@@ -924,7 +924,7 @@ public class EmbarqueController implements Serializable {
         if (cargadoresModel.getRowData() != null){
             EmbarqueCargador embarqueCargador = (EmbarqueCargador) cargadoresModel.getRowData();
             
-            DeclaracionJuradaExportador declaracion = new DeclaracionJuradaExportador(embarqueCargador.getCargador(), current, cargaTurnoCargasF);
+            DeclaracionJuradaExportador declaracion = new DeclaracionJuradaExportador(embarqueCargador, cargaTurnoCargasF);
             embarqueCargador.setUrlDeclaracionJurada(declaracion.obtenerReportePDF()); 
            
             cargadoresModel = null;            
@@ -954,6 +954,7 @@ public class EmbarqueController implements Serializable {
         if (currentEC == null){
             currentEC = new EmbarqueCargador();
             currentEC.setEmbarque(current);
+            currentEC.setDestino(current.getDestino());
         }
         return currentEC;
     }

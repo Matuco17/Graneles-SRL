@@ -25,15 +25,13 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 public class DeclaracionJuradaExportador extends ReporteGenerico {
 
     private List<ResumenExportadorVO> dataSource;
-    private Empresa exportador;
-    private Embarque embarque;
+    private EmbarqueCargador embarqueCargador;
     
    
     private CargaTurnoCargasFacade cargaTurnoCargasF;
 
-    public DeclaracionJuradaExportador(Empresa exportador, Embarque embarque, CargaTurnoCargasFacade ctcFacade) {
-        this.exportador = exportador;
-        this.embarque = embarque;
+    public DeclaracionJuradaExportador(EmbarqueCargador embarqueCargador, CargaTurnoCargasFacade ctcFacade) {
+        this.embarqueCargador = embarqueCargador;
         this.cargaTurnoCargasF = ctcFacade;
         
         dataSource = new ArrayList<ResumenExportadorVO>();
@@ -41,11 +39,11 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
         Set<Mercaderia> mercaderiasCargador = new HashSet<Mercaderia>();
         BigDecimal totalCargas = BigDecimal.ZERO;
         
-        for (CargaTurnoCargas ctc : cargaTurnoCargasF.obtenerCargas(exportador, embarque)){
+        for (CargaTurnoCargas ctc : cargaTurnoCargasF.obtenerCargas(embarqueCargador.getCargador(), embarqueCargador.getEmbarque())){
             if (ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
                 ResumenExportadorVO rExpVO = mapDataSource.get(ctc.getNroBodega());
                 if (rExpVO == null){
-                    rExpVO = new ResumenExportadorVO(ctc.getNroBodega(), embarque, exportador, ctc.getMercaderiaBodega());
+                    rExpVO = new ResumenExportadorVO(ctc.getNroBodega(), embarqueCargador, ctc.getMercaderiaBodega());
                 }
 
                 mercaderiasCargador.add(ctc.getMercaderiaBodega());
@@ -101,7 +99,7 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
         
         //Pongo el logo de la empresa
         try {
-            FileInputStream imagen = new FileInputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/uploadedFiles/logosEmpresas/" + exportador.getId()));
+            FileInputStream imagen = new FileInputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/uploadedFiles/logosEmpresas/" + embarqueCargador.getCargador().getId()));
             params.put("logoEmpresa", imagen);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -110,7 +108,7 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
         }
                 
                 
-        return printGenerico(ds, "DeclaracionJuradaExportador", "JURAR_" + embarque.getCodigo() + exportador.getNombre());
+        return printGenerico(ds, "DeclaracionJuradaExportador", "JURAR_" + embarqueCargador.getEmbarque().getCodigo() + "_" + embarqueCargador.getCargador().getNombre());
     }
     
 }

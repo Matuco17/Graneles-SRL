@@ -35,6 +35,7 @@ public class EmbarqueCargador implements Serializable {
     @Column(name = "minimo")
     private BigDecimal minimo;
     
+    
     @Column(name = "maximo")
     private BigDecimal maximo;
     
@@ -53,6 +54,9 @@ public class EmbarqueCargador implements Serializable {
     @Column(name = "termino")
     @Temporal(TemporalType.TIMESTAMP)
     private Date termino;
+    
+    @Column(name = "destino")
+    private String destino;
     
     private transient String urlDeclaracionJurada;
     
@@ -118,6 +122,14 @@ public class EmbarqueCargador implements Serializable {
 
     public void setTermino(Date termino) {
         this.termino = termino;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
     
     
