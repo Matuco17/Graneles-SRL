@@ -54,6 +54,7 @@ public class EmbarqueCargador implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date termino;
     
+    private transient String urlDeclaracionJurada;
     
 
     public EmbarqueCargador() {
@@ -145,5 +146,14 @@ public class EmbarqueCargador implements Serializable {
     public String toString() {
         return "com.orco.graneles.domain.carga.EmbarqueCargadores[ id=" + id + " ]";
     }
+
+    public String getUrlDeclaracionJurada() {
+        return urlDeclaracionJurada;
+    }
+
+    public void setUrlDeclaracionJurada(String urlDeclaracionJurada) {
+        this.urlDeclaracionJurada = urlDeclaracionJurada;
+    }
+    
     
 }

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeclaracionJuradaExportador" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.9090909090909095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="61"/>
+	<parameter name="logoEmpresa" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="buque" class="java.lang.String">
+		<fieldDescription><![CDATA[buque]]></fieldDescription>
+	</field>
+	<field name="carga" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[carga]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="destino" class="java.lang.String">
+		<fieldDescription><![CDATA[destino]]></fieldDescription>
+	</field>
+	<field name="exportador" class="java.lang.String">
+		<fieldDescription><![CDATA[exportador]]></fieldDescription>
+	</field>
+	<field name="mercaderiaBodega" class="java.lang.String">
+		<fieldDescription><![CDATA[mercaderiaBodega]]></fieldDescription>
+	</field>
+	<field name="mercaderiasLineal" class="java.lang.String">
+		<fieldDescription><![CDATA[mercaderiasLineal]]></fieldDescription>
+	</field>
+	<field name="nroBodega" class="java.lang.Integer">
+		<fieldDescription><![CDATA[nroBodega]]></fieldDescription>
+	</field>
+	<field name="puerto" class="java.lang.String">
+		<fieldDescription><![CDATA[puerto]]></fieldDescription>
+	</field>
+	<field name="totalCarga" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalCarga]]></fieldDescription>
+	</field>
+	<field name="origenMercaderia" class="java.lang.String">
+		<fieldDescription><![CDATA[origenMercaderia]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66">
+			<image>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="168" height="66"/>
+				<imageExpression><![CDATA[$P{logoEmpresa}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="222" splitType="Stretch">
+			<staticText>
+				<reportElement x="343" y="0" width="65" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[ING. WHITE,]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="408" y="0" width="147" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[SENASA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="40" width="229" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PTO " + $F{puerto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PRESENTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="80" width="157" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="83" width="157" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="116" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REF: MV \"" + $F{buque} + "\" - " + $F{mercaderiasLineal} + " " + $F{destino}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="136" width="555" height="58"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["POR MEDIO DE LA PRESENTE Y EN NOMBRE DE LOS SRES. " + $F{exportador} + " DECLARAMOS BAJO JURAMENTO HABER EMBARCADO EN EL BUQUE DE LA REF. LA CANTIDAD DE " + $F{totalCarga}.longValue() + " KS DE " + $F{mercaderiasLineal} + " CON DESTINO A " + $F{destino} + ", CANTIDADES SUMINISTRADAS POR " + $F{origenMercaderia} + "."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="202" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[EMBARCADO EN:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BODEGA " + $F{nroBodega} + ":"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="100" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carga}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="0" width="47" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[KS]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="15" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="###0">
+				<reportElement x="100" y="15" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalCarga}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="15" width="47" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[KS]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="280" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="64" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["P / " + $F{exportador}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="84" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRANELES S.R.L.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -90,7 +90,19 @@
                     title="#{bundleCarga.EmbarqueCargadorDestroyLink}"
                     value="#{bundleCarga.EmbarqueCargadorDestroyLink}"
                     />
-            </p:column>                        
+            </p:column>          
+            <p:column rendered="#{!cc.attrs.editar}" >
+                <h:commandButton
+                    action="#{embarqueController.generarDeclaracionJurada()}"
+                    title="Generar Declaración Jurada"
+                    value="Generar Declaración Jurada"
+                    rendered="#{cargador.urlDeclaracionJurada == null}"
+                    />
+                 <h:link value="Declaración Jurada" 
+                    onclick="window.open('#{cargador.urlDeclaracionJurada}','Download');window.close();" 
+                    rendered="#{cargador.urlDeclaracionJurada != null}" 
+                    />
+            </p:column>
         </p:dataTable> 
     </co:implementation>
 </html>

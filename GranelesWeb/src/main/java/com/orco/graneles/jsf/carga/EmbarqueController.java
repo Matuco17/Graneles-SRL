@@ -17,10 +17,7 @@ import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.personal.TareaFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
-import com.orco.graneles.reports.EmbarquePlanoCarga;
-import com.orco.graneles.reports.PlanillaTrabajadoresTurno;
-import com.orco.graneles.reports.ResumenCargasPorCargador;
-import com.orco.graneles.reports.ResumenCargasPorTurno;
+import com.orco.graneles.reports.*;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.io.IOException;
 
@@ -917,6 +914,17 @@ public class EmbarqueController implements Serializable {
             cargadores.remove(cargadoresModel.getRowIndex());
             cargadoresModel = null;
             
+        }
+    }
+    
+    public void generarDeclaracionJurada(){
+        if (cargadoresModel.getRowData() != null){
+            EmbarqueCargador embarqueCargador = (EmbarqueCargador) cargadoresModel.getRowData();
+            
+            DeclaracionJuradaExportador declaracion = new DeclaracionJuradaExportador(embarqueCargador.getCargador(), current);
+            embarqueCargador.setUrlDeclaracionJurada(declaracion.obtenerReportePDF()); 
+           
+            cargadoresModel = null;            
         }
     }
     
