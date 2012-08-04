@@ -103,6 +103,11 @@
                             <p:column headerText="#{bundleCarga.EmbarqueTitle_destino}" filterBy="#{item.destino}" filterMatchMode="contains" >
                                 <h:outputText value="#{item.destino}"/>
                             </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_cantidadEstimativaCarga}" >
+                                <h:outputText value="#{item.cantidadCargaEstimativa}">
+                                    
+                                </h:outputText>
+                            </p:column>                            
                         </p:dataTable>
                         
                         <h:panelGrid columns="4">

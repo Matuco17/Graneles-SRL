@@ -87,7 +87,7 @@ public class ResumenExportadorVO implements Comparable<ResumenExportadorVO> {
     }
 
     public String getOrigenMercaderia(){
-        return "CARGIL";
+        return embarque.getOrigenMercaderia();
     }
     
     @Override

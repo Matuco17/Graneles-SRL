@@ -78,6 +78,12 @@
                              valueChangeListener="#{embarqueController.seleccionarMercaderia}" onchange="submit()" disabled="#{!cc.attrs.editar}" >
                 <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}"/>
             </h:selectOneMenu>
+            
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_cantidadEstimativaCarga}" for="cantidadEstimativaCarga"  />
+            <p:inputText id="cantidadEstimativaCarga" value="#{embarqueController.selected.cantidadCargaEstimativa}" readonly="#{!cc.attrs.editar}"/>
+
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_origenMercaderia}" for="origenMercaderia"  />
+            <p:inputText id="origenMercaderia" value="#{embarqueController.selected.origenMercaderia}" readonly="#{!cc.attrs.editar}"/>
 
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" for="control"  />
             <h:selectOneMenu id="control" value="#{embarqueController.selected.control}" disabled="#{!cc.attrs.editar}" >

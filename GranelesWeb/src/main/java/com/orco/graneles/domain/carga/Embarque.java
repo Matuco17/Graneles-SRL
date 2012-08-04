@@ -121,6 +121,12 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @Column(name  = "consolidado")
     private Boolean consolidado;
     
+    @Column(name = "cantidad_carga_estimativa")
+    private BigDecimal cantidadCargaEstimativa;
+    
+    @Column(name = "origen_mercaderia")
+    private String origenMercaderia;
+    
     transient private Boolean consolidadoEnBusqueda;
     
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
@@ -301,6 +307,23 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     public void setEta(Date eta) {
         this.eta = eta;
     }
+
+    public BigDecimal getCantidadCargaEstimativa() {
+        return cantidadCargaEstimativa;
+    }
+
+    public void setCantidadCargaEstimativa(BigDecimal cantidadCargaEstimativa) {
+        this.cantidadCargaEstimativa = cantidadCargaEstimativa;
+    }
+
+    public String getOrigenMercaderia() {
+        return origenMercaderia;
+    }
+
+    public void setOrigenMercaderia(String origenMercaderia) {
+        this.origenMercaderia = origenMercaderia;
+    }
+    
     
     
     public BigDecimal getMaxACargar() {
