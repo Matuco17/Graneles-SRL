@@ -45,6 +45,20 @@
                 </c:otherwise>
             </c:choose>
             
+            <h:outputLabel for="etb" value="#{bundleCarga.EmbarqueTitle_etb}" rendered="#{!embarqueController.selected.consolidado}" />
+            <c:choose>
+                <c:when test="#{cc.attrs.editar}">
+                    <p:calendar id="etb" value="#{embarqueController.selected.etb}" pattern="dd/MM/yyyy HH:mm" title="#{bundleCarga.EmbarqueTitle_etb}" rendered="#{!embarqueController.selected.consolidado}" />
+                </c:when>
+                <c:otherwise>
+                    <h:outputText id="etb" value="#{embarqueController.selected.etb}" title="#{bundleCarga.EmbarqueTitle_etb}" rendered="#{!embarqueController.selected.consolidado}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                    </h:outputText>
+                </c:otherwise>
+            </c:choose>
+            <h:outputText value="" rendered="#{embarqueController.selected.consolidado}" />
+            <h:outputText value="" rendered="#{embarqueController.selected.consolidado}" />
+            
             
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_buque}" for="buque"  />
             <c:choose>
@@ -69,14 +83,12 @@
             <p:inputText id="destino" value="#{embarqueController.selected.destino}" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.destino}" rendered="#{!cc.attrs.editar}" />
             
-            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_coordinador}" for="coordinador"  />
             <h:selectOneMenu id="coordinador" value="#{embarqueController.selected.coordinador}" rendered="#{cc.attrs.editar}" >
                 <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
             </h:selectOneMenu>
             <h:outputText value="#{(embarqueController.selected.coordinador != null)? embarqueController.selected.coordinador.toString() : null }" rendered="#{!cc.attrs.editar}" />
             
-
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_mercaderia}" for="mercaderia"  />
             <h:selectOneMenu id="mercaderia" value="#{embarqueController.selected.mercaderia}" title="#{bundleCarga.EmbarqueTitle_mercaderia}" 
                              valueChangeListener="#{embarqueController.seleccionarMercaderia}" onchange="submit()" rendered="#{cc.attrs.editar}" >
@@ -104,18 +116,26 @@
             </h:selectOneMenu>
             <h:outputText value="#{(embarqueController.selected.fumigacion != null)? embarqueController.selected.fumigacion.toString() : null }" rendered="#{!cc.attrs.editar}" />
             
-            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" for="boya11"  />
-            <p:calendar id="boya11" value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
-            <h:outputText value="#{embarqueController.selected.boya11}" rendered="#{!cc.attrs.editar}" >
+            <h:outputText value=""/>
+            <h:outputText value=""/>
+            
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_nor}" for="nor"  />
+            <p:calendar id="nor" value="#{embarqueController.selected.nor}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
+            <h:outputText value="#{embarqueController.selected.nor}" rendered="#{!cc.attrs.editar}" >
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
-
+            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion"  />
             <p:calendar id="inicioNavegacion" value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{embarqueController.selected.inicioNavegacion}" rendered="#{!cc.attrs.editar}" >
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
 
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boya11}" for="boya11"  />
+            <p:calendar id="boya11" value="#{embarqueController.selected.boya11}" title="#{bundleCarga.EmbarqueTitle_boya11}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
+            <h:outputText value="#{embarqueController.selected.boya11}" rendered="#{!cc.attrs.editar}" >
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
 
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_atco}" for="atco"  />
             <p:calendar id="atco" value="#{embarqueController.selected.atco}" title="#{bundleCarga.EmbarqueTitle_atco}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
@@ -148,6 +168,18 @@
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
 
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioFumigacion}" for="inicioFumigacion"  />
+            <p:calendar id="inicioFumigacion" value="#{embarqueController.selected.inicioFumigacion}" title="#{bundleCarga.EmbarqueTitle_inicioFumigacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
+            <h:outputText value="#{embarqueController.selected.inicioFumigacion}" rendered="#{!cc.attrs.editar}" >
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+            
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_finFumigacion}" for="finFumigacion"  />
+            <p:calendar id="finFumigacion" value="#{embarqueController.selected.finFumigacion}" title="#{bundleCarga.EmbarqueTitle_finFumigacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
+            <h:outputText value="#{embarqueController.selected.finFumigacion}" rendered="#{!cc.attrs.editar}" >
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_momentoFumigacion}" for="momentoFumigacion"  />
             <p:inputText id="momentoFumigacion" value="#{embarqueController.selected.momentoFumigacion}" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.momentoFumigacion}" rendered="#{!cc.attrs.editar}" />

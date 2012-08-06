@@ -124,7 +124,7 @@
                         </h:selectOneMenu>
 
                         <p:inputText id="bruto" value="#{embarqueController.currentTTE.valorBruto}" readonly="true" style="width: 50px; text-align: right;" >
-                            <f:convertNumber maxFractionDigits="2" />
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                         </p:inputText>
 
                         <h:commandButton id="btnAgregarTrabajador" 
@@ -188,12 +188,12 @@
                         </p:column>
                         <p:column id="colValorBruto" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorBruto}" style="text-align: right;" >
                             <h:outputText value="#{item.valorBruto}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                             </h:outputText>
                         </p:column>  
                         <p:column id="colValorTurno" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorTurno}" style="text-align: right;" >
                             <h:outputText value="#{item.valorTurno}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                             </h:outputText>
                         </p:column>  
                         <p:column id="colDelegado" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_delegado}" style="text-align: center;" >
@@ -206,12 +206,12 @@
                             </p:column>
                             <p:column style="text-align: right;">
                                 <h:outputText value="#{embarqueController.totalBrutoTE}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                 </h:outputText>
                             </p:column>
                             <p:column style="text-align: right;">
                                 <h:outputText value="#{embarqueController.totalNetoTE}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                 </h:outputText>
                             </p:column>
                         </p:summaryRow>

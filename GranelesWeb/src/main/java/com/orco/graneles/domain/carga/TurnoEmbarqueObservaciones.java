@@ -6,6 +6,7 @@ package com.orco.graneles.domain.carga;
 
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,18 +33,14 @@ public class TurnoEmbarqueObservaciones implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
     
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "desde", nullable = false)
-    private int desde;
+    @Temporal(TemporalType.TIME)
+    private Date desde;
     
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "hasta", nullable = false)
-    private int hasta;
+    @Temporal(TemporalType.TIME)
+    private Date hasta;
     
-    @Basic(optional = false)
-    @NotNull
     @Size(max = 256)
     @Column(name = "observacion", nullable = false, length = 256)
     private String observacion;
@@ -67,7 +64,7 @@ public class TurnoEmbarqueObservaciones implements Serializable {
         this.id = id;
     }
 
-    public TurnoEmbarqueObservaciones(Long id, int desde, int hasta, String observacion) {
+    public TurnoEmbarqueObservaciones(Long id, Date desde, Date hasta, String observacion) {
         this.id = id;
         this.desde = desde;
         this.hasta = hasta;
@@ -82,19 +79,19 @@ public class TurnoEmbarqueObservaciones implements Serializable {
         this.id = id;
     }
 
-    public int getDesde() {
+    public Date getDesde() {
         return desde;
     }
 
-    public void setDesde(int desde) {
+    public void setDesde(Date desde) {
         this.desde = desde;
     }
 
-    public int getHasta() {
+    public Date getHasta() {
         return hasta;
     }
 
-    public void setHasta(int hasta) {
+    public void setHasta(Date hasta) {
         this.hasta = hasta;
     }
 

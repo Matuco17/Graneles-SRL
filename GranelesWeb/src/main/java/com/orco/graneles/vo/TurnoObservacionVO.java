@@ -5,6 +5,7 @@
 package com.orco.graneles.vo;
 
 import com.orco.graneles.domain.carga.TurnoEmbarqueObservaciones;
+import java.util.Date;
 
 /**
  *
@@ -25,11 +26,11 @@ public class TurnoObservacionVO {
         return "";
     }
     
-    public Integer getDesde(){
+    public Date getDesde(){
         return turnoObservacion.getDesde();
     }
     
-    public Integer getHasta(){
+    public Date getHasta(){
         return turnoObservacion.getHasta();
     }
     

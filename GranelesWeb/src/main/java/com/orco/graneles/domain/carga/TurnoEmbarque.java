@@ -7,6 +7,7 @@ package com.orco.graneles.domain.carga;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.salario.TipoJornal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -55,6 +56,12 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     @Column(name = "nro_planilla")
     private Integer nroPlanilla;
     
+    @Column(name = "total_embarcado")
+    private BigDecimal totalEmbarcado;
+   
+    @Column(name = "total_bruto")
+    private BigDecimal totalBruto;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "turno", orphanRemoval = true)
     private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
     
@@ -76,7 +83,7 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     @JoinColumn(name = "embarque", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Embarque embarque;
-
+  
     public TurnoEmbarque() {
     }
 
@@ -115,7 +122,24 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     public void setNroPlanilla(Integer nroPlanilla) {
         this.nroPlanilla = nroPlanilla;
     }
+
+    public BigDecimal getTotalEmbarcado() {
+        return totalEmbarcado;
+    }
+
+    public void setTotalEmbarcado(BigDecimal totalEmbarcado) {
+        this.totalEmbarcado = totalEmbarcado;
+    }
+
+    public BigDecimal getTotalBruto() {
+        return totalBruto;
+    }
+
+    public void setTotalBruto(BigDecimal totalBruto) {
+        this.totalBruto = totalBruto;
+    }
        
+    
 
     @XmlTransient
     public Collection<CargaTurno> getCargaTurnoCollection() {

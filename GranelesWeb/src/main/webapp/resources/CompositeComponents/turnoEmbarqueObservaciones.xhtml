@@ -28,16 +28,8 @@
                 <f:selectItem noSelectionOption="true" itemLabel="---" />
                 <f:selectItems value="#{embarqueController.itemsCargadoresSelectOne}" />
             </h:selectOneMenu>
-            <h:selectOneMenu id="obsDesde" value="#{embarqueController.currentTEO.desde}" disabled="#{!cc.attrs.editar}" >
-                <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                </c:forEach>
-            </h:selectOneMenu>
-            <h:selectOneMenu id="obsHasta" value="#{embarqueController.currentTEO.hasta}" disabled="#{!cc.attrs.editar}" >
-                <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                    <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                </c:forEach>
-            </h:selectOneMenu>
+            <p:calendar id="obsDesde" value="#{embarqueController.currentTEO.desde}" pattern="HH:mm" timeOnly="true" disabled="#{!cc.attrs.editar}" />
+            <p:calendar id="obsHasta" value="#{embarqueController.currentTEO.hasta}" pattern="HH:mm" timeOnly="true" disabled="#{!cc.attrs.editar}" />
             <h:selectOneMenu id="obsBodega" value="#{embarqueController.currentTEO.bodega}" >
                 <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}" var="bodega" itemLabel="#{bodega.nro}" />
             </h:selectOneMenu>
@@ -56,20 +48,16 @@
                 <h:outputText value="#{turnoObservacion.cargador.toString()}" />
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_desde}" >
-                <h:selectOneMenu  value="#{turnoObservacion.desde}" rendered="#{cc.attrs.editar}" >
-                    <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                        <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                    </c:forEach>
-                </h:selectOneMenu>
-                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
+                <p:calendar value="#{turnoObservacion.desde}" pattern="HH:mm" timeOnly="true" rendered="#{cc.attrs.editar}" />
+                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertDateTime  pattern="HH:mm" />
+                </h:outputText>
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" >
-                <h:selectOneMenu  value="#{turnoObservacion.hasta}" rendered="#{cc.attrs.editar}" >
-                    <c:forEach begin="0" end="23" varStatus="hora" step="1">
-                        <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
-                    </c:forEach>
-                </h:selectOneMenu>
-                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" />
+                <p:calendar value="#{turnoObservacion.hasta}" pattern="HH:mm" timeOnly="true" rendered="#{cc.attrs.editar}" />
+                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertDateTime  pattern="HH:mm" />
+                </h:outputText>
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_bodega}" >
                 <h:selectOneMenu value="#{turnoObservacion.bodega}" rendered="#{cc.attrs.editar}"  >

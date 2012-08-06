@@ -4,6 +4,8 @@
  */
 package com.orco.graneles.model.carga;
 
+import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.CargaTurnoCargas;
 import com.orco.graneles.domain.carga.Embarque;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
@@ -52,6 +54,33 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
     public TurnoEmbarqueFacade() {
         super(TurnoEmbarque.class);
     }
+
+    @Override
+    public void persist(TurnoEmbarque entity) {
+        //Precalculo los datos
+        
+        //Total Embarcado
+        BigDecimal totalEmbarcado = BigDecimal.ZERO;
+        
+        for (CargaTurno ct : entity.getCargaTurnoCollection()){
+            for (CargaTurnoCargas ctc : ct.getCargasCollection()){
+                totalEmbarcado = totalEmbarcado.add(ctc.getCarga());
+            }
+        }
+        entity.setTotalEmbarcado(totalEmbarcado);
+        
+        //Total Bruto
+        BigDecimal totalBruto = BigDecimal.ZERO;
+        
+        for (TrabajadorTurnoEmbarqueVO tteVO : obtenerTteVos(entity)){
+            totalBruto = totalBruto.add(tteVO.getValorBruto());
+        }
+        entity.setTotalBruto(totalBruto);
+        
+        super.persist(entity);
+    }
+    
+    
     
     public TurnoEmbarque crearNuevoTurnoEmbarque(Embarque embarque){
         TurnoEmbarque te = new TurnoEmbarque();

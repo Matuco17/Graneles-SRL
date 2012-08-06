@@ -127,6 +127,22 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @Column(name = "origen_mercaderia")
     private String origenMercaderia;
     
+    @Column(name = "nor")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date nor;
+        
+    @Column(name = "etb")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date etb;
+            
+    @Column(name = "inicio_fumigacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inicioFumigacion;
+                
+    @Column(name = "fin_fumigacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date finFumigacion;
+    
     transient private Boolean consolidadoEnBusqueda;
     
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
@@ -322,6 +338,38 @@ public class Embarque implements Serializable, Comparable<Embarque> {
 
     public void setOrigenMercaderia(String origenMercaderia) {
         this.origenMercaderia = origenMercaderia;
+    }
+
+    public Date getNor() {
+        return nor;
+    }
+
+    public void setNor(Date nor) {
+        this.nor = nor;
+    }
+
+    public Date getEtb() {
+        return etb;
+    }
+
+    public void setEtb(Date etb) {
+        this.etb = etb;
+    }
+
+    public Date getInicioFumigacion() {
+        return inicioFumigacion;
+    }
+
+    public void setInicioFumigacion(Date inicioFumigacion) {
+        this.inicioFumigacion = inicioFumigacion;
+    }
+
+    public Date getFinFumigacion() {
+        return finFumigacion;
+    }
+
+    public void setFinFumigacion(Date finFumigacion) {
+        this.finFumigacion = finFumigacion;
     }
     
     

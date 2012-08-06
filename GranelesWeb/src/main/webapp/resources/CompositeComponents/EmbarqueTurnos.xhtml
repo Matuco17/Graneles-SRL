@@ -14,17 +14,25 @@
     <!-- IMPLEMENTATION -->
     <co:implementation>
         <p:dataTable id="dtbTurnos" value="#{embarqueController.listaTurnos}" var="turno" >
-            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}">
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
                 <h:outputText value="#{turno.nroPlanilla}" />
             </p:column>
-            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}">
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
                 <h:outputText value="#{turno.fecha}" >
                     <f:convertDateTime pattern="dd/MM/yyyy" />
                 </h:outputText>   
             </p:column>
-            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}">
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
                 <h:outputText value="#{turno.turno.toString()}" />
             </p:column>
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
+                <h:outputText value="#{turno.totalEmbarcado}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}"  style="text-align: right;">
+                <h:outputText value="#{turno.totalBruto}" >
+                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                </h:outputText>
+            </p:column>            
             <p:column style="width: 90px;">
                 <h:commandButton 
                     image="/faces/resources/images/view.png" 
