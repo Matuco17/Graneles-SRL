@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{trabajadoresTurnoEmbarqueController.init()}" />  
@@ -16,97 +16,82 @@
             <h:outputText value="#{bundleCarga.ListTrabajadoresTurnoEmbarqueTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:outputText escape="false" value="#{bundleCarga.TrabajadoresTurnoEmbarqueEmpty}" rendered="#{trabajadoresTurnoEmbarqueController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{trabajadoresTurnoEmbarqueController.items.rowCount > 0}">
-                    <p:dataTable value="#{trabajadoresTurnoEmbarqueController.items}" 
-                                 var="item"
-                                 paginator="true" rows="10"
-                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaInicio}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.horaInicio}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_horaFin}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.horaFin}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_libroSueldo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.libroSueldo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.tarea}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.categoria}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.personal}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_planilla}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.planilla}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
-                                image="/faces/resources/images/view.png" 
-                                action="#{trabajadoresTurnoEmbarqueController.prepareView}" 
-                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueViewLink}"
-                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueViewLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/edit.png" 
-                                action="#{trabajadoresTurnoEmbarqueController.prepareEdit}" 
-                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
-                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueEditLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/destroy.png"
-                                onclick="return confirm('¿Esta seguro que desea eliminar este TrabajadoresTurnoEmbarque?');" 
-                                action="#{trabajadoresTurnoEmbarqueController.destroy}" 
-                                title="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
-                                value="#{bundleCarga.TrabajadoresTurnoEmbarqueDestroyLink}"
-                                />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{trabajadoresTurnoEmbarqueController.prepareCreate}" 
-                    value="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
-                    title="#{bundleCarga.TrabajadoresTurnoEmbarqueCreateLink}"
-                    />
+            <h:form >
+                <p:panel>
+                    <h:panelGrid columns="5">
+                        <h:outputLabel value="Categoria" for="categoria" />
+                        <h:selectOneMenu id="categoria" value="#{trabajadoresTurnoEmbarqueController.categoriaFilter}" >
+                            <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value="Trabajador" for="personal" />
+                        <p:autoComplete id="personal" 
+                                        value="#{trabajadoresTurnoEmbarqueController.personalFilter}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    forceSelection="true" valueChangeListener="#{trabajadoresTurnoEmbarqueController.seleccionarPersonal}" 
+                                    style="width: 100px;"
+                                    >  
+                            <p:ajax event="itemSelect" update="personalNombre" />
+                        </p:autoComplete> 
+                        <h:outputText id="personalNombre" value="#{trabajadoresTurnoEmbarqueController.personalFilter.apellido}" style="width: 300px;"                                       />
+                        
+                        <h:outputLabel value="Desde" for="desde" />
+                        <p:calendar id="desde" value="#{trabajadoresTurnoEmbarqueController.desdeFilter}" />
+                        
+                        <h:outputLabel value="Hasta" for="hasta" />
+                        <p:calendar id="hasta" value="#{trabajadoresTurnoEmbarqueController.hastaFilter}" />
+                        
+                        <h:outputText value="" />
+                        
+                        <h:outputText value="" />
+                        <h:commandButton action="#{trabajadoresTurnoEmbarqueController.buscarJornales()}"
+                                         value="Buscar"
+                                         label="Buscar"/>
+                        
+                    </h:panelGrid>
+                </p:panel>                
             </h:form>
+               
+            <p:dataTable value="#{trabajadoresTurnoEmbarqueController.jornales}" 
+                         var="item" paginator="false">
+                 <f:facet name="header" >  
+                    <h:outputLabel value="Total Bruto:" for="totalBruto" />
+                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.totalJornalesBruto}" style="margin-left: 20px; font-weight: bold;" >
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                    </h:outputText>
+                </f:facet>  
+                
+                <p:column headerText="Fecha" style="text-align: center;" sortBy="#{item.planilla.fecha}" >
+                    <h:outputText value="#{item.planilla.fecha}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Planilla" style="text-align: right;" sortBy="#{item.planilla.nroPlanilla}">
+                    <h:outputText value="#{item.planilla.nroPlanilla}" />
+                </p:column>
+                <p:column headerText="CUIL Trabajador" sortBy="#{item.personal.cuil}" rendered="#{trabajadoresTurnoEmbarqueController.personalFilter == null}" >
+                    <h:outputText value="#{item.personal.cuil}" />
+                </p:column>
+                <p:column headerText="Trabajador" sortBy="#{item.personal.apellido}" rendered="#{trabajadoresTurnoEmbarqueController.personalFilter == null}">
+                    <h:outputText value="#{item.personal.apellido}" />
+                </p:column>
+                <p:column headerText="Categoria" sortBy="#{item.categoria.toString()}" rendered="#{trabajadoresTurnoEmbarqueController.categoriaFilter == null}">
+                    <h:outputText value="#{item.categoria.toString()}" />
+                </p:column>
+                <p:column headerText="Tipo Jornal" sortBy="#{item.planilla.tipo.toString()}" >
+                    <h:outputText value="#{item.planilla.tipo.toString()}" />
+                </p:column>
+                <p:column headerText="Horas" sortBy="#{item.horas}" style="text-align: center;">
+                    <h:outputText value="#{item.horas}" />
+                </p:column>
+                <p:column headerText="Bruto" sortBy="#{item.bruto}" style="text-align: right;">
+                    <h:outputText value="#{item.bruto}" >
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
         </ui:define>
     </ui:composition>
 

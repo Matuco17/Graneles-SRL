@@ -5,6 +5,7 @@
 package com.orco.graneles.jsf.miscelaneos;
 
 import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -21,6 +22,8 @@ public class ProcesosAdminController implements Serializable {
     
     @EJB
     private TurnoEmbarqueFacade turnoEmbarqueF;
+    @EJB 
+    private TrabajadoresTurnoEmbarqueFacade trabajadoresTurnoEmbarqueF;
     
     public void actualizarValoresTurnoEmbarque(){
         
@@ -30,4 +33,7 @@ public class ProcesosAdminController implements Serializable {
         
     }
     
+    public void actualizarValoresTrabajadoresTurno(){
+        trabajadoresTurnoEmbarqueF.recalcularSueldos();
+    }
 }

@@ -204,7 +204,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         double basicoBruto = 0.0;
         double totalConcepto = 0.0; //resultado de la suma del concepto
 
-        TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte, BigDecimal.ZERO);
+        TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte);
         
         if (salario != null){
             

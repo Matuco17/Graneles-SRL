@@ -33,20 +33,18 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     
     private List<TurnoObservacionVO> observaciones;
     
-    public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte, BigDecimal valorTurno) {
+    public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte) {
         this.tte = tte;
-        this.valorTurno = valorTurno;
+        valorTurno = tte.getNeto();
+        valorBruto = tte.getBruto();
         jornalBasico = BigDecimal.ZERO;
         insalubre = BigDecimal.ZERO;
         peligrosa = BigDecimal.ZERO;
         peligrosa2 = BigDecimal.ZERO;
         productiva = BigDecimal.ZERO;
         especialidad = BigDecimal.ZERO;
-        valorBruto = BigDecimal.ZERO;
         decreto = BigDecimal.ZERO;
-        valorTurno = BigDecimal.ZERO;
-        descuentoJudicial = BigDecimal.ZERO;
-        
+        descuentoJudicial = BigDecimal.ZERO;        
     }
 
     public BigDecimal getValorTurno() {

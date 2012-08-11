@@ -13,10 +13,12 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.NegocioException;
+import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.persistence.NoResultException;
 import org.apache.commons.lang.time.DateUtils;
 /**
@@ -31,6 +33,9 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    @EJB
+    TrabajadoresTurnoEmbarqueFacade trabajadorTurnoEmbarqueF;
 
     public SalarioBasicoFacade() {
         super(SalarioBasico.class);
@@ -42,6 +47,7 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
             throw new NegocioException("Ya existe un Salario definido para los datos seleccionados");
         } else {
             super.create(entity);
+            trabajadorTurnoEmbarqueF.recalcularSueldos(entity);
         }
     }
 
@@ -51,6 +57,7 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
             throw new NegocioException("Ya existe un Salario definido para los datos seleccionados");
         } else {
             super.edit(entity);
+            trabajadorTurnoEmbarqueF.recalcularSueldos(entity);
         }
     }
     
@@ -73,7 +80,7 @@ public class SalarioBasicoFacade extends AbstractFacade<SalarioBasico> {
                     if (sb.getHasta() == null && entity.getHasta() == null){
                         return true;
                     } else if (sb.getHasta() == null && entity.getHasta() != null){
-                        if (entity.getHasta().after(sb.getHasta())){
+                        if (entity.getHasta().after(sb.getDesde())){
                             return true;
                         }
                     } else if (sb.getHasta() != null && entity.getHasta() == null){

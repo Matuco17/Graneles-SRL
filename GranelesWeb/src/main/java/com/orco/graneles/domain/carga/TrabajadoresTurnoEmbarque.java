@@ -9,6 +9,7 @@ import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.personal.Tarea;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +35,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPeriodo",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
                                + " WHERE t.planilla.fecha BETWEEN :desde AND :hasta"),
+        @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXSalarioBasico",
+                query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
+                               + " WHERE t.planilla.fecha >= :desde "
+                               + " AND (:hasta IS NULL OR t.planilla.fecha <= :hasta)"
+                               + " AND t.categoria = :categoria "
+                               + " AND t.tarea = :tarea "),
+    @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXFechasCatPers",
+                query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
+                               + " WHERE t.planilla.fecha BETWEEN :desde AND :hasta"
+                               + " AND (:personal IS NULL OR t.personal = :personal)"
+                               + " AND (:categoria IS NULL OR t.categoria = :categoria)"),
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPeriodoYPersonal",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
                                + " WHERE t.personal = :personal AND"
@@ -76,6 +88,11 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
     @ManyToOne(optional = true)
     private TurnoEmbarque planilla;
     
+    @Column(name = "bruto")
+    private BigDecimal bruto;
+    
+    @Column(name = "neto")
+    private BigDecimal neto;
    
 
     public TrabajadoresTurnoEmbarque() {
@@ -161,6 +178,24 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
         this.planilla = planilla;
     }
 
+    public BigDecimal getBruto() {
+        return bruto;
+    }
+
+    public void setBruto(BigDecimal bruto) {
+        this.bruto = bruto;
+    }
+
+    public BigDecimal getNeto() {
+        return neto;
+    }
+
+    public void setNeto(BigDecimal neto) {
+        this.neto = neto;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -187,5 +222,7 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
                 + ", Tarea: " + this.getTarea().toString() 
                 + ", Categoria: " + this.getCategoria().toString();
     }
+    
+    
     
 }

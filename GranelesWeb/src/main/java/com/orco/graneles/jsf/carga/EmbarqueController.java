@@ -549,7 +549,12 @@ public class EmbarqueController implements Serializable {
             
             List<TrabajadoresTurnoEmbarque> trabajadores = new ArrayList<TrabajadoresTurnoEmbarque>();
             for (TrabajadorTurnoEmbarqueVO tteVO : trabajadoresTurno){
-                trabajadores.add(tteVO.getTte());
+                TrabajadoresTurnoEmbarque tte = tteVO.getTte();
+                
+                tte.setBruto(tteVO.getValorBruto());
+                tte.setNeto(tteVO.getValorTurno());
+                
+                trabajadores.add(tte);
             }
             
             for (TrabajadoresTurnoEmbarque tte : trabajadores){
@@ -581,7 +586,7 @@ public class EmbarqueController implements Serializable {
     
     public TrabajadorTurnoEmbarqueVO getCurrentTTE() {
         if (currentTTE == null){
-            currentTTE = new TrabajadorTurnoEmbarqueVO(new TrabajadoresTurnoEmbarque(), BigDecimal.ZERO);
+            currentTTE = new TrabajadorTurnoEmbarqueVO(new TrabajadoresTurnoEmbarque());
             if (currentTE.getTurno() != null){
                 //Por ahora seteo las horas por defecto asi, capaz que despues se lo pongo mejor
                 currentTTE.getTte().setDesde(new Integer(currentTE.getTurno().getDescripcion().substring(0, 2)));
