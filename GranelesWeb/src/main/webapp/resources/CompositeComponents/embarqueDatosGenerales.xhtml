@@ -36,11 +36,11 @@
             <h:outputLabel for="eta" value="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" />
             <c:choose>
                 <c:when test="#{cc.attrs.editar}">
-                    <p:calendar id="eta" value="#{embarqueController.selected.eta}" title="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" />
+                    <p:calendar id="eta" value="#{embarqueController.selected.eta}" pattern="dd/MM/yyyy HH:mm" title="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" />
                 </c:when>
                 <c:otherwise>
                     <h:outputText id="eta" value="#{embarqueController.selected.eta}" title="#{bundleCarga.EmbarqueTitle_eta}" rendered="#{!embarqueController.selected.consolidado}" >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                     </h:outputText>
                 </c:otherwise>
             </c:choose>

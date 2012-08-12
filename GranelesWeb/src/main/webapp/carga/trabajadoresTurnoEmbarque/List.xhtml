@@ -38,10 +38,10 @@
                         <h:outputText id="personalNombre" value="#{trabajadoresTurnoEmbarqueController.personalFilter.apellido}" style="width: 300px;"                                       />
                         
                         <h:outputLabel value="Desde" for="desde" />
-                        <p:calendar id="desde" value="#{trabajadoresTurnoEmbarqueController.desdeFilter}" />
+                        <p:calendar id="desde" value="#{trabajadoresTurnoEmbarqueController.desdeFilter}" required="true" requiredMessage="Complete el campo desde" />
                         
                         <h:outputLabel value="Hasta" for="hasta" />
-                        <p:calendar id="hasta" value="#{trabajadoresTurnoEmbarqueController.hastaFilter}" />
+                        <p:calendar id="hasta" value="#{trabajadoresTurnoEmbarqueController.hastaFilter}" required="true" requiredMessage="Complete el campo hasta" />
                         
                         <h:outputText value="" />
                         

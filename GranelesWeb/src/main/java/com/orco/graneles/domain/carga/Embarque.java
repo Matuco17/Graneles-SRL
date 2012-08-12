@@ -115,7 +115,7 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     private String boletosPor;
     
     @Column(name = "eta")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date eta;
     
     @Column(name  = "consolidado")

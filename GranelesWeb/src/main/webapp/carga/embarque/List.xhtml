@@ -86,9 +86,14 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15"
                                      selection="#{embarqueController.selectedNoConsolidado}" selectionMode="single">
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_etb}" >
+                                <h:outputText value="#{item.etb}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm"  />
+                                </h:outputText>
+                            </p:column>
                             <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" >
                                 <h:outputText value="#{item.eta}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
