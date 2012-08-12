@@ -45,7 +45,11 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         
         
         //Cantidad de Hijos (2)
-        linea.append(StringUtils.leftPad(sdo.getPersonal().getHijos().toString(), 2, "0"));
+        if (sdo.getPersonal().getHijos() != null){
+            linea.append(StringUtils.leftPad(sdo.getPersonal().getHijos().toString(), 2, "0"));
+        } else {
+            linea.append("00");
+        }
         
         //Codigo de situacion (3)
         linea.append("001"); 
