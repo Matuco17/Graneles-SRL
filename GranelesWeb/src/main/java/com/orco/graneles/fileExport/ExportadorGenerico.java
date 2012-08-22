@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -24,7 +25,7 @@ import javax.faces.context.FacesContext;
  */
 public abstract class ExportadorGenerico <T>{
     
-    private List<T> datosAExportar;
+    protected List<T> datosAExportar;
     
     public ExportadorGenerico(List<T> datos){
         datosAExportar = datos;
@@ -48,7 +49,7 @@ public abstract class ExportadorGenerico <T>{
             FileWriter fw = new FileWriter(pathArchivo);
             
             for (T elemento: datosAExportar){
-                fw.write(convertirElementoEnLinea(elemento) + "\n");
+                fw.write(convertirElementoEnLinea(elemento) + "\r\n");
             }
             
             fw.close();
@@ -63,10 +64,13 @@ public abstract class ExportadorGenerico <T>{
         return null;
     }
     
-    private DecimalFormat decFormat15 = new DecimalFormat("0000000000000.00");
+    private DecimalFormat decFormat15 = new DecimalFormat("#0.00");
     
     protected String formatearImporte15(BigDecimal importe){
-        return decFormat15.format(importe.doubleValue()).replaceAll("\\.", "").replaceAll(",", "");
+        return StringUtils.leftPad(decFormat15.format(
+                    importe.doubleValue())
+                        
+                ,15 , " ");
     }
     
 }

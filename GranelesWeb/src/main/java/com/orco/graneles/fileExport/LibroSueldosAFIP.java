@@ -9,6 +9,8 @@ import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
 import com.orco.graneles.model.salario.SueldoFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
@@ -29,14 +31,12 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         //CUIL sin guiones (11)
         linea.append(StringUtils.rightPad(sdo.getPersonal().getCuil().replaceAll("-", ""), 11));
         
-        int i = 0;
-        
         //Apellido y Nombre (30)
         linea.append(StringUtils.left(
                         StringUtils.rightPad(sdo.getPersonal().getApellido(), 30, " ")
                         ,30));
         
-        //Conyuge (si 1 no 0) (1)
+        //Conyuge (si T no F) (1)
         if (sdo.getPersonal().getEsposa()){
             linea.append("1");
         } else {
@@ -46,37 +46,37 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         
         //Cantidad de Hijos (2)
         if (sdo.getPersonal().getHijos() != null){
-            linea.append(StringUtils.leftPad(sdo.getPersonal().getHijos().toString(), 2, "0"));
+            linea.append(StringUtils.leftPad(sdo.getPersonal().getHijos().toString(), 2, " "));
         } else {
-            linea.append("00");
+            linea.append(" 0");
         }
         
         //Codigo de situacion (3)
-        linea.append("001"); 
+        linea.append("  1"); 
         
         //Codigo de Condicion (3)
-        linea.append("001"); 
+        linea.append("  1"); 
         
         //Codigo de Actividad (3)
-        linea.append("049"); 
+        linea.append(" 49"); 
         
         //Codigo de zona
-        linea.append("000"); 
+        linea.append("  7"); 
         
         //Porcentaje Aporte Adicional SS (5)
-        linea.append("00000"); 
+        linea.append(" 0,00"); 
         
         //Porcentaje de Reduccion (3)
-        linea.append("000"); 
+        linea.append("  0"); 
         
         //Codigo modalidad de contratacion (3)
-        linea.append("012"); 
+        linea.append(" 12"); 
         
         //Codigo de Obra social (6)
         linea.append(sdo.getPersonal().getObraSocial().getCodigoAfip());
         
         //Cantidad de Adherentes (2)
-        linea.append("00");
+        linea.append(" 0");
         
         //Remuneration Total (15)
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true)));
@@ -145,13 +145,13 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.006f)))); 
         
         //Provincia Localidad (50)
-        linea.append(StringUtils.rightPad("BUENOS AIRES-RESTO PROVINCIA DE BUENOS AIRES", 50, " "));
+        linea.append(StringUtils.rightPad("Buenos Aires - Resto de la Provincia", 50, " "));
         
         //Importe Total Contribuciones OS (15)
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.054f)))); 
         
         //Codigo de Siniestrado (2)
-        linea.append("00");
+        linea.append(" 0");
        
         //Marca de Correspondiente Reduccion (1)
         linea.append("0"); 
@@ -169,7 +169,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true).multiply(new BigDecimal(0.00001f)))); 
         
         //Tipo Emplesa (1)
-        linea.append("0"); 
+        linea.append("1"); //TODO: ACA
         
         //Tipo Regimen (1)
         linea.append("0"); 
@@ -178,7 +178,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Dias Trabajados (2)
-        linea.append(StringUtils.right("00" + 
+        linea.append(StringUtils.right("  " + 
                                 (SueldoFacade.obtenerCantidadXConcepto(sdo, TipoValorConcepto.DIAS_TRABAJO).toBigInteger()
                             .add(SueldoFacade.obtenerCantidadXConcepto(sdo, TipoValorConcepto.HORAS_HABILES).toBigInteger().divide(new BigInteger("6")))).toString()           ,
                                 2));
@@ -199,28 +199,28 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO));
         
         //Situacion 1 (3)
-        linea.append("ACT");
+        linea.append("  1");
         
         //Situacion 2 (3)
-        linea.append("   ");
+        linea.append(" -1");
         
         //Situacion 3 (3)
-        linea.append("   "); 
+        linea.append(" -1"); 
         
         //Dia 1 (2)
-        linea.append("01"); 
+        linea.append(" 1"); 
         
         //Dia 2 (2)
-        linea.append("00"); 
+        linea.append(" 0"); 
         
         //Dia 3 (2)
-        linea.append("00"); 
+        linea.append(" 0"); 
         
         //Remuneracion Imponible 5 (15)
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
         //Marca Convencionado
-        linea.append(" "); 
+        linea.append("0"); 
                
         //Dto1253OS (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); //TODO: VER COMO COMPLETAR Dto1273OS
@@ -235,7 +235,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO));
         
         //Tipo Operacion (1)
-        linea.append(" ");
+        linea.append("0");
         
         //Adicionales (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
@@ -244,7 +244,7 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
         //Cantidad Horas Extras (3)
-        linea.append(StringUtils.right("000" +
+        linea.append(StringUtils.right("   " +
                                 SueldoFacade.obtenerCantidadXConcepto(sdo, TipoValorConcepto.HORAS_EXTRAS).toBigInteger().toString(),
                                 3)); 
         
@@ -275,11 +275,12 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         //Remuneracion Imponible 9 (15)
         linea.append(formatearImporte15(sdo.getTotalRemunerativo(true))); 
         
-        //Cantidad de Horas Trabajadas (3)
-        linea.append(StringUtils.right("000" + 
+        //Cantidad de Horas Trabajadas (15)
+        linea.append(StringUtils.right("   " +
                                 (SueldoFacade.obtenerCantidadXConcepto(sdo, TipoValorConcepto.HORAS_EXTRAS)
                                 .add(SueldoFacade.obtenerCantidadXConcepto(sdo, TipoValorConcepto.HORAS_HABILES))              
-                                ).toBigInteger().toString(), 3)); //TODO: VER COMO CALCULAR Cantidad Horas trabajadas, verificar si eso que dice importe es correcto ya que me parece q es incorrecto
+                                ).toBigInteger().toString(), 3)); 
+        //TODO: VER COMO CALCULAR Cantidad Horas trabajadas, verificar si eso que dice importe es correcto ya que me parece q es incorrecto
         
         //Porcentaje Tarea Dif (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
@@ -290,13 +291,30 @@ public class LibroSueldosAFIP extends ExportadorGenerico<Sueldo> {
         //Importe Contribucion Tarea Dif Compen (15)
         linea.append(formatearImporte15(BigDecimal.ZERO)); 
         
+        //linea.append("0"); //TODO: caracter agreagdoa la fuerza
+        
         return linea.toString();
     }
 
     public LibroSueldosAFIP(List<Sueldo> datos) {
         super(datos);
     }
+
+    @Override
+    public String generarArchivo(String nombreArchivo) {
+        Collections.sort(datosAExportar, new ComparadorSueldos());
+        return super.generarArchivo(nombreArchivo);
+    }
     
     
+    
+    private class ComparadorSueldos implements Comparator<Sueldo>{
+
+        @Override
+        public int compare(Sueldo o1, Sueldo o2) {
+            return o1.getPersonal().getCuil().compareToIgnoreCase(o2.getPersonal().getCuil());
+        }
+        
+    }
     
 }
