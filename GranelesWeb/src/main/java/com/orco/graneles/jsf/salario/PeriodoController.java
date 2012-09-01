@@ -4,6 +4,7 @@ import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.fileExport.LibroSueldosAFIP;
+import com.orco.graneles.fileExport.LibroSueldosAFIPv34;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
@@ -56,6 +57,7 @@ public class PeriodoController implements Serializable {
     private StreamedContent fileExportAfip;
     private String urlArchivoPDF;
     private String urlArchivoTxt;
+    private String urlArchivo34Txt;
     private String urlArchivoCierreMes;
     private String urlArchivoRecibosSacYVac;
     private String urlArchivoRecibosAccidentados;
@@ -137,9 +139,14 @@ public class PeriodoController implements Serializable {
         //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
         if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
             LibroSueldosAFIP libroSueldoAFIP = new LibroSueldosAFIP(new ArrayList<Sueldo>(current.getSueldoCollection()));
-            urlArchivoTxt = libroSueldoAFIP.generarArchivo(current.getDescripcion());
+            urlArchivoTxt = libroSueldoAFIP.generarArchivo(current.getDescripcion() + "v36");
+            
+            LibroSueldosAFIPv34 libroSueldoAFIP34 = new LibroSueldosAFIPv34(new ArrayList<Sueldo>(current.getSueldoCollection()));
+            urlArchivo34Txt = libroSueldoAFIP34.generarArchivo(current.getDescripcion() + "v34");
+                    
         } else {
             urlArchivoTxt = null;
+            urlArchivo34Txt = null;
         }
     }
     
@@ -289,6 +296,7 @@ public class PeriodoController implements Serializable {
         current = getFacade().verPeriodo(this.anio, this.mes);
         urlArchivoPDF = null;
         urlArchivoTxt = null;
+        urlArchivo34Txt = null;
         urlArchivoCierreMes = null;
         urlArchivoRecibosSacYVac = null;
         urlArchivoRecibosAccidentados = null;
@@ -305,6 +313,7 @@ public class PeriodoController implements Serializable {
                 //Una vez subido todo, genero nuevamente el pdf
                 urlArchivoPDF = null;
                 urlArchivoTxt = null;
+                urlArchivo34Txt = null;
                 urlArchivoCierreMes = null;
                 urlArchivoRecibosSacYVac = null;
                 urlArchivoRecibosAccidentados = null;
@@ -342,6 +351,7 @@ public class PeriodoController implements Serializable {
                 //Una vez subido todo, genero nuevamente el pdf
                 urlArchivoPDF = null;
                 urlArchivoTxt = null;
+                urlArchivo34Txt = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (IOException e) {
@@ -498,6 +508,15 @@ public class PeriodoController implements Serializable {
         this.urlArchivoTxt = urlArchivoTxt;
     }
 
+    public String getUrlArchivo34Txt() {
+        return urlArchivo34Txt;
+    }
+
+    public void setUrlArchivo34Txt(String urlArchivo34Txt) {
+        this.urlArchivo34Txt = urlArchivo34Txt;
+    }
+
+    
     public String getUrlArchivoCierreMes() {
         return urlArchivoCierreMes;
     }

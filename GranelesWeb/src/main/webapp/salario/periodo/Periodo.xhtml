@@ -68,9 +68,14 @@
                                <h:link id="lnkLibroPDF" value="Libro PDF" onclick="window.open('#{periodoController.urlArchivoPDF}','Download');window.close();" rendered="#{periodoController.urlArchivoPDF != null}" />
 
                                <h:outputLabel value="Descargar Libro de Sueldos para AFIP" />
-                               <h:commandButton value="Generar Libro para AFIP" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivoTxt == null}" />
-                               <h:link id="lnkLibroTXT" value="Libro AFIP" outcome="#{periodoController.urlArchivoTxt}"  rendered="#{periodoController.urlArchivoTxt != null}" />
+                               <h:commandButton value="Generar Libro para AFIP v36" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivoTxt == null}" />
+                               <h:link id="lnkLibroTXT" value="Libro AFIP v36" outcome="#{periodoController.urlArchivoTxt}"  rendered="#{periodoController.urlArchivoTxt != null}" />
 
+                               <h:outputText value="" />
+                               <h:commandButton value="Generar Libro para AFIP v34" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivo34Txt == null}" />
+                               <h:link id="lnkLibro34TXT" value="Libro AFIP v34" outcome="#{periodoController.urlArchivo34Txt}"  rendered="#{periodoController.urlArchivo34Txt != null}" />
+
+                               
                                <h:outputLabel value="Descargar Listado de Cierre de Mes" />
                                <h:commandButton value="Generar Listado de Cierre de Mes" action="#{periodoController.generarListadoCierreMes()}" rendered="#{periodoController.urlArchivoCierreMes == null}" />
                                <h:link id="lnkCierreMes" value="Listado de Cierre de Mes" outcome="#{periodoController.urlArchivoCierreMes}"  rendered="#{periodoController.urlArchivoCierreMes != null}" />

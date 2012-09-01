@@ -179,11 +179,7 @@
             <h:outputText value="#{embarqueController.selected.finFumigacion}" rendered="#{!cc.attrs.editar}" >
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
-            
-            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_momentoFumigacion}" for="momentoFumigacion"  />
-            <p:inputText id="momentoFumigacion" value="#{embarqueController.selected.momentoFumigacion}" rendered="#{cc.attrs.editar}"/>
-            <h:outputText value="#{embarqueController.selected.momentoFumigacion}" rendered="#{!cc.attrs.editar}" />
-    
+        
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_boletosPor}" for="boletosPor"  />
             <p:inputText id="boletosPor" value="#{embarqueController.selected.boletosPor}" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.boletosPor}" rendered="#{!cc.attrs.editar}" />

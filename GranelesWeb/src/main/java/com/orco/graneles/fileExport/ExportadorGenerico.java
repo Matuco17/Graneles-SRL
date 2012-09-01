@@ -73,4 +73,10 @@ public abstract class ExportadorGenerico <T>{
                 ,15 , " ");
     }
     
+    protected String formatearImporte9(BigDecimal importe){
+        return StringUtils.leftPad(decFormat15.format(
+                    importe.doubleValue())
+                        
+                ,9 , " ").replaceAll(",", ".");
+    }
 }
