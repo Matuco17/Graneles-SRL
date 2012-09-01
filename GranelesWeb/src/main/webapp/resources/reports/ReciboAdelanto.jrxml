@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboJornalCaido" language="groovy" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="50" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0000000000000007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="89"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
@@ -30,7 +30,7 @@
 			<textField>
 				<reportElement x="0" y="105" width="525" height="50"/>
 				<textElement/>
-				<textFieldExpression><![CDATA["Entregué a " + $F{apellidoYNombre} + " la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Haberes."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Entregué a " + $F{apellidoYNombre} + " la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Aguinaldo."]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="175" width="83" height="20"/>
@@ -74,7 +74,7 @@
 			<textField>
 				<reportElement x="0" y="426" width="525" height="50"/>
 				<textElement/>
-				<textFieldExpression><![CDATA["Recibí de GRANELES S.R.L. la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Haberes."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Recibí de GRANELES S.R.L. la cantidad de \$" + $F{valor}.setScale(2, BigDecimal.ROUND_HALF_UP) + " (" + $F{valorEnLetras} + "), en concepto de Adelanto de Aguinaldo."]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="83" y="498" width="87" height="20"/>

@@ -131,6 +131,10 @@ public class AdelantoController implements Serializable {
         try {
             getFacade().create(current);
             recreateModelCreate();
+            
+            ReciboAdelanto recibo = new ReciboAdelanto(current);
+            urlRecibo = recibo.obtenerReportePDF();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("AdelantoCreated"));
             return "View";
         } catch (Exception e) {
@@ -151,6 +155,10 @@ public class AdelantoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
+            
+            ReciboAdelanto recibo = new ReciboAdelanto(current);
+            urlRecibo = recibo.obtenerReportePDF();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("AdelantoUpdated"));
             return "View";
         } catch (Exception e) {
