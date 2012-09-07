@@ -85,6 +85,10 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     @Column(name = "inicio_navegacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicioNavegacion;
+ 
+    @Column(name = "inicio_navegacion2")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inicioNavegacion2;
     
     @Column(name = "atco")
     @Temporal(TemporalType.TIMESTAMP)
@@ -126,6 +130,9 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     
     @Column(name = "origen_mercaderia")
     private String origenMercaderia;
+    
+    @Column(name = "puerto_anterior")
+    private String puertoAnterior;
     
     @Column(name = "nor")
     @Temporal(TemporalType.TIMESTAMP)
@@ -455,6 +462,14 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     public void setConsolidadoEnBusqueda(Boolean consolidadoEnBusqueda) {
         this.consolidadoEnBusqueda = consolidadoEnBusqueda;
     }
+
+    public String getPuertoAnterior() {
+        return puertoAnterior;
+    }
+
+    public void setPuertoAnterior(String puertoAnterior) {
+        this.puertoAnterior = puertoAnterior;
+    }
     
     
 
@@ -495,6 +510,16 @@ public class Embarque implements Serializable, Comparable<Embarque> {
     public void setTurnoEmbarqueCollection(Collection<TurnoEmbarque> turnoEmbarqueCollection) {
         this.turnoEmbarqueCollection = turnoEmbarqueCollection;
     }
+
+    public Date getInicioNavegacion2() {
+        return inicioNavegacion2;
+    }
+
+    public void setInicioNavegacion2(Date inicioNavegacion2) {
+        this.inicioNavegacion2 = inicioNavegacion2;
+    }
+    
+    
 
     @Override
     public int hashCode() {

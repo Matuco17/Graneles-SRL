@@ -45,6 +45,9 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
     @ManyToOne(optional = false)
     private Embarque embarque;    
     
+    @Column(name = "puerto_anterior")
+    private String puertoAnterior;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaOriginalBodega", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargaTurnosCargasCollection;
 
@@ -94,6 +97,16 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
     public void setEmbarque(Embarque embarque) {
         this.embarque = embarque;
     }
+
+    public String getPuertoAnterior() {
+        return puertoAnterior;
+    }
+
+    public void setPuertoAnterior(String puertoAnterior) {
+        this.puertoAnterior = puertoAnterior;
+    }
+    
+    
     
     /**
      * Calculo realizado por kilos en vez de toneladas

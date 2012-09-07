@@ -104,6 +104,10 @@
             <p:inputText id="origenMercaderia" value="#{embarqueController.selected.origenMercaderia}" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.origenMercaderia}" rendered="#{!cc.attrs.editar}" />
          
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_puertoAnterior}" for="puertoAnterior"  />
+            <p:inputText id="puertoAnterior" value="#{embarqueController.selected.puertoAnterior}" rendered="#{cc.attrs.editar}"/>
+            <h:outputText value="#{embarqueController.selected.puertoAnterior}" rendered="#{!cc.attrs.editar}" />
+         
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_control}" for="control"  />
             <h:selectOneMenu id="control" value="#{embarqueController.selected.control}" rendered="#{cc.attrs.editar}" >
                 <f:selectItems value="#{empresaController.itemsAvailableControladoresSelectOne}" />
@@ -116,8 +120,6 @@
             </h:selectOneMenu>
             <h:outputText value="#{(embarqueController.selected.fumigacion != null)? embarqueController.selected.fumigacion.toString() : null }" rendered="#{!cc.attrs.editar}" />
             
-            <h:outputText value=""/>
-            <h:outputText value=""/>
             
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_nor}" for="nor"  />
             <p:calendar id="nor" value="#{embarqueController.selected.nor}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
@@ -125,8 +127,8 @@
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
             
-            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion"  />
-            <p:calendar id="inicioNavegacion" value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion2"  />
+            <p:calendar id="inicioNavegacion2" value="#{embarqueController.selected.inicioNavegacion}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{embarqueController.selected.inicioNavegacion}" rendered="#{!cc.attrs.editar}" >
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
@@ -137,6 +139,13 @@
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
 
+            <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" for="inicioNavegacion"  />
+            <p:calendar id="inicioNavegacion" value="#{embarqueController.selected.inicioNavegacion2}" title="#{bundleCarga.EmbarqueTitle_inicioNavegacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
+            <h:outputText value="#{embarqueController.selected.inicioNavegacion2}" rendered="#{!cc.attrs.editar}" >
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+
+            
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_atco}" for="atco"  />
             <p:calendar id="atco" value="#{embarqueController.selected.atco}" title="#{bundleCarga.EmbarqueTitle_atco}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.atco}" rendered="#{!cc.attrs.editar}" >
@@ -156,6 +165,9 @@
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
 
+            <h:outputText value="" />
+            <h:outputText value="" />
+        
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_czo}" for="czo"  />
             <p:calendar id="czo" value="#{embarqueController.selected.czo}" title="#{bundleCarga.EmbarqueTitle_czo}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{embarqueController.selected.czo}" rendered="#{!cc.attrs.editar}" >
@@ -167,7 +179,7 @@
             <h:outputText value="#{embarqueController.selected.tmo}" rendered="#{!cc.attrs.editar}" >
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
             </h:outputText>
-
+        
             <h:outputLabel value="#{bundleCarga.EmbarqueTitle_inicioFumigacion}" for="inicioFumigacion"  />
             <p:calendar id="inicioFumigacion" value="#{embarqueController.selected.inicioFumigacion}" title="#{bundleCarga.EmbarqueTitle_inicioFumigacion}" pattern="dd/MM/yyyy HH:mm" rendered="#{cc.attrs.editar}"/>
             <h:outputText value="#{embarqueController.selected.inicioFumigacion}" rendered="#{!cc.attrs.editar}" >

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenTurnosEmbarque" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="0.90909090909091"/>
-	<property name="ireport.x" value="7"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -335,7 +335,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Acumulado]]></text>
+					<text><![CDATA[A Bordo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="0" width="135" height="30"/>
@@ -552,42 +552,42 @@
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="104" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega1_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="695" y="30" width="107" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{acumulado_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="162" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega2_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="220" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega3_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="278" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega4_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="336" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega5_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="394" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega6_1}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="452" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega7_1}]]></textFieldExpression>
@@ -605,7 +605,7 @@
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="510" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega8_1}]]></textFieldExpression>
@@ -623,7 +623,7 @@
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
-				<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement x="568" y="30" width="58" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega9_1}]]></textFieldExpression>
@@ -780,47 +780,47 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="104" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="162" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega2}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="220" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega3}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="278" y="0" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega4}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="336" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega5}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="394" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega6}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="452" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega7}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="626" y="1" width="69" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{totalCargaTurno}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="695" y="1" width="105" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{acumulado}]]></textFieldExpression>
@@ -831,7 +831,7 @@
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="510" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega8}]]></textFieldExpression>
@@ -842,7 +842,7 @@
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</rectangle>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
 				<reportElement x="568" y="1" width="58" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega9}]]></textFieldExpression>

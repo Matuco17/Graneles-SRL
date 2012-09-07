@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -204,6 +205,56 @@ public class ResumenCargaEmbarqueVO {
         return getCargaPrevia(9);
     }
     
+        //Carga Previa
+    private String getPuertoAnteior(int num){
+        if (cargasPrevias.length > num && cargasPrevias[num] != null
+            && StringUtils.isNotEmpty(cargasPrevias[num].getPuertoAnterior())){
+                
+            return cargasPrevias[num].getPuertoAnterior();
+        } else if (StringUtils.isNotEmpty(embarque.getPuertoAnterior())){
+            return embarque.getPuertoAnterior();
+        } else {
+            return "PTO. ANTERIOR";
+        }
+    }
+    
+    public String getPuertoAnterior1(){
+        return getPuertoAnteior(1);
+    }
+    public String getPuertoAnterior2(){
+        return getPuertoAnteior(2);
+    }
+    public String getPuertoAnterior3(){
+        return getPuertoAnteior(3);
+    }
+    public String getPuertoAnterior4(){
+        return getPuertoAnteior(4);
+    }
+    public String getPuertoAnterior5(){
+        return getPuertoAnteior(5);
+    }
+    public String getPuertoAnterior6(){
+        return getPuertoAnteior(6);
+    }
+    public String getPuertoAnterior7(){
+        return getPuertoAnteior(7);
+    }
+    public String getPuertoAnterior8(){
+        return getPuertoAnteior(8);
+    }
+    public String getPuertoAnterior9(){
+        return getPuertoAnteior(9);
+    }
+    
+    public String getPuertoAnterior(){
+        if (StringUtils.isNotEmpty(embarque.getPuertoAnterior())){
+            return embarque.getPuertoAnterior();
+        } else {
+            return "PTO. ANTERIOR";
+        }
+    }
+    
+    
     //Cargas Totales X Bodega
     private BigDecimal getEnBuqueBod(int num){
         if (totalEnBuqueXBodega.length > num && totalEnBuqueXBodega[num] != null){
@@ -211,8 +262,7 @@ public class ResumenCargaEmbarqueVO {
         } else {
             return BigDecimal.ZERO;
         }
-    }
-    
+    }    
     
     public BigDecimal getEnBuqueBod1(){
         return getEnBuqueBod(1);

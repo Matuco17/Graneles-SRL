@@ -51,6 +51,7 @@ public class CargaPreviaFacade extends AbstractFacade<CargaPrevia> {
         carga.setBodega(bodega);
         carga.setMercaderia(mercaderia);
         carga.setEmbarque(embarque);
+        carga.setPuertoAnterior(embarque.getPuertoAnterior());
         return carga;
     }
     
@@ -64,7 +65,10 @@ public class CargaPreviaFacade extends AbstractFacade<CargaPrevia> {
             for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
                 if (cp.getMercaderia() == null){
                     cp.setMercaderia(mercaderia);    
-                }                
+                }            
+                if (cp.getPuertoAnterior() == null){
+                    cp.setPuertoAnterior(embarque.getPuertoAnterior());
+                }
                 cargasPrevias[cp.getBodega().getNro() - 1] = cp;
             }
         }

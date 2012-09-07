@@ -26,6 +26,10 @@
                 </h:selectOneMenu>
                 <h:outputText value="#{item.mercaderia.toString()}" rendered="#{!cc.attrs.editar}"/>
             </p:column>
+            <p:column id="colPuertoAnterior" headerText="#{bundleCarga.CargaPreviaTitle_puertoAnterior}" >
+                <h:outputText value="#{item.puertoAnterior}" rendered="#{!cc.attrs.editar}"/>
+                <p:inputText value="#{item.puertoAnterior}" rendered="#{cc.attrs.editar}"/>
+            </p:column>
             <p:column id="colCapacidadBodega" headerText="#{bundleCarga.CargaPreviaTitle_capacidadBodega}" >
                 <h:outputText value="#{item.capacidadBodegaMercaderia}" style="text-align: right;" />
             </p:column>

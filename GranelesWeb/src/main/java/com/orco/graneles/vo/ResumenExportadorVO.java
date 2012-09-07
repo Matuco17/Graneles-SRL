@@ -12,6 +12,7 @@ import com.orco.graneles.domain.facturacion.Empresa;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -86,7 +87,11 @@ public class ResumenExportadorVO implements Comparable<ResumenExportadorVO> {
     }
 
     public String getOrigenMercaderia(){
-        return embarqueCargador.getEmbarque().getOrigenMercaderia();
+        if (StringUtils.isNotEmpty(embarqueCargador.getEmbarque().getMuelle().getSitio())){
+            return embarqueCargador.getEmbarque().getMuelle().getSitio();
+        } else {
+            return embarqueCargador.getEmbarque().getOrigenMercaderia();
+        }
     }
     
     @Override
