@@ -27,7 +27,9 @@
                                      value="Ver Proyeccion del periodo" label="Ver Proyeccion del periodo" />
                 </p:panel>
                 <p:panel rendered="#{periodoController.proyeccionesSacYVacaciones != null}">
-                        
+                    <p:panel>
+                        <h:link id="lnkReporteXLS" value="Descargar proyección en hoja de cálculo" outcome="#{periodoController.urlArchivoProyeccionSacYVac}" style="font-weight: bold" />
+                    </p:panel>
                     <p:dataTable value="#{periodoController.proyeccionesSacYVacaciones}" 
                                      var="item" widgetVar="proyeccionTable"
                                      paginator="true" rows="10" emptyMessage="#{bundlePersonal.List_PersonalEmpty}"

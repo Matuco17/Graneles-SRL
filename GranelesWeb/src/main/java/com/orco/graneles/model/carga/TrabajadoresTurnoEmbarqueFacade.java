@@ -43,12 +43,18 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
     public List<TrabajadoresTurnoEmbarque> getTrabajadoresPeriodo(Periodo periodo){
       return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodo", TrabajadoresTurnoEmbarque.class)
                   .setParameter("desde", periodo.getDesde())
-                  .setParameter("hasta", periodo.getHasta())
-              
+                  .setParameter("hasta", periodo.getHasta())              
                   .getResultList();
-    }    
+    }   
     
-    public List<TrabajadoresTurnoEmbarque> getTTEPeriodo(Personal personal, Date desde, Date hasta){
+    public List<TrabajadoresTurnoEmbarque> getTrabajadoresPeriodo(Date desde, Date hasta){
+      return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodo", TrabajadoresTurnoEmbarque.class)
+                  .setParameter("desde", desde)
+                  .setParameter("hasta", hasta)              
+                  .getResultList();
+    }   
+    
+    public List<TrabajadoresTurnoEmbarque> getTrabajadoresPeriodo(Personal personal, Date desde, Date hasta){
       return getEntityManager().createNamedQuery("TrabajadoresTurnoEmbarque.findXPeriodoYPersonal", TrabajadoresTurnoEmbarque.class)
                   .setParameter("personal", personal)
                   .setParameter("desde", desde)

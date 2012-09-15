@@ -287,6 +287,13 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             proyecciones.put(a.getPersonal().getId(), proyeccion);
         }
         
+        //Completo el ultimo TTE
+        List<TrabajadoresTurnoEmbarque> ttes = trabTurnoEmbarqueF.getTrabajadoresPeriodo(desde.toDate(), hasta.toDate());
+        for (TrabajadoresTurnoEmbarque tte : ttes){
+            ProyeccionSacVacYAdelantosVO proyeccion = proyecciones.get(tte.getPersonal().getId());
+            proyeccion.setUltimoTTE(tte);
+        }
+        
         List<ProyeccionSacVacYAdelantosVO> result = new ArrayList<ProyeccionSacVacYAdelantosVO>(proyecciones.values());
         Collections.sort(result);
         

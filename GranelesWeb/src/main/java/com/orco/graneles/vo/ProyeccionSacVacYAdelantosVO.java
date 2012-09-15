@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.vo;
 
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.personal.Personal;
 import java.math.BigDecimal;
 
@@ -18,7 +19,7 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
     private BigDecimal proyeccionNeto;
     private BigDecimal totalAdelantos;
     private BigDecimal proyeccionNetoConAdelantos;
-    
+    private TrabajadoresTurnoEmbarque ultimoTTE;
 
     public ProyeccionSacVacYAdelantosVO(Personal personal) {
         this.personal = personal;
@@ -32,6 +33,28 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
         return personal;
     }
 
+    /**
+     * Devuelve la ultima categoria
+     * @return 
+     */
+    public String getCategoria(){
+        if (ultimoTTE != null){
+            return ultimoTTE.getCategoria().getDescripcion();
+        }
+        return "";
+    }
+    
+    /**
+     * Devuelve la ultima tarea
+     * @return 
+     */
+    public String getTarea(){
+         if (ultimoTTE != null){
+            return ultimoTTE.getTarea().getDescripcion();
+        }
+        return "";
+    }
+    
     public BigDecimal getProyeccionBruto() {
         return proyeccionBruto;
     }
@@ -62,6 +85,10 @@ public class ProyeccionSacVacYAdelantosVO implements Comparable<ProyeccionSacVac
 
     public void setProyeccionNetoConAdelantos(BigDecimal proyeccionNetoConAdelantos) {
         this.proyeccionNetoConAdelantos = proyeccionNetoConAdelantos;
+    }
+
+    public void setUltimoTTE(TrabajadoresTurnoEmbarque ultimoTTE) {
+        this.ultimoTTE = ultimoTTE;
     }
     
     

@@ -72,7 +72,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         } else {
             double totalAcumulado = 0;
             SalarioBasico salarioActivo = null; //Variable del salario activo que me sirve de cache para no tener que hacer la busqueda por cada jornal trabajado
-            List<TrabajadoresTurnoEmbarque> ttes = tteF.getTTEPeriodo(personal, desde, hasta);
+            List<TrabajadoresTurnoEmbarque> ttes = tteF.getTrabajadoresPeriodo(personal, desde, hasta);
             for (TrabajadoresTurnoEmbarque tte : ttes){
                 //Verifico que tengo un salario basico para ese periodo
                 if (salarioActivo == null 

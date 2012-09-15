@@ -5,6 +5,7 @@ import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.fileExport.LibroSueldosAFIP;
 import com.orco.graneles.fileExport.LibroSueldosAFIPv34;
+import com.orco.graneles.fileExport.ProyeccionSACyVacacionesXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
@@ -69,6 +70,7 @@ public class PeriodoController implements Serializable {
     private BigDecimal totalNeto;
     private BigDecimal totalAdelantos;
     private BigDecimal totalNetoConAdelantos;
+    private String urlArchivoProyeccionSacYVac;
     
     
     public PeriodoController() {
@@ -109,6 +111,13 @@ public class PeriodoController implements Serializable {
             totalAdelantos = totalAdelantos.add(p.getTotalAdelantos());
             totalNetoConAdelantos = totalNetoConAdelantos.add(p.getProyeccionNetoConAdelantos());
         }
+        
+        ProyeccionSACyVacacionesXLS reporteXLS = new ProyeccionSACyVacacionesXLS(semestre, anio, proyeccionesSacYVacaciones);
+        reporteXLS.addBean("totalBruto", totalBruto);
+        reporteXLS.addBean("totalNeto", totalNeto);
+        reporteXLS.addBean("totalAdelantos", totalAdelantos);
+        reporteXLS.addBean("totalNetoConAdelantos", totalNetoConAdelantos);
+        urlArchivoProyeccionSacYVac = reporteXLS.generarArchivo("ProyeccionSacYVac-" + String.valueOf(semestre) + "-" + String.valueOf(anio));
     }
     
     
@@ -576,7 +585,9 @@ public class PeriodoController implements Serializable {
     public BigDecimal getTotalNetoConAdelantos() {
         return totalNetoConAdelantos;
     }
-    
-    
+
+    public String getUrlArchivoProyeccionSacYVac() {
+        return urlArchivoProyeccionSacYVac;
+    }
     
 }

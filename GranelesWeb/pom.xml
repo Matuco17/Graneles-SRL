@@ -130,8 +130,8 @@
         <dependency>
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
-            <version>1.0-RC-2</version>
-        </dependency>        
+            <version>1.0</version>
+        </dependency>   
     </dependencies>
 
     <build>

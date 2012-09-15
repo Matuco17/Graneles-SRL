@@ -56,7 +56,7 @@ import javax.xml.bind.annotation.XmlRootElement;
                             + " WHERE t.personal = :personal "
                             + " AND (:fecha IS NULL OR t.planilla.fecha <= :fecha)"
                             + " ORDER BY t.planilla.fecha DESC ")})
-public class TrabajadoresTurnoEmbarque implements Serializable {
+public class TrabajadoresTurnoEmbarque implements Serializable, Comparable<TrabajadoresTurnoEmbarque> {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id")
@@ -222,7 +222,10 @@ public class TrabajadoresTurnoEmbarque implements Serializable {
                 + ", Tarea: " + this.getTarea().toString() 
                 + ", Categoria: " + this.getCategoria().toString();
     }
-    
-    
+
+    @Override
+    public int compareTo(TrabajadoresTurnoEmbarque o) {
+        return this.getPlanilla().getFecha().compareTo(o.getPlanilla().getFecha());
+    }
     
 }
