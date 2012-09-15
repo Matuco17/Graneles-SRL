@@ -13,6 +13,7 @@
     <ui:composition template="/template.xhtml">
         <ui:define name="title">Proyeccion de SAC y Vacaciones</ui:define>
         <ui:define name="body" >
+    
             <h:form id="fromBusqueda" >
                 <p:panel id="panBusqueda" rendered="true">
                     <h:outputText value="Selección de Período" />
@@ -91,6 +92,39 @@
                             </h:outputText>
                         </p:column>
                     </p:dataTable>
+                    
+                    <p:panel header="Descomposición en Monedas Total Neto con Adelantos" styleClass="descMonedas">
+                        <h:panelGrid columns="12">
+                            <h:outputText value="Total" styleClass="header" />
+                            <h:outputText value="$100" styleClass="header" />
+                            <h:outputText value="$50" styleClass="header" />
+                            <h:outputText value="$20" styleClass="header" />
+                            <h:outputText value="$10" styleClass="header" />
+                            <h:outputText value="$5" styleClass="header" />
+                            <h:outputText value="$2" styleClass="header" />
+                            <h:outputText value="$1" styleClass="header" />
+                            <h:outputText value="$0.50" styleClass="header" />
+                            <h:outputText value="$0.25" styleClass="header"/>
+                            <h:outputText value="$0.10" styleClass="header" />
+                            <h:outputText value="$0.05" styleClass="header" />
+                            
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.valor}" >
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p100}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p50}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p20}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p10}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p5}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p2}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.p1}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.c50}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.c25}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.c10}" />
+                            <h:outputText value="#{periodoController.descomposicionMonedaTotalConAdelantos.c5}" />
+                        </h:panelGrid>
+                    </p:panel>
+                    
                 </p:panel>            
             </h:form>
             

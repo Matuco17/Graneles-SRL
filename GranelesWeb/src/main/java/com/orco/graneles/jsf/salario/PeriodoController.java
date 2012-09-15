@@ -13,6 +13,7 @@ import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
 import com.orco.graneles.reports.RecibosSueldoSacYVac;
 import com.orco.graneles.reports.RecibosSueldosAccidentados;
+import com.orco.graneles.vo.DescompisicionMoneda;
 import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import java.io.IOException;
 
@@ -71,7 +72,7 @@ public class PeriodoController implements Serializable {
     private BigDecimal totalAdelantos;
     private BigDecimal totalNetoConAdelantos;
     private String urlArchivoProyeccionSacYVac;
-    
+    private DescompisicionMoneda descomposicionMonedaTotalConAdelantos;
     
     public PeriodoController() {
         
@@ -112,12 +113,21 @@ public class PeriodoController implements Serializable {
             totalNetoConAdelantos = totalNetoConAdelantos.add(p.getProyeccionNetoConAdelantos());
         }
         
+        //Completo el reporte xls
         ProyeccionSACyVacacionesXLS reporteXLS = new ProyeccionSACyVacacionesXLS(semestre, anio, proyeccionesSacYVacaciones);
         reporteXLS.addBean("totalBruto", totalBruto);
         reporteXLS.addBean("totalNeto", totalNeto);
         reporteXLS.addBean("totalAdelantos", totalAdelantos);
         reporteXLS.addBean("totalNetoConAdelantos", totalNetoConAdelantos);
         urlArchivoProyeccionSacYVac = reporteXLS.generarArchivo("ProyeccionSacYVac-" + String.valueOf(semestre) + "-" + String.valueOf(anio));
+        
+        //Genero la descomposicion de monedas
+        descomposicionMonedaTotalConAdelantos = new DescompisicionMoneda(BigDecimal.ZERO);
+        for (ProyeccionSacVacYAdelantosVO p : proyeccionesSacYVacaciones){
+            DescompisicionMoneda dm = new DescompisicionMoneda(p.getProyeccionNetoConAdelantos());
+            
+            descomposicionMonedaTotalConAdelantos.agregarDescomposicion(dm);
+        }
     }
     
     
@@ -589,5 +599,10 @@ public class PeriodoController implements Serializable {
     public String getUrlArchivoProyeccionSacYVac() {
         return urlArchivoProyeccionSacYVac;
     }
+
+    public DescompisicionMoneda getDescomposicionMonedaTotalConAdelantos() {
+        return descomposicionMonedaTotalConAdelantos;
+    }
+    
     
 }

@@ -92,5 +92,16 @@ tr.jsfcrud_even_row {
     padding: 0 0.2em;
 }
 
+.descMonedas td {
+    font-size: small;
+    text-align: center;
+    min-width: 50px;
+}
+
+.descMonedas .header {
+    
+    font-size: small;
+    font-weight: bold;
+}
 
 
