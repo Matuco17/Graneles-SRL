@@ -187,7 +187,7 @@ public class LibroSueldosAFIPv34 extends ExportadorGenerico<Sueldo> {
         linea.append(formatearImporte9(sdo.getTotalRemunerativo(true)));
         
         //Trabajador convensionado (1=Si 01=No)
-        linea.append("F");
+        linea.append("0");
         
         //Remuneracion Imponible 6
         linea.append(formatearImporte9(sdo.getTotalRemunerativo(true)));
@@ -231,7 +231,7 @@ public class LibroSueldosAFIPv34 extends ExportadorGenerico<Sueldo> {
         linea.append("000"); //Obs: no pongo nada ya que lo tengo entre las horas extras y los dias trabajados
         
         //Seguro colectivo de vida Obligatorio (1)
-        linea.append("T");
+        linea.append("1");
         
         return linea.toString();
     }
