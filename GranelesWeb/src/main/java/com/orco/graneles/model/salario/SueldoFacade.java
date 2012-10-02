@@ -32,6 +32,8 @@ import javax.ejb.EJB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 /**
  *
  * @author orco
@@ -57,6 +59,8 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     private AdelantoFacade adelantoF;
     @EJB
     private FixedListFacade fixedListF;
+    @EJB
+    private PeriodoFacade periodoF;
 
     
     protected void calcularValorYCrearItemConcepto(ConceptoRecibo cDeductivo, double totalBruto, Personal personal, Sueldo sueldoTTE) {
@@ -155,7 +159,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
      * @param conceptos
      * @return 
      */
-    public Sueldo calcularSueldoAccidentado(Periodo periodo, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos){
+    public Sueldo calcularSueldoAccidentado(Periodo periodo, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirSACyVac){
         
         if (conceptoReciboAccidentadoCache == null){
             conceptoReciboAccidentadoCache = conceptoReciboF.obtenerConcepto(
@@ -203,6 +207,38 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             }            
         }
         
+        
+        //Realizo el calculo si tienen que existir SAC y Vacacioens para este periodo
+        //Esto es, es fin de periodo por lo q tengo q calcular el aguinaldo de accidente 
+        if (incluirSACyVac && periodoF.calcularSacIndividual(accidentado.getPersonal(), periodo, accidentado)){
+            //Se tiene que tener en cuenta el semestre con respecto a los limites
+            DateTime desdePeriodo = new DateTime(periodo.getDesde());
+            DateTime desdeSAC;
+            DateTime hastaSAC;
+            
+            //Evaluo el semestre para poner los limites de fechas maximos de semestre
+            if (desdePeriodo.getMonthOfYear() <= DateTimeConstants.JUNE){
+                desdeSAC = new DateTime(desdePeriodo.getYear(), DateTimeConstants.JANUARY, 1, 0, 0);
+                hastaSAC = new DateTime(desdePeriodo.getYear(), DateTimeConstants.JUNE, 30, 23, 59);
+            } else {
+                desdeSAC = new DateTime(desdePeriodo.getYear(), DateTimeConstants.JULY, 1, 0, 0);
+                hastaSAC = new DateTime(desdePeriodo.getYear(), DateTimeConstants.DECEMBER, 31, 23, 59);
+            }
+            
+            //pongo los nuevos limites de acuerdo a los del accidente
+            if (accidentado.getHasta().before(hastaSAC.toDate())){
+                hastaSAC = new DateTime(accidentado.getHasta());
+            }
+            if (accidentado.getDesde().after(desdeSAC.toDate())){
+                desdeSAC = new DateTime(accidentado.getDesde());
+            }
+            
+            Sueldo sueldoSAC = sueldoSAC(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true);
+            Sueldo sueldoVac = sueldoVacaciones(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true);
+            
+            sueldoAcc = mergeSueldos(sueldoAcc, sueldoSAC);
+            sueldoAcc = mergeSueldos(sueldoAcc, sueldoVac);
+        }
         
         return sueldoAcc;
     }
@@ -257,7 +293,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     }
     
     
-    public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
+    public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente){
         
         if (conceptoReciboSACCache == null 
             || !conceptoReciboSACCache.getTipoRecibo().getId().equals(personal.getTipoRecibo().getId())){
@@ -268,7 +304,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         }
         
        
-        double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache);
+        double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache, incluirHoras, incluirAccidente);
         
         return crearSueldoXItemBruto(conceptoReciboSACCache, null, 
                                 new Moneda(calculadoSAC),
@@ -276,7 +312,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
     }
     
-    public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos){
+    public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente){
         
         if (conceptoReciboVacacionesCache == null 
             || !conceptoReciboVacacionesCache.getTipoRecibo().getId().equals(personal.getTipoRecibo().getId())){
@@ -286,7 +322,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                                                                     fixedListF.find(TipoValorConcepto.VACACIONES));
         }
         
-        double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta, conceptoReciboVacacionesCache);
+        double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta, conceptoReciboVacacionesCache, incluirHoras, incluirAccidente);
         
         return crearSueldoXItemBruto(conceptoReciboVacacionesCache, null,
                     new Moneda(calculadoVacaciones),
@@ -339,7 +375,9 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             ItemsSueldo isS2 = backIsS2.get(isS1.getConceptoRecibo().getId());
             if (isS2 != null){
                 //Si es remunerativo, sumo todo, sino solo sumo el valor
-                if (isS1.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                if (isS1.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)
+                        && isS1.getCantidad() != null)
+                {
                     isS1.setCantidad(isS1.getCantidad().add(isS2.getCantidad()));
                 }
 

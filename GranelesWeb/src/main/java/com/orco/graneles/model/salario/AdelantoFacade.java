@@ -51,8 +51,8 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
         Date fechaFin = new Date();
         
         double acumulado = 0;
-        acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin, null);
-        acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin, null);
+        acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin, null, true, false);
+        acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin, null, true, false);
         
         double acumuladoNeto = conceptoReciboF.calcularNeto(personal, acumulado);
         

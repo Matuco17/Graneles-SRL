@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -157,5 +158,6 @@ public class Periodo implements Serializable {
     public String toString() {
         return "com.orco.graneles.domain.Periodo[ id=" + id + " ]";
     }
+    
     
 }

@@ -136,7 +136,11 @@ public class AccidentadoFacade extends AbstractFacade<Accidentado> {
         return accVO;
     }
     
-    
+    public boolean finalizoAccidenteEnPeriodo(Accidentado accidente, Periodo periodo) {
+        return accidente != null && accidente.getHasta() != null
+              && (accidente.getHasta().equals(periodo.getDesde()) || accidente.getHasta().after(periodo.getDesde()))
+              && (accidente.getHasta().equals(periodo.getHasta()) || accidente.getHasta().before(periodo.getHasta()));
+    }
     
     
 }

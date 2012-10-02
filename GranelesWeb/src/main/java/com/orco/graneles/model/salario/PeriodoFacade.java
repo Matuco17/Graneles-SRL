@@ -67,7 +67,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         
         for (Sueldo s : sueldosCalculados.values()){
             //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
-            if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo)){
+            if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo, null)){
                 
                 s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras);
                 
@@ -83,7 +83,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         //Ahora solo falta encontrar los sueldos de todos los empleados que participaron en el semestre y no formaron parte del Mes en cuestion
         for(Personal p : personalF.findAll()){
             if (!sueldosCalculados.keySet().contains(p.getId())){
-                if (calcularSac || calcularSacIndividual(p, periodo)){
+                if (calcularSac || calcularSacIndividual(p, periodo, null)){
                     Sueldo sueldoSacNuevo = new Sueldo();
                     sueldoSacNuevo.setPeriodo(periodo);
                     sueldoSacNuevo.setPersonal(p);
@@ -113,10 +113,30 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param periodo
      * @return 
      */
-    protected boolean calcularSacIndividual(Personal personal, Periodo periodo){
-        return (personal.getBaja() != null)
+    public boolean calcularSacIndividual(Personal personal, Periodo periodo, Accidentado accidente){
+        //TODO: falta agregar q 3es periodo con sac
+        int mesPeriodo = (new DateTime(periodo.getDesde())).getMonthOfYear();
+        boolean debeCalcularSAC = (mesPeriodo == DateTimeConstants.JUNE || mesPeriodo == DateTimeConstants.DECEMBER);
+        
+        //Si la persona no esta de baja y se dio justo de baja este mes.
+        if (!debeCalcularSAC){
+            debeCalcularSAC = (personal.getBaja() != null)
                     && personal.getBaja().after(periodo.getDesde())
                     && personal.getBaja().before(periodo.getHasta());
+        }
+        //Otro caso es si dejo de ser accidentado en este periodo
+        if (!debeCalcularSAC){
+            debeCalcularSAC = accidentadoF.finalizoAccidenteEnPeriodo(accidente, periodo);
+        }
+        /*
+        if (!debeCalcularSAC){
+            List<Accidentado> accidentes = accidentadoF.getAccidentadosPeriodoYPersonal(periodo.getDesde(), periodo.getHasta(), personal);
+            for (Accidentado acc : accidentes){
+                debeCalcularSAC = debeCalcularSAC || accidentadoF.finalizoAccidenteEnPeriodo(acc, periodo);
+            }
+        }
+        */
+        return debeCalcularSAC;
     }
 
     /**
@@ -131,8 +151,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Date hasta = obtenerHastaSAC(periodo, s.getPersonal());
         switch (s.getPersonal().getTipoRecibo().getId()){
             case TipoRecibo.HORAS:
-                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
-                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras);
+                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, true, false);
+                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, true, false);
                 
                 if (sueldoSAC.getItemsSueldoCollection() != null && sueldoSAC.getItemsSueldoCollection().size() > 0){
                     s = sueldoF.mergeSueldos(s, sueldoSAC);
@@ -214,7 +234,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         for (Personal p : personalF.findAll()){
             //Por ahora salteo los empleados mensuales
             if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
-                if (calcularSac || calcularSacIndividual(p, periodo)){
+                if (calcularSac || calcularSacIndividual(p, periodo, null)){
                     Sueldo sueldoSacNuevo = new Sueldo();
                     sueldoSacNuevo.setPeriodo(periodo);
                     sueldoSacNuevo.setPersonal(p);
@@ -247,8 +267,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         for (Personal p : personalF.findAll()){
             //Por ahora salteo los empleados mensuales
             if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
-                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras);
-                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras));
+                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false);
+                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false));
 
                 ProyeccionSacVacYAdelantosVO currentProyeccion = new ProyeccionSacVacYAdelantosVO(p);
 
@@ -378,7 +398,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         
         
         for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras);
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
@@ -405,7 +425,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Map<Long, Sueldo> mapSueldoCreados = new HashMap<Long, Sueldo>();
                 
         for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras);
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
@@ -553,5 +573,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return (desde.getMonthOfYear() == DateTimeConstants.JUNE 
             || desde.getMonthOfYear() == DateTimeConstants.DECEMBER);
     }
+
+    
     
 }
