@@ -50,7 +50,11 @@ public class CierreMesReport extends ReporteGenerico {
         
         @Override
         public int compare(TrabajadorConBrutoVO o1, TrabajadorConBrutoVO o2) {
-            return o1.getCategoriaDescripcion().compareToIgnoreCase(o2.getCategoriaDescripcion());          
+            if (o1.getCategoriaId().equals(o2.getCategoriaId())){
+                return o1.getApellidoYNombre().compareToIgnoreCase(o2.getApellidoYNombre());
+            } else {
+                return o1.getCategoriaDescripcion().compareToIgnoreCase(o2.getCategoriaDescripcion());          
+            }
         }
     } 
     
