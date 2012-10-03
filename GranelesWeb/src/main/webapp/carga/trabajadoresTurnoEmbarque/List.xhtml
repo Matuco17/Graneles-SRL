@@ -50,18 +50,15 @@
                                          value="Buscar"
                                          label="Buscar"/>
                         
+                        <h:link id="lnkReporteXLS" value="Descargar jornales en hoja de cálculo" outcome="#{trabajadoresTurnoEmbarqueController.urlJornalesXLS}" style="font-weight: bold" rendered="#{trabajadoresTurnoEmbarqueController.urlJornalesXLS != null}" />
+                  
+                        
                     </h:panelGrid>
                 </p:panel>                
             </h:form>
                
             <p:dataTable value="#{trabajadoresTurnoEmbarqueController.jornales}" 
                          var="item" paginator="false">
-                 <f:facet name="header" >  
-                    <h:outputLabel value="Total Bruto:" for="totalBruto" />
-                    <h:outputText value="#{trabajadoresTurnoEmbarqueController.totalJornalesBruto}" style="margin-left: 20px; font-weight: bold;" >
-                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                    </h:outputText>
-                </f:facet>  
                 
                 <p:column headerText="Fecha" style="text-align: center;" sortBy="#{item.planilla.fecha}" >
                     <h:outputText value="#{item.planilla.fecha}" >
@@ -85,11 +82,19 @@
                 </p:column>
                 <p:column headerText="Horas" sortBy="#{item.horas}" style="text-align: center;">
                     <h:outputText value="#{item.horas}" />
+                    <f:facet name="footer" >
+                        <h:outputText value="#{trabajadoresTurnoEmbarqueController.totalHoras}" />
+                    </f:facet>
                 </p:column>
                 <p:column headerText="Bruto" sortBy="#{item.bruto}" style="text-align: right;">
                     <h:outputText value="#{item.bruto}" >
                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                     </h:outputText>
+                    <f:facet name="footer" >
+                        <h:outputText value="#{trabajadoresTurnoEmbarqueController.totalJornalesBruto}" >
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                        </h:outputText>
+                    </f:facet>
                 </p:column>
             </p:dataTable>
         </ui:define>

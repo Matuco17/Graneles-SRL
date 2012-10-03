@@ -4,6 +4,7 @@ import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.seguridad.Grupo;
+import com.orco.graneles.fileExport.JornalesXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
 
@@ -42,12 +43,16 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
     
     private DataModel jornales;
     private BigDecimal totalJornalesBruto;
+    private Integer totalHoras;
+    
+    private String urlJornalesXLS;
 
     public TrabajadoresTurnoEmbarqueController() {
     }
 
     public void init() {
         recreateModel();
+       
         
         JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
@@ -60,11 +65,16 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
         List<TrabajadoresTurnoEmbarque> ttes = ejbFacade.getTrabajadores(categoriaFilter, personalFilter, desdeFilter, hastaFilter);
         
         totalJornalesBruto = BigDecimal.ZERO;
+        totalHoras = 0;
         for (TrabajadoresTurnoEmbarque tte : ttes){
             totalJornalesBruto = totalJornalesBruto.add(tte.getBruto());
+            totalHoras += tte.getHoras();
         }
         
         jornales = new ListDataModel(ttes);
+        
+        urlJornalesXLS = (new JornalesXLS(categoriaFilter, personalFilter, desdeFilter, hastaFilter, totalHoras, totalJornalesBruto, ttes))
+                            .generarArchivo("Jornales_" + (new Date()).toString().replaceAll(" ", "_"));
     }
     
     
@@ -183,6 +193,14 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
 
     public BigDecimal getTotalJornalesBruto() {
         return totalJornalesBruto;
+    }
+
+    public Integer getTotalHoras() {
+        return totalHoras;
+    }
+
+    public String getUrlJornalesXLS() {
+        return urlJornalesXLS;
     }
     
     
