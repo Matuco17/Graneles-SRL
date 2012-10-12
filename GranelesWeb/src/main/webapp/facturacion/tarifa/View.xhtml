@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ViewTarifaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_tipoJornal}" for="tipoJornal"  />
+                    <h:selectOneMenu id="tipoJornal" value="#{tarifaController.selected.tipoJornal}" disabled="true" required="true" requiredMessage="#{bundleFacturacion.TarifaRequiredMessage_tipoJornal}" >
+                        <f:selectItems value="#{tipoJornalController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="" />
+                    <h:outputText value="" />
+                    
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_desde}" for="desde"   />
+                    <p:calendar id="desde" value="#{tarifaController.selected.desde}"  disabled="true"  title="#{bundleFacturacion.TarifaTitle_desde}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_hasta}" for="hasta"  />
+                    <p:calendar id="hasta" value="#{tarifaController.selected.hasta}"  disabled="true"  title="#{bundleFacturacion.TarifaTitle_hasta}" pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_valor}" for="valor"  />
+                    <p:inputText id="valor" value="#{tarifaController.selected.valor}"  disabled="true"  />
+               </h:panelGrid>
+
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{tarifaController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleFacturacion.TarifaDestroyLink}"
+                                     title="#{bundleFacturacion.TarifaDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar esta Tarifa?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleFacturacion.TarifaEditLink}"
+                                     title="#{bundleFacturacion.TarifaEditLink}"
+                                     />
+                    <h:commandButton action="#{tarifaController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleFacturacion.TarifaCreateLink}"
+                                     title="#{bundleFacturacion.TarifaCreateLink}"
+                                     />
+                    <h:commandButton action="#{tarifaController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleFacturacion.TarifaShowAllLink}"
+                                     title="#{bundleFacturacion.TarifaShowAllLink}"
+                                     />
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
