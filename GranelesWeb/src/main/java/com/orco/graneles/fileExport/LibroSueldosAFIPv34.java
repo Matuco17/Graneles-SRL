@@ -36,7 +36,7 @@ public class LibroSueldosAFIPv34 extends ExportadorGenerico<Sueldo> {
         
         //Apellido y Nombre (30)
         linea.append(StringUtils.left(
-                        StringUtils.rightPad(sdo.getPersonal().getApellido(), 30, " ")
+                        StringUtils.rightPad(sdo.getPersonal().getApellido().toUpperCase().replaceAll("Ñ", "N"), 30, " ")
                         ,30));
         
         //Conyuge (si T no F) (1)

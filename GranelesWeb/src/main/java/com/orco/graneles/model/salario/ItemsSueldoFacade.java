@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 /**
  *
@@ -38,12 +39,13 @@ public class ItemsSueldoFacade extends AbstractFacade<ItemsSueldo> {
         //Item Sueldo Bruto
         ItemsSueldo is = new ItemsSueldo();
         is.setConceptoRecibo(concepto);
-        is.setValorCalculado(valor);
-        is.setValorIngresado(valor);
+        is.setValorCalculado(valor.setScale(2, RoundingMode.HALF_DOWN));
+        is.setValorIngresado(valor.setScale(2, RoundingMode.HALF_DOWN));
         is.setCantidad(cantidad);
         is.setSueldo(sueldo);
-        if (sueldo.getItemsSueldoCollection() == null)
+        if (sueldo.getItemsSueldoCollection() == null){
             sueldo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
+        }
         sueldo.getItemsSueldoCollection().add(is);
     }
     

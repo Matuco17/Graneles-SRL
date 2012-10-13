@@ -520,7 +520,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
 
         persist(periodo);  
 
-
+        getEntityManager().flush();
 
         //TODO: REALIZAR OTRAS MODIFICACIONES A OTRAS ENTIDADES QUE NO TENGAN QUE VER DIRECTAMENTE CON EL PERIODO PERO QUE AL CERRARSE SE BLOQUEAN
         Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
