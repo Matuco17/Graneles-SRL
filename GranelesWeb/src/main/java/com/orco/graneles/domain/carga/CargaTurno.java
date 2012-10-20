@@ -5,6 +5,7 @@
 package com.orco.graneles.domain.carga;
 
 import com.orco.graneles.domain.facturacion.Empresa;
+import com.orco.graneles.domain.facturacion.LineaFactura;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,7 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CargaTurno.findAll", query = "SELECT c FROM CargaTurno c"),
-    @NamedQuery(name = "CargaTurno.findById", query = "SELECT c FROM CargaTurno c WHERE c.id = :id")})
+    @NamedQuery(name = "CargaTurno.findById", query = "SELECT c FROM CargaTurno c WHERE c.id = :id"),
+    @NamedQuery(name = "CargaTurno.findByEmbarqueYCargador",
+        query = "SELECT c FROM CargaTurno c"
+                + " WHERE c.cargador = :cargador"
+                + " AND c.turnoEmbarque.embarque = :embarque")
+})
 public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,6 +48,21 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargasCollection;
     
+    @JoinColumn(name = "linea_factura", referencedColumnName = "id")
+    @ManyToOne()
+    private LineaFactura lineaFactura;
+    
+    public BigDecimal getTotalCargado(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        for (CargaTurnoCargas ctc : this.getCargasCollection()){
+            if (ctc.getCarga() != null){
+                total = total.add(ctc.getCarga());
+            }
+        }
+        
+        return total;
+    }
     
     public CargaTurno() {
     }
@@ -88,6 +109,14 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     
     public void setCargasCollection(Collection<CargaTurnoCargas> cargasCollection) {
         this.cargasCollection =  cargasCollection;
+    }
+
+    public LineaFactura getLineaFactura() {
+        return lineaFactura;
+    }
+
+    public void setLineaFactura(LineaFactura lineaFactura) {
+        this.lineaFactura = lineaFactura;
     }
 
     

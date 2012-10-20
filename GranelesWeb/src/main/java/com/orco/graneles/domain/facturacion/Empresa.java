@@ -90,7 +90,7 @@ public class Empresa implements Serializable {
     @ManyToMany(mappedBy = "empresaCollection")
     private Collection<Embarque> embarqueCollection;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exportador")
     private Collection<Factura> facturaCollection;
     
     @JoinColumn(name = "tipo_empresa", referencedColumnName = "id")

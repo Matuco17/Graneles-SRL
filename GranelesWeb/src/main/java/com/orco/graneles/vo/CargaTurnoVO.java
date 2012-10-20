@@ -59,6 +59,10 @@ public class CargaTurnoVO {
         return ct.getTurnoEmbarque().getTurno().getDescripcion();
     }
     
+    public String getPuertoAnterior(){
+        return ct.getTurnoEmbarque().getEmbarque().getPuertoAnterior();
+    }
+    
     //Valores de las bodegas
     public BigDecimal getCargaBodega1(){
         return cargasXBodega[1];

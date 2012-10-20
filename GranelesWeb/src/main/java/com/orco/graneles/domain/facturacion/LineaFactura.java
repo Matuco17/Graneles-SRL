@@ -4,6 +4,8 @@
  */
 package com.orco.graneles.domain.facturacion;
 
+import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -31,26 +33,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LineaFactura.findAll", query = "SELECT l FROM LineaFactura l"),
     @NamedQuery(name = "LineaFactura.findById", query = "SELECT l FROM LineaFactura l WHERE l.id = :id"),
-    @NamedQuery(name = "LineaFactura.findByCantidad", query = "SELECT l FROM LineaFactura l WHERE l.cantidad = :cantidad"),
-    @NamedQuery(name = "LineaFactura.findByDescripcion", query = "SELECT l FROM LineaFactura l WHERE l.descripcion = :descripcion"),
-    @NamedQuery(name = "LineaFactura.findByPrecioUnitario", query = "SELECT l FROM LineaFactura l WHERE l.precioUnitario = :precioUnitario")})
+    @NamedQuery(name = "LineaFactura.findByDescripcion", query = "SELECT l FROM LineaFactura l WHERE l.descripcion = :descripcion")
+  })
 public class LineaFactura implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "cantidad")
-    private BigDecimal cantidad;
+    
     @Size(max = 256)
     @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "precio_unitario")
-    private BigDecimal precioUnitario;
+    
     @JoinColumn(name = "factura", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Factura factura;
+  
+    @JoinColumn(name = "tipo_linea", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private FixedList tipoLinea;
+  
+    @JoinColumn(name = "carga_turno", referencedColumnName = "id")
+    @ManyToOne()
+    private CargaTurno cargaTurno;
+  
+    @Column(name = "porc_administracion")
+    private BigDecimal porcentajeAdministracion;
+     
+    @Column(name = "total_bruto")
+    private BigDecimal totalBruto;
+    
+    @Column(name = "costo")
+    private BigDecimal costo;
+    
+    @Column(name = "administracion")
+    private BigDecimal administracion;
+    
+    @Column(name = "tarifa")
+    private BigDecimal tarifa;
+    
+    @Column(name = "valor")
+    private BigDecimal valor;
+    
 
     public LineaFactura() {
     }
@@ -67,13 +92,70 @@ public class LineaFactura implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getCantidad() {
-        return cantidad;
+    public FixedList getTipoLinea() {
+        return tipoLinea;
     }
 
-    public void setCantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
+    public void setTipoLinea(FixedList tipoLinea) {
+        this.tipoLinea = tipoLinea;
     }
+
+    public CargaTurno getCargaTurno() {
+        return cargaTurno;
+    }
+
+    public void setCargaTurno(CargaTurno cargaTurno) {
+        this.cargaTurno = cargaTurno;
+    }
+
+    public BigDecimal getPorcentajeAdministracion() {
+        return porcentajeAdministracion;
+    }
+
+    public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
+        this.porcentajeAdministracion = porcentajeAdministracion;
+    }
+
+    public BigDecimal getTotalBruto() {
+        return totalBruto;
+    }
+
+    public void setTotalBruto(BigDecimal totalBruto) {
+        this.totalBruto = totalBruto;
+    }
+
+    public BigDecimal getCosto() {
+        return costo;
+    }
+
+    public void setCosto(BigDecimal costo) {
+        this.costo = costo;
+    }
+
+    public BigDecimal getAdministracion() {
+        return administracion;
+    }
+
+    public void setAdministracion(BigDecimal administracion) {
+        this.administracion = administracion;
+    }
+
+    public BigDecimal getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(BigDecimal tarifa) {
+        this.tarifa = tarifa;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
 
     public String getDescripcion() {
         return descripcion;
@@ -81,14 +163,6 @@ public class LineaFactura implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public BigDecimal getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(BigDecimal precioUnitario) {
-        this.precioUnitario = precioUnitario;
     }
 
     public Factura getFactura() {

@@ -1,11 +1,18 @@
 package com.orco.graneles.jsf.facturacion;
 
+import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.Factura;
+import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.facturacion.FacturaFacade;
+import com.orco.graneles.model.facturacion.LineaFacturaFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -17,6 +24,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.model.DualListModel;
 
 @ManagedBean(name = "facturaController")
 @SessionScoped
@@ -26,7 +34,17 @@ public class FacturaController implements Serializable {
     private DataModel items = null;
     @EJB
     private FacturaFacade ejbFacade;
+    @EJB
+    private CargaTurnoFacade cargaTurnoF;
+    @EJB
+    private LineaFacturaFacade lineaFacturaF;
+    
+    
     private int selectedItemIndex;
+    
+    private DualListModel<CargaTurno> turnosASeleccionarModel;
+    private DataModel lineasFacturaModel;
+    private List<LineaFactura> lineasFactura;
 
     public FacturaController() {
     }
@@ -37,6 +55,34 @@ public class FacturaController implements Serializable {
         JsfUtil.minimoRolRequerido(null);
     }
 
+    public void seleccionarEmbarqueYProveedor(){
+        if (getSelected().getExportador() == null){
+            JsfUtil.addErrorMessage("Seleccione un Exportador");
+        }
+        
+        if (getSelected().getEmbarque() == null){
+            JsfUtil.addErrorMessage("Seleccione un Embarque");
+        }
+        
+        if (getSelected().getExportador() != null && getSelected().getEmbarque() != null){
+            turnosASeleccionarModel = new DualListModel<CargaTurno>();
+            List<CargaTurno> cargaTurnosDelExportador = cargaTurnoF.obtenerCargas(getSelected().getEmbarque(), getSelected().getExportador());
+            Collections.sort(cargaTurnosDelExportador);
+            turnosASeleccionarModel.setSource(cargaTurnosDelExportador);
+            turnosASeleccionarModel.setTarget(new ArrayList<CargaTurno>());
+            
+            lineasFacturaModel = null;
+            lineasFactura = null;
+        }        
+    }
+    
+    public void seleccionarCargaTurnos(){
+        if (turnosASeleccionarModel != null){
+            lineasFactura = lineaFacturaF.crearLineas(turnosASeleccionarModel.getTarget());
+            lineasFacturaModel = new ListDataModel(lineasFactura);
+        }
+    }
+    
     public Factura getSelected() {
         if (current == null) {
             current = new Factura();
@@ -69,6 +115,9 @@ public class FacturaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            
+            //TODO: guardar los datos de la factura
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("FacturaCreated"));
             return "View";
         } catch (Exception e) {
@@ -123,22 +172,6 @@ public class FacturaController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
 
     public DataModel getItems() {
         if (items == null) {
@@ -195,4 +228,14 @@ public class FacturaController implements Serializable {
             }
         }
     }
+
+    public DualListModel<CargaTurno> getTurnosASeleccionarModel() {
+        return turnosASeleccionarModel;
+    }
+
+    public DataModel getLineasFacturaModel() {
+        return lineasFacturaModel;
+    }
+    
+    
 }

@@ -4,6 +4,8 @@
  */
 package com.orco.graneles.domain.facturacion;
 
+import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.Embarque;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -44,28 +46,41 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findByPorcentajeBonificacion", query = "SELECT f FROM Factura f WHERE f.porcentajeBonificacion = :porcentajeBonificacion")})
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Basic(optional = false)
-    @NotNull
+    
     @Size(min = 1, max = 13)
     @Column(name = "comprobante")
     private String comprobante;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "porcentaje_iva")
     private BigDecimal porcentajeIva;
+    
     @Column(name = "porcentaje_bonificacion")
     private BigDecimal porcentajeBonificacion;
-    @JoinColumn(name = "cliente", referencedColumnName = "id")
+    
+    @JoinColumn(name = "exportador", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Empresa cliente;
+    private Empresa exportador;
+    
+    @JoinColumn(name = "embarque", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Embarque embarque;
+    
+    @JoinColumn(name = "carga_turno", referencedColumnName = "id")
+    @ManyToOne()
+    private CargaTurno cargaTurno;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura")
     private Collection<LineaFactura> lineaFacturaCollection;
 
@@ -122,14 +137,32 @@ public class Factura implements Serializable {
         this.porcentajeBonificacion = porcentajeBonificacion;
     }
 
-    public Empresa getCliente() {
-        return cliente;
+    public Empresa getExportador() {
+        return exportador;
     }
 
-    public void setCliente(Empresa cliente) {
-        this.cliente = cliente;
+    public void setExportador(Empresa exportador) {
+        this.exportador = exportador;
     }
 
+    public CargaTurno getCargaTurno() {
+        return cargaTurno;
+    }
+
+    public void setCargaTurno(CargaTurno cargaTurno) {
+        this.cargaTurno = cargaTurno;
+    }
+
+    public Embarque getEmbarque() {
+        return embarque;
+    }
+
+    public void setEmbarque(Embarque embarque) {
+        this.embarque = embarque;
+    }
+
+    
+    
     @XmlTransient
     public Collection<LineaFactura> getLineaFacturaCollection() {
         return lineaFacturaCollection;
