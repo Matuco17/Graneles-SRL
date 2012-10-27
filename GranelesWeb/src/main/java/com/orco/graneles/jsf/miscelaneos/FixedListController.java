@@ -213,6 +213,10 @@ public class FixedListController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(idLista), true);
     }
 
+    public SelectItem[] getTipoLineaFacturaSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByLista(TipoLineaFactura.ID_LISTA), true);
+    }
+
 
     @FacesConverter(forClass=FixedList.class)
     public static class FixedListControllerConverter implements Converter {

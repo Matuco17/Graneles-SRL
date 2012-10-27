@@ -77,10 +77,6 @@ public class Factura implements Serializable {
     @ManyToOne(optional = false)
     private Embarque embarque;
     
-    @JoinColumn(name = "carga_turno", referencedColumnName = "id")
-    @ManyToOne()
-    private CargaTurno cargaTurno;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura")
     private Collection<LineaFactura> lineaFacturaCollection;
 
@@ -143,14 +139,6 @@ public class Factura implements Serializable {
 
     public void setExportador(Empresa exportador) {
         this.exportador = exportador;
-    }
-
-    public CargaTurno getCargaTurno() {
-        return cargaTurno;
-    }
-
-    public void setCargaTurno(CargaTurno cargaTurno) {
-        this.cargaTurno = cargaTurno;
     }
 
     public Embarque getEmbarque() {

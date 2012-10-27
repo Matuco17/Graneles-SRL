@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{facturaController.init()}" />  
@@ -24,48 +24,18 @@
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_fecha}"/>
-                            </f:facet>
+                        <p:column headerText="#{bundleFacturacion.FacturaTitle_fecha}">
                             <h:outputText value="#{item.fecha}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_comprobante}"/>
-                            </f:facet>
+                        <p:column headerText="#{bundleFacturacion.FacturaTitle_comprobante}">
                             <h:outputText value="#{item.comprobante}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_porcentajeIva}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.porcentajeIva}"/>
+                        <p:column headerText="#{bundleFacturacion.FacturaTitle_cliente}">
+                            <h:outputText value="#{item.exportador.toString()}"/>
                         </p:column>
                         <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_porcentajeBonificacion}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.porcentajeBonificacion}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleFacturacion.FacturaTitle_cliente}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.cliente}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
                             <h:commandButton 
                                 image="/faces/resources/images/view.png" 
                                 action="#{facturaController.prepareView}" 

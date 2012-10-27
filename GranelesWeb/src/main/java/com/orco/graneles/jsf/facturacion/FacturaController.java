@@ -39,6 +39,10 @@ public class FacturaController implements Serializable {
     @EJB
     private LineaFacturaFacade lineaFacturaF;
     
+    private Boolean tabBusquedaAbierto;
+    private Boolean tabSeleccionPlanillasAbrierto;
+    private Boolean tabCalculoAbierto;
+    private Boolean tabCalculadoraAbierto;
     
     private int selectedItemIndex;
     
@@ -52,7 +56,7 @@ public class FacturaController implements Serializable {
     public void init() {
         recreateModel();
         
-        JsfUtil.minimoRolRequerido(null);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public void seleccionarEmbarqueYProveedor(){
@@ -68,8 +72,9 @@ public class FacturaController implements Serializable {
             turnosASeleccionarModel = new DualListModel<CargaTurno>();
             List<CargaTurno> cargaTurnosDelExportador = cargaTurnoF.obtenerCargas(getSelected().getEmbarque(), getSelected().getExportador());
             Collections.sort(cargaTurnosDelExportador);
-            turnosASeleccionarModel.setSource(cargaTurnosDelExportador);
+            turnosASeleccionarModel.setSource(new ArrayList<CargaTurno>(cargaTurnosDelExportador));
             turnosASeleccionarModel.setTarget(new ArrayList<CargaTurno>());
+            
             
             lineasFacturaModel = null;
             lineasFactura = null;
@@ -81,6 +86,10 @@ public class FacturaController implements Serializable {
             lineasFactura = lineaFacturaF.crearLineas(turnosASeleccionarModel.getTarget());
             lineasFacturaModel = new ListDataModel(lineasFactura);
         }
+    }
+    
+    public void tipoLineaSeleccionado(){
+        lineaFacturaF.actualizarLineas(lineasFactura);
     }
     
     public Factura getSelected() {
@@ -182,6 +191,9 @@ public class FacturaController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        turnosASeleccionarModel = null;
+        lineasFacturaModel = null;
+        lineasFactura = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -233,8 +245,44 @@ public class FacturaController implements Serializable {
         return turnosASeleccionarModel;
     }
 
+    public void setTurnosASeleccionarModel(DualListModel<CargaTurno> turnosASeleccionarModel) {
+        this.turnosASeleccionarModel = turnosASeleccionarModel;
+    }
+    
     public DataModel getLineasFacturaModel() {
         return lineasFacturaModel;
+    }
+
+    public Boolean getTabBusquedaAbierto() {
+        return tabBusquedaAbierto;
+    }
+
+    public void setTabBusquedaAbierto(Boolean tabBusquedaAbierto) {
+        this.tabBusquedaAbierto = tabBusquedaAbierto;
+    }
+
+    public Boolean getTabSeleccionPlanillasAbrierto() {
+        return tabSeleccionPlanillasAbrierto;
+    }
+
+    public void setTabSeleccionPlanillasAbrierto(Boolean tabSeleccionPlanillasAbrierto) {
+        this.tabSeleccionPlanillasAbrierto = tabSeleccionPlanillasAbrierto;
+    }
+
+    public Boolean getTabCalculoAbierto() {
+        return tabCalculoAbierto;
+    }
+
+    public void setTabCalculoAbierto(Boolean tabCalculoAbierto) {
+        this.tabCalculoAbierto = tabCalculoAbierto;
+    }
+
+    public Boolean getTabCalculadoraAbierto() {
+        return tabCalculadoraAbierto;
+    }
+
+    public void setTabCalculadoraAbierto(Boolean tabCalculadoraAbierto) {
+        this.tabCalculadoraAbierto = tabCalculadoraAbierto;
     }
     
     

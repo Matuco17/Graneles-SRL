@@ -4,7 +4,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,9 +14,9 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <p:accordionPanel >
-                <p:tab title="Encabezado" >
-                    <p:panelGrid columns="4">
+                <p:accordionPanel  >
+                <p:tab title="Encabezado"  >
+                    <h:panelGrid columns="4">
                         <h:outputLabel value="#{bundleFacturacion.FacturaTitle_comprobante}" for="comprobante" />
                         <h:outputLabel value="#{bundleFacturacion.FacturaTitle_fecha}" for="fecha" />
                         <h:outputLabel value="#{bundleFacturacion.FacturaTitle_cliente}" for="cliente" />
@@ -26,78 +28,110 @@
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </p:calendar>
 
-                        <h:selectOneMenu id="cliente" value="#{facturaController.selected.exportador}" required="true" >
+                        <p:selectOneMenu id="cliente" value="#{facturaController.selected.exportador}" required="true" >
                             <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                        <h:selectOneMenu id="cliente" value="#{facturaController.selected.embarque}" required="true"  >
-                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                        </h:selectOneMenu>
+                        <p:selectOneMenu id="embarque" value="#{facturaController.selected.embarque}" required="true"  >
+                            <f:selectItems value="#{embarqueController.itemsAvailableSelectOne}"/>
+                        </p:selectOneMenu>
 
-                    </p:panelGrid>
+                    </h:panelGrid>
                     
-                    <h:commandButton action="#{facturaController.seleccionarEmbarqueYProveedor()}" label="Buscar Turnos" />
+                    <h:commandButton action="#{facturaController.seleccionarEmbarqueYProveedor()}" value="Buscar Turnos"  />
                 
                 </p:tab>
-                <p:tab title="Selección de Turnos" rendered="#{facturaController.turnosASeleccionarModel != null}" >
+                <p:tab title="Selección de Turnos" rendered="#{facturaController.turnosASeleccionarModel != null}" style="width: 350px;" >
                     
-                    <p:pickList id="turnos" value="#{facturaController.turnosASeleccionarModel}" var="cargaTurno" >
+                    <p:pickList id="turnos" value="#{facturaController.turnosASeleccionarModel}" var="cargaTurno" 
+                                converter="#{cargaTurnoController.staticConverter}" itemValue="#{cargaTurno}">
                         
-                        <f:facet name="sourceCaption">Turnos Disponibles</f:facet>  
-                        <f:facet name="targetCaption">Turnos A Facturar</f:facet>  
+                        <f:facet name="sourceCaption">Planillas Disponibles</f:facet>  
+                        <f:facet name="targetCaption">Planillas A Facturar</f:facet>  
   
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" />
+                        <p:column>
+                            <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" style="font-weight: bold;" />
                         </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
+                        <p:column>
+                            <h:outputText value=" | " />
                             <h:outputText value="#{cargaTurno.turnoEmbarque.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>   
+                            </h:outputText>
+                            <h:outputText value=" | " />
                         </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
+                        <p:column>
                             <h:outputText value="#{cargaTurno.turnoEmbarque.turno.toString()}" />
                         </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.totalEmbarcado}" />
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}"  style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.totalBruto}" >
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </h:outputText>
-                        </p:column>   
-                         <p:column headerText="#{bundleCarga.CargaTurnoTitle_lineafactura}" style="text-align: center;">
-                            <h:outputText value="#{cargaTurno.lineaFactura.factura.comprobante}" />
+                        
+                        <p:column>
+                            <c:choose>
+                                <c:when test="#{cargaTurno.lineaFactura != null}">
+                                    <h:outputText value=" | Fact: "  />
+                                    <h:outputText value="#{cargaTurno.lineaFactura.factura.comprobante}" />
+                                </c:when>
+                                <c:otherwise>
+                                    <h:outputText value=" | A Facturar "  />
+                                </c:otherwise>
+                            </c:choose>
+                            
                         </p:column>
                     </p:pickList>
                     
-                    <h:commandButton action="#{facturaController.seleccionarCargaTurnos()}" label="Seleccionar Turnos" />
+                    <h:commandButton action="#{facturaController.seleccionarCargaTurnos()}" value="Seleccionar Turnos"
+                                     />
                     
                 </p:tab>
-                <p:tab title="Cálculo" rendered="#{facturaController.turnosASeleccionarModel != null}" >
+                <p:tab title="Cálculo" rendered="#{facturaController.lineasFacturaModel != null}"  >
                     
-                    <p:dataTable value="#{facturaController.lineasFacturaModel}" var="lineaFactura" >
+                    <p:dataTable id="dtbLineaFactura" value="#{facturaController.lineasFacturaModel}" var="lineaFactura" >
                         
                         <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" />
+                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.nroPlanilla}" />
                         </p:column>
                         <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.fecha}" >
+                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>   
                         </p:column>
                         <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.turno.toString()}" />
+                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.turno.toString()}" />
                         </p:column>
                         <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.totalEmbarcado}" />
+                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalEmbarcado}" />
                         </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}"  style="text-align: right;">
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.totalBruto}" >
+                        <p:column headerText="Jornales"  style="text-align: right;">
+                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalBruto}" >
                                 <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                             </h:outputText>
                         </p:column>   
-                         <p:column headerText="#{bundleCarga.CargaTurnoTitle_lineafactura}" style="text-align: center;">
-                            <h:outputText value="#{cargaTurno.lineaFactura.factura.comprobante}" />
+                        <p:column headerText="Costo" style="text-align: right;">
+                            <h:outputText value="#{lineaFactura.costo}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Administracion" style="text-align: right;">
+                            <h:outputText value="#{lineaFactura.administracion}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Tarifa" style="text-align: right;">
+                            <h:outputText value="#{lineaFactura.tarifa}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Tipo">
+                            <p:selectOneMenu value="#{lineaFactura.tipoLinea}"
+                                             onchange="actualizarLineas();">
+                                <f:selectItems value="#{fixedListController.tipoLineaFacturaSelectOne}" />
+                                <p:ajax update="valorLinea" listener="#{facturaController.tipoLineaSeleccionado()}" /> 
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column headerText="Valor">
+                            <p:inputText value="#{lineaFactura.valor}" id="valorLinea" style="text-align: right;"
+                                         readonly="#{lineaFactura.tipoLinea.id == 150 or lineaFactura.tipoLinea.id == 151}"> 
+                                <!-- 150 = Administracion, 151 = Tarifa -->
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </p:inputText>
                         </p:column>
                     </p:dataTable>
                     
@@ -121,6 +155,19 @@
 
                 </h:panelGrid>
             </h:form>
+            
+            <script type="text/javascript" >
+                
+                jQuery(function (){
+                   actualizarLineas();
+                });
+                
+                function actualizarLineas(){
+                    //TODO: HACER LA MAGIA, POR CADA LINEA OBTENER EL VALOR DEL COMBO Y DEPENDE DE ESO PONERLE EL VALOR CORRESPONDIENTE Y SETEAR LA EDITABILIDAD DE VALOR
+                }
+                
+            </script>
+            
         </ui:define>
     </ui:composition>
 

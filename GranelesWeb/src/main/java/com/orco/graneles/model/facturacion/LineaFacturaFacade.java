@@ -7,6 +7,7 @@ package com.orco.graneles.model.facturacion;
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.Tarifa;
+import com.orco.graneles.domain.miscelaneos.TipoLineaFactura;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,10 +57,26 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
             
             lf.setPorcentajeAdministracion(BigDecimal.ZERO);
             lf.setAdministracion(ct.getTurnoEmbarque().getTotalBruto());
+            
+            lineas.add(lf);
         }
         
         
         return lineas;
+    }
+    
+    public void actualizarLineas(List<LineaFactura> lineas){
+        for(LineaFactura lf : lineas){
+            if (lf.getTipoLinea() != null){
+                switch (lf.getTipoLinea().getId()){
+                    case TipoLineaFactura.ADMINISTRACION :
+                        lf.setValor(lf.getAdministracion());
+                        break;
+                    case TipoLineaFactura.TARIFA :
+                        lf.setValor(lf.getTarifa());
+                }
+            }
+        }
     }
     
     public BigDecimal calcularCosto(CargaTurno ct){

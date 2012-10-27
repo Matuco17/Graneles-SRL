@@ -197,4 +197,9 @@ public class CargaTurnoController implements Serializable {
             }
         }
     }
+    
+    
+    public CargaTurnoControllerConverter getStaticConverter(){
+        return new CargaTurnoControllerConverter();
+    }
 }
