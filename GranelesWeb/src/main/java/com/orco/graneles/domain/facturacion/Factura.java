@@ -182,7 +182,16 @@ public class Factura implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.Factura[ id=" + id + " ]";
+        return comprobante;
     }
     
+    public BigDecimal getTotalFactura(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        for (LineaFactura lf : lineaFacturaCollection){
+            total = total.add(lf.getTotalLinea());
+        }
+        
+        return total;
+    }
 }

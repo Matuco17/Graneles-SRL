@@ -13,137 +13,226 @@
             <h:outputText value="#{bundleFacturacion.CreateFacturaTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form>
-                <p:accordionPanel  >
-                <p:tab title="Encabezado"  >
-                    <h:panelGrid columns="4">
-                        <h:outputLabel value="#{bundleFacturacion.FacturaTitle_comprobante}" for="comprobante" />
-                        <h:outputLabel value="#{bundleFacturacion.FacturaTitle_fecha}" for="fecha" />
-                        <h:outputLabel value="#{bundleFacturacion.FacturaTitle_cliente}" for="cliente" />
-                        <h:outputLabel value="#{bundleFacturacion.FacturaTitle_embarque}" for="embarque" />
-                
-                        <p:inputText id="comprobante" value="#{facturaController.selected.comprobante}" required="true" requiredMessage="#{bundleFacturacion.FacturaRequiredMessage_comprobante}"/>
-
-                        <p:calendar id="fecha" value="#{facturaController.selected.fecha}" title="#{bundleFacturacion.FacturaTitle_fecha}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:calendar>
-
-                        <p:selectOneMenu id="cliente" value="#{facturaController.selected.exportador}" required="true" >
-                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
-                        </p:selectOneMenu>
-
-                        <p:selectOneMenu id="embarque" value="#{facturaController.selected.embarque}" required="true"  >
-                            <f:selectItems value="#{embarqueController.itemsAvailableSelectOne}"/>
-                        </p:selectOneMenu>
-
-                    </h:panelGrid>
+            <h:form id="createFacturaForm">
+                <p:wizard flowListener="#{facturaController.onFlowProcess}" widgetVar="wiz"
+                          backLabel="Anterior" nextLabel="Siguiente">
                     
-                    <h:commandButton action="#{facturaController.seleccionarEmbarqueYProveedor()}" value="Buscar Turnos"  />
-                
-                </p:tab>
-                <p:tab title="Selección de Turnos" rendered="#{facturaController.turnosASeleccionarModel != null}" style="width: 350px;" >
-                    
-                    <p:pickList id="turnos" value="#{facturaController.turnosASeleccionarModel}" var="cargaTurno" 
-                                converter="#{cargaTurnoController.staticConverter}" itemValue="#{cargaTurno}">
-                        
-                        <f:facet name="sourceCaption">Planillas Disponibles</f:facet>  
-                        <f:facet name="targetCaption">Planillas A Facturar</f:facet>  
-  
-                        <p:column>
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value=" | " />
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
-                            <h:outputText value=" | " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{cargaTurno.turnoEmbarque.turno.toString()}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <c:choose>
-                                <c:when test="#{cargaTurno.lineaFactura != null}">
-                                    <h:outputText value=" | Fact: "  />
-                                    <h:outputText value="#{cargaTurno.lineaFactura.factura.comprobante}" />
-                                </c:when>
-                                <c:otherwise>
-                                    <h:outputText value=" | A Facturar "  />
-                                </c:otherwise>
-                            </c:choose>
+                    <p:tab id="#{facturaController.STEP_SELECCION_EMBARQUE}" title="Embarque"  >
+                        <p:panel header="Encabezado" >
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_comprobante}" for="comprobante" />
+                                <p:inputText id="comprobante" value="#{facturaController.selected.comprobante}" required="true" requiredMessage="#{bundleFacturacion.FacturaRequiredMessage_comprobante}"/>
+
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_fecha}" for="fecha" />
+                                <p:calendar id="fecha" value="#{facturaController.selected.fecha}" title="#{bundleFacturacion.FacturaTitle_fecha}" pattern="dd/MM/yyyy" />
                             
-                        </p:column>
-                    </p:pickList>
-                    
-                    <h:commandButton action="#{facturaController.seleccionarCargaTurnos()}" value="Seleccionar Turnos"
-                                     />
-                    
-                </p:tab>
-                <p:tab title="Cálculo" rendered="#{facturaController.lineasFacturaModel != null}"  >
-                    
-                    <p:dataTable id="dtbLineaFactura" value="#{facturaController.lineasFacturaModel}" var="lineaFactura" >
-                        
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.nroPlanilla}" />
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
-                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>   
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
-                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.turno.toString()}" />
-                        </p:column>
-                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalEmbarcado}" />
-                        </p:column>
-                        <p:column headerText="Jornales"  style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalBruto}" >
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </h:outputText>
-                        </p:column>   
-                        <p:column headerText="Costo" style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.costo}" >
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="Administracion" style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.administracion}" >
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="Tarifa" style="text-align: right;">
-                            <h:outputText value="#{lineaFactura.tarifa}" >
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="Tipo">
-                            <p:selectOneMenu value="#{lineaFactura.tipoLinea}"
-                                             onchange="actualizarLineas();">
-                                <f:selectItems value="#{fixedListController.tipoLineaFacturaSelectOne}" />
-                                <p:ajax update="valorLinea" listener="#{facturaController.tipoLineaSeleccionado()}" /> 
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column headerText="Valor">
-                            <p:inputText value="#{lineaFactura.valor}" id="valorLinea" style="text-align: right;"
-                                         readonly="#{lineaFactura.tipoLinea.id == 150 or lineaFactura.tipoLinea.id == 151}"> 
-                                <!-- 150 = Administracion, 151 = Tarifa -->
-                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                            </p:inputText>
-                        </p:column>
-                    </p:dataTable>
-                    
-             
-                    <h:commandButton action="#{facturaController.create}"
-                              image="/faces/resources/images/save.png" 
-                              value="#{bundleFacturacion.FacturaSaveLink}" 
-                              title="#{bundleFacturacion.FacturaSaveLink}"
-                              />
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_cliente}" for="cliente" />
+                                <p:selectOneMenu id="cliente" value="#{facturaController.selected.exportador}">
+                                    <f:selectItems value="#{empresaController.itemsAvailableSelectOne}"/>
+                                </p:selectOneMenu>
 
-                </p:tab>
-                </p:accordionPanel>
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_embarque}" for="embarque" />
+                                <p:selectOneMenu id="embarque" value="#{facturaController.selected.embarque}"  >
+                                    <f:selectItems value="#{embarqueController.itemsAvailableSelectOne}"/>
+                                </p:selectOneMenu>
+
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab id="#{facturaController.STEP_SELECCION_TURNOS}" title="Turnos" >
+                    
+                        <p:panel header="Seleccione los turnos a Facturar" >
+                            <p:pickList id="turnos" value="#{facturaController.turnosASeleccionarModel}" var="cargaTurno" 
+                                        converter="#{cargaTurnoController.staticConverter}" itemValue="#{cargaTurno}">
+
+                                <f:facet name="sourceCaption">Planillas Disponibles</f:facet>  
+                                <f:facet name="targetCaption">Planillas A Facturar</f:facet>  
+
+                                <p:column>
+                                    <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" style="font-weight: bold;" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value=" | " />
+                                    <h:outputText value="#{cargaTurno.turnoEmbarque.fecha}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                    <h:outputText value=" | " />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{cargaTurno.turnoEmbarque.turno.toString()}" />
+                                </p:column>
+
+                                <p:column>
+                                    <c:choose>
+                                        <c:when test="#{cargaTurno.lineaFactura != null}">
+                                            <h:outputText value=" | Fact: "  />
+                                            <h:outputText value="#{cargaTurno.lineaFactura.factura.comprobante}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h:outputText value=" | A Facturar "  />
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </p:column>
+                            </p:pickList>
+                            </p:panel>
+                    
+                    </p:tab>
+                    <p:tab id="#{facturaController.STEP_SETEO_VALORES}" title="Cálculo"   >
+                        <p:panel id="panelSeteoValores" header="Cálculo de los valores de los turnos a facturar" >
+                    
+                            <p:dataTable id="dtbLineaFactura" value="#{facturaController.lineasFacturaModel}" var="lineaFactura" >
+
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.nroPlanilla}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.fecha}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>   
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.turno.toString()}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_tipo}" style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.tipo.toString()}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalEmbarcado}" />
+                                </p:column>
+                                <p:column headerText="Jornales"  style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalBruto}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>   
+                                <p:column headerText="Costo" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.costo}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Administracion" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.administracion}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Tarifa" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.tarifa}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Tipo" style="min-width: 150px;">
+                                        <p:selectOneMenu value="#{lineaFactura.tipoLinea}"
+                                                         onchange="actualizarLineas();" style=" float: left;">
+                                            <f:selectItems value="#{fixedListController.tipoLineaFacturaSelectOne}" />
+                                            <p:ajax update="@form" listener="#{facturaController.actualizarLineas()}" /> 
+                                        </p:selectOneMenu>
+                                        <p:inputText id="porcentajeAdministracion" value="#{lineaFactura.porcentajeAdministracion}"
+                                                     onkeyup="actualizarLineas();"
+                                                     rendered="#{lineaFactura.tipoLinea.id == 150}" style="width: 40px; text-align: right; float: right;">
+                                            <p:ajax event="blur" update="@form" listener="#{facturaController.actualizarLineas()}" /> 
+                                        </p:inputText>
+                                    
+                                    <f:facet name="footer" >
+                                      <h:outputText value="#{bundleFacturacion.FacturaTitle_total}" />
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Valor" style="width: 90px; text-align: right;">
+                                    <p:inputText value="#{lineaFactura.valor}" id="valorLinea" style="width: 85px; text-align: right;"
+                                                 readonly="#{lineaFactura.tipoLinea.id == 150 or lineaFactura.tipoLinea.id == 151}"> 
+                                        <!-- 150 = Administracion, 151 = Tarifa -->
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        <p:ajax  event="blur" update="@form" listener="#{facturaController.actualizarLineas()}" /> 
+                                    </p:inputText>
+                                    
+                                    <f:facet name="footer" >
+                                        <h:outputText id="totalFactura" value="#{facturaController.selected.totalFactura}" >
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+
+                        </p:panel>
+
+                    </p:tab>
+                    <p:tab id="#{facturaController.STEP_CONFIRMAR}" title="Confirmación" >
+                        <p:panel header="Factura a confirmar" >
+                            <h:panelGrid columns="2" >
+                            
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_comprobante}"  />
+                                <h:outputText value="#{facturaController.selected.comprobante}"/>
+
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_fecha}" />
+                                <h:outputText value="#{facturaController.selected.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_cliente}" />
+                                <h:outputText value="#{facturaController.selected.exportador.toString()}" />
+                                
+
+                                <h:outputLabel value="#{bundleFacturacion.FacturaTitle_embarque}" />
+                                <h:outputText value="#{facturaController.selected.embarque.toString()}" />
+                            </h:panelGrid>
+                            
+                            <p:dataTable  value="#{facturaController.lineasFacturaModel}" var="lineaFactura" >
+
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.nroPlanilla}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.fecha}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>   
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.turno.toString()}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_tipo}" style="text-align: center;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.tipo.toString()}" />
+                                </p:column>
+                                <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalEmbarcado}" />
+                                </p:column>
+                                <p:column headerText="Jornales"  style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.cargaTurno.turnoEmbarque.totalBruto}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>   
+                                <p:column headerText="Costo" style="text-align: right;">
+                                    <h:outputText value="#{lineaFactura.costo}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Tipo">
+                                    <h:outputText value="#{lineaFactura.tipoLinea.toString()}" />
+                                    <h:outputText value="  -  #{lineaFactura.porcentajeAdministracion}%" rendered="#{lineaFactura.tipoLinea.id == 150}" />
+                                
+                                  <f:facet name="footer" >
+                                      <h:outputText value="#{bundleFacturacion.FacturaTitle_total}" />
+                                  </f:facet>
+                                </p:column>
+                                <p:column headerText="Valor" style="text-align: right;">
+                                     <h:outputText value="#{lineaFactura.valor}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                    
+                                    <f:facet name="footer" >
+                                        <h:outputText value="#{facturaController.selected.totalFactura}" >
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <h:commandButton action="#{facturaController.create}"
+                                  value="#{bundleFacturacion.FacturaSaveLink}" 
+                                  title="#{bundleFacturacion.FacturaSaveLink}"
+                                  style="margin-top: 5px; font-size: 1.3em; font-weight: bold;"
+                                  />
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
                 <h:panelGrid columns="2">
              
                     <h:commandButton action="#{facturaController.prepareList}"
@@ -163,6 +252,7 @@
                 });
                 
                 function actualizarLineas(){
+                    //jQuery("[name*='" + componentName + "']").focus();         
                     //TODO: HACER LA MAGIA, POR CADA LINEA OBTENER EL VALOR DEL COMBO Y DEPENDE DE ESO PONERLE EL VALOR CORRESPONDIENTE Y SETEAR LA EDITABILIDAD DE VALOR
                 }
                 

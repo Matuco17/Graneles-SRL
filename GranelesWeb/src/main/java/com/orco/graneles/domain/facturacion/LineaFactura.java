@@ -198,4 +198,7 @@ public class LineaFactura implements Serializable {
         return "com.orco.graneles.domain.LineaFactura[ id=" + id + " ]";
     }
     
+    public BigDecimal getTotalLinea(){
+        return valor;
+    }
 }

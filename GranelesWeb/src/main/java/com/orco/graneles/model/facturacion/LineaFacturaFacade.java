@@ -5,6 +5,7 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.Tarifa;
 import com.orco.graneles.domain.miscelaneos.TipoLineaFactura;
@@ -43,11 +44,12 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
      * @param cargaTurnos
      * @return 
      */
-    public List<LineaFactura> crearLineas(List<CargaTurno> cargaTurnos){
+    public List<LineaFactura> crearLineas(List<CargaTurno> cargaTurnos, Factura factura){
         List<LineaFactura> lineas = new ArrayList<LineaFactura>();
         
         for (CargaTurno ct : cargaTurnos){
             LineaFactura lf = new LineaFactura();
+            lf.setFactura(factura);
             lf.setCargaTurno(ct);
             lf.setValor(BigDecimal.ZERO);
             
@@ -56,12 +58,12 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
             lf.setTarifa(calcularTarifa(ct));
             
             lf.setPorcentajeAdministracion(BigDecimal.ZERO);
-            lf.setAdministracion(ct.getTurnoEmbarque().getTotalBruto());
+            lf.setAdministracion(calcularAdministracion(ct, lf.getPorcentajeAdministracion()));
             
             lineas.add(lf);
         }
         
-        
+        factura.setLineaFacturaCollection(lineas);
         return lineas;
     }
     
@@ -70,10 +72,12 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
             if (lf.getTipoLinea() != null){
                 switch (lf.getTipoLinea().getId()){
                     case TipoLineaFactura.ADMINISTRACION :
+                        lf.setAdministracion(calcularAdministracion(lf.getCargaTurno(), lf.getPorcentajeAdministracion()));
                         lf.setValor(lf.getAdministracion());
                         break;
                     case TipoLineaFactura.TARIFA :
                         lf.setValor(lf.getTarifa());
+                        break;
                 }
             }
         }
@@ -81,7 +85,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     
     public BigDecimal calcularCosto(CargaTurno ct){
         //TODO: Modificar este metodo para que tome el valor de la configuracion
-        BigDecimal multiplicador = new BigDecimal(0.9);
+        BigDecimal multiplicador = new BigDecimal(1.9);
         return ct.getTurnoEmbarque().getTotalBruto().multiply(multiplicador);
     }
     
@@ -96,7 +100,13 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
         }
     }
     
-    
+    public BigDecimal calcularAdministracion(CargaTurno ct, BigDecimal porcentaje){
+        return ct.getTurnoEmbarque().getTotalBruto()
+                .add(ct.getTurnoEmbarque().getTotalBruto()
+                    .multiply(porcentaje)
+                    .divide(new BigDecimal(100)
+               ));
+    }
     
     
     

@@ -13,19 +13,23 @@
         <ui:define name="body">
             <h:form>
                 <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_tipoJornal}" for="tipoJornal"  />
-                    <h:selectOneMenu id="tipoJornal" value="#{tarifaController.selected.tipoJornal}" disabled="true" required="true" requiredMessage="#{bundleFacturacion.TarifaRequiredMessage_tipoJornal}" >
-                        <f:selectItems value="#{tipoJornalController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_tipoJornal}" />
+                    <h:outputText value="#{tarifaController.selected.tipoJornal.toString()}" />
                     <h:outputText value="" />
                     <h:outputText value="" />
                     
-                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_desde}" for="desde"   />
-                    <p:calendar id="desde" value="#{tarifaController.selected.desde}"  disabled="true"  title="#{bundleFacturacion.TarifaTitle_desde}" pattern="dd/MM/yyyy" />
-                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_hasta}" for="hasta"  />
-                    <p:calendar id="hasta" value="#{tarifaController.selected.hasta}"  disabled="true"  title="#{bundleFacturacion.TarifaTitle_hasta}" pattern="dd/MM/yyyy" />
-                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_valor}" for="valor"  />
-                    <p:inputText id="valor" value="#{tarifaController.selected.valor}"  disabled="true"  />
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_desde}"   />
+                    <h:outputText id="desde" value="#{tarifaController.selected.desde}"  >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText> 
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_hasta}"  />
+                    <h:outputText id="hasta" value="#{tarifaController.selected.hasta}"  >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_valor}"   />
+                    <h:outputText id="valor" value="#{tarifaController.selected.valor}"   >
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                    </h:outputText>
                </h:panelGrid>
 
                 <h:panelGrid columns="4">

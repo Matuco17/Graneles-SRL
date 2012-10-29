@@ -24,6 +24,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 
 @ManagedBean(name = "facturaController")
@@ -58,6 +59,24 @@ public class FacturaController implements Serializable {
         
         JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
+    
+    public static final String STEP_SELECCION_EMBARQUE = "seleccionEmbarqueStep";
+    public static final String STEP_SELECCION_TURNOS = "seleccionTurnosStep";
+    public static final String STEP_SETEO_VALORES = "seteoValoresStep";
+    public static final String STEP_CONFIRMAR = "confirmarStep";
+    
+     public String onFlowProcess(FlowEvent event) {  
+        
+        if (event.getOldStep().equals(STEP_SELECCION_EMBARQUE) && event.getNewStep().equals(STEP_SELECCION_TURNOS)){
+            seleccionarEmbarqueYProveedor();
+        } else if (event.getOldStep().equals(STEP_SELECCION_TURNOS) && event.getNewStep().equals(STEP_SETEO_VALORES)){
+            seleccionarCargaTurnos();
+        } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
+            //POR AHORA NO HAGO NADA
+        }
+        
+        return event.getNewStep();  
+    }  
 
     public void seleccionarEmbarqueYProveedor(){
         if (getSelected().getExportador() == null){
@@ -83,12 +102,12 @@ public class FacturaController implements Serializable {
     
     public void seleccionarCargaTurnos(){
         if (turnosASeleccionarModel != null){
-            lineasFactura = lineaFacturaF.crearLineas(turnosASeleccionarModel.getTarget());
+            lineasFactura = lineaFacturaF.crearLineas(turnosASeleccionarModel.getTarget(), getSelected());
             lineasFacturaModel = new ListDataModel(lineasFactura);
         }
     }
     
-    public void tipoLineaSeleccionado(){
+    public void actualizarLineas(){
         lineaFacturaF.actualizarLineas(lineasFactura);
     }
     
@@ -99,7 +118,7 @@ public class FacturaController implements Serializable {
         }
         return current;
     }
-
+    
     private FacturaFacade getFacade() {
         return ejbFacade;
     }
@@ -124,8 +143,6 @@ public class FacturaController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            
-            //TODO: guardar los datos de la factura
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("FacturaCreated"));
             return "View";
@@ -283,6 +300,22 @@ public class FacturaController implements Serializable {
 
     public void setTabCalculadoraAbierto(Boolean tabCalculadoraAbierto) {
         this.tabCalculadoraAbierto = tabCalculadoraAbierto;
+    }
+
+    public String getSTEP_SELECCION_EMBARQUE() {
+        return STEP_SELECCION_EMBARQUE;
+    }
+
+    public String getSTEP_SELECCION_TURNOS() {
+        return STEP_SELECCION_TURNOS;
+    }
+
+    public String getSTEP_SETEO_VALORES() {
+        return STEP_SETEO_VALORES;
+    }
+
+    public String getSTEP_CONFIRMAR() {
+        return STEP_CONFIRMAR;
     }
     
     
