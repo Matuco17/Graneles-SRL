@@ -486,7 +486,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 }
                 
                 double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes);
-                           
+                
+                //Modificación por issue 72 ahora tambien se agregan las vacaciones el calculo
+                totalAcumulado += calcularValorVacaciones(personal, desde, hasta, null, incluirHoras, incluirAccidentes);
+                
                 return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
                 
                                 

@@ -226,7 +226,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             }
             
             //pongo los nuevos limites de acuerdo a los del accidente
-            if (accidentado.getHasta().before(hastaSAC.toDate())){
+            if (accidentado.getHasta() != null && accidentado.getHasta().before(hastaSAC.toDate())){
                 hastaSAC = new DateTime(accidentado.getHasta());
             }
             if (accidentado.getDesde().after(desdeSAC.toDate())){
