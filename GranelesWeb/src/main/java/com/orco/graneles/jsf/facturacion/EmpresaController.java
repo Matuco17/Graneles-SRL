@@ -39,7 +39,7 @@ public class EmpresaController implements Serializable {
     private UploadedFile logoFile;
     
     private void saveLogo(){        
-        if (StringUtils.isNotEmpty(logoFile.getFileName())){
+        if (logoFile != null && StringUtils.isNotEmpty(logoFile.getFileName())){
             FileOutputStream fos = null;
             try {
                 String pathBaseArchivos = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
