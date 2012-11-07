@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+     
+        <p:panel header="Calculadora" >
+            
+            <p:panelGrid>
+                <f:facet name="header" >
+                    <p:row>
+                        <p:column></p:column>
+                        <c:forEach items="#{calculadoraController.tipoJornales}" var="tipoJornal" >
+                            <p:column colspan="3">#{tipoJornal.toString()}</p:column>   
+                        </c:forEach>
+                    </p:row>
+                </f:facet>
+                
+                <c:forEach items="#{calculadoraController.filas}" var="filaCalculadora">
+                    <p:row>
+                        <p:column class="ui-widget-header">#{filaCalculadora.categoria.toString()}</p:column>
+                        <c:forEach items="#{filaCalculadora.salarios}" var="salario" >
+                            <p:column>
+                                <p:spinner min="0" stepFactor="0.5" id="cantidadTrabajador" value="#{salario.cantidad}" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="valorBruto" value="#{salario.valorBruto}" readonly="true" class="fila-resultado"  >
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="valorBruto" value="#{salario.valorBruto}" readonly="true" class="fila-resultado"  >
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </p:inputText>
+                            </p:column>                            
+                        </c:forEach>
+                        <p:column>
+                            <p:inputText id="valorFila" readonly="true" class="fila-resultado"  >
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                </c:forEach>   
+                
+                <f:facet name="footer" >
+                    <p:row>
+                        <p:column></p:column>
+                        <c:forEach items="#{calculadoraController.tipoJornales}" var="tipoJornal" >
+                            <p:column colspan="2"></p:column>
+                            <p:column>
+                                <p:inputText id="valorColumna" readonly="true" class="fila-resultado"  >
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </p:inputText>
+                            </p:column>
+                        </c:forEach>
+                        <p:column>
+                            <p:inputText id="valorTotal" readonly="true" class="fila-resultado"  >
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+            </p:panelGrid>
+        </p:panel>     
+    </co:implementation>
+</html>

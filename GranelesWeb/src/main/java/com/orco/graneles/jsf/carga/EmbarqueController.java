@@ -479,6 +479,8 @@ public class EmbarqueController implements Serializable {
         this.cargas = null;
         this.cargasModel = null;
         this.urlReportePlanillaTrabajadores = null;
+        this.turnoObservaciones = null;
+        this.turnoObservacionesModel = null;
     }
     
     public boolean validarTurno(){

@@ -64,9 +64,11 @@ public abstract class ReporteGenerico {
                         
             
             String pathBaseReportes = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "/";
-
+         
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
+            params.put("SUBREPORT_DIR", pathBaseReportes);
+    
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, ds);
                     

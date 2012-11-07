@@ -73,6 +73,8 @@ public class FacturaController implements Serializable {
             seleccionarCargaTurnos();
         } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
             //POR AHORA NO HAGO NADA
+            current.setExportador(getSelected().getExportador());
+            current.setEmbarque(getSelected().getEmbarque());
         }
         
         return event.getNewStep();  
