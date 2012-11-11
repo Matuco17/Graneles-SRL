@@ -22,6 +22,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringUtils;
 
 @ManagedBean(name = "accidentadoController")
 @SessionScoped
@@ -98,12 +99,6 @@ public class AccidentadoController implements Serializable {
         //selectedItemIndex = getItems().getRowIndex();
         if (current != null){
             
-            //Genero cada uno de los recibos
-            for (JornalCaido jc : current.getJornalesCaidosCollection()){
-                ReciboJornalCaído recibo = new ReciboJornalCaído(jc);
-                jc.setUrlRecibo(recibo.obtenerReportePDF());
-            }        
-            
             currentV0 = ejbFacade.completarAccidentado(current);
             
             return "View";
@@ -156,6 +151,7 @@ public class AccidentadoController implements Serializable {
             if (validarCreateUpdate()){
                 getFacade().create(currentV0.getAccidentado());
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoCreated"));
+                jornalesCaidosModel = null;
                 return "View";
             } else {
                 return null;
@@ -172,6 +168,7 @@ public class AccidentadoController implements Serializable {
                 currentV0.getAccidentado().setJornalesCaidosCollection(jornalesCaidos);
                 getFacade().edit(currentV0.getAccidentado());
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundlePersonal").getString("AccidentadoUpdated"));
+                jornalesCaidosModel = null;
                 return "View";
             } else {
                 return null;
@@ -331,6 +328,14 @@ public class AccidentadoController implements Serializable {
             jornalesCaidos = new ArrayList<JornalCaido>(current.getJornalesCaidosCollection());
             Collections.sort(jornalesCaidos);
             Collections.reverseOrder();
+            
+                        //Genero cada uno de los recibos
+            for (JornalCaido jc : jornalesCaidos){
+                if (StringUtils.isEmpty(jc.getUrlRecibo())){
+                    ReciboJornalCaído recibo = new ReciboJornalCaído(jc);
+                    jc.setUrlRecibo(recibo.obtenerReportePDF());
+                }
+            }      
         }
         return jornalesCaidos;
     }
