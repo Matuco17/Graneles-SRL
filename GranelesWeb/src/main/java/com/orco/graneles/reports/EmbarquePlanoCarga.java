@@ -8,6 +8,8 @@ import com.orco.graneles.domain.carga.Embarque;
 import com.orco.graneles.vo.ResumenCargaEmbarqueVO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
@@ -36,6 +38,8 @@ public class EmbarquePlanoCarga extends ReporteGenerico {
         
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(resumenes);
         
+        params.put(JRParameter.REPORT_LOCALE, Locale.ENGLISH); 
+                
         return printGenerico(ds, "ResumenEmbarque", "ResumenEmbarque_"+ resumenEmbarque.getEmbarqueCodigo());
     }
     

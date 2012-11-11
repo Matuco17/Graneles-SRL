@@ -295,7 +295,7 @@ public class ResumenCargaEmbarqueVO {
     //Mercaderia
     private String getMercaderiaBod(int num){
         if (cargasPrevias.length > num && cargasPrevias[num] != null){
-            return cargasPrevias[num].getMercaderia().getDescripcion();
+            return cargasPrevias[num].getMercaderia().getDescripcionIngles();
         } else {
             return "N/A.";
         }
@@ -330,6 +330,10 @@ public class ResumenCargaEmbarqueVO {
         return getMercaderiaBod(9);
     }
   
+    public Integer getCantidadBodegas(){
+        return embarque.getBuque().getBodegaCollection().size();
+    }
+    
     //TOTALES
     public BigDecimal getTotalPuertoAnterior(){
         return totalCargaPrevia;

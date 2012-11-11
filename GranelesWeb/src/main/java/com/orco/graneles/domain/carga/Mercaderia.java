@@ -46,6 +46,11 @@ public class Mercaderia implements Serializable {
     @Column(name = "factor_estiba")
     private BigDecimal factorEstiba;
     
+    @Size(max = 45)
+    @Column(name = "descripcion_ingles")
+    private String descripcionIngles;
+    
+    
     @OneToMany(mappedBy = "mercaderia")
     private Collection<Embarque> embarqueCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mercaderia")
@@ -80,6 +85,14 @@ public class Mercaderia implements Serializable {
 
     public void setFactorEstiba(BigDecimal factorEstiba) {
         this.factorEstiba = factorEstiba;
+    }
+
+    public String getDescripcionIngles() {
+        return descripcionIngles;
+    }
+
+    public void setDescripcionIngles(String descripcionIngles) {
+        this.descripcionIngles = descripcionIngles;
     }
     
     
