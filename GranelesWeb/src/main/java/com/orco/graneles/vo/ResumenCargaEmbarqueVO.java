@@ -40,8 +40,10 @@ public class ResumenCargaEmbarqueVO {
         totalesCargaPrevia = new ArrayList<TotalesCargaVO>();
         
         int cantBodegas = 0;
-        if (embarque.getBuque().getBodegaCollection() != null && embarque.getBuque().getBodegaCollection().size() > 0){
-            cantBodegas = embarque.getBuque().getBodegaCollection().size();
+        if (embarque.getBuque().getBodegaCollection() != null) {
+            for (Bodega bod : embarque.getBuque().getBodegaCollection()){
+                cantBodegas = Math.max(cantBodegas, bod.getNro());
+            }   
         }
         
         //Realizo el proceso de calculos

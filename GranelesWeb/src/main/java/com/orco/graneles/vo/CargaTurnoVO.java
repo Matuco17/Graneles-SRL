@@ -31,7 +31,7 @@ public class CargaTurnoVO {
         this.ct = cargaTurno;
         this.resumenCargaEmbarque = resumenCargaEmbarque;
         
-        int cantBodegas = 9; //Cantidad de bodegas en el reporte
+        int cantBodegas = resumenCargaEmbarque.getCantidadBodegas();
         cargasXBodega = new BigDecimal[cantBodegas + 1];
         for (int i = 0; i < cargasXBodega.length; i++)
             cargasXBodega[i] = BigDecimal.ZERO;
@@ -201,6 +201,9 @@ public class CargaTurnoVO {
         return resumenCargaEmbarque.getTotalCargaBuque();
     }
     
+    public Integer getCantidadBodegas(){
+        return resumenCargaEmbarque.getCantidadBodegas();
+    }
     
     //Datos Unicos del embarque
     public Long getEmbarqueCodigo(){

@@ -160,6 +160,9 @@
 	<field name="turnoFecha" class="java.util.Date">
 		<fieldDescription><![CDATA[turnoFecha]]></fieldDescription>
 	</field>
+	<field name="cantidadBodegas" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidadBodegas]]></fieldDescription>
+	</field>
 	<variable name="cargaBodega1_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Coordinador" calculation="Sum">
 		<variableExpression><![CDATA[$F{cargaBodega1}]]></variableExpression>
 	</variable>
@@ -225,7 +228,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="394" y="47" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="394" y="47" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -237,7 +242,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="452" y="47" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="452" y="47" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -310,14 +317,18 @@
 					<text><![CDATA[Bga 5]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="394" y="47" width="58" height="20"/>
+					<reportElement x="394" y="47" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Bga 6]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="452" y="47" width="58" height="20"/>
+					<reportElement x="452" y="47" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -352,26 +363,34 @@
 					<textFieldExpression><![CDATA[$F{coodinadorNombre}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="510" y="47" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="510" y="47" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
 				<staticText>
-					<reportElement x="510" y="47" width="58" height="20"/>
+					<reportElement x="510" y="47" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Bga 8]]></text>
 				</staticText>
 				<rectangle>
-					<reportElement x="568" y="47" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="568" y="47" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
 				<staticText>
-					<reportElement x="568" y="47" width="58" height="20"/>
+					<reportElement x="568" y="47" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -382,13 +401,17 @@
 		<groupFooter>
 			<band height="96">
 				<rectangle>
-					<reportElement x="510" y="30" width="58" height="20" backcolor="#FFFFFF"/>
+					<reportElement x="510" y="30" width="58" height="20" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="568" y="30" width="58" height="20" backcolor="#FFFFFF"/>
+					<reportElement x="568" y="30" width="58" height="20" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -412,7 +435,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="394" y="10" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="394" y="10" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -424,7 +449,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="452" y="10" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="452" y="10" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -477,14 +504,18 @@
 					<text><![CDATA[5]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="394" y="10" width="58" height="20"/>
+					<reportElement x="394" y="10" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[6]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="452" y="10" width="58" height="20"/>
+					<reportElement x="452" y="10" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -523,7 +554,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="394" y="30" width="58" height="20" backcolor="#FFFFFF"/>
+					<reportElement x="394" y="30" width="58" height="20" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -535,7 +568,9 @@
 					</graphicElement>
 				</rectangle>
 				<rectangle>
-					<reportElement x="452" y="30" width="58" height="20" backcolor="#FFFFFF"/>
+					<reportElement x="452" y="30" width="58" height="20" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
@@ -583,12 +618,16 @@
 					<textFieldExpression><![CDATA[$V{cargaBodega5_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="394" y="30" width="58" height="20"/>
+					<reportElement x="394" y="30" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega6_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="452" y="30" width="58" height="20"/>
+					<reportElement x="452" y="30" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega7_1}]]></textFieldExpression>
 				</textField>
@@ -600,36 +639,48 @@
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubListadoObservaciones.jasper"]]></subreportExpression>
 				</subreport>
 				<rectangle>
-					<reportElement x="510" y="10" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="510" y="10" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="510" y="30" width="58" height="20"/>
+					<reportElement x="510" y="30" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega8_1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="510" y="10" width="58" height="20"/>
+					<reportElement x="510" y="10" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[8]]></text>
 				</staticText>
 				<rectangle>
-					<reportElement x="568" y="10" width="58" height="20" backcolor="#F8F8F8"/>
+					<reportElement x="568" y="10" width="58" height="20" backcolor="#F8F8F8">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<graphicElement>
 						<pen lineWidth="2.0"/>
 					</graphicElement>
 				</rectangle>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="568" y="30" width="58" height="20"/>
+					<reportElement x="568" y="30" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{cargaBodega9_1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="568" y="10" width="58" height="20"/>
+					<reportElement x="568" y="10" width="58" height="20">
+						<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -735,7 +786,9 @@
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="452" y="0" width="58" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="452" y="0" width="58" height="20" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7]]></printWhenExpression>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
@@ -747,7 +800,9 @@
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="394" y="0" width="58" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="394" y="0" width="58" height="20" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6]]></printWhenExpression>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
@@ -781,37 +836,51 @@
 				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="104" y="1" width="58" height="20"/>
+				<reportElement x="104" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cargaBodega1}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="162" y="1" width="58" height="20"/>
+				<reportElement x="162" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cargaBodega2}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="220" y="1" width="58" height="20"/>
+				<reportElement x="220" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cargaBodega3}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="278" y="0" width="58" height="20"/>
+				<reportElement x="278" y="0" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cargaBodega4}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega4}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="336" y="1" width="58" height="20"/>
+				<reportElement x="336" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cargaBodega5}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="394" y="1" width="58" height="20"/>
+				<reportElement x="394" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 6 && $F{cargaBodega6}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega6}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="452" y="1" width="58" height="20"/>
+				<reportElement x="452" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 7 && $F{cargaBodega7}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega7}]]></textFieldExpression>
 			</textField>
@@ -826,24 +895,32 @@
 				<textFieldExpression><![CDATA[$F{acumulado}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="510" y="0" width="58" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="510" y="0" width="58" height="20" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8]]></printWhenExpression>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="510" y="1" width="58" height="20"/>
+				<reportElement x="510" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 8 && $F{cargaBodega8}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega8}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="568" y="0" width="58" height="20" backcolor="#FFFFFF"/>
+				<reportElement x="568" y="0" width="58" height="20" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9]]></printWhenExpression>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="568" y="1" width="58" height="20"/>
+				<reportElement x="568" y="1" width="58" height="20">
+					<printWhenExpression><![CDATA[$F{cantidadBodegas} >= 9 && $F{cargaBodega9}.doubleValue() > 0.0]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaBodega9}]]></textFieldExpression>
 			</textField>
