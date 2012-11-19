@@ -42,8 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findById", query = "SELECT f FROM Factura f WHERE f.id = :id"),
     @NamedQuery(name = "Factura.findByFecha", query = "SELECT f FROM Factura f WHERE f.fecha = :fecha"),
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
-    @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva"),
-    @NamedQuery(name = "Factura.findByPorcentajeBonificacion", query = "SELECT f FROM Factura f WHERE f.porcentajeBonificacion = :porcentajeBonificacion")})
+    @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva")
+  })
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -65,10 +65,7 @@ public class Factura implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "porcentaje_iva")
     private BigDecimal porcentajeIva;
-    
-    @Column(name = "porcentaje_bonificacion")
-    private BigDecimal porcentajeBonificacion;
-    
+        
     @JoinColumn(name = "exportador", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Empresa exportador;
@@ -77,8 +74,11 @@ public class Factura implements Serializable {
     @ManyToOne(optional = false)
     private Embarque embarque;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<LineaFactura> lineaFacturaCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
+    private Collection<TurnoFacturado> turnosFacturadosCollection;
 
     public Factura() {
     }
@@ -125,14 +125,6 @@ public class Factura implements Serializable {
         this.porcentajeIva = porcentajeIva;
     }
 
-    public BigDecimal getPorcentajeBonificacion() {
-        return porcentajeBonificacion;
-    }
-
-    public void setPorcentajeBonificacion(BigDecimal porcentajeBonificacion) {
-        this.porcentajeBonificacion = porcentajeBonificacion;
-    }
-
     public Empresa getExportador() {
         return exportador;
     }
@@ -148,8 +140,6 @@ public class Factura implements Serializable {
     public void setEmbarque(Embarque embarque) {
         this.embarque = embarque;
     }
-
-    
     
     @XmlTransient
     public Collection<LineaFactura> getLineaFacturaCollection() {
@@ -158,6 +148,15 @@ public class Factura implements Serializable {
 
     public void setLineaFacturaCollection(Collection<LineaFactura> lineaFacturaCollection) {
         this.lineaFacturaCollection = lineaFacturaCollection;
+    }
+
+    @XmlTransient
+    public Collection<TurnoFacturado> getTurnosFacturadosCollection() {
+        return turnosFacturadosCollection;
+    }
+
+    public void setTurnosFacturadosCollection(Collection<TurnoFacturado> turnosFacturadosCollection) {
+        this.turnosFacturadosCollection = turnosFacturadosCollection;
     }
 
     @Override
@@ -188,10 +187,23 @@ public class Factura implements Serializable {
     public BigDecimal getTotalFactura(){
         BigDecimal total = BigDecimal.ZERO;
         
-        for (LineaFactura lf : lineaFacturaCollection){
-            total = total.add(lf.getTotalLinea());
+        if (lineaFacturaCollection != null){
+            for (LineaFactura lf : lineaFacturaCollection){
+                total = total.add(lf.getImporte());
+            }
         }
         
+        return total;
+    }
+    
+    public BigDecimal getTotalXTurnos(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (turnosFacturadosCollection != null){
+            for (TurnoFacturado tf : turnosFacturadosCollection){
+                total = total.add(tf.getValor());
+            }
+        }
         return total;
     }
 }

@@ -15,9 +15,10 @@
                 <h:panelGrid columns="4">
                     <h:outputLabel value="#{bundleFacturacion.TarifaTitle_tipoJornal}" />
                     <h:outputText value="#{tarifaController.selected.tipoJornal.toString()}" />
-                    <h:outputText value="" />
-                    <h:outputText value="" />
                     
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_grupoFacturacion}" />
+                    <h:outputText value="#{tarifaController.selected.grupoFacturacion.toString()}" />
+                                        
                     <h:outputLabel value="#{bundleFacturacion.TarifaTitle_desde}"   />
                     <h:outputText id="desde" value="#{tarifaController.selected.desde}"  >
                         <f:convertDateTime pattern="dd/MM/yyyy" />

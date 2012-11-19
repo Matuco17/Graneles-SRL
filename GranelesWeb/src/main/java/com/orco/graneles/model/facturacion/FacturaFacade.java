@@ -7,6 +7,7 @@ package com.orco.graneles.model.facturacion;
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,9 +49,9 @@ public class FacturaFacade extends AbstractFacade<Factura> {
     }
 
     private void actualizarTurnos(Factura entity) {
-        for (LineaFactura lf : entity.getLineaFacturaCollection()){
-            CargaTurno ct = lf.getCargaTurno();
-            ct.setLineaFactura(lf);
+        for (TurnoFacturado tf : entity.getTurnosFacturadosCollection()){
+            CargaTurno ct = tf.getCargaTurno();
+            ct.setTurnoFacturado(tf);
             cargaTurnoF.edit(ct);
         }
     }

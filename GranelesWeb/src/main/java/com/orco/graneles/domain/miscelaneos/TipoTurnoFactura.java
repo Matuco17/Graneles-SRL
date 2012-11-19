@@ -8,13 +8,12 @@ package com.orco.graneles.domain.miscelaneos;
  *
  * @author orco
  */
-public class TipoLineaFactura {
+public class TipoTurnoFactura {
 
     public static final int ID_LISTA = 16;
     
     public static final int ADMINISTRACION = 150;
     public static final int TARIFA = 151;
     public static final int MIXTO = 152;
-    public static final int LIBRE = 153;
     
 }

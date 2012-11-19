@@ -5,18 +5,29 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.CargaTurnoCargas;
+import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.Tarifa;
-import com.orco.graneles.domain.miscelaneos.TipoLineaFactura;
+import com.orco.graneles.domain.facturacion.TurnoFacturado;
+import com.orco.graneles.domain.miscelaneos.ConceptoFacturado;
+import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.GrupoFacturacion;
+import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
+import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.carga.MercaderiaFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.salario.TipoJornalFacade;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 /**
  *
@@ -29,6 +40,13 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
 
     @EJB
     TarifaFacade tarifaF;
+    @EJB
+    FixedListFacade fixedListF;
+    @EJB
+    MercaderiaFacade mercaderiaF;
+    @EJB
+    TipoJornalFacade tipoJornalF;
+    
     
     protected EntityManager getEntityManager() {
         return em;
@@ -37,75 +55,45 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     public LineaFacturaFacade() {
         super(LineaFactura.class);
     }
-    
+ 
     /**
-     * Metodo que compelta las linea de factura para los turnos correspondientes
-     * El metodo hace calculos para los sueldos de administracion, tarifa, costo, etc
-     * @param cargaTurnos
+     * Metodo que crea la lista de lineas de facturas de acuerdo a los turnos facturados,
+     * crea lineas para cada mercaderia con diferente tasa y luego
+     * @param turnosFacturados
      * @return 
      */
-    public List<LineaFactura> crearLineas(List<CargaTurno> cargaTurnos, Factura factura){
+    public List<LineaFactura> crearLineas(List<TurnoFacturado> turnosFacturados){
         List<LineaFactura> lineas = new ArrayList<LineaFactura>();
         
-        for (CargaTurno ct : cargaTurnos){
-            LineaFactura lf = new LineaFactura();
-            lf.setFactura(factura);
-            lf.setCargaTurno(ct);
-            lf.setValor(BigDecimal.ZERO);
-            
-            lf.setTotalBruto(ct.getTurnoEmbarque().getTotalBruto());
-            lf.setCosto(calcularCosto(ct));
-            lf.setTarifa(calcularTarifa(ct));
-            
-            lf.setPorcentajeAdministracion(BigDecimal.ZERO);
-            lf.setAdministracion(calcularAdministracion(ct, lf.getPorcentajeAdministracion()));
-            
-            lineas.add(lf);
-        }
+        Map<Integer, FixedList> gruposFacturacion = fixedListF.findByListaMap(GrupoFacturacion.ID_LISTA);
         
-        factura.setLineaFacturaCollection(lineas);
-        return lineas;
-    }
-    
-    public void actualizarLineas(List<LineaFactura> lineas){
-        for(LineaFactura lf : lineas){
-            if (lf.getTipoLinea() != null){
-                switch (lf.getTipoLinea().getId()){
-                    case TipoLineaFactura.ADMINISTRACION :
-                        lf.setAdministracion(calcularAdministracion(lf.getCargaTurno(), lf.getPorcentajeAdministracion()));
-                        lf.setValor(lf.getAdministracion());
-                        break;
-                    case TipoLineaFactura.TARIFA :
-                        lf.setValor(lf.getTarifa());
-                        break;
+        //Genero las lineas de acuerdo a la Mercaderia y el Tipo de Jornal
+        for (Mercaderia m : mercaderiaF.findAll()){
+            for (TipoJornal tj : tipoJornalF.findAll()){
+                BigDecimal totalTarifa = BigDecimal.ZERO;
+                BigDecimal totalCargado = BigDecimal.ZERO;
+                
+                for (TurnoFacturado tf : turnosFacturados){
+                    if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.TARIFA)
+                        && tf.getCargaTurno().getTurnoEmbarque().getTipo().equals(tj)) {
+                        
+                        for (CargaTurnoCargas ctc : tf.getCargaTurno().getCargasCollection()){
+                            if (ctc.getMercaderiaBodega().equals(m)){
+                                //TODO: CREAR EN TARIFA EL CALCULO CORRESPONDIENTE
+                            }
+                        }
+                    }
                 }
+                
+                
+                if (totalCargado.compareTo(BigDecimal.ZERO) > 0){
+                    //TODO: CREAR LA LINEA
+                }                
             }
         }
-    }
-    
-    public BigDecimal calcularCosto(CargaTurno ct){
-        //TODO: Modificar este metodo para que tome el valor de la configuracion
-        BigDecimal multiplicador = new BigDecimal(1.9);
-        return ct.getTurnoEmbarque().getTotalBruto().multiply(multiplicador);
-    }
-    
-    
-    public BigDecimal calcularTarifa(CargaTurno ct){
-        Tarifa tActiva = tarifaF.obtenerTarifaActiva(ct.getTurnoEmbarque().getTipo(), ct.getTurnoEmbarque().getFecha());
         
-        if (tActiva != null){
-            return tActiva.getValor().multiply(ct.getTotalCargado());
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-    
-    public BigDecimal calcularAdministracion(CargaTurno ct, BigDecimal porcentaje){
-        return ct.getTurnoEmbarque().getTotalBruto()
-                .add(ct.getTurnoEmbarque().getTotalBruto()
-                    .multiply(porcentaje)
-                    .divide(new BigDecimal(100)
-               ));
+        
+        return lineas;
     }
     
     

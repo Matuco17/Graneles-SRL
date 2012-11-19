@@ -6,6 +6,7 @@ package com.orco.graneles.domain.carga;
 
 import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "CargaTurno.findAll", query = "SELECT c FROM CargaTurno c"),
     @NamedQuery(name = "CargaTurno.findById", query = "SELECT c FROM CargaTurno c WHERE c.id = :id"),
-    @NamedQuery(name = "CargaTurno.findByEmbarqueYCargador",
+    @NamedQuery(name = "CargaTurno.findByEmbarqueYCargadorSinFacturar",
         query = "SELECT c FROM CargaTurno c"
                 + " WHERE c.cargador = :cargador"
-                + " AND c.turnoEmbarque.embarque = :embarque")
+                + " AND c.turnoEmbarque.embarque = :embarque"
+                + " AND c.turnoFacturado IS NULL ")
 })
 public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     private static final long serialVersionUID = 1L;
@@ -48,9 +50,9 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargasCollection;
     
-    @JoinColumn(name = "linea_factura", referencedColumnName = "id")
+    @JoinColumn(name = "turno_facturado", referencedColumnName = "id")
     @ManyToOne()
-    private LineaFactura lineaFactura;
+    private TurnoFacturado turnoFacturado;
     
     public BigDecimal getTotalCargado(){
         BigDecimal total = BigDecimal.ZERO;
@@ -111,15 +113,13 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         this.cargasCollection =  cargasCollection;
     }
 
-    public LineaFactura getLineaFactura() {
-        return lineaFactura;
+    public TurnoFacturado getTurnoFacturado() {
+        return turnoFacturado;
     }
 
-    public void setLineaFactura(LineaFactura lineaFactura) {
-        this.lineaFactura = lineaFactura;
+    public void setTurnoFacturado(TurnoFacturado turnoFacturado) {
+        this.turnoFacturado = turnoFacturado;
     }
-
-    
 
     @Override
     public int hashCode() {

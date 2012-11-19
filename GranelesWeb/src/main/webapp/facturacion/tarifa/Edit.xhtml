@@ -17,9 +17,10 @@
                     <h:selectOneMenu id="tarea" value="#{tarifaController.selected.tipoJornal}" required="true" requiredMessage="#{bundleFacturacion.TarifaRequiredMessage_tipoJornal}" >
                         <f:selectItems value="#{tipoJornalController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                    <h:outputText value="" />
-                    <h:outputText value="" />
-                    
+                    <h:outputLabel value="#{bundleFacturacion.TarifaTitle_grupoFacturacion}" for="grupoFacturacion"  />
+                    <h:selectOneMenu id="grupoFacturacion" value="#{tarifaController.selected.grupoFacturacion}"  >
+                        <f:selectItems value="#{fixedListController.grupoFacturacionSelectOne}"/>
+                    </h:selectOneMenu>                    
                     <h:outputLabel value="#{bundleFacturacion.TarifaTitle_desde}" for="desde"  />
                     <p:calendar id="desde" value="#{tarifaController.selected.desde}" title="#{bundleFacturacion.TarifaTitle_desde}" pattern="dd/MM/yyyy" />
                     <h:outputLabel value="#{bundleFacturacion.TarifaTitle_hasta}" for="hasta"  />

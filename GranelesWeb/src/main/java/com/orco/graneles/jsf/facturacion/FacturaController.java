@@ -3,11 +3,13 @@ package com.orco.graneles.jsf.facturacion;
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.LineaFacturaFacade;
+import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class FacturaController implements Serializable {
     private CargaTurnoFacade cargaTurnoF;
     @EJB
     private LineaFacturaFacade lineaFacturaF;
+    @EJB
+    private TurnoFacturadoFacade turnoFacturadoF;
     
     private Boolean tabBusquedaAbierto;
     private Boolean tabSeleccionPlanillasAbrierto;
@@ -50,7 +54,9 @@ public class FacturaController implements Serializable {
     private DualListModel<CargaTurno> turnosASeleccionarModel;
     private DataModel lineasFacturaModel;
     private List<LineaFactura> lineasFactura;
-
+    private List<TurnoFacturado> turnosFacturados;
+    private DataModel turnosFacturadosModel;
+    
     public FacturaController() {
     }
 
@@ -73,8 +79,8 @@ public class FacturaController implements Serializable {
             seleccionarCargaTurnos();
         } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
             //POR AHORA NO HAGO NADA
-            current.setExportador(getSelected().getExportador());
-            current.setEmbarque(getSelected().getEmbarque());
+            //current.setExportador(getSelected().getExportador());
+            //current.setEmbarque(getSelected().getEmbarque());
         }
         
         return event.getNewStep();  
@@ -91,7 +97,7 @@ public class FacturaController implements Serializable {
         
         if (getSelected().getExportador() != null && getSelected().getEmbarque() != null){
             turnosASeleccionarModel = new DualListModel<CargaTurno>();
-            List<CargaTurno> cargaTurnosDelExportador = cargaTurnoF.obtenerCargas(getSelected().getEmbarque(), getSelected().getExportador());
+            List<CargaTurno> cargaTurnosDelExportador = cargaTurnoF.obtenerCargasSinFacturar(getSelected().getEmbarque(), getSelected().getExportador());
             Collections.sort(cargaTurnosDelExportador);
             turnosASeleccionarModel.setSource(new ArrayList<CargaTurno>(cargaTurnosDelExportador));
             turnosASeleccionarModel.setTarget(new ArrayList<CargaTurno>());
@@ -104,13 +110,14 @@ public class FacturaController implements Serializable {
     
     public void seleccionarCargaTurnos(){
         if (turnosASeleccionarModel != null){
-            lineasFactura = lineaFacturaF.crearLineas(turnosASeleccionarModel.getTarget(), getSelected());
-            lineasFacturaModel = new ListDataModel(lineasFactura);
+            turnosFacturados = turnoFacturadoF.crearLineas(turnosASeleccionarModel.getTarget(), getSelected());
+            turnosFacturadosModel = new ListDataModel(turnosFacturados);
+            getSelected().setTurnosFacturadosCollection(turnosFacturados);
         }
     }
     
-    public void actualizarLineas(){
-        lineaFacturaF.actualizarLineas(lineasFactura);
+    public void actualizarTurnosFacturados(){
+        turnoFacturadoF.actualizarLineas(turnosFacturados);
     }
     
     public Factura getSelected() {
@@ -270,6 +277,10 @@ public class FacturaController implements Serializable {
     
     public DataModel getLineasFacturaModel() {
         return lineasFacturaModel;
+    }
+    
+    public DataModel getTurnosFacturadosModel(){
+        return turnosFacturadosModel;
     }
 
     public Boolean getTabBusquedaAbierto() {

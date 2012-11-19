@@ -213,8 +213,12 @@ public class FixedListController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(idLista), true);
     }
 
-    public SelectItem[] getTipoLineaFacturaSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findByLista(TipoLineaFactura.ID_LISTA), true);
+    public SelectItem[] getTipoTurnoFacturadoSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByLista(TipoTurnoFactura.ID_LISTA), true);
+    }
+
+    public SelectItem[] getGrupoFacturacionSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByLista(GrupoFacturacion.ID_LISTA), true);
     }
 
 

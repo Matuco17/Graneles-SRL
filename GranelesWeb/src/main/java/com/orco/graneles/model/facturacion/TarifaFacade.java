@@ -5,6 +5,7 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.facturacion.Tarifa;
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.model.salario.*;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Tarea;
@@ -72,6 +73,7 @@ public class TarifaFacade extends AbstractFacade<Tarifa> {
         
         List<Tarifa> tarifas = getEntityManager().createNamedQuery("Tarifa.findByPrincipalKey", Tarifa.class)
                                     .setParameter("tipoJornal", entity.getTipoJornal())
+                                    .setParameter("grupoFacturacion", entity.getGrupoFacturacion())
                                     .getResultList();
         //Una vez que obtuve los salarios, tengo que verifiacar si no colisionan con ninguna otra entidad
         if (tarifas != null && tarifas.size() > 0){
@@ -108,10 +110,11 @@ public class TarifaFacade extends AbstractFacade<Tarifa> {
      * @param fecha
      * @return 
      */
-    public Tarifa obtenerTarifaActiva(TipoJornal tipoJornal, Date fecha){
+    public Tarifa obtenerTarifaActiva(TipoJornal tipoJornal, FixedList grupoFacturacion, Date fecha){
         try {
             return getEntityManager().createNamedQuery("Tarifa.findActivo", Tarifa.class)
                         .setParameter("tipoJornal", tipoJornal)
+                        .setParameter("grupoFacturacion", grupoFacturacion)
                         .setParameter("fecha", fecha)
                         .getSingleResult();         
         } catch (NoResultException e) {
@@ -139,11 +142,12 @@ public class TarifaFacade extends AbstractFacade<Tarifa> {
      * @param hasta (opcional)
      * @return 
      */ 
-    public List<Tarifa> obtenerTarifas(TipoJornal tipoJornal, Date desde, Date hasta){
+    public List<Tarifa> obtenerTarifas(TipoJornal tipoJornal, FixedList grupoFacturacion, Date desde, Date hasta){
         try {
             List<Tarifa> result = new ArrayList<Tarifa>();
             List<Tarifa> tarifas = getEntityManager().createNamedQuery("Tarifa.findByPrincipalKey", Tarifa.class)
                         .setParameter("tipoJornal", tipoJornal)
+                        .setParameter("grupoFacturacion", grupoFacturacion)
                         .getResultList();
             
             
@@ -172,6 +176,8 @@ public class TarifaFacade extends AbstractFacade<Tarifa> {
             return new ArrayList<Tarifa>();
         }
     }
+    
+    
     
 }
 

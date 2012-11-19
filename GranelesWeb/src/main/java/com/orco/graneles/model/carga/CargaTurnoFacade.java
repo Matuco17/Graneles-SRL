@@ -80,8 +80,8 @@ public class CargaTurnoFacade extends AbstractFacade<CargaTurno> {
         return cargas;
     }
     
-    public List<CargaTurno> obtenerCargas(Embarque embarque, Empresa cargador){
-        return getEntityManager().createNamedQuery("CargaTurno.findByEmbarqueYCargador", CargaTurno.class)
+    public List<CargaTurno> obtenerCargasSinFacturar(Embarque embarque, Empresa cargador){
+        return getEntityManager().createNamedQuery("CargaTurno.findByEmbarqueYCargadorSinFacturar", CargaTurno.class)
                 .setParameter("cargador", cargador)
                 .setParameter("embarque", embarque)
                 .getResultList();

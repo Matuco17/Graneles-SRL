@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tarifa.findByHasta", query = "SELECT t FROM Tarifa t WHERE t.hasta = :hasta"),
     @NamedQuery(name = "Tarifa.findByPrincipalKey", 
                         query = "SELECT t FROM Tarifa t "
-                                + "WHERE t.tipoJornal = :tipoJornal "),
+                                + "WHERE t.tipoJornal = :tipoJornal "
+                                + "AND t.grupoFacturacion = :grupoFacturacion"),
     @NamedQuery(name = "Tarifa.findActivos", 
                         query = "SELECT t FROM Tarifa t "
                                 + "WHERE t.desde <= :fecha "
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tarifa.findActivo", 
                         query = "SELECT t FROM Tarifa t "
                                 + "WHERE t.tipoJornal = :tipoJornal "
+                                + "AND t.grupoFacturacion = :grupoFacturacion"
                                 + "AND t.desde <= :fecha "
                                 + "AND (t.hasta IS NULL OR t.hasta >= :fecha)")})
 public class Tarifa implements Serializable, Comparable<Tarifa> {
@@ -62,6 +64,11 @@ public class Tarifa implements Serializable, Comparable<Tarifa> {
     @ManyToOne(optional = false)
     private TipoJornal tipoJornal;
 
+    @JoinColumn(name = "grupo_facturacion", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private FixedList grupoFacturacion;
+
+    
 
     public Tarifa() {
     }
@@ -110,6 +117,15 @@ public class Tarifa implements Serializable, Comparable<Tarifa> {
         this.tipoJornal = tipoJornal;
     }
 
+    public FixedList getGrupoFacturacion() {
+        return grupoFacturacion;
+    }
+
+    public void setGrupoFacturacion(FixedList grupoFacturacion) {
+        this.grupoFacturacion = grupoFacturacion;
+    }
+
+    
     
     @Override
     public int hashCode() {

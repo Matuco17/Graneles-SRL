@@ -54,28 +54,11 @@ public class LineaFactura implements Serializable {
     @ManyToOne(optional = false)
     private FixedList tipoLinea;
   
-    @JoinColumn(name = "carga_turno", referencedColumnName = "id")
-    @ManyToOne()
-    private CargaTurno cargaTurno;
-  
-    @Column(name = "porc_administracion")
-    private BigDecimal porcentajeAdministracion;
-     
-    @Column(name = "total_bruto")
-    private BigDecimal totalBruto;
+    @Column(name = "precio_unitario")
+    private BigDecimal precioUnitario;
     
-    @Column(name = "costo")
-    private BigDecimal costo;
-    
-    @Column(name = "administracion")
-    private BigDecimal administracion;
-    
-    @Column(name = "tarifa")
-    private BigDecimal tarifa;
-    
-    @Column(name = "valor")
-    private BigDecimal valor;
-    
+    @Column(name = "importe")
+    private BigDecimal importe;
 
     public LineaFactura() {
     }
@@ -91,71 +74,6 @@ public class LineaFactura implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public FixedList getTipoLinea() {
-        return tipoLinea;
-    }
-
-    public void setTipoLinea(FixedList tipoLinea) {
-        this.tipoLinea = tipoLinea;
-    }
-
-    public CargaTurno getCargaTurno() {
-        return cargaTurno;
-    }
-
-    public void setCargaTurno(CargaTurno cargaTurno) {
-        this.cargaTurno = cargaTurno;
-    }
-
-    public BigDecimal getPorcentajeAdministracion() {
-        return porcentajeAdministracion;
-    }
-
-    public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
-        this.porcentajeAdministracion = porcentajeAdministracion;
-    }
-
-    public BigDecimal getTotalBruto() {
-        return totalBruto;
-    }
-
-    public void setTotalBruto(BigDecimal totalBruto) {
-        this.totalBruto = totalBruto;
-    }
-
-    public BigDecimal getCosto() {
-        return costo;
-    }
-
-    public void setCosto(BigDecimal costo) {
-        this.costo = costo;
-    }
-
-    public BigDecimal getAdministracion() {
-        return administracion;
-    }
-
-    public void setAdministracion(BigDecimal administracion) {
-        this.administracion = administracion;
-    }
-
-    public BigDecimal getTarifa() {
-        return tarifa;
-    }
-
-    public void setTarifa(BigDecimal tarifa) {
-        this.tarifa = tarifa;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
 
     public String getDescripcion() {
         return descripcion;
@@ -173,6 +91,31 @@ public class LineaFactura implements Serializable {
         this.factura = factura;
     }
 
+    public FixedList getTipoLinea() {
+        return tipoLinea;
+    }
+
+    public void setTipoLinea(FixedList tipoLinea) {
+        this.tipoLinea = tipoLinea;
+    }
+
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public BigDecimal getImporte() {
+        return importe;
+    }
+
+    public void setImporte(BigDecimal importe) {
+        this.importe = importe;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -197,8 +140,5 @@ public class LineaFactura implements Serializable {
     public String toString() {
         return "com.orco.graneles.domain.LineaFactura[ id=" + id + " ]";
     }
-    
-    public BigDecimal getTotalLinea(){
-        return valor;
-    }
+   
 }

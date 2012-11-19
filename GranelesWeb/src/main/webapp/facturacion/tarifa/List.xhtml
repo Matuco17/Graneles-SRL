@@ -28,6 +28,9 @@
                         <p:column headerText ="#{bundleFacturacion.TarifaTitle_tipoJornal}" filterBy="#{item.tipoJornal}" filterOptions="#{tipoJornalController.itemsAvailableSelectOne}" filterMatchMode="exact" >
                             <h:outputText value="#{item.tipoJornal.toString()}"/>
                         </p:column>
+                        <p:column headerText ="#{bundleFacturacion.TarifaTitle_grupoFacturacion}" filterBy="#{item.grupoFacturacion}" filterOptions="#{fixedListController.grupoFacturacionSelectOne}" filterMatchMode="exact" >
+                            <h:outputText value="#{item.grupoFacturacion.toString()}"/>
+                        </p:column>
                         <p:column headerText ="#{bundleFacturacion.TarifaTitle_desde}" >
                             <h:outputText value="#{item.desde}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
