@@ -8,6 +8,7 @@ import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -144,5 +145,42 @@ public class LineaFactura implements Serializable {
         return "com.orco.graneles.domain.LineaFactura[ id=" + id + " ]";
     }
     
+    
+    /**
+     * DATOS DE LA FACTURA
+     */
+    
+    
+    public Date getFacturaFecha(){
+        return factura.getFecha();
+    }
+    
+    public String getFacturaNombreEmpresa(){
+        return factura.getExportador().getNombre();
+    }
+    
+    public String getFacturaDireccion(){
+        return factura.getExportador().getDireccion();
+    }
+    
+    public String getFacturaLocalidad(){
+        return factura.getExportador().getCuidad();
+    }
+    
+    public String getFacturaCuit(){
+        return factura.getExportador().getCuit();
+    }
+    
+    public BigDecimal getFacturaSubtotal(){
+        return factura.getTotalFactura();
+    }
+    
+    public BigDecimal getFacturaIVA(){
+        return factura.getTotalIVA();
+    }
+    
+    public BigDecimal getFacturaTotal(){
+        return factura.getTotalConIVA();
+    }
     
 }

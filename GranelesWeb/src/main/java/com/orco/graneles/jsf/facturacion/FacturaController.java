@@ -10,6 +10,7 @@ import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.LineaFacturaFacade;
 import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
+import com.orco.graneles.reports.FacturaReport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class FacturaController implements Serializable {
     private List<LineaFactura> lineasConceptos;
     private DataModel lineasTarifaModel;
     private DataModel lineasConceptosModel;
+    
+    private String lnkFactura;
     
     
     public FacturaController() {
@@ -169,6 +172,10 @@ public class FacturaController implements Serializable {
         actualizarLineas();
     }
     
+    public void generarFactura(){
+        lnkFactura = (new FacturaReport(current)).obtenerReportePDF();
+    }
+    
     public Factura getSelected() {
         if (current == null) {
             current = new Factura();
@@ -269,6 +276,7 @@ public class FacturaController implements Serializable {
         turnosASeleccionarModel = null;
         lineasFacturaModel = null;
         lineasFactura = null;
+        lnkFactura = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -402,6 +410,10 @@ public class FacturaController implements Serializable {
 
     public void setLineasConceptosModel(DataModel lineasConceptosModel) {
         this.lineasConceptosModel = lineasConceptosModel;
+    }
+
+    public String getLnkFactura() {
+        return lnkFactura;
     }
     
     

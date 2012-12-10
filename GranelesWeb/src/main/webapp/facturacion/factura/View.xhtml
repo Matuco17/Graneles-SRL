@@ -124,6 +124,20 @@
                     </p:panelGrid>    
                 </p:panel>
                 
+                <p:panel header="Impresión">
+                    <h:commandButton action="#{facturaController.generarFactura()}"
+                                    label="Generar Factura"
+                                    value="Generar Factura"
+                                    rendered="#{facturaController.lnkFactura == null}"
+                                    />
+
+                        <h:link value="Factura" 
+                               onclick="window.open('#{facturaController.lnkFactura}','Download');window.close();" 
+                               rendered="#{facturaController.lnkFactura != null}"
+                               style="font-weight: bold;"/>
+
+                    
+                </p:panel>
 
                 <h:panelGrid columns="4">
                     <h:commandButton action="#{facturaController.destroyAndView}" 
