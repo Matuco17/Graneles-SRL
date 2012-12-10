@@ -5,9 +5,16 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.CargaTurnoCargas;
+import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.Tarifa;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
+import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.GrupoFacturacion;
+import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
+import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,6 +63,7 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         }
     }
     
+
     
     
 }

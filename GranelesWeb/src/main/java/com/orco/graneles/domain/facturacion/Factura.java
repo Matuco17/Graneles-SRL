@@ -189,11 +189,20 @@ public class Factura implements Serializable {
         
         if (lineaFacturaCollection != null){
             for (LineaFactura lf : lineaFacturaCollection){
-                total = total.add(lf.getImporte());
+                if (lf != null && lf.getImporte() != null){
+                    total = total.add(lf.getImporte());
+                }
             }
         }
-        
         return total;
+    }
+    
+    public BigDecimal getTotalIVA(){
+        return getTotalFactura().multiply(new BigDecimal(0.21));
+    }
+    
+    public BigDecimal getTotalConIVA(){
+        return getTotalFactura().multiply(new BigDecimal(1.21));
     }
     
     public BigDecimal getTotalXTurnos(){

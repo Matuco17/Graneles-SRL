@@ -19,6 +19,10 @@
                     <p:inputText id="descripcionIngles" value="#{mercaderiaController.selected.descripcionIngles}" />
                     <h:outputLabel value="#{bundleCarga.MercaderiaTitle_factorEstiba}" for="factorEstiba"  />
                     <p:inputText id="factorEstiba" value="#{mercaderiaController.selected.factorEstiba}" />
+                    <h:outputLabel value="#{bundleFacturacion.MercaderiaTitle_grupoFacturacion}" for="grupoFacturacion"  />
+                    <h:selectOneMenu id="grupoFacturacion" value="#{tarifaController.selected.grupoFacturacion}"  >
+                        <f:selectItems value="#{fixedListController.grupoFacturacionSelectOne}"/>
+                    </h:selectOneMenu>                    
                 </h:panelGrid>
                 <h:panelGrid columns="2">
                     <h:commandButton action="#{mercaderiaController.create}"

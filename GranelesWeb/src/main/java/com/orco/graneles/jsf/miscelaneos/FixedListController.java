@@ -220,8 +220,11 @@ public class FixedListController implements Serializable {
     public SelectItem[] getGrupoFacturacionSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(GrupoFacturacion.ID_LISTA), true);
     }
-
-
+    
+    public SelectItem[] getConceptoFacturadoSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByLista(ConceptoFacturado.ID_LISTA), true);
+    }
+    
     @FacesConverter(forClass=FixedList.class)
     public static class FixedListControllerConverter implements Converter {
 

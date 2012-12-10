@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ConceptoRecibo.findByConcepto", query = "SELECT c FROM ConceptoRecibo c WHERE c.concepto = :concepto"),
     @NamedQuery(name = "ConceptoRecibo.findByVersionActiva", query = "SELECT c FROM ConceptoRecibo c WHERE c.versionActiva = :versionActiva"),
     @NamedQuery(name = "ConceptoRecibo.findByVersion", query = "SELECT c FROM ConceptoRecibo c WHERE c.version = :version"),
-    @NamedQuery(name = "ConceptoRecibo.findByOrden", query = "SELECT c FROM ConceptoRecibo c WHERE c.orden = :orden"),
     @NamedQuery(name = "ConceptoRecibo.findByValor", query = "SELECT c FROM ConceptoRecibo c WHERE c.valor = :valor"),
     @NamedQuery(name = "ConceptoRecibo.findByTipoRecibo", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.versionActiva = :versionActiva"),
     @NamedQuery(name = "ConceptoRecibo.findByTipoReciboYTipoConcepto", query = "SELECT c FROM ConceptoRecibo c WHERE c.tipoRecibo = :tipoRecibo AND c.tipo = :tipo AND c.versionActiva = :versionActiva"),

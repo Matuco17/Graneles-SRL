@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.MercaderiaFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
@@ -39,14 +40,13 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     private EntityManager em;
 
     @EJB
-    TarifaFacade tarifaF;
+    private TarifaFacade tarifaF;
     @EJB
-    FixedListFacade fixedListF;
+    private FixedListFacade fixedListF;
     @EJB
-    MercaderiaFacade mercaderiaF;
+    private MercaderiaFacade mercaderiaF;
     @EJB
-    TipoJornalFacade tipoJornalF;
-    
+    private TipoJornalFacade tipoJornalF;
     
     protected EntityManager getEntityManager() {
         return em;
@@ -56,16 +56,15 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
         super(LineaFactura.class);
     }
  
-    /**
+    
+     /**
      * Metodo que crea la lista de lineas de facturas de acuerdo a los turnos facturados,
      * crea lineas para cada mercaderia con diferente tasa y luego
      * @param turnosFacturados
      * @return 
      */
-    public List<LineaFactura> crearLineas(List<TurnoFacturado> turnosFacturados){
+    public List<LineaFactura> crearLineasTarifa(Factura factura){
         List<LineaFactura> lineas = new ArrayList<LineaFactura>();
-        
-        Map<Integer, FixedList> gruposFacturacion = fixedListF.findByListaMap(GrupoFacturacion.ID_LISTA);
         
         //Genero las lineas de acuerdo a la Mercaderia y el Tipo de Jornal
         for (Mercaderia m : mercaderiaF.findAll()){
@@ -73,29 +72,73 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
                 BigDecimal totalTarifa = BigDecimal.ZERO;
                 BigDecimal totalCargado = BigDecimal.ZERO;
                 
-                for (TurnoFacturado tf : turnosFacturados){
-                    if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.TARIFA)
+                Tarifa tarifaActiva = null;
+                
+                for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
+                    if (tf.getTipoTurnoFacturado() != null
+                        && (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.TARIFA)
+                            || tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
                         && tf.getCargaTurno().getTurnoEmbarque().getTipo().equals(tj)) {
                         
                         for (CargaTurnoCargas ctc : tf.getCargaTurno().getCargasCollection()){
-                            if (ctc.getMercaderiaBodega().equals(m)){
-                                //TODO: CREAR EN TARIFA EL CALCULO CORRESPONDIENTE
+                            if (ctc.getMercaderiaBodega().equals(m) && ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
+                                if (tarifaActiva == null){
+                                    tarifaActiva = tarifaF.obtenerTarifaActiva(tf.getCargaTurno().getTurnoEmbarque().getTipo(), ctc.getMercaderiaBodega().getGrupoFacturacion(), tf.getCargaTurno().getTurnoEmbarque().getFecha());
+                                }
+                                
+                                if (tarifaActiva != null){
+                                    totalTarifa = totalTarifa.add(tarifaActiva.getValor().multiply(ctc.getCarga()));
+                                }
+                                
+                                totalCargado = totalCargado.add(ctc.getCarga());
                             }
                         }
                     }
                 }
-                
-                
+                                
                 if (totalCargado.compareTo(BigDecimal.ZERO) > 0){
-                    //TODO: CREAR LA LINEA
+                    LineaFactura lf = new LineaFactura();
+                    lf.setDescripcion("Carga de " + m.getDescripcion() + " x " + totalCargado.toBigInteger().toString() + " Tons.");
+                    if (tarifaActiva != null) {
+                        lf.setPrecioUnitario(tarifaActiva.getValor());
+                    }
+                    lf.setImporte(totalTarifa);
+                    lf.setFactura(factura);
+                    lf.setTipoLinea(null);
+                    lineas.add(lf);
                 }                
             }
         }
         
-        
         return lineas;
     }
-    
-    
+     
+    /**
+     * Crea la linea de adminstracion para la factura, esta tiene en cuenta tanto a la adminstracion como mixto tambien
+     * @param factura
+     * @return 
+     */
+    public LineaFactura crearLineaAdministracion(Factura factura) {
+        LineaFactura lf = null;
+        BigDecimal totalAdminstracion = BigDecimal.ZERO;
+        for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
+            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)) {
+                totalAdminstracion = totalAdminstracion.add(tf.getValor());
+            } else if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO)) {
+                totalAdminstracion = totalAdminstracion.add(tf.getValor().subtract(tf.getTarifa()));
+            }
+        }
+        if (totalAdminstracion.compareTo(BigDecimal.ZERO) > 0){
+            lf = new LineaFactura();
+            lf.setDescripcion("Detalle de Administración...");
+            lf.setPrecioUnitario(null);
+            lf.setImporte(totalAdminstracion);
+            lf.setFactura(factura);
+            lf.setTipoLinea(null);
+        }
+        
+        return lf;
+    }
+   
     
 }

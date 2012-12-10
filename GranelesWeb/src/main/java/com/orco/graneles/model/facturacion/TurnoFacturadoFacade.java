@@ -5,6 +5,8 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.CargaTurnoCargas;
+import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.Tarifa;
@@ -70,17 +72,7 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
     
     public void actualizarLineas(List<TurnoFacturado> lineas){
         for(TurnoFacturado tf : lineas){
-            if (tf.getTipoTurnoFacturado() != null){
-                switch (tf.getTipoTurnoFacturado().getId()){
-                    case TipoTurnoFactura.ADMINISTRACION :
-                        tf.setAdministracion(calcularAdministracion(tf.getCargaTurno(), tf.getPorcentajeAdministracion()));
-                        tf.setValor(tf.getAdministracion());
-                        break;
-                    case TipoTurnoFactura.TARIFA :
-                        tf.setValor(tf.getTarifa());
-                        break;
-                }
-            }
+            actualizarLinea(tf);
         }
     }
     
@@ -92,18 +84,39 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
     
     
     public BigDecimal calcularTarifa(CargaTurno ct){
-        return BigDecimal.ZERO;
-        /*
-        //TODO: recalcular la tarifa con un metodo previo dependiendo de cada CargaTurnoCarga
-        //Tarifa tActiva = tarifaF.obtenerTarifaActiva(ct.getTurnoEmbarque().getTipo(), ct.getTurnoEmbarque().getFecha());
+        BigDecimal resultado = BigDecimal.ZERO;
         
-        if (tActiva != null){
-            return tActiva.getValor().multiply(ct.getTotalCargado());
-        } else {
-            return BigDecimal.ZERO;
+        for (CargaTurnoCargas ctc : ct.getCargasCollection()){
+            if (ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
+                Tarifa tActiva = tarifaF.obtenerTarifaActiva(ct.getTurnoEmbarque().getTipo(), ctc.getMercaderiaBodega().getGrupoFacturacion(), ct.getTurnoEmbarque().getFecha());
+                
+                if (tActiva != null){
+                    resultado = resultado.add(tActiva.getValor().multiply(ctc.getCarga()));
+                }
+            }
         }
-        * */
         
+        return resultado;
+    }
+    
+    public BigDecimal calcularTarifa(Mercaderia m, CargaTurno ct){
+        BigDecimal resultado = BigDecimal.ZERO;
+        
+        Tarifa tActiva = null;
+        
+        for (CargaTurnoCargas ctc : ct.getCargasCollection()){
+            if (ctc.getMercaderiaBodega().equals(m) && ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
+                if (tActiva == null){
+                    tActiva = tarifaF.obtenerTarifaActiva(ct.getTurnoEmbarque().getTipo(), ctc.getMercaderiaBodega().getGrupoFacturacion(), ct.getTurnoEmbarque().getFecha());
+                }
+                
+                if (tActiva != null){
+                    resultado = resultado.add(tActiva.getValor().multiply(ctc.getCarga()));
+                }
+            }
+        }
+        
+        return resultado;
     }
     
     public BigDecimal calcularAdministracion(CargaTurno ct, BigDecimal porcentaje){
@@ -112,6 +125,28 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
                     .multiply(porcentaje)
                     .divide(new BigDecimal(100)
                ));
+    }
+
+    public void actualizarLinea(TurnoFacturado tf) {
+        if (tf.getTipoTurnoFacturado() != null){
+            switch (tf.getTipoTurnoFacturado().getId()){
+                case TipoTurnoFactura.ADMINISTRACION :
+                    tf.setAdministracion(calcularAdministracion(tf.getCargaTurno(), tf.getPorcentajeAdministracion()));
+                    tf.setValor(tf.getAdministracion());
+                    break;
+                case TipoTurnoFactura.TARIFA :
+                    tf.setValor(tf.getTarifa());
+                    break;
+                case TipoTurnoFactura.MIXTO :
+                    //En el mixto se cobra todo lo cargado con tarifa y luego se le agrega un plus
+                    if (tf.getAgregadoMixto() != null && !tf.getAgregadoMixto().equals(BigDecimal.ZERO)){
+                        tf.setValor(tf.getTarifa().add(tf.getAgregadoMixto()));
+                    } else {
+                        tf.setValor(tf.getTarifa());
+                    }
+                    break;                    
+            }
+        }
     }
     
     

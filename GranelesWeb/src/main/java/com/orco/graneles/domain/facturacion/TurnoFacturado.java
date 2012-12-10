@@ -69,6 +69,8 @@ public class TurnoFacturado implements Serializable {
     @Column(name = "valor")
     private BigDecimal valor;
     
+    @Column(name = "agregado_mixto")
+    private BigDecimal agregadoMixto;
 
     public TurnoFacturado() {
     }
@@ -155,6 +157,14 @@ public class TurnoFacturado implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public BigDecimal getAgregadoMixto() {
+        return agregadoMixto;
+    }
+
+    public void setAgregadoMixto(BigDecimal agregadoMixto) {
+        this.agregadoMixto = agregadoMixto;
     }
 
 

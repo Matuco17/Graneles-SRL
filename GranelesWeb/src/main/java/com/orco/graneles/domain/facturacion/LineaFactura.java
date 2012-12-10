@@ -51,7 +51,7 @@ public class LineaFactura implements Serializable {
     private Factura factura;
   
     @JoinColumn(name = "tipo_linea", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne()
     private FixedList tipoLinea;
   
     @Column(name = "precio_unitario")
@@ -76,6 +76,9 @@ public class LineaFactura implements Serializable {
     }
 
     public String getDescripcion() {
+        if (tipoLinea != null){
+            descripcion = tipoLinea.getDescripcion();
+        }
         return descripcion;
     }
 
@@ -140,5 +143,6 @@ public class LineaFactura implements Serializable {
     public String toString() {
         return "com.orco.graneles.domain.LineaFactura[ id=" + id + " ]";
     }
-   
+    
+    
 }

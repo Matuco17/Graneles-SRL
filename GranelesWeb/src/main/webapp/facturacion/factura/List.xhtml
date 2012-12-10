@@ -43,14 +43,7 @@
                                 title="#{bundleFacturacion.FacturaViewLink}"
                                 />
 
-                            <h:commandButton 
-                                image="/faces/resources/images/edit.png" 
-                                action="#{facturaController.prepareEdit}" 
-                                value="#{bundleFacturacion.FacturaEditLink}"
-                                title="#{bundleFacturacion.FacturaEditLink}"
-                                />
-
-                            <h:commandButton 
+                             <h:commandButton 
                                 image="/faces/resources/images/destroy.png"
                                 onclick="return confirm('¿Esta seguro que desea eliminar este Factura?');" 
                                 action="#{facturaController.destroy}" 

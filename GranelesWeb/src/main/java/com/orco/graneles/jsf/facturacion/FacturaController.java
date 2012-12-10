@@ -57,6 +57,14 @@ public class FacturaController implements Serializable {
     private List<TurnoFacturado> turnosFacturados;
     private DataModel turnosFacturadosModel;
     
+    //LINEAS EN EL MOMENTO DE LA CONFIRMACION
+    private LineaFactura lineaAdministracion;
+    private List<LineaFactura> lineasTarifa;
+    private List<LineaFactura> lineasConceptos;
+    private DataModel lineasTarifaModel;
+    private DataModel lineasConceptosModel;
+    
+    
     public FacturaController() {
     }
 
@@ -78,9 +86,7 @@ public class FacturaController implements Serializable {
         } else if (event.getOldStep().equals(STEP_SELECCION_TURNOS) && event.getNewStep().equals(STEP_SETEO_VALORES)){
             seleccionarCargaTurnos();
         } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
-            //POR AHORA NO HAGO NADA
-            //current.setExportador(getSelected().getExportador());
-            //current.setEmbarque(getSelected().getEmbarque());
+            generarLineasFactura();
         }
         
         return event.getNewStep();  
@@ -101,8 +107,7 @@ public class FacturaController implements Serializable {
             Collections.sort(cargaTurnosDelExportador);
             turnosASeleccionarModel.setSource(new ArrayList<CargaTurno>(cargaTurnosDelExportador));
             turnosASeleccionarModel.setTarget(new ArrayList<CargaTurno>());
-            
-            
+                        
             lineasFacturaModel = null;
             lineasFactura = null;
         }        
@@ -117,7 +122,51 @@ public class FacturaController implements Serializable {
     }
     
     public void actualizarTurnosFacturados(){
-        turnoFacturadoF.actualizarLineas(turnosFacturados);
+        TurnoFacturado tfSeleccionado = turnosFacturados.get(turnosFacturadosModel.getRowIndex());
+        if (tfSeleccionado != null){
+            turnoFacturadoF.actualizarLinea(tfSeleccionado);
+        }
+    }
+    
+    public void generarLineasFactura(){
+        lineasTarifa = lineaFacturaF.crearLineasTarifa(current);
+        lineaAdministracion = lineaFacturaF.crearLineaAdministracion(current);
+        
+        lineasConceptos = new ArrayList<LineaFactura>();
+        lineasTarifaModel = new ListDataModel(lineasTarifa);
+        lineasConceptosModel = new ListDataModel(lineasConceptos);
+        actualizarLineas();
+    }
+    
+    private void actualizarLineas(){
+        List<LineaFactura> lineasFactura = new ArrayList<LineaFactura>();
+        lineasFactura.addAll(lineasTarifa);
+        lineasFactura.add(lineaAdministracion);
+        lineasFactura.addAll(lineasConceptos);
+        
+        for (LineaFactura lf : lineasFactura){
+            lf.setFactura(current);
+        }
+        
+        getSelected().setLineaFacturaCollection(lineasFactura);
+    }
+    
+    public void agregarConcepto(){
+        lineasConceptos.add(new LineaFactura());
+        actualizarLineas();
+    }
+    
+    public void quitarConcepto(){
+        lineasConceptos.remove(lineasConceptosModel.getRowIndex());
+        actualizarLineas();
+    }
+    
+    public void seleccionarTipoConcepto(){
+        LineaFactura lfSeleccionada = lineasConceptos.get(lineasConceptosModel.getRowIndex());
+        if (lfSeleccionada.getTipoLinea() != null){
+            lfSeleccionada.setImporte(lfSeleccionada.getTipoLinea().getValorDefecto());
+        }
+        actualizarLineas();
     }
     
     public Factura getSelected() {
@@ -329,6 +378,30 @@ public class FacturaController implements Serializable {
 
     public String getSTEP_CONFIRMAR() {
         return STEP_CONFIRMAR;
+    }
+
+    public LineaFactura getLineaAdministracion() {
+        return lineaAdministracion;
+    }
+
+    public void setLineaAdministracion(LineaFactura lineaAdministracion) {
+        this.lineaAdministracion = lineaAdministracion;
+    }
+
+    public DataModel getLineasTarifaModel() {
+        return lineasTarifaModel;
+    }
+
+    public void setLineasTarifaModel(DataModel lineasTarifaModel) {
+        this.lineasTarifaModel = lineasTarifaModel;
+    }
+
+    public DataModel getLineasConceptosModel() {
+        return lineasConceptosModel;
+    }
+
+    public void setLineasConceptosModel(DataModel lineasConceptosModel) {
+        this.lineasConceptosModel = lineasConceptosModel;
     }
     
     

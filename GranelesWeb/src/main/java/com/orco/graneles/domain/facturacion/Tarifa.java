@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tarifa.findActivo", 
                         query = "SELECT t FROM Tarifa t "
                                 + "WHERE t.tipoJornal = :tipoJornal "
-                                + "AND t.grupoFacturacion = :grupoFacturacion"
+                                + "AND t.grupoFacturacion = :grupoFacturacion "
                                 + "AND t.desde <= :fecha "
                                 + "AND (t.hasta IS NULL OR t.hasta >= :fecha)")})
 public class Tarifa implements Serializable, Comparable<Tarifa> {

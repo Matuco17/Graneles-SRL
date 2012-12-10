@@ -387,7 +387,7 @@ public class EmbarqueController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(ejbFacade.findAllSelected(), true);
     }
 
     @FacesConverter(forClass = Embarque.class)

@@ -33,6 +33,9 @@
                         <p:column headerText="#{bundleCarga.MercaderiaTitle_factorEstiba}">
                             <h:outputText value="#{item.factorEstiba}"/>
                         </p:column>
+                        <p:column headerText="#{bundleCarga.MercaderiaTitle_grupo_facturacion}">
+                            <h:outputText value="#{item.grupoFacturacion.toString()}"/>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>

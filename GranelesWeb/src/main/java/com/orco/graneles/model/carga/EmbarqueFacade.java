@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -156,6 +157,13 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
         for (Embarque e : embarques)
             e.setConsolidadoEnBusqueda(e.getConsolidado());
         
+        return embarques;
+    }
+    
+    public List<Embarque> findAllSelected(){
+        List<Embarque> embarques = super.findAll();
+        Collections.sort(embarques);
+        Collections.reverse(embarques);
         return embarques;
     }
     
