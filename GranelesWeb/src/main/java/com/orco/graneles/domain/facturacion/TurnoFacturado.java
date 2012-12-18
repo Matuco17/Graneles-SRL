@@ -167,6 +167,11 @@ public class TurnoFacturado implements Serializable {
         this.agregadoMixto = agregadoMixto;
     }
 
+    public BigDecimal getDiferencia(){
+        return this.costo.subtract((this.valor != null) 
+                                    ? this.valor
+                                    : BigDecimal.ZERO);
+    }
 
     @Override
     public int hashCode() {
@@ -196,4 +201,5 @@ public class TurnoFacturado implements Serializable {
     public BigDecimal getTotalLinea(){
         return valor;
     }
+   
 }

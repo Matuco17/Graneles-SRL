@@ -192,7 +192,7 @@ public class PeriodoController implements Serializable {
         if (current != null){
             List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
             
-            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, false);
+            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, false, ejbFacade.obtenerFechaInicioPeriodoSemestral(current.getDesde()));
             urlArchivoRecibosSacYVac = reporte.obtenerReportePDF();
         } else {
             urlArchivoRecibosSacYVac = null;
@@ -203,7 +203,7 @@ public class PeriodoController implements Serializable {
         if (current != null){
             List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
             
-            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, true);
+            RecibosSueldoSacYVac reporte = new RecibosSueldoSacYVac(current, sueldosSacYVac, true, ejbFacade.obtenerFechaInicioPeriodoSemestral(current.getDesde()));
             urlArchivoRecibosSavYVacOficiales = reporte.obtenerReportePDF();
         } else {
             urlArchivoRecibosSavYVacOficiales = null;

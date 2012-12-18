@@ -84,17 +84,44 @@
                                     <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.tipo.toString()}" />
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.totalEmbarcado}" />
+                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.totalEmbarcado}" >
+                                        <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
+                                    </h:outputText>
+                                    <f:facet name="footer" >
+                                        <h:outputText value="#{facturaController.selected.totalEmbarcado}" >
+                                            <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
+                                        </h:outputText>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Jornales"  style="text-align: right;">
                                     <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.totalBruto}" >
                                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                     </h:outputText>
+                                    <f:facet name="footer" >
+                                        <h:outputText value="#{facturaController.selected.totalJornales}" >
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </f:facet>
                                 </p:column>   
                                 <p:column headerText="Costo" style="text-align: right;">
                                     <h:outputText value="#{turnoFacturado.costo}" >
                                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                     </h:outputText>
+                                    <f:facet name="footer" >
+                                        <h:outputText value="#{facturaController.selected.totalCosto}" >
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Diferencia" style="text-align: right;" >
+                                    <h:outputText value="#{turnoFacturado.diferencia}" >
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    </h:outputText>
+                                    <f:facet name="footer" >
+                                        <h:outputText value="#{facturaController.selected.totalDiferencia}" >
+                                            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Administracion" style="text-align: right;">
                                     <h:outputText value="#{turnoFacturado.administracion}" >
@@ -293,6 +320,17 @@
                 </h:panelGrid>
             </h:form>
             
+            <script type="text/javascript">
+                
+                jQuery(document).ready(function (){
+                    jQuery(":text").bind("keydown", function (e){
+                        if (e.which == 13) {
+                            e.preventDefault();
+                        }  
+                    });                                       
+                });
+                
+            </script>
             
         </ui:define>
     </ui:composition>

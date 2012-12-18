@@ -51,8 +51,11 @@
 	<field name="tipoLinea" class="com.orco.graneles.domain.miscelaneos.FixedList">
 		<fieldDescription><![CDATA[tipoLinea]]></fieldDescription>
 	</field>
+	<field name="nombreBuque" class="java.lang.String">
+		<fieldDescription><![CDATA[nombreBuque]]></fieldDescription>
+	</field>
 	<columnHeader>
-		<band height="308" splitType="Stretch">
+		<band height="336" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="396" y="89" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
@@ -82,18 +85,25 @@
 				<textFieldExpression><![CDATA[$F{facturaLocalidad}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="78" y="261" width="161" height="18"/>
+				<reportElement x="78" y="260" width="161" height="18"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[RESPONSABLE INSCRIPTO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="396" y="261" width="141" height="18"/>
+				<reportElement x="396" y="260" width="141" height="18"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaCuit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="311" width="303" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreBuque}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -145,6 +155,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaTotal}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="65" y="86" width="272" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Depósito a Cta Cte Banco Credicoop]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="106" width="272" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CBU 19100902-55009001020714]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 </jasperReport>

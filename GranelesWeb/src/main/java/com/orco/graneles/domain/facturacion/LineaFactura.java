@@ -183,4 +183,7 @@ public class LineaFactura implements Serializable {
         return factura.getTotalConIVA();
     }
     
+    public String getNombreBuque(){
+        return factura.getEmbarque().getBuque().getDescripcion();
+    }
 }

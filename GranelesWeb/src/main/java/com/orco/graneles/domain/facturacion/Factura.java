@@ -215,4 +215,55 @@ public class Factura implements Serializable {
         }
         return total;
     }
+    
+    public BigDecimal getTotalDiferencia(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (turnosFacturadosCollection != null){
+            for (TurnoFacturado tf : turnosFacturadosCollection){
+                total = total.add(tf.getDiferencia());
+            }
+        }
+        
+        return total;
+    }
+    
+    public BigDecimal getTotalEmbarcado(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (turnosFacturadosCollection != null){
+            for (TurnoFacturado tf : turnosFacturadosCollection){
+                total = total.add(tf.getCargaTurno().getTotalCargado());
+            }
+        }
+        
+        return total;        
+    }
+    
+    public BigDecimal getTotalCosto(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (turnosFacturadosCollection != null){
+            for (TurnoFacturado tf : turnosFacturadosCollection){
+                total = total.add(tf.getCosto());
+            }
+        }
+        
+        return total;        
+    }
+    
+    public BigDecimal getTotalJornales(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (turnosFacturadosCollection != null){
+            for (TurnoFacturado tf : turnosFacturadosCollection){
+                total = total.add(tf.getTotalBruto());
+            }
+        }
+        
+        return total;        
+    }
+    
+    
+    
 }

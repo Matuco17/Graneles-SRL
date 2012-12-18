@@ -21,10 +21,23 @@ public class ItemSueldoVO {
     private ItemsSueldo item;
     private Boolean oficial;
     
+    private Date periodoDesde;
+    private Date periodoHasta;
+    
     public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial){
         item = itemSueldo;
         this.oficial = oficial;
     }
+    
+    
+    public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta){
+        item = itemSueldo;
+        this.oficial = oficial;
+        this.periodoDesde = desde;
+        this.periodoHasta = hasta;
+    }
+    
+    
     
     public Integer getOrdenConcepto(){
         return item.getConceptoRecibo().getOrden();
@@ -219,10 +232,18 @@ public class ItemSueldoVO {
     }
     
     public Date getPeriodoDesde(){
-        return item.getSueldo().getPeriodo().getDesde();
+        if (this.periodoDesde != null) {
+            return this.periodoDesde;
+        } else {
+            return item.getSueldo().getPeriodo().getDesde();
+        }
     }
     
     public Date getPeriodoHasta(){
-        return item.getSueldo().getPeriodo().getHasta();
+        if (this.periodoHasta != null) {
+            return this.periodoHasta;
+        } else {
+            return item.getSueldo().getPeriodo().getHasta();
+        }
     }
 }
