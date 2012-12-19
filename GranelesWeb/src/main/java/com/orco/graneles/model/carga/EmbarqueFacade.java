@@ -161,7 +161,7 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
     }
     
     public List<Embarque> findAllSelected(){
-        List<Embarque> embarques = super.findAll();
+        List<Embarque> embarques = findByConsolidado(Boolean.TRUE);
         Collections.sort(embarques);
         Collections.reverse(embarques);
         return embarques;
