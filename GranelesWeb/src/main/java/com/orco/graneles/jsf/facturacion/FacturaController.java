@@ -11,6 +11,7 @@ import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.LineaFacturaFacade;
 import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
 import com.orco.graneles.reports.FacturaReport;
+import com.orco.graneles.reports.TurnosFacturados;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class FacturaController implements Serializable {
     private DataModel lineasConceptosModel;
     
     private String lnkFactura;
+    private String lnkTurnosFacturados;
     
     
     public FacturaController() {
@@ -176,6 +178,10 @@ public class FacturaController implements Serializable {
         lnkFactura = (new FacturaReport(current)).obtenerReportePDF();
     }
     
+    public void generarTurnosFacturadosReport(){
+        lnkTurnosFacturados = (new TurnosFacturados(current)).obtenerReportePDF();
+    }
+    
     public Factura getSelected() {
         if (current == null) {
             current = new Factura();
@@ -196,6 +202,9 @@ public class FacturaController implements Serializable {
     public String prepareView() {
         current = (Factura) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
+        turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
+        Collections.sort(turnosFacturados);
+        turnosFacturadosModel = new ListDataModel(turnosFacturados);
         return "View";
     }
 
@@ -277,6 +286,7 @@ public class FacturaController implements Serializable {
         lineasFacturaModel = null;
         lineasFactura = null;
         lnkFactura = null;
+        lnkTurnosFacturados = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -416,5 +426,8 @@ public class FacturaController implements Serializable {
         return lnkFactura;
     }
     
+    public String getLnkTurnosFacturados(){
+        return lnkTurnosFacturados;
+    }
     
 }

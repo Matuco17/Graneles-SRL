@@ -70,21 +70,21 @@
                             <p:dataTable id="dtbLineaFactura" value="#{facturaController.turnosFacturadosModel}" var="turnoFacturado" >
 
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.nroPlanilla}" />
+                                    <h:outputText value="#{turnoFacturado.planilla}" />
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}"  style="text-align: center;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.fecha}" >
+                                    <h:outputText value="#{turnoFacturado.fecha}" >
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>   
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.turno.toString()}" />
+                                    <h:outputText value="#{turnoFacturado.turno}" />
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_tipo}" style="text-align: center;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.tipo.toString()}" />
+                                    <h:outputText value="#{turnoFacturado.tipoJornal}" />
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.totalEmbarcado}" >
+                                    <h:outputText value="#{turnoFacturado.totalEmbarcado}" >
                                         <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
                                     </h:outputText>
                                     <f:facet name="footer" >
@@ -94,7 +94,7 @@
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Jornales"  style="text-align: right;">
-                                    <h:outputText value="#{turnoFacturado.cargaTurno.turnoEmbarque.totalBruto}" >
+                                    <h:outputText value="#{turnoFacturado.totalBruto}" >
                                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                     </h:outputText>
                                     <f:facet name="footer" >

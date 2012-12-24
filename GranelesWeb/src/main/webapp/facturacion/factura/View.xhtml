@@ -130,10 +130,19 @@
                                     value="Generar Factura"
                                     rendered="#{facturaController.lnkFactura == null}"
                                     />
-
-                        <h:link value="Factura" 
+                    <h:link value="Factura" 
                                onclick="window.open('#{facturaController.lnkFactura}','Download');window.close();" 
                                rendered="#{facturaController.lnkFactura != null}"
+                               style="font-weight: bold;"/>
+                        
+                    <h:commandButton action="#{facturaController.generarTurnosFacturadosReport()}"
+                                    label="Generar Planilla de Turnos Facturados"
+                                    value="Generar Planilla de Turnos Facturados"
+                                    rendered="#{facturaController.lnkTurnosFacturados == null}"
+                                    />
+                    <h:link value="Planilla de Turnos Facturados" 
+                               onclick="window.open('#{facturaController.lnkTurnosFacturados}','Download');window.close();" 
+                               rendered="#{facturaController.lnkTurnosFacturados != null}"
                                style="font-weight: bold;"/>
 
                     

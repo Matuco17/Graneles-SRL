@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TurnosFacturados" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="8"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoReducido" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="adicionalAdminMixto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[adicionalAdminMixto]]></fieldDescription>
+	</field>
+	<field name="administracion" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[administracion]]></fieldDescription>
+	</field>
+	<field name="agregadoMixto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[agregadoMixto]]></fieldDescription>
+	</field>
+	<field name="cargaTurno" class="com.orco.graneles.domain.carga.CargaTurno">
+		<fieldDescription><![CDATA[cargaTurno]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="costo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[costo]]></fieldDescription>
+	</field>
+	<field name="diferencia" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[diferencia]]></fieldDescription>
+	</field>
+	<field name="factura" class="com.orco.graneles.domain.facturacion.Factura">
+		<fieldDescription><![CDATA[factura]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="planilla" class="java.lang.Integer">
+		<fieldDescription><![CDATA[planilla]]></fieldDescription>
+	</field>
+	<field name="porcentajeAdministracion" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[porcentajeAdministracion]]></fieldDescription>
+	</field>
+	<field name="tarifa" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[tarifa]]></fieldDescription>
+	</field>
+	<field name="tipoJornal" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoJornal]]></fieldDescription>
+	</field>
+	<field name="tipoTurnoDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoTurnoDescripcion]]></fieldDescription>
+	</field>
+	<field name="tipoTurnoFacturado" class="com.orco.graneles.domain.miscelaneos.FixedList">
+		<fieldDescription><![CDATA[tipoTurnoFacturado]]></fieldDescription>
+	</field>
+	<field name="totalBruto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalBruto]]></fieldDescription>
+	</field>
+	<field name="totalEmbarcado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalEmbarcado]]></fieldDescription>
+	</field>
+	<field name="totalLinea" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalLinea]]></fieldDescription>
+	</field>
+	<field name="turno" class="java.lang.String">
+		<fieldDescription><![CDATA[turno]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<variable name="valor_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="diferencia_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencia}]]></variableExpression>
+	</variable>
+	<variable name="costo_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
+	</variable>
+	<variable name="totalBruto_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalBruto}]]></variableExpression>
+	</variable>
+	<variable name="totalEmbarcado_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalEmbarcado}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="109" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="493" height="60"/>
+				<imageExpression><![CDATA["/home/orco/git/Graneles-SRL/GranelesWeb/src/main/webapp/resources/images/logoReducido.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="493" y="0" width="309" height="60"/>
+				<textElement verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Turnos Facturados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="72" width="106" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comprobante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="72" width="100" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factura}.getComprobante()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="247" y="72" width="100" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Factura]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="347" y="72" width="100" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factura}.getFecha()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="468" y="72" width="100" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="566" y="72" width="236" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factura}.exportador.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="728" y="0" width="74" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="156" y="0" width="61" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="520" y="0" width="89" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="36" y="0" width="35" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="440" y="0" width="80" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="609" y="0" width="57" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="666" y="0" width="62" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="287" y="0" width="77" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="106" y="0" width="50" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="217" y="0" width="70" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="71" y="0" width="35" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="364" y="0" width="76" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="36" height="20" backcolor="#E1DEDE"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="36" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Planilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="0" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[T. Jornal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Embarcado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="0" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jornales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="0" width="77" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="0" width="76" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Administración]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="0" width="89" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tarifa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="609" y="0" width="57" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="666" y="0" width="62" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Adm/Mixto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="728" y="0" width="74" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="36" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="36" y="0" width="35" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="71" y="0" width="35" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="106" y="0" width="50" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="156" y="0" width="61" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="217" y="0" width="70" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="287" y="0" width="77" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="364" y="0" width="76" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="440" y="0" width="80" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="520" y="0" width="89" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="609" y="0" width="57" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="666" y="0" width="62" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="728" y="0" width="74" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="36" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{planilla}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM">
+				<reportElement x="36" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="0" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoJornal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="156" y="0" width="61" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalEmbarcado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="217" y="0" width="70" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalBruto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="287" y="0" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="364" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="440" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{administracion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="520" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tarifa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="609" y="0" width="57" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoTurnoDescripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="666" y="0" width="62" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adicionalAdminMixto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="728" y="0" width="74" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="86" splitType="Stretch">
+			<rectangle>
+				<reportElement x="728" y="0" width="74" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="156" y="0" width="61" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="440" y="0" width="288" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="287" y="0" width="77" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="217" y="0" width="70" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="364" y="0" width="76" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="156" height="20"/>
+			</rectangle>
+			<textField pattern="###0.00">
+				<reportElement x="728" y="0" width="74" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{valor_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="364" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{diferencia_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="287" y="0" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="217" y="0" width="70" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalBruto_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="156" y="0" width="61" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalEmbarcado_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="156" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>

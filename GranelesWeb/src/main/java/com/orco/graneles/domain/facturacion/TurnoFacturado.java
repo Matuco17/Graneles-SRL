@@ -6,8 +6,10 @@ package com.orco.graneles.domain.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
   })
-public class TurnoFacturado implements Serializable {
+public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -201,5 +203,49 @@ public class TurnoFacturado implements Serializable {
     public BigDecimal getTotalLinea(){
         return valor;
     }
+
+    @Override
+    public int compareTo(TurnoFacturado o) {
+        return this.getCargaTurno().getTurnoEmbarque().getNroPlanilla().compareTo(o.getCargaTurno().getTurnoEmbarque().getNroPlanilla());
+    }
    
+    /*
+     * Valores extras de getters que no sirven más que nada para los reportes
+     */
+    
+    
+    public Integer getPlanilla(){
+        return this.cargaTurno.getTurnoEmbarque().getNroPlanilla();
+    }
+    
+    public Date getFecha(){
+        return this.cargaTurno.getTurnoEmbarque().getFecha();
+    }
+    
+    public String getTurno(){
+        return this.cargaTurno.getTurnoEmbarque().getTurno().getDescripcion();
+    }
+    
+    public String getTipoJornal(){
+        return this.cargaTurno.getTurnoEmbarque().getTipo().getDescripcion();
+    }
+    
+    public BigDecimal getTotalEmbarcado(){
+        return this.getCargaTurno().getTurnoEmbarque().getTotalEmbarcado();
+    }
+    
+    public String getTipoTurnoDescripcion(){
+        return this.getTipoTurnoFacturado().getDescripcion();
+    }
+    
+    public BigDecimal getAdicionalAdminMixto () {
+        switch (this.getTipoTurnoFacturado().getId()){
+            case TipoTurnoFactura.ADMINISTRACION :
+                return this.getPorcentajeAdministracion();
+            case TipoTurnoFactura.MIXTO :
+                return this.getAgregadoMixto();
+        }
+        return null;
+    }
 }
+
