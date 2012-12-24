@@ -8,6 +8,7 @@ import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Accidentado;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -204,62 +205,14 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      
     
     public TrabajadorTurnoEmbarqueVO calcularDiaCompletoTTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+        com.orco.graneles.domain.salario.TipoJornal tipoJornal = tte.getPlanilla().getTipo();
+        Tarea tarea = tte.getTarea();
+        Integer horas = tte.getHoras();
+                
         
         double basicoBruto = 0.0;
         double totalConcepto = 0.0; //resultado de la suma del concepto
-
-        TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte);
-        
-        if (salario != null){
-            
-            basicoBruto = salario.getBasico().doubleValue() / 6 * tte.getHoras().doubleValue();
-            totalConcepto = basicoBruto; //resultado de la suma del concepto
-
-            //Realizo el agregado de los modificadores de tarea
-            if (incluirAdicionales){
-                if (tte.getTarea().getInsalubre()){
-                    double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
-                    conceptoInsalubre += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setInsalubre(new Moneda(conceptoInsalubre));
-                    totalConcepto += conceptoInsalubre ;
-                }
-                if (tte.getTarea().getPeligrosa()){
-                    double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-                    conceptoPeligrosa += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setPeligrosa(new Moneda(conceptoPeligrosa));
-                    totalConcepto += conceptoPeligrosa ;
-                }
-                if (tte.getTarea().getPeligrosa2()){
-                    double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-                    conceptoPeligrosa2 += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setPeligrosa2(new Moneda(conceptoPeligrosa2));
-                    totalConcepto += conceptoPeligrosa2;
-                }
-                if (tte.getTarea().getProductiva()){
-                    double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-                    conceptoProductiva += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setProductiva(new Moneda(conceptoProductiva));
-                    totalConcepto += conceptoProductiva ;
-                }
-                if (tte.getTarea().getEspecidalidad() != null && (tte.getTarea().getEspecidalidad().compareTo(BigDecimal.ZERO) > 0)){
-                    double conceptoEspecialidad = basicoBruto * (tte.getTarea().getEspecidalidad().doubleValue() / 100);
-                    conceptoEspecialidad += tte.getPlanilla().getTipo().getPorcExtraBruto().doubleValue() / 100;
-                    tteVO.setEspecialidad(new Moneda(conceptoEspecialidad));
-                    totalConcepto += conceptoEspecialidad ;
-                }
-                
-                //Ahora aplico el valor del modificador del tipo de jornal
-                totalConcepto += basicoBruto * tte.getPlanilla().getTipo().getPorcExtraBasico().doubleValue() / 100;
-            }
-        }
-        
-        tteVO.setValorBruto(new Moneda(totalConcepto));
-        tteVO.setJornalBasico(new Moneda(basicoBruto));
-        tteVO.setDescuentoJudicial(new Moneda(calcularDescuentoJudicial(tte, totalConcepto)));
-        
-        Moneda neto = (new Moneda(calcularNeto(tte.getPersonal(), totalConcepto) - tteVO.getDescuentoJudicial().doubleValue()));
-        tteVO.setValorTurno(neto);
+        TrabajadorTurnoEmbarqueVO tteVO = calculaDiaTTE(tte, salario, horas, incluirAdicionales, tarea, tipoJornal);
         
         return tteVO;
     }
@@ -530,6 +483,65 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 
             default : return 0;
         }
+    }
+
+    public TrabajadorTurnoEmbarqueVO calculaDiaTTE(TrabajadoresTurnoEmbarque tte, SalarioBasico salario, Integer horas, boolean incluirAdicionales, Tarea tarea, com.orco.graneles.domain.salario.TipoJornal tipoJornal) {
+        double basicoBruto = 0.0;
+        double totalConcepto = 0.0;
+        TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte);
+        if (salario != null){
+            //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
+            
+            basicoBruto = salario.getBasico().doubleValue() / 6 * horas.doubleValue();
+            totalConcepto = basicoBruto; //resultado de la suma del concepto
+
+            //Realizo el agregado de los modificadores de tarea
+            if (incluirAdicionales){
+                if (tarea.getInsalubre()){
+                    double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
+                    conceptoInsalubre += tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setInsalubre(new Moneda(conceptoInsalubre));
+                    totalConcepto += conceptoInsalubre ;
+                }
+                if (tarea.getPeligrosa()){
+                    double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
+                    conceptoPeligrosa += tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setPeligrosa(new Moneda(conceptoPeligrosa));
+                    totalConcepto += conceptoPeligrosa ;
+                }
+                if (tarea.getPeligrosa2()){
+                    double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
+                    conceptoPeligrosa2 += tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setPeligrosa2(new Moneda(conceptoPeligrosa2));
+                    totalConcepto += conceptoPeligrosa2;
+                }
+                if (tarea.getProductiva()){
+                    double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
+                    conceptoProductiva += tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setProductiva(new Moneda(conceptoProductiva));
+                    totalConcepto += conceptoProductiva ;
+                }
+                if (tarea.getEspecidalidad() != null && (tarea.getEspecidalidad().compareTo(BigDecimal.ZERO) > 0)){
+                    double conceptoEspecialidad = basicoBruto * (tarea.getEspecidalidad().doubleValue() / 100);
+                    conceptoEspecialidad += tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    tteVO.setEspecialidad(new Moneda(conceptoEspecialidad));
+                    totalConcepto += conceptoEspecialidad ;
+                }
+                
+                //Ahora aplico el valor del modificador del tipo de jornal
+                totalConcepto += basicoBruto * tipoJornal.getPorcExtraBasico().doubleValue() / 100;
+            }
+        }
+        tteVO.setValorBruto(new Moneda(totalConcepto));
+        tteVO.setJornalBasico(new Moneda(basicoBruto));
+        if (tte == null){
+            tteVO.setDescuentoJudicial(BigDecimal.ZERO);
+        } else {
+            tteVO.setDescuentoJudicial(new Moneda(calcularDescuentoJudicial(tte, totalConcepto)));
+        }
+        Moneda neto = (new Moneda(calcularNeto(tte.getPersonal(), totalConcepto) - tteVO.getDescuentoJudicial().doubleValue()));
+        tteVO.setValorTurno(neto);
+        return tteVO;
     }
     
     

@@ -170,6 +170,13 @@
                         </p:panel>
 
                     </p:tab>
+                    
+                    <p:tab id="#{facturaController.STEP_CALCULADORA}" title="Calculadora" >
+                        <p:panel header="Calculadora sobre turnos de Administración y Mixtos" >
+                            <Cc:calculadora calculadora="#{facturaController.calculadora}" editar="true" />
+                        </p:panel>                    
+                    </p:tab>
+                    
                     <p:tab id="#{facturaController.STEP_CONFIRMAR}" title="Confirmación" >
                         <p:panel header="Factura a confirmar" >
                             <p:panel header="Datos generales" >

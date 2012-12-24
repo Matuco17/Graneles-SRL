@@ -80,6 +80,9 @@ public class Factura implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
+    private Collection<FacturaCalculadora> facturaCalculadoraCollection;
+
     public Factura() {
     }
 
@@ -159,6 +162,12 @@ public class Factura implements Serializable {
         this.turnosFacturadosCollection = turnosFacturadosCollection;
     }
 
+    @XmlTransient
+    public Collection<FacturaCalculadora> getFacturaCalculadoraCollection() {
+        return facturaCalculadoraCollection;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

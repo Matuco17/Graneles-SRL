@@ -35,8 +35,8 @@ public class TrabajadorTurnoEmbarqueVO implements Comparable<TrabajadorTurnoEmba
     
     public TrabajadorTurnoEmbarqueVO(TrabajadoresTurnoEmbarque tte) {
         this.tte = tte;
-        valorTurno = tte.getNeto();
-        valorBruto = tte.getBruto();
+        valorTurno = (tte != null) ? tte.getNeto() : BigDecimal.ZERO;
+        valorBruto = (tte != null) ? tte.getBruto() : BigDecimal.ZERO;
         jornalBasico = BigDecimal.ZERO;
         insalubre = BigDecimal.ZERO;
         peligrosa = BigDecimal.ZERO;

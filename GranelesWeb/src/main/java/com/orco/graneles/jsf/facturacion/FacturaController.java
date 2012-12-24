@@ -4,14 +4,18 @@ import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
+import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
+import com.orco.graneles.model.facturacion.FacturaCalculadoraFacade;
 import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.LineaFacturaFacade;
 import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
 import com.orco.graneles.reports.FacturaReport;
 import com.orco.graneles.reports.TurnosFacturados;
+import com.orco.graneles.vo.Calculadora;
+import com.orco.graneles.vo.FilaCalculadora;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,6 +49,8 @@ public class FacturaController implements Serializable {
     private LineaFacturaFacade lineaFacturaF;
     @EJB
     private TurnoFacturadoFacade turnoFacturadoF;
+    @EJB
+    private FacturaCalculadoraFacade facturaCalculadoraF;
     
     private Boolean tabBusquedaAbierto;
     private Boolean tabSeleccionPlanillasAbrierto;
@@ -69,6 +75,7 @@ public class FacturaController implements Serializable {
     private String lnkFactura;
     private String lnkTurnosFacturados;
     
+    private Calculadora calculadora;
     
     public FacturaController() {
     }
@@ -82,6 +89,7 @@ public class FacturaController implements Serializable {
     public static final String STEP_SELECCION_EMBARQUE = "seleccionEmbarqueStep";
     public static final String STEP_SELECCION_TURNOS = "seleccionTurnosStep";
     public static final String STEP_SETEO_VALORES = "seteoValoresStep";
+    public static final String STEP_CALCULADORA = "calculadoraStep";
     public static final String STEP_CONFIRMAR = "confirmarStep";
     
      public String onFlowProcess(FlowEvent event) {  
@@ -90,7 +98,9 @@ public class FacturaController implements Serializable {
             seleccionarEmbarqueYProveedor();
         } else if (event.getOldStep().equals(STEP_SELECCION_TURNOS) && event.getNewStep().equals(STEP_SETEO_VALORES)){
             seleccionarCargaTurnos();
-        } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
+        } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CALCULADORA)){
+            generarRegistrosCalculadora();
+        } else if (event.getOldStep().equals(STEP_CALCULADORA) && event.getNewStep().equals(STEP_CONFIRMAR)){
             generarLineasFactura();
         }
         
@@ -154,6 +164,18 @@ public class FacturaController implements Serializable {
         }
         
         getSelected().setLineaFacturaCollection(lineasFactura);
+    }
+    
+    private void generarRegistrosCalculadora(){
+        this.calculadora = facturaCalculadoraF.generarCalculadora(current);
+        
+        for (TurnoFacturado tf : turnosFacturados){
+            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)
+                ||tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
+            {
+                facturaCalculadoraF.agregarTurno(calculadora, tf);
+            }
+        }
     }
     
     public void agregarConcepto(){
@@ -287,6 +309,7 @@ public class FacturaController implements Serializable {
         lineasFactura = null;
         lnkFactura = null;
         lnkTurnosFacturados = null;
+        calculadora = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -397,6 +420,10 @@ public class FacturaController implements Serializable {
     public String getSTEP_CONFIRMAR() {
         return STEP_CONFIRMAR;
     }
+    
+    public String getSTEP_CALCULADORA() {
+        return STEP_CALCULADORA;
+    }
 
     public LineaFactura getLineaAdministracion() {
         return lineaAdministracion;
@@ -429,5 +456,14 @@ public class FacturaController implements Serializable {
     public String getLnkTurnosFacturados(){
         return lnkTurnosFacturados;
     }
+
+    public Calculadora getCalculadora() {
+        return calculadora;
+    }
+
+    public void setCalculadora(Calculadora calculadora) {
+        this.calculadora = calculadora;
+    }
+    
     
 }

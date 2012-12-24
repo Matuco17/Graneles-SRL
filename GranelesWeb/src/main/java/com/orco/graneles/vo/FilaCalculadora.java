@@ -4,7 +4,9 @@
  */
 package com.orco.graneles.vo;
 
+import com.orco.graneles.domain.facturacion.FacturaCalculadora;
 import com.orco.graneles.domain.personal.Categoria;
+import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.SalarioBasico;
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,28 +17,35 @@ import java.util.List;
  */
 public class FilaCalculadora {
 
-    private Categoria categoria;
-    private List<SalarioCalculadora> salarios;
+    private Tarea tarea;
+    private List<FacturaCalculadora> fCalculadoras;
+
+    public Tarea getTarea() {
+        return tarea;
+    }
+
+    public FilaCalculadora(Tarea tarea) {
+        this.tarea = tarea;
+    }
     
-
-    
-
-
-    public Categoria getCategoria() {
-        return categoria;
+    public List<FacturaCalculadora> getFacturasCalculadoras() {
+        return fCalculadoras;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setFacturasCalculadoras(List<FacturaCalculadora> salarios) {
+        this.fCalculadoras = salarios;
     }
 
-    public List<SalarioCalculadora> getSalarios() {
-        return salarios;
+    public BigDecimal getValorTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (this.getFacturasCalculadoras() != null){
+            for (FacturaCalculadora fCalculadora : this.getFacturasCalculadoras()){
+                total = total.add(fCalculadora.getValorTotal());
+            }
+        }
+                
+        return total;
     }
-
-    public void setSalarios(List<SalarioCalculadora> salarios) {
-        this.salarios = salarios;
-    }
-
     
 }
