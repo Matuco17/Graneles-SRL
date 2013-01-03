@@ -491,39 +491,39 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         TrabajadorTurnoEmbarqueVO tteVO = new TrabajadorTurnoEmbarqueVO(tte);
         if (salario != null){
             //Obtengo el valor del bruto ya que depende si trabajo 6 o 3 horas (y el salario está en valor de horas
-            
             basicoBruto = salario.getBasico().doubleValue() / 6 * horas.doubleValue();
+            basicoBruto += basicoBruto * (tipoJornal.getPorcExtraBruto().doubleValue() / 100);
             totalConcepto = basicoBruto; //resultado de la suma del concepto
 
             //Realizo el agregado de los modificadores de tarea
             if (incluirAdicionales){
                 if (tarea.getInsalubre()){
                     double conceptoInsalubre = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.INSALUBRE).getValorDefecto().doubleValue() / 100);
-                    conceptoInsalubre += conceptoInsalubre * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    //conceptoInsalubre += conceptoInsalubre * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setInsalubre(new Moneda(conceptoInsalubre));
                     totalConcepto += conceptoInsalubre ;
                 }
                 if (tarea.getPeligrosa()){
                     double conceptoPeligrosa = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA).getValorDefecto().doubleValue() / 100);
-                    conceptoPeligrosa += conceptoPeligrosa * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    //conceptoPeligrosa += conceptoPeligrosa * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setPeligrosa(new Moneda(conceptoPeligrosa));
                     totalConcepto += conceptoPeligrosa ;
                 }
                 if (tarea.getPeligrosa2()){
                     double conceptoPeligrosa2 = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PELIGROSA2).getValorDefecto().doubleValue() / 100);
-                    conceptoPeligrosa2 += conceptoPeligrosa2 * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    //conceptoPeligrosa2 += conceptoPeligrosa2 * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setPeligrosa2(new Moneda(conceptoPeligrosa2));
                     totalConcepto += conceptoPeligrosa2;
                 }
                 if (tarea.getProductiva()){
                     double conceptoProductiva = basicoBruto * (getMapAdicTarea().get(AdicionalTarea.PRODUCTIVA).getValorDefecto().doubleValue() / 100);
-                    conceptoProductiva += conceptoProductiva * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    //conceptoProductiva += conceptoProductiva * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setProductiva(new Moneda(conceptoProductiva));
                     totalConcepto += conceptoProductiva ;
                 }
                 if (tarea.getEspecidalidad() != null && (tarea.getEspecidalidad().compareTo(BigDecimal.ZERO) > 0)){
                     double conceptoEspecialidad = basicoBruto * (tarea.getEspecidalidad().doubleValue() / 100);
-                    conceptoEspecialidad += conceptoEspecialidad * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
+                    //conceptoEspecialidad += conceptoEspecialidad * tipoJornal.getPorcExtraBruto().doubleValue() / 100;
                     tteVO.setEspecialidad(new Moneda(conceptoEspecialidad));
                     totalConcepto += conceptoEspecialidad ;
                 }
