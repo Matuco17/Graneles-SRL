@@ -62,13 +62,15 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     
     Long personalCacheId;
     Double totalAcumuladoCache; //ultimo total acumulado, dependie del personalCache
+    Date desdeCache;
+    Date hastaCache;
     
     /**
      * Metodo que levanta el acumulado por las horas del trabajador en el periodo seleccionado
      * @return 
      */
     public double acumuladoBrutoTrabajadores(Personal personal, Date desde, Date hasta, boolean incluirHoras, boolean incluirAccidentes) {
-        if (personalCacheId == personal.getId()){
+        if (personalCacheId == personal.getId() && desdeCache == desde && hastaCache == hasta){
             return totalAcumuladoCache;
         } else {
             double totalAcumulado = 0;
@@ -96,6 +98,8 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             
             //Completo los cache para aminorar los calculos
             personalCacheId = personal.getId();
+            desdeCache = desde;
+            hastaCache = hasta;
             totalAcumuladoCache = totalAcumulado;
             
             return totalAcumulado;

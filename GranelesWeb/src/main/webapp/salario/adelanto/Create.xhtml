@@ -15,8 +15,11 @@
         <ui:define name="body">
             <h:form>
                 <p:panel id="panSeleccion" >
-                    <h:panelGrid columns="4">
+                    <h:panelGrid columns="3">
                         <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal" />
+                        <h:outputLabel value="Fecha de Referencia" />
+                        <h:outputText value="" />
+                        
                         <p:autoComplete value="#{adelantoController.currentPersonal}" 
                                     completeMethod="#{personalController.completePersonal}"
                                     maxResults="15" size="60" minQueryLength="2"
@@ -24,7 +27,7 @@
                                     forceSelection="true"  >  
                         </p:autoComplete>
                         
-                        <h:outputLabel value="" />
+                        <p:calendar id="fechaReferencia" value="#{adelantoController.fechaReferencia}" pattern="dd/MM/yyyy" />
 
                         <h:commandButton id="btnSeleccionarPersonal"
                                          action="#{adelantoController.seleccionarPersonal}" 

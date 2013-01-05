@@ -46,7 +46,8 @@ public class AdelantoController implements Serializable {
     private BigDecimal valorMaximoCalculado;
     private BigDecimal valorTotalAdelantos;
     private String urlRecibo;
-    
+   
+    private Date fechaReferencia;
 
     public AdelantoController() {
     }
@@ -73,7 +74,7 @@ public class AdelantoController implements Serializable {
     }
 
     private void calcularMaximosYAdelantos() {
-        valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(getSelected().getPersonal());
+        valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(getSelected().getPersonal(), getFechaReferencia());
         
         List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(getSelected().getPersonal());
         Collections.sort(adelantos, new ComparadorAdelanto());
@@ -303,4 +304,17 @@ public class AdelantoController implements Serializable {
         }
         
     }
+
+    public Date getFechaReferencia() {
+        if (fechaReferencia == null){
+            fechaReferencia = new Date();
+        }
+        return fechaReferencia;
+    }
+
+    public void setFechaReferencia(Date fechaReferencia) {
+        this.fechaReferencia = fechaReferencia;
+    }
+    
+    
 }

@@ -46,13 +46,13 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
      * @param personal
      * @return 
      */
-    public BigDecimal calcularTotalAdelantoAcumulado(Personal personal){
-        Date fechaInicio = periodoF.obtenerFechaInicioPeriodoSemestralActual();
-        Date fechaFin = new Date();
+    public BigDecimal calcularTotalAdelantoAcumulado(Personal personal, Date fechaReferencia){
+        Date fechaInicio = periodoF.obtenerFechaInicioPeriodoSemestral(fechaReferencia);
+        Date fechaFin = fechaReferencia;
         
         double acumulado = 0;
-        acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin, null, true, false);
-        acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin, null, true, false);
+        acumulado += conceptoReciboF.calcularValorSAC(personal, fechaInicio, fechaFin, null, true, true);
+        acumulado += conceptoReciboF.calcularValorVacaciones(personal, fechaInicio, fechaFin, null, true, true);
         
         double acumuladoNeto = conceptoReciboF.calcularNeto(personal, acumulado);
         
