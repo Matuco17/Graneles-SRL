@@ -286,9 +286,9 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         Map<Integer, List<ConceptoRecibo>> result = new HashMap<Integer, List<ConceptoRecibo>>();
         
         for(ConceptoRecibo c : conceptosEncontrados){
-            if (result.get(c.getTipo().getId()) == null)
+            if (result.get(c.getTipo().getId()) == null){
                 result.put(c.getTipo().getId(), new ArrayList<ConceptoRecibo>());
-            
+            }
             result.get(c.getTipo().getId()).add(c);
         }
         

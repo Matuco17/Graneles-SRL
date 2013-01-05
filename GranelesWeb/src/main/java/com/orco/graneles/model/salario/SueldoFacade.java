@@ -17,11 +17,11 @@ import javax.persistence.PersistenceContext;
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.Moneda;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,6 +61,8 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     private FixedListFacade fixedListF;
     @EJB
     private PeriodoFacade periodoF;
+    @EJB
+    private AccidentadoFacade accidentadoF;
 
     
     protected void calcularValorYCrearItemConcepto(ConceptoRecibo cDeductivo, double totalBruto, Personal personal, Sueldo sueldoTTE) {
@@ -159,7 +161,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
      * @param conceptos
      * @return 
      */
-    public Sueldo calcularSueldoAccidentado(Periodo periodo, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirSACyVac){
+    public Sueldo calcularSueldoAccidentado(Periodo periodo, Accidentado accidentado, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirSACyVac, boolean incluirAdelantos){
         
         if (conceptoReciboAccidentadoCache == null){
             conceptoReciboAccidentadoCache = conceptoReciboF.obtenerConcepto(
@@ -240,10 +242,15 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
             sueldoAcc = mergeSueldos(sueldoAcc, sueldoVac);
         }
         
+        //Agrego los adelantos correspondientes a todo el periodo
+        if (incluirAdelantos) {
+            agregarAdelanto(sueldoAcc, false, true);
+        }
+        
         return sueldoAcc;
     }
     
-    public void agregarAdelanto(Sueldo s){
+    public void agregarAdelanto(Sueldo s, boolean suprimirAccidentado, boolean suprimirHoras){
         
         if (conceptoReciboAdelantoAguinaldoCache == null || !conceptoReciboAdelantoAguinaldoCache.getTipoRecibo().equals(s.getPersonal().getTipoRecibo())){
             conceptoReciboAdelantoAguinaldoCache = conceptoReciboF.obtenerConcepto(
@@ -260,10 +267,60 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                 totalAdelantos = totalAdelantos.add(a.getValor());
             }
             
+            //tomo en cuenta si piden o no las supresiones
+            if (suprimirAccidentado || suprimirHoras){
+        
+                BigDecimal totalNetoSacYVacAccidentado = new BigDecimal(
+                        conceptoReciboF.calcularNeto(s.getPersonal(), 
+                            totalSacYVacAccidentado(s.getPersonal(), s.getPeriodo()).doubleValue())
+                );
+                
+                if (suprimirAccidentado) {
+                    if (totalAdelantos.compareTo(totalNetoSacYVacAccidentado) > 0) {
+                        totalAdelantos = totalAdelantos.subtract(totalNetoSacYVacAccidentado);
+                    } else {
+                        totalAdelantos = BigDecimal.ZERO;
+                    }
+                } else if (suprimirHoras){
+                    if (totalAdelantos.compareTo(totalNetoSacYVacAccidentado) > 0) {
+                        totalAdelantos = totalNetoSacYVacAccidentado;
+                    } 
+                }
+                
+            }
+            
             //Agrego el item al sueldo;
             itemSueldoF.crearItemSueldo(conceptoReciboAdelantoAguinaldoCache, null, totalAdelantos, s);
         }
         
+    }
+    
+    /**
+     * Metodo que devuelve el total bruto de Sac Y Vacaciones para un trabajador en concepto de accidentado
+     * @param personal
+     * @param periodo
+     * @return 
+     */
+    public BigDecimal totalSacYVacAccidentado(Personal personal, Periodo periodo){
+        BigDecimal totalSacYVac = BigDecimal.ZERO;
+        
+        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodoYPersonal(periodo.getDesde(), periodo.getHasta(), personal);
+        
+        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        
+        for (Accidentado acc : listaAcc){
+            Sueldo sueldoAcc = calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, false);
+            
+            for (ItemsSueldo is : sueldoAcc.getItemsSueldoCollection()){
+                if (is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.SAC)
+                    || is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.VACACIONES))
+                {
+                    totalSacYVac = totalSacYVac.add(is.getValorCalculado());
+                }
+            }
+        }
+       
+        return totalSacYVac;
     }
     
     

@@ -162,7 +162,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 }
                 
                 //Agrego los adelantos correspondientes a todo el periodo
-                sueldoF.agregarAdelanto(s);
+                sueldoF.agregarAdelanto(s, true, false);
                 
                 break;
             case TipoRecibo.MENSUAL:
@@ -398,7 +398,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         
         
         for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true);
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, true);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
@@ -425,7 +425,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Map<Long, Sueldo> mapSueldoCreados = new HashMap<Long, Sueldo>();
                 
         for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true);
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, true);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
