@@ -295,91 +295,91 @@
 			<rectangle>
 				<reportElement x="728" y="0" width="74" height="20"/>
 			</rectangle>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="36" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{planilla}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM">
+			<textField pattern="dd/MM" isBlankWhenNull="true">
 				<reportElement x="36" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="71" y="0" width="35" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="106" y="0" width="50" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipoJornal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="156" y="0" width="61" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalEmbarcado}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="217" y="0" width="70" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalBruto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="287" y="0" width="77" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="364" y="0" width="76" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="440" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{administracion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="520" y="0" width="89" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tarifa}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="609" y="0" width="57" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipoTurnoDescripcion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="666" y="0" width="62" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{adicionalAdminMixto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="728" y="0" width="74" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
@@ -411,35 +411,35 @@
 			<rectangle>
 				<reportElement x="0" y="0" width="156" height="20"/>
 			</rectangle>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="728" y="0" width="74" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{valor_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="364" y="0" width="76" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{diferencia_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="287" y="0" width="77" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="217" y="0" width="70" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalBruto_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="156" y="0" width="61" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
