@@ -65,6 +65,7 @@ public class PeriodoController implements Serializable {
     private String urlArchivoRecibosAccidentados;
     private String urlArchivoRecibosSavYVacOficiales;
     private String urlArchivoRecibosAccidentadosOficiales;
+    private String urlArchivoRecibosAccidentadosSacYVacNoOficiales;
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
     private BigDecimal totalBruto;
@@ -231,6 +232,17 @@ public class PeriodoController implements Serializable {
             urlArchivoRecibosAccidentadosOficiales = null;
         }
     }
+    
+    public void generarRecibosAccSacYVac(){
+        if (current != null){
+            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentadosSacYVac(current);
+            //TODO: PASAR A PONER FALSE EN EL CAMPO FINAL
+            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, true);
+            urlArchivoRecibosAccidentadosSacYVacNoOficiales = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
+        }
+    }
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -321,6 +333,7 @@ public class PeriodoController implements Serializable {
         urlArchivoRecibosAccidentados = null;
         urlArchivoRecibosSavYVacOficiales = null;
         urlArchivoRecibosAccidentadosOficiales = null;
+        urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
         selectedItemIndex = 1;
     }
     
@@ -338,6 +351,7 @@ public class PeriodoController implements Serializable {
                 urlArchivoRecibosAccidentados = null;
                 urlArchivoRecibosSavYVacOficiales = null;
                 urlArchivoRecibosAccidentadosOficiales = null;
+                urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (Exception e) {
@@ -602,6 +616,10 @@ public class PeriodoController implements Serializable {
 
     public DescompisicionMoneda getDescomposicionMonedaTotalConAdelantos() {
         return descomposicionMonedaTotalConAdelantos;
+    }
+
+    public String getUrlArchivoRecibosAccidentadosSacYVacNoOficiales() {
+        return urlArchivoRecibosAccidentadosSacYVacNoOficiales;
     }
     
     

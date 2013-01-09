@@ -96,6 +96,10 @@
                                <h:commandButton value="Generar Recibos de Accidentados Oficiales" action="#{periodoController.generarRecibosAccOficiales()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales == null}" />
                                <h:link id="lnkRecibosAccOficial" value="Recibos de Accidentados Oficiales" outcome="#{periodoController.urlArchivoRecibosAccidentadosOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales != null}" />
                                
+                               <h:outputText value="" />
+                               <h:commandButton value="Generar Recibos de Accidentados Sac y Vacaciones" action="#{periodoController.generarRecibosAccSacYVac()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales == null}" />
+                               <h:link id="lnkRecibosAccSacYVac" value="Recibos de Accidentados Sac y Vacaciones" outcome="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales != null}" />
+                               
                            </h:panelGrid>
                            
                            
