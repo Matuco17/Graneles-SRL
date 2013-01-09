@@ -18,27 +18,43 @@ import java.math.BigDecimal;
 public class TrabajadorConBrutoVO {
 
     private Personal personal;
-    private BigDecimal brutoSinSacYVacaciones;
+    private BigDecimal brutoLimpio;
     private String descripcionPeriodo;
+    private BigDecimal sac;
+    private BigDecimal vacaciones;
+    private BigDecimal accidentado;
     
     public TrabajadorConBrutoVO(Sueldo sueldo){
         this.descripcionPeriodo = sueldo.getPeriodo().getDescripcion();
         this.personal = sueldo.getPersonal();
         
-        brutoSinSacYVacaciones = BigDecimal.ZERO;
+        brutoLimpio = BigDecimal.ZERO;
+        sac = BigDecimal.ZERO;
+        vacaciones = BigDecimal.ZERO;
+        accidentado = BigDecimal.ZERO;
         
         for (ItemsSueldo is : sueldo.getItemsSueldoCollection()){
-            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)
-                && !is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.SAC)
-                && !is.getConceptoRecibo().getTipoValor().getId().equals(TipoValorConcepto.VACACIONES)){
-             
-                brutoSinSacYVacaciones = brutoSinSacYVacaciones.add(is.getValorCalculado());
-            }
+            if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                switch (is.getConceptoRecibo().getTipoValor().getId()){
+                    case TipoValorConcepto.SAC :
+                        sac = sac.add(is.getValorCalculado());
+                        break;
+                    case TipoValorConcepto.VACACIONES :
+                        vacaciones = vacaciones.add(is.getValorCalculado());
+                        break;
+                    case TipoValorConcepto.PAGOS_ACCIDENTADO_ART :
+                        accidentado = accidentado.add(is.getValorCalculado());
+                        break;
+                    default :
+                        brutoLimpio = brutoLimpio.add(is.getValorCalculado());
+                        break;
+                }
+            }            
         }        
     }
     
-    public BigDecimal getBrutoSinSacYVacaciones() {
-        return brutoSinSacYVacaciones;
+    public BigDecimal getBrutoLimpio() {
+        return brutoLimpio;
     }
 
     public String getCuil() {
@@ -60,5 +76,21 @@ public class TrabajadorConBrutoVO {
     public String getDescripcionPeriodo() {
         return descripcionPeriodo;
     }
+
+    public BigDecimal getSac() {
+        return sac;
+    }
+
+    public BigDecimal getVacaciones() {
+        return vacaciones;
+    }
+
+    public BigDecimal getAccidentado() {
+        return accidentado;
+    }
         
+    public BigDecimal getTotal(){
+        return brutoLimpio.add(sac).add(vacaciones).add(accidentado);
+    }
+    
 }

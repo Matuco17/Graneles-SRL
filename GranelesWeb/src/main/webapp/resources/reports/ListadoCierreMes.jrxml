@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCierreMes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCierreMes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0000000000000018"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
+	<field name="accidentado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[accidentado]]></fieldDescription>
+	</field>
 	<field name="apellidoYNombre" class="java.lang.String">
 		<fieldDescription><![CDATA[apellidoYNombre]]></fieldDescription>
 	</field>
-	<field name="brutoSinSacYVacaciones" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[brutoSinSacYVacaciones]]></fieldDescription>
+	<field name="brutoLimpio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[brutoLimpio]]></fieldDescription>
 	</field>
 	<field name="categoriaDescripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[categoriaDescripcion]]></fieldDescription>
@@ -28,24 +31,57 @@
 	<field name="descripcionPeriodo" class="java.lang.String">
 		<fieldDescription><![CDATA[descripcionPeriodo]]></fieldDescription>
 	</field>
-	<variable name="brutoSinSacYVacaciones_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
-		<variableExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></variableExpression>
+	<field name="sac" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[sac]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="vacaciones" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[vacaciones]]></fieldDescription>
+	</field>
+	<variable name="brutoLimpio_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoLimpio}]]></variableExpression>
 	</variable>
-	<variable name="brutoSinSacYVacaciones_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></variableExpression>
+	<variable name="brutoLimpio_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoLimpio}]]></variableExpression>
+	</variable>
+	<variable name="sac_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{sac}]]></variableExpression>
+	</variable>
+	<variable name="sac_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sac}]]></variableExpression>
+	</variable>
+	<variable name="vacaciones_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{vacaciones}]]></variableExpression>
+	</variable>
+	<variable name="vacaciones_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vacaciones}]]></variableExpression>
+	</variable>
+	<variable name="accidentado_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{accidentado}]]></variableExpression>
+	</variable>
+	<variable name="accidentado_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{accidentado}]]></variableExpression>
+	</variable>
+	<variable name="total_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<group name="categoria" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{categoriaId}]]></groupExpression>
 		<groupHeader>
 			<band height="51">
 				<rectangle>
-					<reportElement x="119" y="31" width="293" height="20" backcolor="#F0F0F0"/>
+					<reportElement x="95" y="31" width="255" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="412" y="31" width="133" height="20" backcolor="#F0F0F0"/>
+					<reportElement x="710" y="31" width="92" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="0" y="31" width="119" height="20" backcolor="#F0F0F0"/>
+					<reportElement x="0" y="31" width="95" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
 				<staticText>
 					<reportElement x="0" y="0" width="95" height="19"/>
@@ -62,7 +98,7 @@
 					<textFieldExpression><![CDATA[$F{categoriaDescripcion}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="31" width="119" height="20"/>
+					<reportElement x="0" y="31" width="95" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 						<paragraph leftIndent="4" rightIndent="4"/>
@@ -70,7 +106,7 @@
 					<text><![CDATA[CUIL]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="119" y="31" width="293" height="20"/>
+					<reportElement x="95" y="31" width="255" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 						<paragraph leftIndent="4" rightIndent="4"/>
@@ -78,36 +114,120 @@
 					<text><![CDATA[Apellido y Nombre]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="412" y="31" width="133" height="20"/>
+					<reportElement x="710" y="31" width="92" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 						<paragraph leftIndent="4" rightIndent="4"/>
 					</textElement>
-					<text><![CDATA[Bruto]]></text>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="350" y="31" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="440" y="31" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="530" y="31" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="620" y="31" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="350" y="31" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Jornales]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="440" y="31" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[SAC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="530" y="31" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Vacaciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="620" y="31" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Accidentado]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="38">
 				<rectangle>
-					<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
+					<reportElement x="0" y="0" width="350" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+					<reportElement x="710" y="0" width="92" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
-				<textField evaluationTime="Group" evaluationGroup="categoria" pattern="#,##0.00">
-					<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<paragraph leftIndent="4" rightIndent="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_1}]]></textFieldExpression>
-				</textField>
 				<textField>
-					<reportElement x="119" y="0" width="293" height="20"/>
+					<reportElement x="95" y="0" width="255" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Total Categoría " + $F{categoriaDescripcion}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="350" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="440" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="530" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="620" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="350" y="0" width="90" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{brutoLimpio_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="440" y="0" width="90" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sac_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="530" y="0" width="90" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{vacaciones_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="621" y="0" width="89" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{accidentado_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="710" y="0" width="92" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -118,25 +238,25 @@
 	<title>
 		<band height="118" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="555" height="59"/>
+				<reportElement x="0" y="0" width="802" height="59"/>
 				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="70" width="290" height="33"/>
+				<reportElement x="0" y="70" width="333" height="33"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="22" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Listado de Cierre de Mes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="70" width="93" height="33"/>
+				<reportElement x="590" y="70" width="93" height="33"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Período:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="445" y="70" width="100" height="33"/>
+				<reportElement x="683" y="70" width="100" height="33"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="18"/>
 				</textElement>
@@ -147,66 +267,169 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<rectangle>
-				<reportElement x="119" y="0" width="293" height="20"/>
+				<reportElement x="95" y="0" width="255" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="412" y="0" width="133" height="20"/>
+				<reportElement x="710" y="0" width="92" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="0" width="119" height="20"/>
+				<reportElement x="0" y="0" width="95" height="20"/>
 			</rectangle>
 			<textField>
-				<reportElement x="0" y="0" width="119" height="20"/>
+				<reportElement x="0" y="0" width="95" height="20"/>
 				<textElement verticalAlignment="Middle">
+					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="119" y="0" width="293" height="20"/>
+				<reportElement x="95" y="0" width="255" height="20"/>
 				<textElement verticalAlignment="Middle">
+					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{apellidoYNombre}]]></textFieldExpression>
 			</textField>
+			<rectangle>
+				<reportElement x="350" y="0" width="90" height="20"/>
+			</rectangle>
 			<textField pattern="#,##0.00">
-				<reportElement x="412" y="0" width="133" height="20"/>
+				<reportElement x="710" y="0" width="92" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{brutoSinSacYVacaciones}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="440" y="0" width="90" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="530" y="0" width="90" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="620" y="0" width="90" height="20"/>
+			</rectangle>
+			<textField pattern="#,##0.00">
+				<reportElement x="350" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{brutoLimpio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="440" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sac}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="530" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vacaciones}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="620" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accidentado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="50">
 			<rectangle>
-				<reportElement x="0" y="0" width="412" height="20" backcolor="#F0F0F0"/>
+				<reportElement x="0" y="0" width="350" height="20" backcolor="#F0F0F0"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="412" y="0" width="133" height="20" backcolor="#F0F0F0"/>
+				<reportElement x="710" y="0" width="92" height="20" backcolor="#F0F0F0"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="119" y="0" width="293" height="20"/>
+				<reportElement x="95" y="0" width="255" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph leftIndent="4" rightIndent="4"/>
 				</textElement>
 				<text><![CDATA[TOTAL GENERAL]]></text>
 			</staticText>
-			<textField pattern="###0.00">
-				<reportElement x="412" y="0" width="133" height="20"/>
+			<rectangle>
+				<reportElement x="350" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="440" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="530" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="620" y="0" width="90" height="20" backcolor="#F0F0F0"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="90" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 					<paragraph leftIndent="4" rightIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{brutoSinSacYVacaciones_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{brutoLimpio_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sac_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="530" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vacaciones_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="621" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{accidentado_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="710" y="0" width="92" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_2}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
