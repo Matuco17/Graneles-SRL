@@ -154,7 +154,7 @@ public class FacturaController implements Serializable {
         actualizarLineas();
     }
     
-    private void actualizarLineas(){
+    public void actualizarLineas(){
         List<LineaFactura> lineasFactura = new ArrayList<LineaFactura>();
         lineasFactura.addAll(lineasTarifa);
         lineasFactura.add(lineaAdministracion);

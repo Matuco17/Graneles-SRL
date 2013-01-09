@@ -50,7 +50,7 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
     private FixedList tipoTurnoFacturado;
   
     @JoinColumn(name = "carga_turno", referencedColumnName = "id")
-    @ManyToOne()
+    @ManyToOne(optional = true)
     private CargaTurno cargaTurno;
   
     @Column(name = "porc_administracion")

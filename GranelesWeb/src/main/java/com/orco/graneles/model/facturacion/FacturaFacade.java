@@ -62,6 +62,18 @@ public class FacturaFacade extends AbstractFacade<Factura> {
             cargaTurnoF.edit(ct);
         }
     }
+
+    @Override
+    public void remove(Factura entity) {
+        for (TurnoFacturado tf : entity.getTurnosFacturadosCollection()){
+            CargaTurno ct = tf.getCargaTurno();
+            ct.setTurnoFacturado(null);
+            cargaTurnoF.edit(ct);
+        }
+        
+        super.remove(entity);
+    }
+    
     
 
     

@@ -249,6 +249,7 @@
                                     <p:column style="text-align: right; width: 20%;">
                                         <p:inputText value="#{lineaFactura.importe}" style="text-align: right;"  >
                                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                            <p:ajax  event="blur" update="@form" listener="#{facturaController.actualizarLineas()}" /> 
                                         </p:inputText>   
                                     </p:column>  
                                 </p:dataTable>
@@ -257,8 +258,8 @@
                                      icon="ui-icon-plus" title="Agregar Concepto" />
                             </p:panel>
                             
-                            <p:panel header="Totales" >
-                                <p:panelGrid style="width: 100%; font-size: 1.1em;" id="gridTotales">
+                            <p:panel header="Totales"  id="gridTotales">
+                                <p:panelGrid style="width: 100%; font-size: 1.1em;" >
                                     <p:row>
                                         <p:column style="text-align: left; width: 70%;">
                                         </p:column>
