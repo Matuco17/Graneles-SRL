@@ -174,6 +174,11 @@ public class LibroSueldosAFIPv34 extends ExportadorGenerico<Sueldo> {
             
             dias = Math.min(dias, diasMes);
             
+            //Seteo al menos 1 dia si no tiene sino no importa bien el archivo
+            if (dias == 0){
+                dias = 1;
+            }
+            
             linea.append(StringUtils.right("000000000" + 
                                     String.valueOf(dias)
                                  , 9));

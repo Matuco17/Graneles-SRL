@@ -84,6 +84,9 @@ public class Empresa implements Serializable {
     @Column(name = "web")
     private String web;
     
+    @Column(name = "codigo_postal")
+    private String codigoPostal;
+    
     @ManyToMany(mappedBy = "empresaCollection")
     private Collection<Buque> buqueCollection;
     
@@ -248,6 +251,14 @@ public class Empresa implements Serializable {
 
     public void setLogoFile(UploadedFile logoFile) {
         this.logoFile = logoFile;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
     
     

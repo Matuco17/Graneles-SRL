@@ -76,7 +76,7 @@ public class AdelantoController implements Serializable {
     private void calcularMaximosYAdelantos() {
         valorMaximoCalculado = ejbFacade.calcularTotalAdelantoAcumulado(getSelected().getPersonal(), getFechaReferencia());
         
-        List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(getSelected().getPersonal());
+        List<Adelanto> adelantos = ejbFacade.obtenerAdelantosPeriodo(getSelected().getPersonal(), getFechaReferencia());
         Collections.sort(adelantos, new ComparadorAdelanto());
         adelantosPersonalModel = new ListDataModel(adelantos);
 

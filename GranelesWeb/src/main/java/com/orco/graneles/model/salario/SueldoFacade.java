@@ -289,8 +289,10 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                 
             }
             
-            //Agrego el item al sueldo;
-            itemSueldoF.crearItemSueldo(conceptoReciboAdelantoAguinaldoCache, null, totalAdelantos, s);
+            if (totalAdelantos.doubleValue() >= 0.01) {
+                //Agrego el item al sueldo;
+                itemSueldoF.crearItemSueldo(conceptoReciboAdelantoAguinaldoCache, null, totalAdelantos, s);
+            }
         }
         
     }

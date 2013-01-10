@@ -54,6 +54,9 @@
 	<field name="nombreBuque" class="java.lang.String">
 		<fieldDescription><![CDATA[nombreBuque]]></fieldDescription>
 	</field>
+	<field name="facturaCodigoPostal" class="java.lang.String">
+		<fieldDescription><![CDATA[facturaCodigoPostal]]></fieldDescription>
+	</field>
 	<columnHeader>
 		<band height="336" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
@@ -82,7 +85,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{facturaLocalidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(" + $F{facturaCodigoPostal} + ") " + $F{facturaLocalidad}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="78" y="260" width="161" height="18"/>
@@ -101,9 +104,9 @@
 			<textField>
 				<reportElement x="34" y="311" width="303" height="20"/>
 				<textElement verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreBuque}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["M/V " + $F{nombreBuque}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -137,35 +140,35 @@
 			<textField pattern="#,##0.00">
 				<reportElement x="450" y="6" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaSubtotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="450" y="51" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaIVA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="450" y="106" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaTotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="65" y="86" width="272" height="20"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Depósito a Cta Cte Banco Credicoop]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="65" y="106" width="272" height="20"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CBU 19100902-55009001020714]]></text>
 			</staticText>

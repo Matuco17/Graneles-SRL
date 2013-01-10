@@ -171,6 +171,10 @@ public class LineaFactura implements Serializable {
         return factura.getExportador().getCuit();
     }
     
+    public String getFacturaCodigoPostal () {
+        return factura.getExportador().getCodigoPostal();
+    }
+    
     public BigDecimal getFacturaSubtotal(){
         return factura.getTotalFactura();
     }

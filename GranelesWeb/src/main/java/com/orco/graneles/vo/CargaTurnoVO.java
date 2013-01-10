@@ -65,40 +65,48 @@ public class CargaTurnoVO {
     
     //Valores de las bodegas
     public BigDecimal getCargaBodega1(){
-        return cargasXBodega[1];
+        return getCargaBodega(1);
     }
     public BigDecimal getCargaBodega2(){
-        return cargasXBodega[2];
+        return getCargaBodega(2);
     }
     public BigDecimal getCargaBodega3(){
-        return cargasXBodega[3];
+        return getCargaBodega(3);
     }
     public BigDecimal getCargaBodega4(){
-        return cargasXBodega[4];
+        return getCargaBodega(4);
     }
     public BigDecimal getCargaBodega5(){
-        return cargasXBodega[5];
+        return getCargaBodega(5);
     }
     public BigDecimal getCargaBodega6(){
-        return cargasXBodega[6];
+        return getCargaBodega(6);
     }
     public BigDecimal getCargaBodega7(){
-        return cargasXBodega[7];
+        return getCargaBodega(7);
     }
     public BigDecimal getCargaBodega8(){
-        return cargasXBodega[8];
+        return getCargaBodega(8);
     }
     public BigDecimal getCargaBodega9(){
-        return cargasXBodega[9];
+        return getCargaBodega(9);
     }
     
     public BigDecimal getTotalCargaTurno(){
         BigDecimal total = BigDecimal.ZERO;
-        for (int i = 1; i < cargasXBodega.length; i++)
+        for (int i = 1; i < cargasXBodega.length; i++){
             total = total.add(cargasXBodega[i]);
+        }
         return total;
     }
     
+    private BigDecimal getCargaBodega(int nroBodega){
+        if (cargasXBodega.length > nroBodega) {
+            return cargasXBodega[nroBodega];
+        } else {
+            return null;
+        }
+    }
     
     //Datos provistos por el resumen de carga
     //Cargas Turnos

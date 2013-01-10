@@ -80,6 +80,10 @@
                                <h:commandButton value="Generar Listado de Cierre de Mes" action="#{periodoController.generarListadoCierreMes()}" rendered="#{periodoController.urlArchivoCierreMes == null}" />
                                <h:link id="lnkCierreMes" value="Listado de Cierre de Mes" outcome="#{periodoController.urlArchivoCierreMes}"  rendered="#{periodoController.urlArchivoCierreMes != null}" />
 
+                               <h:outputLabel value="Descargar Listado de SAC y Vacaciones" />
+                               <h:commandButton value="Generar Listado de SAC y Vacaciones" action="#{periodoController.generarListadoSacYVacaciones()}" rendered="#{periodoController.urlArchivoSacYVacaciones == null}" />
+                               <h:link id="lnkSacYVac" value="Listado de SAC y Vacaciones" outcome="#{periodoController.urlArchivoSacYVacaciones}"  rendered="#{periodoController.urlArchivoSacYVacaciones != null}" />
+
                                <h:outputLabel value="Descargar Recibos de Sueldos SAC y Vacaciones" />
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones" action="#{periodoController.generarRecibosSacYVac()}" rendered="#{periodoController.urlArchivoRecibosSacYVac == null}" />
                                <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" outcome="#{periodoController.urlArchivoRecibosSacYVac}"  rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />

@@ -444,7 +444,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         return mapSueldoCreados;
     }
     
-    public List<Sueldo> obtenerSueldosAccidentados(Periodo periodo){
+    public List<Sueldo> obtenerSueldosAccidentados(Periodo periodo, boolean incluirSacYVac, boolean incluirAdelanto){
         List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo.getDesde(), periodo.getHasta());
         
         Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
@@ -452,7 +452,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Map<Long, Sueldo> mapSueldoCreados = new HashMap<Long, Sueldo>();
                 
         for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, true);
+            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, incluirSacYVac, incluirAdelanto);
             
             //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
             Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());

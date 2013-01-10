@@ -98,7 +98,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
                                 
                 if (totalCargado.compareTo(BigDecimal.ZERO) > 0){
                     LineaFactura lf = new LineaFactura();
-                    lf.setDescripcion("Estibaje de " + totalCargado.divide(new BigDecimal(1000)).toBigInteger().toString() + " MT de "+ m.getDescripcion());
+                    lf.setDescripcion("Estibaje de " + totalCargado.toBigInteger().toString() + " MT de "+ m.getDescripcion());
                     if (tarifaActiva != null) {
                         lf.setPrecioUnitario(tarifaActiva.getValor());
                     }

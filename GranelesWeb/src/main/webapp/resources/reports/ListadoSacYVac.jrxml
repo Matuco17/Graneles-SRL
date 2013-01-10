@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCierreMes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="3.1384283767210093"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="204"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="accidentado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[accidentado]]></fieldDescription>
+	</field>
+	<field name="apellidoYNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoYNombre]]></fieldDescription>
+	</field>
+	<field name="brutoLimpio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[brutoLimpio]]></fieldDescription>
+	</field>
+	<field name="categoriaDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[categoriaDescripcion]]></fieldDescription>
+	</field>
+	<field name="categoriaId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[categoriaId]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cuil" class="java.lang.String">
+		<fieldDescription><![CDATA[cuil]]></fieldDescription>
+	</field>
+	<field name="descripcionPeriodo" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcionPeriodo]]></fieldDescription>
+	</field>
+	<field name="sac" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[sac]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="vacaciones" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[vacaciones]]></fieldDescription>
+	</field>
+	<variable name="brutoLimpio_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoLimpio}]]></variableExpression>
+	</variable>
+	<variable name="brutoLimpio_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{brutoLimpio}]]></variableExpression>
+	</variable>
+	<variable name="sac_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{sac}]]></variableExpression>
+	</variable>
+	<variable name="sac_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sac}]]></variableExpression>
+	</variable>
+	<variable name="vacaciones_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{vacaciones}]]></variableExpression>
+	</variable>
+	<variable name="vacaciones_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vacaciones}]]></variableExpression>
+	</variable>
+	<variable name="accidentado_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{accidentado}]]></variableExpression>
+	</variable>
+	<variable name="accidentado_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{accidentado}]]></variableExpression>
+	</variable>
+	<variable name="total_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<group name="categoria" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{categoriaId}]]></groupExpression>
+		<groupHeader>
+			<band height="106">
+				<rectangle>
+					<reportElement x="95" y="86" width="305" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="668" y="86" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="86" width="95" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="55" width="95" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Categoría:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="95" y="55" width="213" height="20"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{categoriaDescripcion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="86" width="95" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[CUIL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="95" y="86" width="305" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Apellido y Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="668" y="86" width="134" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="400" y="86" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="534" y="86" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="400" y="86" width="134" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[SAC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="534" y="86" width="134" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<text><![CDATA[Vacaciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1" y="0" width="529" height="33"/>
+					<textElement verticalAlignment="Bottom">
+						<font size="22" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Listado de SAC y Vacaciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="609" y="0" width="93" height="33"/>
+					<textElement verticalAlignment="Bottom">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Período:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="702" y="0" width="100" height="33"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font size="18"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcionPeriodo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="38">
+				<rectangle>
+					<reportElement x="0" y="0" width="400" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="668" y="0" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<textField>
+					<reportElement x="95" y="0" width="305" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total Categoría " + $F{categoriaDescripcion}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="400" y="0" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="534" y="0" width="134" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="400" y="0" width="134" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sac_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="534" y="0" width="134" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{vacaciones_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement x="668" y="0" width="134" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<paragraph leftIndent="4" rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="95" y="0" width="305" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="668" y="0" width="134" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="95" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="95" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="0" width="305" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellidoYNombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="668" y="0" width="134" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sac}.add($F{vacaciones})]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="400" y="0" width="134" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="534" y="0" width="134" height="20"/>
+			</rectangle>
+			<textField pattern="#,##0.00">
+				<reportElement x="400" y="0" width="134" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sac}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="534" y="0" width="134" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vacaciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="50"/>
+	</summary>
+</jasperReport>

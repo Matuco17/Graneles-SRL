@@ -11,6 +11,7 @@ import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
+import com.orco.graneles.reports.ListadoSacYVacaciones;
 import com.orco.graneles.reports.RecibosSueldoSacYVac;
 import com.orco.graneles.reports.RecibosSueldosAccidentados;
 import com.orco.graneles.vo.DescompisicionMoneda;
@@ -61,11 +62,13 @@ public class PeriodoController implements Serializable {
     private String urlArchivoTxt;
     private String urlArchivo34Txt;
     private String urlArchivoCierreMes;
+    private String urlArchivoSacYVacaciones;
     private String urlArchivoRecibosSacYVac;
     private String urlArchivoRecibosAccidentados;
     private String urlArchivoRecibosSavYVacOficiales;
     private String urlArchivoRecibosAccidentadosOficiales;
     private String urlArchivoRecibosAccidentadosSacYVacNoOficiales;
+   
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
     private BigDecimal totalBruto;
@@ -186,6 +189,21 @@ public class PeriodoController implements Serializable {
         }
     }
     
+        /**
+     * Genera el listado de cierre de mes para el periodo actual
+     */
+    public void generarListadoSacYVacaciones(){
+        //Verifico que si el periodo ya tiene sueldos cargados, entonces genero el pdf y el archivo de AFIP
+        if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
+            List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
+            
+            ListadoSacYVacaciones reporte = new ListadoSacYVacaciones(current, sueldosSacYVac);
+            urlArchivoSacYVacaciones = reporte.obtenerReportePDF();
+        } else {
+            urlArchivoSacYVacaciones = null;
+        }
+    }
+    
     /**
      * Genera los recibos de sueldos de SAC y Vacaciones
      */
@@ -213,7 +231,7 @@ public class PeriodoController implements Serializable {
     
     public void generarRecibosAcc(){
         if (current != null){
-            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current);
+            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current, false, false);
             
             RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, false);
             urlArchivoRecibosAccidentados = reporte.obtenerReportePDF();
@@ -224,7 +242,7 @@ public class PeriodoController implements Serializable {
     
     public void generarRecibosAccOficiales(){
         if (current != null){
-            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current);
+            List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentados(current, true, false);
             
             RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, true);
             urlArchivoRecibosAccidentadosOficiales = reporte.obtenerReportePDF();
@@ -329,6 +347,7 @@ public class PeriodoController implements Serializable {
         urlArchivoTxt = null;
         urlArchivo34Txt = null;
         urlArchivoCierreMes = null;
+        urlArchivoSacYVacaciones = null;
         urlArchivoRecibosSacYVac = null;
         urlArchivoRecibosAccidentados = null;
         urlArchivoRecibosSavYVacOficiales = null;
@@ -347,6 +366,7 @@ public class PeriodoController implements Serializable {
                 urlArchivoTxt = null;
                 urlArchivo34Txt = null;
                 urlArchivoCierreMes = null;
+                urlArchivoSacYVacaciones = null;
                 urlArchivoRecibosSacYVac = null;
                 urlArchivoRecibosAccidentados = null;
                 urlArchivoRecibosSavYVacOficiales = null;
@@ -620,6 +640,10 @@ public class PeriodoController implements Serializable {
 
     public String getUrlArchivoRecibosAccidentadosSacYVacNoOficiales() {
         return urlArchivoRecibosAccidentadosSacYVacNoOficiales;
+    }
+
+    public String getUrlArchivoSacYVacaciones() {
+        return urlArchivoSacYVacaciones;
     }
     
     

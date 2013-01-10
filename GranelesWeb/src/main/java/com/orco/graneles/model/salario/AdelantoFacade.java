@@ -64,11 +64,15 @@ public class AdelantoFacade extends AbstractFacade<Adelanto> {
      * @param personal
      * @return 
      */
-    public List<Adelanto> obtenerAdelantosPeriodo(Personal personal){
+    public List<Adelanto> obtenerAdelantosPeriodo(Personal personal, Date fechaReferencia){
+        Date fechaInicio = periodoF.obtenerFechaInicioPeriodoSemestral(fechaReferencia);
+        Date fechaFin = fechaReferencia;
+      
+        
         return getEntityManager().createNamedQuery("Adelanto.findByFechaPersonalDesdeHasta", Adelanto.class)
                 .setParameter("personal", personal)
-                .setParameter("desde", periodoF.obtenerFechaInicioPeriodoSemestralActual())
-                .setParameter("hasta", new Date())
+                .setParameter("desde", fechaInicio)
+                .setParameter("hasta", fechaFin)
                 .getResultList();
     }
     

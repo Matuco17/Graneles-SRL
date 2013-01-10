@@ -36,6 +36,11 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
+                        <p:column headerText="#{bundleSalario.AdelantoTitle_valor}" >
+                            <h:outputText value="#{item.valor}" >
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
                     </p:dataTable>
                     <h:panelGrid columns="4" >
                         <h:commandButton 
