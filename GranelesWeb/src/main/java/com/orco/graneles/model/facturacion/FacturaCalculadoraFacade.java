@@ -104,6 +104,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
                 fCalculadora.setFactura(factura);
                 fCalculadora.setTarea(tarea);
                 fCalculadora.setSalarioBasico(obtenerSalarioBasico(tarea, factura.getFecha()));
+                fCalculadora.setTipoJornal(tipoJornal);
                 
                 fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
                         fCalculadora.getSalarioBasico(), 

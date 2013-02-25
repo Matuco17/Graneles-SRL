@@ -55,8 +55,8 @@ public class ResumenCargaEmbarqueVO {
             for (CargaTurno ct : te.getCargaTurnoCollection()){
                 for (CargaTurnoCargas ctc : ct.getCargasCollection()){
                     totalCargadoXBodega[ctc.getNroBodega()] = totalCargadoXBodega[ctc.getNroBodega()].add(ctc.getCarga());
-                    agregarAlListaTotal(totalesCargaActual, ctc.getMercaderiaBodega().getDescripcion(), ctc.getCarga());
-                    agregarAlListaTotal(totalesCargaEnBuque, ctc.getMercaderiaBodega().getDescripcion(), ctc.getCarga());
+                    agregarAlListaTotal(totalesCargaActual, ctc.getMercaderiaBodega().getDescripcionIngles(), ctc.getCarga());
+                    agregarAlListaTotal(totalesCargaEnBuque, ctc.getMercaderiaBodega().getDescripcionIngles(), ctc.getCarga());
                 }
             }
         }
@@ -64,8 +64,8 @@ public class ResumenCargaEmbarqueVO {
         cargasPrevias = new CargaPrevia[cantBodegas+1];
         for (CargaPrevia cp : embarque.getCargaPreviaCollection()){
             cargasPrevias[cp.getBodega().getNro()] = cp;
-            agregarAlListaTotal(totalesCargaPrevia, cp.getMercaderia().getDescripcion(), cp.getCarga());
-            agregarAlListaTotal(totalesCargaEnBuque, cp.getMercaderia().getDescripcion(), cp.getCarga());
+            agregarAlListaTotal(totalesCargaPrevia, cp.getMercaderia().getDescripcionIngles(), cp.getCarga());
+            agregarAlListaTotal(totalesCargaEnBuque, cp.getMercaderia().getDescripcionIngles(), cp.getCarga());
         }
         
         totalEnBuqueXBodega = new BigDecimal[cantBodegas+1];

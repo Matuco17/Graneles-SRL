@@ -6,6 +6,7 @@ package com.orco.graneles.vo;
 
 import com.orco.graneles.domain.facturacion.FacturaCalculadora;
 import com.orco.graneles.domain.salario.TipoJornal;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.List;
  *
  * @author orco
  */
-public class Calculadora {
+public class Calculadora implements Serializable {
+    
+    
     
     private List<FilaCalculadora> filas;
     private List<TipoJornal> tiposJornales;
@@ -48,6 +51,10 @@ public class Calculadora {
         return total;
     }
     
+    public void setTotal(BigDecimal total){
+        
+    }
+    
     public List<BigDecimal> getTotalXTipoJornal(){
         if (this.totalXtipoJornal == null){
             this.totalXtipoJornal = new ArrayList<BigDecimal>();
@@ -68,6 +75,10 @@ public class Calculadora {
             
         } 
         return this.totalXtipoJornal;
+    }
+
+    public void setTotalXtipoJornal(List<BigDecimal> totalXtipoJornal) {
+        this.totalXtipoJornal = totalXtipoJornal;
     }
     
 }

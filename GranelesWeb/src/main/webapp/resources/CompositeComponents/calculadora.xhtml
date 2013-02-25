@@ -18,61 +18,65 @@
     <co:implementation>
      
         <p:panel header="Calculadora" >
-            <p:panelGrid>
+            <p:panelGrid id="calculadora">
                 <f:facet name="header" >
                     <p:row>
                         <p:column></p:column>
                         <c:forEach items="#{cc.attrs.calculadora.tiposJornales}" var="tipoJornal" >
-                            <p:column colspan="3">#{tipoJornal.toString()}</p:column>   
+                            <p:column colspan="3"><h:outputText value="#{tipoJornal.toString()}" /> </p:column>   
                         </c:forEach>
                     </p:row>
                 </f:facet>
                 
-                <c:forEach items="#{cc.attrs.calculadora.filas}" var="filaCalculadora">
-                    <p:row>
-                        <p:column class="ui-widget-header">#{filaCalculadora.tarea.toString()}</p:column>
-                        <c:forEach items="#{filaCalculadora.facturaCalculadoras}" var="fCalculadora" >
+                 <c:forEach items="#{cc.attrs.calculadora.filas}" var="filaCalculadora" >
+                     <p:row>
+                         <p:column  ><h:outputText value="#{filaCalculadora.toString()}" /></p:column>
+                         <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
                             <p:column>
-                                <p:spinner min="0" stepFactor="0.5" id="cantidad" value="#{fCalculadora.cantidad}" />
+                                <h:outputText value="#{fCalculadora.cantidad}" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="valorBruto" value="#{fCalculadora.valorTurno}" readonly="true" class="fila-resultado"  >
+                                <h:outputText value="#{fCalculadora.valorTurno}" >
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </p:inputText>
+                                </h:outputText>
                             </p:column>
                             <p:column>
-                                <p:inputText id="valorTotal" value="#{salario.valorTotal}" readonly="true" class="fila-resultado"  >
+                                <h:outputText value="#{fCalculadora.valorTotal}"  >
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </p:inputText>
+                                </h:outputText>
                             </p:column>                            
-                        </c:forEach>
-                        <p:column>
-                            <p:inputText id="valorFila" value="#{filaCalculadora.valorTotal}" readonly="true" class="fila-resultado"  >
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                </c:forEach>   
+                         </c:forEach>
+                     </p:row>
+                </c:forEach>  
                 
-                <f:facet name="footer" >
-                    <p:row>
+                     <p:row   >
                         <p:column></p:column>
                         <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
                             <p:column colspan="2"></p:column>
                             <p:column>
-                                <p:inputText id="valorColumna" value="#{totalTipoJornal}" readonly="true" class="fila-resultado"  >
+                                <h:outputText value="#{totalTipoJornal}" >
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </p:inputText>
+                                </h:outputText>
                             </p:column>
+                        </c:forEach>      
+                     </p:row>
+                     <p:row>
+                        <p:column></p:column>
+                        <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" varStatus="iteracion" >
+                            <c:choose>
+                                <c:when test="#{!iteracion.last}" >
+                                        <p:column colspan="3"></p:column>
+                                </c:when>
+                            </c:choose>
                         </c:forEach>
+                        <p:column colspan="2" >Total Gral</p:column>
                         <p:column>
-                            <p:inputText id="valorTotal" value="#{cc.attrs.total}" readonly="true" class="fila-resultado"  >
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                            </p:inputText>
+                                <h:outputText value="#{cc.attrs.calculadora.total}" >
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </h:outputText>
                         </p:column>
                     </p:row>
-                </f:facet>
-            </p:panelGrid>
+           </p:panelGrid>
         </p:panel>     
     </co:implementation>
 </html>

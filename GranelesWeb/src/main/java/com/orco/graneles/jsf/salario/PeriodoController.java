@@ -7,6 +7,7 @@ import com.orco.graneles.fileExport.LibroSueldosAFIP;
 import com.orco.graneles.fileExport.LibroSueldosAFIPv34;
 import com.orco.graneles.fileExport.ProyeccionSACyVacacionesXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.CierreMesReport;
@@ -45,6 +46,8 @@ public class PeriodoController implements Serializable {
     private PeriodoFacade ejbFacade;
     @EJB
     private LibroExcelFacade libroExcelF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
     
     private int selectedItemIndex;
 
@@ -197,7 +200,7 @@ public class PeriodoController implements Serializable {
         if (current.getSueldoCollection() != null && current.getSueldoCollection().size() > 0){
             List<Sueldo> sueldosSacYVac = ejbFacade.obtenerSueldosSacYVac(current);
             
-            ListadoSacYVacaciones reporte = new ListadoSacYVacaciones(current, sueldosSacYVac);
+            ListadoSacYVacaciones reporte = new ListadoSacYVacaciones(current, sueldosSacYVac, conceptoReciboF);
             urlArchivoSacYVacaciones = reporte.obtenerReportePDF();
         } else {
             urlArchivoSacYVacaciones = null;

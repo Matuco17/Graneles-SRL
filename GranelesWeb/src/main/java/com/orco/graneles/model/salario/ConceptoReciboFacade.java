@@ -543,8 +543,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
         } else {
             tteVO.setDescuentoJudicial(new Moneda(calcularDescuentoJudicial(tte, totalConcepto)));
         }
-        Moneda neto = (new Moneda(calcularNeto(tte.getPersonal(), totalConcepto) - tteVO.getDescuentoJudicial().doubleValue()));
-        tteVO.setValorTurno(neto);
+        if (tte != null) {
+            Moneda neto = (new Moneda(calcularNeto(tte.getPersonal(), totalConcepto) - tteVO.getDescuentoJudicial().doubleValue()));
+            tteVO.setValorTurno(neto);
+        }
         return tteVO;
     }
     

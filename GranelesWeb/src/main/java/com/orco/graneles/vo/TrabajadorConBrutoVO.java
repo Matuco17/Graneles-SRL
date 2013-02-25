@@ -10,6 +10,8 @@ import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.Sueldo;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
@@ -23,6 +25,8 @@ public class TrabajadorConBrutoVO {
     private BigDecimal sac;
     private BigDecimal vacaciones;
     private BigDecimal accidentado;
+    
+    private DescompisicionMoneda descomposicionTotal;
     
     public TrabajadorConBrutoVO(Sueldo sueldo){
         this.descripcionPeriodo = sueldo.getPeriodo().getDescripcion();
@@ -92,5 +96,24 @@ public class TrabajadorConBrutoVO {
     public BigDecimal getTotal(){
         return brutoLimpio.add(sac).add(vacaciones).add(accidentado);
     }
+
+    private Collection<DescompisicionMoneda> desc;
+    
+    public Collection<DescompisicionMoneda> getDescomposicionTotalLista() {
+        if (desc == null){
+            desc = new ArrayList<DescompisicionMoneda>();
+            desc.add(descomposicionTotal);
+        }
+        return desc;
+    }
+
+    public DescompisicionMoneda getDescomposicionTotal() {
+        return descomposicionTotal;
+    }
+
+    public void setDescomposicionTotal(DescompisicionMoneda descomposicionTotal) {
+        this.descomposicionTotal = descomposicionTotal;
+    }
+ 
     
 }

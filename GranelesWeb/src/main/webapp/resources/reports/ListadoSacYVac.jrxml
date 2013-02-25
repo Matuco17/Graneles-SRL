@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCierreMes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="3.1384283767210093"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="204"/>
+	<property name="ireport.zoom" value="1.7715610000000044"/>
+	<property name="ireport.x" value="671"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/orco/git/Graneles-SRL/GranelesWeb/src/main/webapp/resources/reports/"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -39,6 +42,12 @@
 	</field>
 	<field name="vacaciones" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[vacaciones]]></fieldDescription>
+	</field>
+	<field name="descomposicionTotal" class="com.orco.graneles.vo.DescompisicionMoneda">
+		<fieldDescription><![CDATA[descomposicionTotal]]></fieldDescription>
+	</field>
+	<field name="descomposicionTotalLista" class="java.util.Collection">
+		<fieldDescription><![CDATA[descomposicionTotalLista]]></fieldDescription>
 	</field>
 	<variable name="brutoLimpio_1" class="java.math.BigDecimal" resetType="Group" resetGroup="categoria" calculation="Sum">
 		<variableExpression><![CDATA[$F{brutoLimpio}]]></variableExpression>
@@ -167,7 +176,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="38">
+			<band height="106">
 				<rectangle>
 					<reportElement x="0" y="0" width="400" height="20" backcolor="#F0F0F0"/>
 				</rectangle>
@@ -208,6 +217,19 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="1" y="20" width="160" height="20"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+					<text><![CDATA[Descomposición de Valores]]></text>
+				</staticText>
+				<line>
+					<reportElement x="1" y="40" width="160" height="1"/>
+				</line>
+				<subreport>
+					<reportElement x="1" y="48" width="801" height="53"/>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{descomposicionTotalLista})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "descomposicionMonedaSub.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</groupFooter>
 	</group>
@@ -276,7 +298,4 @@
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="50"/>
-	</summary>
 </jasperReport>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="descomposicionMonedaSub" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0000000000000007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="c10" class="java.lang.Integer">
+		<fieldDescription><![CDATA[c10]]></fieldDescription>
+	</field>
+	<field name="c25" class="java.lang.Integer">
+		<fieldDescription><![CDATA[c25]]></fieldDescription>
+	</field>
+	<field name="c5" class="java.lang.Integer">
+		<fieldDescription><![CDATA[c5]]></fieldDescription>
+	</field>
+	<field name="c50" class="java.lang.Integer">
+		<fieldDescription><![CDATA[c50]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="p1" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p1]]></fieldDescription>
+	</field>
+	<field name="p10" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p10]]></fieldDescription>
+	</field>
+	<field name="p100" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p100]]></fieldDescription>
+	</field>
+	<field name="p2" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p2]]></fieldDescription>
+	</field>
+	<field name="p20" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p20]]></fieldDescription>
+	</field>
+	<field name="p5" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p5]]></fieldDescription>
+	</field>
+	<field name="p50" class="java.lang.Integer">
+		<fieldDescription><![CDATA[p50]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="valorTotalDescomposicion" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorTotalDescomposicion]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="736" y="0" width="105" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$100]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$50]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$20]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="453" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$0.50]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="518" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$0.25]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="583" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$0.10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="647" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$0.05]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="841" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField pattern="###0.00">
+				<reportElement x="736" y="0" width="105" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valorTotalDescomposicion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p100}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p50}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p20}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{p1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="453" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{c50}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="518" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{c25}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="583" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{c10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="647" y="0" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{c5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

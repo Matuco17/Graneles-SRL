@@ -8,32 +8,41 @@ import com.orco.graneles.domain.facturacion.FacturaCalculadora;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.SalarioBasico;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author orco
  */
-public class FilaCalculadora {
+public class FilaCalculadora implements Serializable{
 
     private Tarea tarea;
-    private List<FacturaCalculadora> fCalculadoras;
+    private List<FacturaCalculadora> facturasCalculadoras;
 
     public Tarea getTarea() {
         return tarea;
     }
 
+    public void setTarea(Tarea tarea) {
+        this.tarea = tarea;
+    }
+    
     public FilaCalculadora(Tarea tarea) {
         this.tarea = tarea;
     }
     
     public List<FacturaCalculadora> getFacturasCalculadoras() {
-        return fCalculadoras;
+        if (facturasCalculadoras == null){
+            facturasCalculadoras = new ArrayList<FacturaCalculadora>();
+        }
+        return facturasCalculadoras;
     }
 
     public void setFacturasCalculadoras(List<FacturaCalculadora> salarios) {
-        this.fCalculadoras = salarios;
+        this.facturasCalculadoras = salarios;
     }
 
     public BigDecimal getValorTotal() {
@@ -47,5 +56,16 @@ public class FilaCalculadora {
                 
         return total;
     }
+    
+    public void setValorTotal(BigDecimal valorTotal){
+        
+    }
+
+    @Override
+    public String toString() {
+        return getTarea().toString();
+    }
+    
+    
     
 }
