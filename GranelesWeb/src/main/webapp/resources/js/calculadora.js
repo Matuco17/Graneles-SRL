@@ -1,8 +1,8 @@
 function actualizarCalculadora(idTipoJornal, idTarea){
-    var cantidad = jQuery("[name*=cant_" + idTipoJornal + "_" + idTarea + "]").val().replace(",", ".");
-    var bruto = jQuery("[name*=bruto_" + idTipoJornal + "_" + idTarea + "]").val();
+    var cantidad = jQuery("[name*=cant_tj" + idTipoJornal + "_tr" + idTarea + "]").val().replace(",", ".");
+    var bruto = jQuery("[name*=bruto_tj" + idTipoJornal + "_tr" + idTarea + "]").val();
     var total = parseFloat(cantidad) * parseFloat(bruto);
-    jQuery("[name*=total_" + idTipoJornal + "_" + idTarea + "]").val(roundNumber(total, 2));
+    jQuery("[name*=total_tj" + idTipoJornal + "_tr" + idTarea + "]").val(roundNumber(total, 2));
     
     sumarTipoJornal(idTipoJornal);
     sumarTotales();
@@ -22,11 +22,21 @@ function sumarTotales(){
 function sumarTipoJornal(idTipoJornal){
     var total = 0.0;
     
-    jQuery("[name*=total_" + idTipoJornal + "_]").each(function(idx, element){
+    jQuery("[name*=total_tj" + idTipoJornal + "_tr]").each(function(idx, element){
         total += parseFloat(jQuery(element).val());
     });
     
     jQuery("[name*=totalTJ_" + idTipoJornal + "]").val(roundNumber(total, 2));
+}
+
+function sumarTarea(idTarea){
+    var total = 0.0;
+    
+    jQuery("[name*=_tr" + idTarea + "]").each(function(idx, element){
+        total += parseFloat(jQuery(element).val());
+    });
+    
+    jQuery("[name*=totalTarea_" + idTarea + "]").val(roundNumber(total, 2));
 }
 
 

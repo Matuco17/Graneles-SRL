@@ -156,6 +156,7 @@
                         <p:graphicImage value="Graneles S.R.L." url="/faces/resources/images/logoGraneles.jpg" styleClass="logo-impresion" />
                         
                         <h:outputText value="Calculadora de Trabajadores por Administración" styleClass="titulo-impresion" />
+                        <h:outputText value="Buque: #{facturaController.selected.embarque.buque.descripcion}" styleClass="titulo-impresion" />
                         
                         <Cc:calculadora editar="false" calculadora="#{facturaController.calculadora}"  />
                     </h:panelGroup>
