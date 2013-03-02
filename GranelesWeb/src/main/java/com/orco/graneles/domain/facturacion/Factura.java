@@ -167,6 +167,11 @@ public class Factura implements Serializable {
         return facturaCalculadoraCollection;
     }
 
+    public void setFacturaCalculadoraCollection(Collection<FacturaCalculadora> facturaCalculadoraCollection) {
+        this.facturaCalculadoraCollection = facturaCalculadoraCollection;
+    }
+
+    
     
     @Override
     public int hashCode() {

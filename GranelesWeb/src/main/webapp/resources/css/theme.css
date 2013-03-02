@@ -98,8 +98,7 @@ tr.jsfcrud_even_row {
     min-width: 50px;
 }
 
-.descMonedas .header {
-    
+.descMonedas .header {    
     font-size: small;
     font-weight: bold;
 }
@@ -108,4 +107,30 @@ tr.jsfcrud_even_row {
 .fila-resultado {
     text-align: right;
     border: none;
+    width: 55px;
+}
+
+.spinner-calcuadora input {
+    width: 23px;
+}
+
+.calculadora .ui-widget-content td {
+    padding: 2px 1px;
+    min-width: 20px;
+}
+
+.outputtext-calculadora {
+    min-width: 20px;
+}
+
+.titulo-impresion {
+    font-weight: bold;
+    font-size: large;
+    margin: 0px 15px;
+    width: 100%;
+}
+
+.logo-impresion {
+    height: 110px;
+    display: block;
 }

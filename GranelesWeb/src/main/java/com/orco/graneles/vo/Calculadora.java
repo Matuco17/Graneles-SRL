@@ -21,7 +21,7 @@ public class Calculadora implements Serializable {
     
     private List<FilaCalculadora> filas;
     private List<TipoJornal> tiposJornales;
-    private List<BigDecimal> totalXtipoJornal;
+    private List<TipoJornalVO> totalXtipoJornal;
 
     public List<FilaCalculadora> getFilas() {
         return filas;
@@ -55,9 +55,9 @@ public class Calculadora implements Serializable {
         
     }
     
-    public List<BigDecimal> getTotalXTipoJornal(){
+    public List<TipoJornalVO> getTotalXTipoJornal(){
         if (this.totalXtipoJornal == null){
-            this.totalXtipoJornal = new ArrayList<BigDecimal>();
+            this.totalXtipoJornal = new ArrayList<TipoJornalVO>();
             
             for (TipoJornal tJornal : getTiposJornales()){
                 BigDecimal totalTJornal = BigDecimal.ZERO;
@@ -70,14 +70,14 @@ public class Calculadora implements Serializable {
                         }
                     }                    
                 }
-                this.totalXtipoJornal.add(totalTJornal);
+                this.totalXtipoJornal.add(new TipoJornalVO(tJornal, totalTJornal));
             }
             
         } 
         return this.totalXtipoJornal;
     }
 
-    public void setTotalXtipoJornal(List<BigDecimal> totalXtipoJornal) {
+    public void setTotalXtipoJornal(List<TipoJornalVO> totalXtipoJornal) {
         this.totalXtipoJornal = totalXtipoJornal;
     }
     

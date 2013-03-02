@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
@@ -145,8 +146,20 @@
                                rendered="#{facturaController.lnkTurnosFacturados != null}"
                                style="font-weight: bold;"/>
 
-                    
+                     <h:commandButton value="Calculadora" type="button" >  
+                        <p:printer target="calculadora"  />  
+                     </h:commandButton>  
                 </p:panel>
+                
+                <div>
+                    <h:panelGroup id="calculadora">
+                        <p:graphicImage value="Graneles S.R.L." url="/faces/resources/images/logoGraneles.jpg" styleClass="logo-impresion" />
+                        
+                        <h:outputText value="Calculadora de Trabajadores por Administración" styleClass="titulo-impresion" />
+                        
+                        <Cc:calculadora editar="false" calculadora="#{facturaController.calculadora}"  />
+                    </h:panelGroup>
+                </div>
 
                 <h:panelGrid columns="4">
                     <h:commandButton action="#{facturaController.destroyAndView}" 
@@ -166,6 +179,8 @@
                                      value="#{bundleFacturacion.FacturaShowAllLink}"
                                      title="#{bundleFacturacion.FacturaShowAllLink}"
                                      />
+                    
+                    
                 </h:panelGrid>
             </h:form>
         </ui:define>

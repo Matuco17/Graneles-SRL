@@ -63,7 +63,7 @@ public class FilaCalculadora implements Serializable{
 
     @Override
     public String toString() {
-        return getTarea().toString();
+        return getTarea().getDescripcion();
     }
     
     

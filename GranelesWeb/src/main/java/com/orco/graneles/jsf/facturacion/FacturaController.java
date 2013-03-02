@@ -170,7 +170,7 @@ public class FacturaController implements Serializable {
     }
     
     private void generarRegistrosCalculadora(){
-        this.calculadora = facturaCalculadoraF.generarCalculadora(current);
+        this.calculadora = facturaCalculadoraF.generarCalculadoraNueva(current);
         
         for (TurnoFacturado tf : turnosFacturados){
             if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)
@@ -230,6 +230,7 @@ public class FacturaController implements Serializable {
         turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
         Collections.sort(turnosFacturados);
         turnosFacturadosModel = new ListDataModel(turnosFacturados);
+        calculadora = facturaCalculadoraF.generarCalculadoraDeFactura(current);
         return "View";
     }
 
@@ -241,6 +242,8 @@ public class FacturaController implements Serializable {
 
     public String create() {
         try {
+            current.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
+            
             getFacade().create(current);
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("FacturaCreated"));

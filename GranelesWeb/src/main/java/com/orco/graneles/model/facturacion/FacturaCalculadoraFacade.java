@@ -34,7 +34,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 /**
  *
@@ -87,7 +89,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
      * @param fecha
      * @return 
      */
-    public Calculadora generarCalculadora(Factura factura){
+    public Calculadora generarCalculadoraNueva(Factura factura){
         Calculadora calculadora = new Calculadora();
         calculadora.setFilas(new ArrayList<FilaCalculadora>());
         List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
@@ -119,6 +121,73 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
         }
         
         return calculadora;
+    }
+    
+    /**
+     * Genera la calculadora con los registros de calculadora existentes en la factura
+     * @param factura
+     * @return 
+     */
+    public Calculadora generarCalculadoraDeFactura(Factura factura){
+        Calculadora calculadora = new Calculadora();
+        calculadora.setFilas(new ArrayList<FilaCalculadora>());
+        List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
+        Collections.sort(tiposJornales, new ComparadorTipoJornal());
+        calculadora.setTiposJornales(tiposJornales);
+        
+        Map<String, FacturaCalculadora> fcMap = new HashMap<String, FacturaCalculadora>();
+        for (FacturaCalculadora fc : factura.getFacturaCalculadoraCollection()){
+            fcMap.put(fc.getTarea().getId() + "_" + fc.getTipoJornal().getId(), fc);
+        }
+        
+        
+        for (Tarea tarea : tareaF.findAll()){
+            FilaCalculadora fila = new FilaCalculadora(tarea);
+            fila.setFacturasCalculadoras(new ArrayList<FacturaCalculadora>());
+            
+            for (TipoJornal tipoJornal : tiposJornales){
+                FacturaCalculadora fCalculadora = fcMap.get(tarea.getId() + "_" + tipoJornal.getId());
+                if (fCalculadora == null){
+                    fCalculadora = new FacturaCalculadora();
+                    fCalculadora.setCantidad(BigDecimal.ZERO);
+                    fCalculadora.setFactura(factura);
+                    fCalculadora.setTarea(tarea);
+                    fCalculadora.setSalarioBasico(obtenerSalarioBasico(tarea, factura.getFecha()));
+                    fCalculadora.setTipoJornal(tipoJornal);
+                }
+                
+                fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
+                          fCalculadora.getSalarioBasico(), 
+                          6, 
+                          true, 
+                          tarea, 
+                          tipoJornal).getValorBruto());
+                
+                fila.getFacturasCalculadoras().add(fCalculadora);                
+            }
+            calculadora.getFilas().add(fila);
+        }
+        
+        return calculadora;
+    }
+    
+    /**
+     * Devuelve los registros de factura calculadora en limpio
+     * @param calculadora
+     * @return 
+     */
+    public Collection<FacturaCalculadora> cleanCalculadora(Calculadora calculadora){
+        Collection<FacturaCalculadora> fcs = new ArrayList<FacturaCalculadora>();
+        
+        for (FilaCalculadora filaC : calculadora.getFilas()){
+            for (FacturaCalculadora fc: filaC.getFacturasCalculadoras()){
+                if (fc.getCantidad().doubleValue() > 0.0 && fc.getValorTurno().doubleValue() > 0.0){
+                    fcs.add(fc);
+                }
+            }
+        }
+        
+        return fcs;
     }
     
     /**

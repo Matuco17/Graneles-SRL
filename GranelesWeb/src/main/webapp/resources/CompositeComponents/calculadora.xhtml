@@ -17,13 +17,15 @@
     <!-- IMPLEMENTATION -->
     <co:implementation>
      
-        <p:panel header="Calculadora" >
-            <p:panelGrid id="calculadora">
+            <h:outputScript name="js/calculadora.js" />
+        
+            
+            <p:panelGrid id="calculadora" styleClass="calculadora">
                 <f:facet name="header" >
                     <p:row>
                         <p:column></p:column>
                         <c:forEach items="#{cc.attrs.calculadora.tiposJornales}" var="tipoJornal" >
-                            <p:column colspan="3"><h:outputText value="#{tipoJornal.toString()}" /> </p:column>   
+                            <p:column colspan="3"><h:outputText value="#{tipoJornal.descripcion}" /> </p:column>   
                         </c:forEach>
                     </p:row>
                 </f:facet>
@@ -33,17 +35,21 @@
                          <p:column  ><h:outputText value="#{filaCalculadora.toString()}" /></p:column>
                          <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
                             <p:column>
-                                <h:outputText value="#{fCalculadora.cantidad}" />
+                                <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"  />
+                                <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
+                                           id="cant_#{fCalculadora.tipoJornal.id}_#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.tipoJornal.id},#{fCalculadora.tarea.id})"/>
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{fCalculadora.valorTurno}" >
-                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </h:outputText>
+                                <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
+                                             id="bruto_#{fCalculadora.tipoJornal.id}_#{fCalculadora.tarea.id}">
+                                    <f:convertNumber pattern="#0.00" />
+                                </h:inputText>                           
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{fCalculadora.valorTotal}"  >
-                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </h:outputText>
+                                <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
+                                             id="total_#{fCalculadora.tipoJornal.id}_#{fCalculadora.tarea.id}">
+                                    <f:convertNumber pattern="#0.00" />
+                                </h:inputText>                           
                             </p:column>                            
                          </c:forEach>
                      </p:row>
@@ -54,9 +60,10 @@
                         <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
                             <p:column colspan="2"></p:column>
                             <p:column>
-                                <h:outputText value="#{totalTipoJornal}" >
-                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </h:outputText>
+                                <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"  
+                                    id="totalTJ_#{totalTipoJornal.tipoJornal.id}">
+                                    <f:convertNumber pattern="#0.00" />
+                                </h:inputText>   
                             </p:column>
                         </c:forEach>      
                      </p:row>
@@ -71,12 +78,14 @@
                         </c:forEach>
                         <p:column colspan="2" >Total Gral</p:column>
                         <p:column>
-                                <h:outputText value="#{cc.attrs.calculadora.total}" >
-                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                </h:outputText>
+                            <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
+                                          id="totalGeneral">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:inputText>   
                         </p:column>
                     </p:row>
            </p:panelGrid>
-        </p:panel>     
+            
+        
     </co:implementation>
 </html>
