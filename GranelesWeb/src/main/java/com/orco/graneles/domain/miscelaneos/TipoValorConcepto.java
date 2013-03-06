@@ -28,4 +28,10 @@ public class TipoValorConcepto {
     public static final int ADELANTO_ACCIDENTADO = 113;
     public static final int DESCUENTO_JUDICIAL = 114;
     public static final int PAGOS_ACCIDENTADO_ART = 115;
+    
+    //Agregados solo para el Reporte de aportes y contribuciones
+    public static final int SUBSIDIO_FAMILIAR = 116;
+    public static final int FNE = 117;
+    public static final int INSSJP = 118;
+    public static final int ANSSAL = 119;
 }

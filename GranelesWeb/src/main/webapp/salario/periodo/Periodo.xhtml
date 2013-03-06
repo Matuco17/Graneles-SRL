@@ -103,6 +103,11 @@
                                <h:outputText value="" />
                                <h:commandButton value="Generar Recibos de Accidentados Sac y Vacaciones" action="#{periodoController.generarRecibosAccSacYVac()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales == null}" />
                                <h:link id="lnkRecibosAccSacYVac" value="Recibos de Accidentados Sac y Vacaciones" outcome="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales != null}" />
+                     
+                               <h:outputLabel value="Descargar Cuadro de Aportes y Contribuciones" />
+                               <h:commandButton value="Generar Aportes y Contribuciones" action="#{periodoController.generarAportesYContribuciones()}" rendered="#{periodoController.urlArchivoAportesYContribuciones == null}" />
+                               <h:link id="lnkAportesYContribuciones" value="Aportes y Contribuciones" outcome="#{periodoController.urlArchivoAportesYContribuciones}"  rendered="#{periodoController.urlArchivoAportesYContribuciones != null}" />
+                     
                                
                            </h:panelGrid>
                            

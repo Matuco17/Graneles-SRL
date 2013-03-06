@@ -10,6 +10,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.LibroExcelFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
+import com.orco.graneles.reports.AportesYContribuciones;
 import com.orco.graneles.reports.CierreMesReport;
 import com.orco.graneles.reports.LibroSueldoReport;
 import com.orco.graneles.reports.ListadoSacYVacaciones;
@@ -71,6 +72,7 @@ public class PeriodoController implements Serializable {
     private String urlArchivoRecibosSavYVacOficiales;
     private String urlArchivoRecibosAccidentadosOficiales;
     private String urlArchivoRecibosAccidentadosSacYVacNoOficiales;
+    private String urlArchivoAportesYContribuciones;
    
     
     private List<ProyeccionSacVacYAdelantosVO> proyeccionesSacYVacaciones;
@@ -264,6 +266,14 @@ public class PeriodoController implements Serializable {
             urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
         }
     }
+    
+    public void generarAportesYContribuciones(){
+        if (current != null){
+            urlArchivoAportesYContribuciones = (new AportesYContribuciones(current, ejbFacade.generarReporteAportesYContribuciones(current))).obtenerReportePDF();
+        } else {
+            urlArchivoAportesYContribuciones = null;
+        }
+    }
 
     private PeriodoFacade getFacade() {
         return ejbFacade;
@@ -356,6 +366,7 @@ public class PeriodoController implements Serializable {
         urlArchivoRecibosSavYVacOficiales = null;
         urlArchivoRecibosAccidentadosOficiales = null;
         urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
+        urlArchivoAportesYContribuciones = null;
         selectedItemIndex = 1;
     }
     
@@ -375,6 +386,7 @@ public class PeriodoController implements Serializable {
                 urlArchivoRecibosSavYVacOficiales = null;
                 urlArchivoRecibosAccidentadosOficiales = null;
                 urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;
+                urlArchivoAportesYContribuciones = null;
 
                 JsfUtil.addSuccessMessage("Se ha guardado el periodo:" + current.getDescripcion() + " correctamente");
             } catch (Exception e) {
@@ -647,6 +659,14 @@ public class PeriodoController implements Serializable {
 
     public String getUrlArchivoSacYVacaciones() {
         return urlArchivoSacYVacaciones;
+    }
+
+    public String getUrlArchivoAportesYContribuciones() {
+        return urlArchivoAportesYContribuciones;
+    }
+
+    public void setUrlArchivoAportesYContribuciones(String urlArchivoAportesYContribuciones) {
+        this.urlArchivoAportesYContribuciones = urlArchivoAportesYContribuciones;
     }
     
     

@@ -7,7 +7,9 @@ package com.orco.graneles.model.salario;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.*;
 import com.orco.graneles.domain.personal.Accidentado;
+import com.orco.graneles.domain.personal.ObraSocial;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.personal.Sindicato;
 import com.orco.graneles.domain.salario.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +21,7 @@ import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
+import com.orco.graneles.vo.AporteContribucionVO;
 import com.orco.graneles.vo.CargaRegVO;
 import com.orco.graneles.vo.ProyeccionSacVacYAdelantosVO;
 import com.orco.graneles.vo.TurnoEmbarqueExcelVO;
@@ -60,6 +63,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private FixedListFacade fixedListF;
     @EJB
     private AdelantoFacade adelantoF;
+    @EJB
+    private AporteConfiguracionConfiguracionFacade aporteContribucionConfigF;
 
     protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
         //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
@@ -623,7 +628,91 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             || desde.getMonthOfYear() == DateTimeConstants.DECEMBER);
     }
 
+    private static final String AC_GRUPO_SEG_SOCIAL = "Seguridad Social";
+    private static final String AC_GRUPO_OBRA_SOCIAL = "Obras Sociales";
+    private static final String AC_GRUPO_SINDICATO = "Sindicatos";
     
+    
+    public List<AporteContribucionVO> generarReporteAportesYContribuciones(Periodo periodo){
+        List<AporteContribucionVO> acVO = new ArrayList<AporteContribucionVO>();
+        
+        //Seccion 1: Total de remuneraciones (bruto)
+        BigDecimal totalBruto = BigDecimal.ZERO;
+        for (Sueldo s : periodo.getSueldoCollection()){
+            for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                    totalBruto = totalBruto.add(is.getValorCalculado());
+                }                   
+            }
+        }
+        AporteContribucionVO aporteRemuneracion = new AporteContribucionVO(1, null, "Remuneraciones");
+        aporteRemuneracion.setAporte(totalBruto);
+        aporteRemuneracion.setPeriodo(periodo);
+        acVO.add(aporteRemuneracion);
+        
+        //Seccion 2: 
+        //Grupo Seguridad Social : Deducciones (Aportes y Contribuciones) Sin obra social
+        //Grupo Obras Sociales : Aportes y contribuciones obras sociales
+        //Grupo Sindicatos : Aportes de los sindicatos
+        
+        //Seguridad Social
+        List<AporteContribucionConfiguracion> acConfigs = aporteContribucionConfigF.findAll();
+        Collections.sort(acConfigs);
+        for (AporteContribucionConfiguracion acc : acConfigs){
+            AporteContribucionVO acVOSS = new AporteContribucionVO(2, AC_GRUPO_SEG_SOCIAL, acc.getTipoValor().getDescripcion());
+            if (acc.getAporte() != null){
+                acVOSS.setAporte(totalBruto.multiply(acc.getAporte().divide(new BigDecimal(100))));
+            }
+            if (acc.getContribucion() != null){
+                acVOSS.setContribucion(totalBruto.multiply(acc.getContribucion().divide(new BigDecimal(100))));
+            }
+            acVO.add(acVOSS);
+        }
+        
+        
+        //Obras sociales y sindicatos
+        Map<Integer, AporteContribucionVO> acVOObraSocial = new HashMap<Integer, AporteContribucionVO>();
+        Map<Integer, AporteContribucionVO> acVOSindicato = new HashMap<Integer, AporteContribucionVO>();
+        for (Sueldo s : periodo.getSueldoCollection()){
+            for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.DEDUCTIVO)){
+                    switch (is.getConceptoRecibo().getTipoValor().getId()){
+                        case TipoValorConcepto.OBRA_SOCIAL :
+                            ObraSocial osPersona = is.getSueldo().getPersonal().getObraSocial();
+                            
+                            AporteContribucionVO acVOOSPersona = acVOObraSocial.get(osPersona.getId());
+                            if (acVOOSPersona == null){
+                                acVOOSPersona = new AporteContribucionVO(2, AC_GRUPO_OBRA_SOCIAL, osPersona.getDescripcion());
+                            }
+                            acVOOSPersona.setAporte(acVOOSPersona.getAporte().add(is.getValorCalculado()));
+                            acVOOSPersona.setContribucion(new BigDecimal(
+                                    acVOOSPersona.getContribucion().doubleValue() + 
+                                    (is.getValorCalculado().doubleValue() * osPersona.getContribucion().doubleValue() / osPersona.getAportes().doubleValue())
+                                    ));
+                            acVOObraSocial.put(osPersona.getId(), acVOOSPersona);                            
+                            break;
+                        case TipoValorConcepto.SINDICATO :
+                            Sindicato sindPersona = is.getSueldo().getPersonal().getCategoriaPrincipal().getSindicato();
+                            
+                            AporteContribucionVO acVOSindPersona = acVOSindicato.get(sindPersona.getId());
+                            if (acVOSindPersona == null){
+                                acVOSindPersona = new AporteContribucionVO(2, AC_GRUPO_SINDICATO, sindPersona.getDescripcion());
+                            }
+                            acVOSindPersona.setAporte(acVOSindPersona.getAporte().add(is.getValorCalculado()));
+                          
+                            acVOSindicato.put(sindPersona.getId(), acVOSindPersona); 
+                            
+                            break;                            
+                    }
+                }                   
+            }
+        }
+        
+        acVO.addAll(acVOObraSocial.values());
+        acVO.addAll(acVOSindicato.values());
+        
+        return acVO;
+    }
     
     
     

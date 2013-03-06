@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AportesContribuciones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="545" leftMargin="30" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.771561000000007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="15"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="aporte" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[aporte]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="concepto" class="java.lang.String">
+		<fieldDescription><![CDATA[concepto]]></fieldDescription>
+	</field>
+	<field name="contribucion" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[contribucion]]></fieldDescription>
+	</field>
+	<field name="descripcionPeriodo" class="java.lang.String">
+		<fieldDescription><![CDATA[descripcionPeriodo]]></fieldDescription>
+	</field>
+	<field name="grupo" class="java.lang.String">
+		<fieldDescription><![CDATA[grupo]]></fieldDescription>
+	</field>
+	<field name="nroSeccion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[nroSeccion]]></fieldDescription>
+	</field>
+	<variable name="aporte_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{aporte}]]></variableExpression>
+	</variable>
+	<variable name="contribucion_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{contribucion}]]></variableExpression>
+	</variable>
+	<variable name="aporte_2" class="java.math.BigDecimal" resetType="Group" resetGroup="seccion" calculation="Sum">
+		<variableExpression><![CDATA[$F{aporte}]]></variableExpression>
+	</variable>
+	<variable name="contribucion_2" class="java.math.BigDecimal" resetType="Group" resetGroup="seccion" calculation="Sum">
+		<variableExpression><![CDATA[$F{contribucion}]]></variableExpression>
+	</variable>
+	<group name="seccion">
+		<groupExpression><![CDATA[$F{nroSeccion}]]></groupExpression>
+		<groupHeader>
+			<band height="2">
+				<line>
+					<reportElement x="0" y="19" width="530" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="57">
+				<printWhenExpression><![CDATA[($F{grupo} != null)]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="399" y="0" width="131" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="272" y="0" width="129" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="0" width="273" height="24"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="255" height="24"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="401" y="24" width="129" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="272" y="24" width="129" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="24" width="273" height="24"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="24" width="255" height="24"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[Total General]]></text>
+				</staticText>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="273" y="0" width="128" height="24"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{aporte_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="401" y="0" width="129" height="24"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contribucion_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="401" y="24" width="129" height="24"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{aporte_2}.add($V{contribucion_2})]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="16">
+				<printWhenExpression><![CDATA[($F{grupo} == null)]]></printWhenExpression>
+				<line>
+					<reportElement x="0" y="0" width="530" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="grupo">
+		<groupExpression><![CDATA[$F{grupo}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<printWhenExpression><![CDATA[($F{grupo} != null)]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="401" y="0" width="129" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="273" y="0" width="128" height="24"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="273" y="0" width="128" height="24"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[Aportes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="401" y="0" width="129" height="24"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[Contribuciones]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="0" y="0" width="273" height="24"/>
+				</rectangle>
+				<textField>
+					<reportElement x="0" y="0" width="255" height="24"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="24">
+				<printWhenExpression><![CDATA[($F{grupo} != null)]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="399" y="0" width="131" height="24"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="272" y="0" width="129" height="24"/>
+				</rectangle>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="272" y="0" width="129" height="24">
+						<printWhenExpression><![CDATA[($V{aporte_1}.doubleValue() > 0.0)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{aporte_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00">
+					<reportElement x="401" y="0" width="129" height="24">
+						<printWhenExpression><![CDATA[($V{contribucion_1}.doubleValue() > 0.0)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contribucion_1}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="0" y="0" width="273" height="24"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="255" height="24"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+						<paragraph leftIndent="3" rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[Subtotal]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="64" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="0" y="0" width="493" height="60"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="368" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<text><![CDATA[Cuadro de Aportes y Contribuciones]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="401" y="0" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periodo: " + $F{descripcionPeriodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="0" y="0" width="255" height="24"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="273" y="0" width="1" height="24"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="24"/>
+			</line>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="274" y="0" width="127" height="24">
+					<printWhenExpression><![CDATA[($F{aporte}.doubleValue() > 0.0)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporte}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="400" y="0" width="1" height="24"/>
+			</line>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="402" y="0" width="128" height="24">
+					<printWhenExpression><![CDATA[($F{contribucion}.doubleValue() > 0.0)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+					<paragraph leftIndent="3" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contribucion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="530" y="0" width="1" height="24"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

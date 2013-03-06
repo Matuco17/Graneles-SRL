@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TurnosFacturados" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="8"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="logoReducido" class="java.io.InputStream"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -90,9 +90,9 @@
 	</background>
 	<title>
 		<band height="109" splitType="Stretch">
-			<image scaleImage="FillFrame">
+			<image scaleImage="RetainShape">
 				<reportElement x="0" y="0" width="493" height="60"/>
-				<imageExpression><![CDATA["/home/orco/git/Graneles-SRL/GranelesWeb/src/main/webapp/resources/images/logoReducido.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="493" y="0" width="309" height="60"/>
