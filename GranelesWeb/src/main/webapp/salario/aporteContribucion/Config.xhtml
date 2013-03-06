@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{aporteContribucionController.init()}" />  
+    </f:metadata> 
+
+    
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Configuración de Aportes y Contribuciones" />
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <div>
+                    <p>Configuraciones para el reporte de Aportes y Contribuciones del Menú Listado->Periodo</p>
+                </div>
+                
+                <p:dataTable value="#{aporteContribucionController.items}" var="item"
+                             style="width: 500px;">
+                    <p:column headerText="Concepto" >
+                        <h:outputText value="#{item.tipoValor.toString()}" />
+                    </p:column>
+                    <p:column headerText="% Aporte" >
+                        <p:inputText value="#{item.aporte}" />
+                    </p:column>
+                    <p:column headerText="% Contribucion" >
+                        <p:inputText value="#{item.contribucion}" />
+                    </p:column>                
+                </p:dataTable> 
+
+                <div>
+                    <p>Los valores de aportes y contribuciones de Obras Sociales se encuentran desde el Menú Tablas->Obras Sociales</p>
+                    <p>Los valores de aportes de Sindicatos estan fijado por el valor calculaod en el Menú Tablas->Sindicato</p>
+                </div>
+
+                <h:commandButton value="Guardar" action="#{aporteContribucionController.update()}" />
+            </h:form>
+        </ui:define>
+        
+    </ui:composition>
+</html>

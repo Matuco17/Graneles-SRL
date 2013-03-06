@@ -60,6 +60,7 @@
                             <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Tarifas" url="/faces/facturacion/tarifa/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" rendered="#{loginController.esGerente()}" />
+                            <p:menuitem value="Aportes y Contribuciones" url="/faces/salario/aporteContribucion/Config.xhtml" rendered="#{loginController.esGerente()}" />
                         </p:submenu>    
                         <p:submenu label="Administrador" rendered="#{loginController.esAdministrador()}" >
                             <p:menuitem value="Usuarios" url="/faces/seguridad/usuario/List.xhtml" />
