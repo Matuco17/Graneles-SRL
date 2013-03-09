@@ -28,6 +28,7 @@ import com.orco.graneles.model.salario.SalarioBasicoFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
 import com.orco.graneles.vo.Calculadora;
 import com.orco.graneles.vo.FilaCalculadora;
+import com.orco.graneles.vo.TipoJornalVO;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,6 +121,8 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
             calculadora.getFilas().add(fila);
         }
         
+        agregarTotales(calculadora);
+        
         return calculadora;
     }
     
@@ -168,6 +171,8 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
             calculadora.getFilas().add(fila);
         }
         
+        agregarTotales(calculadora);
+        
         return calculadora;
     }
     
@@ -195,20 +200,82 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
      * @param calculadora
      * @param turno 
      */
-    public void agregarTurno(Calculadora calculadora, TurnoFacturado turno){
+    public void agregarTurno(Calculadora calculadora, TurnoFacturado turno, Factura factura){
+        //Extraigo el salario basico, para ver si es mayor o no al que figura
+        SalarioBasico salarioBasicoDelegado = null;
+        BigDecimal valorTurnoDelegado = null;
+                        
         for (TrabajadoresTurnoEmbarque tte : turno.getCargaTurno().getTurnoEmbarque().getTrabajadoresTurnoEmbarqueCollection()){
+            if (tte.getDelegado()) {
+                for (FilaCalculadora fila : calculadora.getFilas()){
+                    if (fila.getTarea().getId() == tte.getTarea().getId()){
+                        for (FacturaCalculadora fCalculadora : fila.getFacturasCalculadoras()){
+                            if (fCalculadora.getTipoJornal().getId() == turno.getCargaTurno().getTurnoEmbarque().getTipo().getId()){
+                                salarioBasicoDelegado = fCalculadora.getSalarioBasico();
+                                valorTurnoDelegado = fCalculadora.getValorTurno();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
             for (FilaCalculadora fila : calculadora.getFilas()){
-                if (fila.getTarea().getId() == tte.getTarea().getId()){
+                if ((tte.getDelegado() && fila.getTarea().getId() == Tarea.DELEGADO_ID)
+                   || (!tte.getDelegado() && fila.getTarea().getId() == tte.getTarea().getId()))
+                {
                     for (FacturaCalculadora fCalculadora : fila.getFacturasCalculadoras()){
                         if (fCalculadora.getTipoJornal().getId() == turno.getCargaTurno().getTurnoEmbarque().getTipo().getId()){
                             fCalculadora.setCantidad(fCalculadora.getCantidad().add(new BigDecimal(tte.getHoras().doubleValue() / 6)));
+                            //Elijo el salario basico mas alto para el delegado
+                            if (tte.getDelegado() && (valorTurnoDelegado.doubleValue() > fCalculadora.getValorTurno().doubleValue()) ){
+                                fCalculadora.setSalarioBasico(salarioBasicoDelegado);
+                                fCalculadora.setValorTurno(valorTurnoDelegado);
+                            }
                             break;
                         }
                     }
                     break;
                 }
+            }            
+        }
+        
+        agregarTotales(calculadora);
+        
+        if (factura.getPorcentajeAdministracion() == null 
+           || factura.getPorcentajeAdministracion().doubleValue() < turno.getPorcentajeAdministracion().doubleValue() ){
+           factura.setPorcentajeAdministracion(turno.getPorcentajeAdministracion()); 
+        }
+    }
+
+    private void agregarTotales(Calculadora calculadora) {
+        //Agrego los valores de totales
+        calculadora.setTotalXtipoJornal(new ArrayList<TipoJornalVO>());
+        Map<Integer, TipoJornalVO> tjVOMap = new HashMap<Integer, TipoJornalVO> ();
+        
+        for (TipoJornal tJornal : calculadora.getTiposJornales()){
+            BigDecimal totalTJornal = BigDecimal.ZERO;
+
+            for (FilaCalculadora fila : calculadora.getFilas()){
+                for (FacturaCalculadora fCalculadora : fila.getFacturasCalculadoras()){
+                    if (fCalculadora.getTipoJornal().getId() == tJornal.getId()){
+                        totalTJornal = totalTJornal.add(fCalculadora.getValorTotal());
+                        break;
+                    }
+                }                    
+            }
+            TipoJornalVO tipoJornalVO = new TipoJornalVO(tJornal, totalTJornal);
+            calculadora.getTotalXTipoJornal().add(tipoJornalVO);
+            tjVOMap.put(tipoJornalVO.getTipoJornal().getId(), tipoJornalVO);
+        }
+        
+        //Asigno el total por tipo de jornal a cada factura calculadora para tener referencia
+        for (FilaCalculadora filaC : calculadora.getFilas()){
+            for (FacturaCalculadora fc: filaC.getFacturasCalculadoras()){
+                fc.setTotalTipoJornal(tjVOMap.get(fc.getTipoJornal().getId()));
             }
         }
+        
     }
     
     private class ComparadorTipoJornal implements Comparator<TipoJornal>{

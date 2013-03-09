@@ -149,25 +149,25 @@
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<rectangle>
-				<reportElement x="728" y="0" width="74" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="652" y="0" width="74" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="156" y="0" width="61" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="520" y="0" width="89" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="444" y="0" width="89" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="36" y="0" width="35" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="440" y="0" width="80" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="364" y="0" width="80" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="0" width="57" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="533" y="0" width="57" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="666" y="0" width="62" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="590" y="0" width="62" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="287" y="0" width="77" height="20" backcolor="#E1DEDE"/>
@@ -182,7 +182,7 @@
 				<reportElement x="71" y="0" width="35" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="364" y="0" width="76" height="20" backcolor="#E1DEDE"/>
+				<reportElement x="726" y="0" width="76" height="20" backcolor="#E1DEDE"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="0" y="0" width="36" height="20" backcolor="#E1DEDE"/>
@@ -223,32 +223,32 @@
 				<text><![CDATA[Costo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="364" y="0" width="76" height="20"/>
+				<reportElement x="726" y="0" width="76" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Diferencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="0" width="80" height="20"/>
+				<reportElement x="364" y="0" width="80" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Administración]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="520" y="0" width="89" height="20"/>
+				<reportElement x="444" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Tarifa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="609" y="0" width="57" height="20"/>
+				<reportElement x="533" y="0" width="57" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Tipo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="666" y="0" width="62" height="20"/>
+				<reportElement x="590" y="0" width="62" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Adm/Mixto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="728" y="0" width="74" height="20"/>
+				<reportElement x="652" y="0" width="74" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
@@ -278,22 +278,22 @@
 				<reportElement x="287" y="0" width="77" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="364" y="0" width="76" height="20"/>
+				<reportElement x="726" y="0" width="76" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="440" y="0" width="80" height="20"/>
+				<reportElement x="364" y="0" width="80" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="520" y="0" width="89" height="20"/>
+				<reportElement x="444" y="0" width="89" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="0" width="57" height="20"/>
+				<reportElement x="533" y="0" width="57" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="666" y="0" width="62" height="20"/>
+				<reportElement x="590" y="0" width="62" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="728" y="0" width="74" height="20"/>
+				<reportElement x="652" y="0" width="74" height="20"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="36" height="20"/>
@@ -345,42 +345,42 @@
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="364" y="0" width="76" height="20"/>
+				<reportElement x="726" y="0" width="76" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="440" y="0" width="80" height="20"/>
+				<reportElement x="364" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{administracion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="520" y="0" width="89" height="20"/>
+				<reportElement x="444" y="0" width="89" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tarifa}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="609" y="0" width="57" height="20"/>
+				<reportElement x="533" y="0" width="57" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipoTurnoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="666" y="0" width="62" height="20"/>
+				<reportElement x="590" y="0" width="62" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{adicionalAdminMixto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="728" y="0" width="74" height="20"/>
+				<reportElement x="652" y="0" width="74" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
@@ -391,13 +391,13 @@
 	<columnFooter>
 		<band height="86" splitType="Stretch">
 			<rectangle>
-				<reportElement x="728" y="0" width="74" height="20"/>
+				<reportElement x="652" y="0" width="74" height="20"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="156" y="0" width="61" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="440" y="0" width="288" height="20"/>
+				<reportElement x="364" y="0" width="288" height="20"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="287" y="0" width="77" height="20"/>
@@ -406,20 +406,20 @@
 				<reportElement x="217" y="0" width="70" height="20"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="364" y="0" width="76" height="20"/>
+				<reportElement x="726" y="0" width="76" height="20"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="0" y="0" width="156" height="20"/>
 			</rectangle>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="728" y="0" width="74" height="20"/>
+				<reportElement x="652" y="0" width="74" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{valor_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="364" y="0" width="76" height="20"/>
+				<reportElement x="726" y="0" width="76" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<paragraph rightIndent="2"/>
 				</textElement>

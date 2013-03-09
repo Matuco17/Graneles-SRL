@@ -176,7 +176,7 @@ public class FacturaController implements Serializable {
             if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)
                 ||tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
             {
-                facturaCalculadoraF.agregarTurno(calculadora, tf);
+                facturaCalculadoraF.agregarTurno(calculadora, tf, current);
             }
         }
     }

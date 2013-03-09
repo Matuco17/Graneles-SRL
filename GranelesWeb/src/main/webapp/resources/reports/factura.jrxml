@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="36"/>
+	<property name="ireport.y" value="64"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -119,14 +119,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement x="353" y="0" width="85" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precioUnitario}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="¤ #,##0.00">
 				<reportElement x="450" y="0" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
@@ -137,21 +137,21 @@
 	</detail>
 	<columnFooter>
 		<band height="182" splitType="Stretch">
-			<textField pattern="#,##0.00">
+			<textField pattern="¤ #,##0.00">
 				<reportElement x="450" y="6" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaSubtotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="¤ #,##0.00">
 				<reportElement x="450" y="51" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturaIVA}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="¤ #,##0.00">
 				<reportElement x="450" y="106" width="103" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>

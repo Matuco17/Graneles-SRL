@@ -7,6 +7,7 @@ package com.orco.graneles.domain.facturacion;
 import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.salario.SalarioBasico;
 import com.orco.graneles.domain.salario.TipoJornal;
+import com.orco.graneles.vo.TipoJornalVO;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -62,6 +63,8 @@ public class FacturaCalculadora implements Serializable, Comparable<FacturaCalcu
     private TipoJornal tipoJornal;
     
     transient private BigDecimal valorTurno;
+    
+    transient TipoJornalVO totalTipoJornal;
     
     public FacturaCalculadora() {
     }
@@ -165,6 +168,16 @@ public class FacturaCalculadora implements Serializable, Comparable<FacturaCalcu
     public int compareTo(FacturaCalculadora o) {
         return 0;  //TODO: IMPLEMENT
     }
+
+    public TipoJornalVO getTotalTipoJornal() {
+        return totalTipoJornal;
+    }
+
+    public void setTotalTipoJornal(TipoJornalVO totalTipoJornal) {
+        this.totalTipoJornal = totalTipoJornal;
+    }
    
+    
+    
 }
 

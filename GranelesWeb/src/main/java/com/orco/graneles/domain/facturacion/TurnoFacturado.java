@@ -170,9 +170,11 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
     }
 
     public BigDecimal getDiferencia(){
-        return this.costo.subtract((this.valor != null) 
-                                    ? this.valor
-                                    : BigDecimal.ZERO);
+        if (this.valor != null){
+            return this.valor.subtract(this.costo);
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 
     @Override

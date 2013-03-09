@@ -99,6 +99,9 @@ public class Mercaderia implements Serializable {
     }
 
     public String getDescripcionIngles() {
+        if (descripcionIngles == null){
+            return descripcion;
+        }
         return descripcionIngles;
     }
 

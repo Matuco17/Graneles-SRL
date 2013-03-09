@@ -259,8 +259,8 @@ public class PeriodoController implements Serializable {
     public void generarRecibosAccSacYVac(){
         if (current != null){
             List<Sueldo> sueldosAcc = ejbFacade.obtenerSueldosAccidentadosSacYVac(current);
-            //TODO: PASAR A PONER FALSE EN EL CAMPO FINAL
-            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, true);
+            
+            RecibosSueldosAccidentados reporte = new RecibosSueldosAccidentados(current, sueldosAcc, false);
             urlArchivoRecibosAccidentadosSacYVacNoOficiales = reporte.obtenerReportePDF();
         } else {
             urlArchivoRecibosAccidentadosSacYVacNoOficiales = null;

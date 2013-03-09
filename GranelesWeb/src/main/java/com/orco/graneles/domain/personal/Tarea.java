@@ -47,6 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Tarea implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    public static final int DELEGADO_ID = 11;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

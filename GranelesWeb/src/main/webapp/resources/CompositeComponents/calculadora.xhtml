@@ -11,7 +11,6 @@
     <co:interface>
         <co:attribute name="editar" type="java.lang.Boolean" required="true" />
         <co:attribute name="calculadora" type="com.orco.graneles.vo.Calculadora" required="true" />
-        
     </co:interface>
 
     <!-- IMPLEMENTATION -->
@@ -23,84 +22,106 @@
             <p:panelGrid id="calculadora" styleClass="calculadora">
                 <f:facet name="header" >
                     <p:row>
-                        <p:column></p:column>
-                        <c:forEach items="#{cc.attrs.calculadora.tiposJornales}" var="tipoJornal" >
-                            <p:column colspan="3"><h:outputText value="#{tipoJornal.descripcion}" /> </p:column>   
+                        <p:column styleClass="celda-limite-izquierdo"></p:column>
+                        <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
+                            <c:if test="#{totalTipoJornal.mostrar}" >
+                                <p:column colspan="3" styleClass="celda-limite-izquierdo"><h:outputText value="#{totalTipoJornal.tipoJornal.descripcion}" /> </p:column>   
+                            </c:if>
                         </c:forEach>
-                        <p:column>Total</p:column>
+                        <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">Total</p:column>
                     </p:row>
                 </f:facet>
                 
                  <c:forEach items="#{cc.attrs.calculadora.filas}" var="filaCalculadora" >
-                     <p:row>
-                         <p:column  ><h:outputText value="#{filaCalculadora.toString()}" /></p:column>
-                         <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
-                            <p:column>
-                                <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"  />
-                                <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
-                                           id="cant_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.tipoJornal.id},#{fCalculadora.tarea.id})"/>
+                     <c:if test="#{filaCalculadora.mostrar}">
+                        <p:row>
+                            <p:column styleClass="celda-limite-izquierdo"><h:outputText value="#{filaCalculadora.toString()}" /></p:column>
+                            <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
+                                <c:if test="#{fCalculadora.totalTipoJornal.mostrar}" >
+                                    <p:column styleClass="celda-limite-izquierdo">
+                                        <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"  />
+                                        <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
+                                                   id="cant_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.tipoJornal.id},#{fCalculadora.tarea.id})"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
+                                                     id="bruto_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
+                                            <f:convertNumber pattern="#0.00" />
+                                        </h:inputText>                           
+                                    </p:column>
+                                    <p:column >
+                                        <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
+                                                     id="total_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
+                                            <f:convertNumber pattern="#0.00" />
+                                        </h:inputText>                           
+                                    </p:column> 
+                                </c:if>
+                            </c:forEach>
+                            <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
+                               <h:inputText value="#{filaCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
+                                                id="totalTarea_#{filaCalculadora.tarea.id}">
+                                   <f:convertNumber pattern="#0.00" />
+                               </h:inputText>   
                             </p:column>
-                            <p:column>
-                                <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
-                                             id="bruto_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </h:inputText>                           
-                            </p:column>
-                            <p:column>
-                                <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
-                                             id="total_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </h:inputText>                           
-                            </p:column>                            
-                         </c:forEach>
-                         <p:column>
-                            <h:inputText value="#{filaCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
-                                             id="totalTarea_#{filaCalculadora.tarea.id}">
-                                <f:convertNumber pattern="#0.00" />
-                            </h:inputText>   
-                         </p:column>
-                     </p:row>
+                        </p:row>
+                     </c:if>
                 </c:forEach>  
                 
-                     <p:row   >
-                        <p:column></p:column>
-                        <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
-                            <p:column colspan="2"></p:column>
-                            <p:column>
-                                <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"  
-                                    id="totalTJ_#{totalTipoJornal.tipoJornal.id}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </h:inputText>   
-                            </p:column>
-                        </c:forEach>    
-                        <p:column>
-                            <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
-                                          id="totalGeneral">
-                                <f:convertNumber pattern="#0.00" />
-                            </h:inputText>   
-                        </p:column>
-                     </p:row>
-                <!--
-                     <p:row>
-                        <p:column></p:column>
-                        <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" varStatus="iteracion" >
-                            <c:choose>
-                                <c:when test="#{!iteracion.last}" >
-                                        <p:column colspan="3"></p:column>
-                                </c:when>
-                            </c:choose>
-                        </c:forEach>
-                        <p:column colspan="2" >Total Gral</p:column>
-                <p:column>
-                            <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
-                                          id="totalGeneral">
-                                <f:convertNumber pattern="#0.00" />
-                            </h:inputText>   
-                        </p:column>
+                <p:row>
+                   <p:column styleClass="celda-limite-izquierdo"></p:column>
+                   <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
+                       <c:if test="#{totalTipoJornal.mostrar}">
+                           <p:column colspan="2" styleClass="celda-limite-izquierdo" ></p:column>
+                           <p:column>
+                               <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"  
+                                   id="totalTJ_#{totalTipoJornal.tipoJornal.id}">
+                                   <f:convertNumber pattern="#0.00" />
+                               </h:inputText>   
+                           </p:column>
+                       </c:if>
+                   </c:forEach>    
+                   <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
+                       <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
+                                     id="totalGeneral">
+                           <f:convertNumber pattern="#0.00" />
+                       </h:inputText>   
+                   </p:column>
                 </p:row>
-                    -->    
-                    
            </p:panelGrid>
+          
+            <p:panelGrid rendered="#{!cc.attrs.editar}">
+                <p:row>
+                    <p:column><h:outputText value="Personal Ocupado" /></p:column>
+                    <p:column>
+                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:inputText> 
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Leyes Sociales " />
+                        <h:inputText  value="#{cc.attrs.calculadora.factura.porcentajeAdministracion}" readonly="true" styleClass="fila-resultado" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:inputText>   
+                        <h:outputText value="%" />
+                    </p:column>
+                    <p:column>
+                        <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:inputText> 
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="Total" /></p:column>
+                    <p:column>
+                        <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:inputText> 
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            
             
         
     </co:implementation>

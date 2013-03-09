@@ -41,6 +41,9 @@ public class TipoJornalVO {
         this.total = total;
     }
     
+    public Boolean getMostrar(){
+        return (this.getTotal() != null) && (this.getTotal().doubleValue() > 0.0);
+    }
     
     
 }

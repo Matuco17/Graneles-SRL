@@ -26,8 +26,10 @@ import com.orco.graneles.model.carga.MercaderiaFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.ejb.EJB;
 /**
@@ -57,6 +59,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     }
  
     
+    
      /**
      * Metodo que crea la lista de lineas de facturas de acuerdo a los turnos facturados,
      * crea lineas para cada mercaderia con diferente tasa y luego
@@ -65,7 +68,9 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
      */
     public List<LineaFactura> crearLineasTarifa(Factura factura){
         List<LineaFactura> lineas = new ArrayList<LineaFactura>();
-        
+    
+        DecimalFormat df = new DecimalFormat("###,###,###,###");
+    
         //Genero las lineas de acuerdo a la Mercaderia y el Tipo de Jornal
         for (Mercaderia m : mercaderiaF.findAll()){
             for (TipoJornal tj : tipoJornalF.findAll()){
@@ -98,7 +103,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
                                 
                 if (totalCargado.compareTo(BigDecimal.ZERO) > 0){
                     LineaFactura lf = new LineaFactura();
-                    lf.setDescripcion("Estibaje de " + totalCargado.toBigInteger().toString() + " MT de "+ m.getDescripcion());
+                    lf.setDescripcion("Estibaje de " + df.format(totalCargado.toBigInteger()) + " MT de "+ m.getDescripcion());
                     if (tarifaActiva != null) {
                         lf.setPrecioUnitario(tarifaActiva.getValor());
                     }
@@ -130,7 +135,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
         }
         if (totalAdminstracion.compareTo(BigDecimal.ZERO) > 0){
             lf = new LineaFactura();
-            lf.setDescripcion("Detalle de Administración...");
+            lf.setDescripcion("Personal por Administración: ");
             lf.setPrecioUnitario(null);
             lf.setImporte(totalAdminstracion);
             lf.setFactura(factura);

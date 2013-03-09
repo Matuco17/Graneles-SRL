@@ -74,6 +74,9 @@ public class Factura implements Serializable {
     @ManyToOne(optional = false)
     private Embarque embarque;
     
+    @Column(name = "porcentaje_administracion")
+    private BigDecimal porcentajeAdministracion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<LineaFactura> lineaFacturaCollection;
 
@@ -169,6 +172,14 @@ public class Factura implements Serializable {
 
     public void setFacturaCalculadoraCollection(Collection<FacturaCalculadora> facturaCalculadoraCollection) {
         this.facturaCalculadoraCollection = facturaCalculadoraCollection;
+    }
+
+    public BigDecimal getPorcentajeAdministracion() {
+        return porcentajeAdministracion;
+    }
+
+    public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
+        this.porcentajeAdministracion = porcentajeAdministracion;
     }
 
     

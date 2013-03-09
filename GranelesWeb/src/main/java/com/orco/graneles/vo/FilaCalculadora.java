@@ -66,6 +66,8 @@ public class FilaCalculadora implements Serializable{
         return getTarea().getDescripcion();
     }
     
-    
+    public Boolean getMostrar(){
+        return (this.getValorTotal().doubleValue() > 0.0);
+    }
     
 }

@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.vo;
 
+import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.FacturaCalculadora;
 import com.orco.graneles.domain.salario.TipoJornal;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class Calculadora implements Serializable {
     private List<FilaCalculadora> filas;
     private List<TipoJornal> tiposJornales;
     private List<TipoJornalVO> totalXtipoJornal;
+    private Factura factura;
 
     public List<FilaCalculadora> getFilas() {
         return filas;
@@ -56,29 +58,30 @@ public class Calculadora implements Serializable {
     }
     
     public List<TipoJornalVO> getTotalXTipoJornal(){
-        if (this.totalXtipoJornal == null){
-            this.totalXtipoJornal = new ArrayList<TipoJornalVO>();
-            
-            for (TipoJornal tJornal : getTiposJornales()){
-                BigDecimal totalTJornal = BigDecimal.ZERO;
-                
-                for (FilaCalculadora fila : getFilas()){
-                    for (FacturaCalculadora fCalculadora : fila.getFacturasCalculadoras()){
-                        if (fCalculadora.getTipoJornal().getId() == tJornal.getId()){
-                            totalTJornal = totalTJornal.add(fCalculadora.getValorTotal());
-                            break;
-                        }
-                    }                    
-                }
-                this.totalXtipoJornal.add(new TipoJornalVO(tJornal, totalTJornal));
-            }
-            
-        } 
         return this.totalXtipoJornal;
     }
 
     public void setTotalXtipoJornal(List<TipoJornalVO> totalXtipoJornal) {
         this.totalXtipoJornal = totalXtipoJornal;
     }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
     
+    public BigDecimal getTotalLeyesSociales(){
+        if (this.factura != null){
+            return getTotal().multiply(this.factura.getPorcentajeAdministracion()).divide(new BigDecimal(100.00));
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
+    public BigDecimal getTotalGeneral(){
+        return getTotal().add(getTotalLeyesSociales());
+    }
 }

@@ -135,3 +135,12 @@ tr.jsfcrud_even_row {
     height: 110px;
     display: block;
 }
+
+.celda-limite-izquierdo  {
+    border-left-width: 3px !important;
+}
+
+.celda-limite-derecho  {
+    border-right-width: 3px !important;
+}
+

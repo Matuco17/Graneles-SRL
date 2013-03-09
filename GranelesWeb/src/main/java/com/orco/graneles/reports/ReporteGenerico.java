@@ -68,6 +68,7 @@ public abstract class ReporteGenerico {
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
             params.put("SUBREPORT_DIR", pathBaseReportes);
+            params.put("REPORT_LOCALE", new java.util.Locale("es_AR"));
     
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, ds);
