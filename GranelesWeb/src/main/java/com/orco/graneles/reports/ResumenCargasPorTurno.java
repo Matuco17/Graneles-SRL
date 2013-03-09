@@ -26,14 +26,31 @@ public class ResumenCargasPorTurno extends ReporteGenerico {
         return new String[]{"logoReducido.jpg"};
     }
     
+    public ResumenCargasPorTurno(TurnoEmbarque turno){
+        calcularResumen(turno.getEmbarque(), turno.getId());
+    }
+    
     public ResumenCargasPorTurno(Embarque embarque){
+        calcularResumen(embarque, null);        
+    }
+    
+    @Override
+    public String obtenerReportePDF() {
+         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(cargasTurnos);
+        
+        return printGenerico(ds, "ResumenTurnosEmbarque", "ResumenTurnosEmbarque_"+ resumenCarga.getEmbarqueCodigo());
+    }
+
+    private void calcularResumen(Embarque embarque, Long idTurno) {
         resumenCarga = new ResumenCargaEmbarqueVO(embarque);
         
         cargasTurnos = new ArrayList<CargaTurnoVO>();
         
         for (TurnoEmbarque te : embarque.getTurnoEmbarqueCollection()){
-            for (CargaTurno ct : te.getCargaTurnoCollection()){
-                cargasTurnos.add(new CargaTurnoVO(ct, resumenCarga));
+            if (idTurno == null || idTurno.equals(te.getId())){
+                for (CargaTurno ct : te.getCargaTurnoCollection()){
+                    cargasTurnos.add(new CargaTurnoVO(ct, resumenCarga));
+                }
             }
         }
         
@@ -43,8 +60,10 @@ public class ResumenCargasPorTurno extends ReporteGenerico {
         //Completo las observaciones
         List<TurnoObservacionVO> observaciones = new ArrayList<TurnoObservacionVO>();
         for (TurnoEmbarque te : embarque.getTurnoEmbarqueCollection()){
-            for (TurnoEmbarqueObservaciones teObs : te.getTurnoEmbarqueObservacionesCollection()){
-                observaciones.add(new TurnoObservacionVO(teObs));
+            if (idTurno == null || idTurno.equals(te.getId())){
+                for (TurnoEmbarqueObservaciones teObs : te.getTurnoEmbarqueObservacionesCollection()){
+                    observaciones.add(new TurnoObservacionVO(teObs));
+                }
             }
         }
         
@@ -56,14 +75,6 @@ public class ResumenCargasPorTurno extends ReporteGenerico {
             ctVO.setAcumulado(ctVO.getAcumulado().add(totalAcumulado));
             ctVO.setObservaciones(observaciones);
         }
-        
-    }
-    
-    @Override
-    public String obtenerReportePDF() {
-         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(cargasTurnos);
-        
-        return printGenerico(ds, "ResumenTurnosEmbarque", "ResumenTurnosEmbarque_"+ resumenCarga.getEmbarqueCodigo());
     }
     
     

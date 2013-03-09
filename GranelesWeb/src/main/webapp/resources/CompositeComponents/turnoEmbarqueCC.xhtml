@@ -270,6 +270,15 @@
                         rendered="#{embarqueController.urlReportePlanillaTrabajadores != null}" 
                         style="padding: 10px; font-size: 12px;"/>
 
+                <h:commandButton action="#{embarqueController.generarReporteCargaTurno()}"
+                             label="Generar Cargas de Turno"
+                             value="Generar Cargas de Turno"
+                             rendered="#{embarqueController.urlReporteCargaTurno == null}" />
+                <h:link value="Cargas de Turno" 
+                        onclick="window.open('#{embarqueController.urlReporteCargaTurno}','Download');window.close();" 
+                        rendered="#{embarqueController.urlReporteCargaTurno != null}" 
+                        style="padding: 10px; font-size: 12px;"/>
+
 
             </p:tab>
         

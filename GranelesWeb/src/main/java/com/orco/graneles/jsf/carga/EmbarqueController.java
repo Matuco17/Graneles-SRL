@@ -97,6 +97,7 @@ public class EmbarqueController implements Serializable {
     private String urlReporteResumenCargasCoordinador;
     //Reportes Turno
     private String urlReportePlanillaTrabajadores;
+    private String urlReporteCargaTurno;
     
     //Cargadores del Embarque
     private EmbarqueCargador currentEC;
@@ -436,8 +437,9 @@ public class EmbarqueController implements Serializable {
     }
 
     public DataModel getCargasPreviasModel() {
-        if (cargasPreviasModel == null)
+        if (cargasPreviasModel == null){
             cargasPreviasModel = new ListDataModel(getCargasPrevias());
+        }
         return cargasPreviasModel;
     }
 
@@ -479,6 +481,7 @@ public class EmbarqueController implements Serializable {
         this.cargas = null;
         this.cargasModel = null;
         this.urlReportePlanillaTrabajadores = null;
+        this.urlReporteCargaTurno = null;
         this.turnoObservaciones = null;
         this.turnoObservacionesModel = null;
     }
@@ -549,8 +552,9 @@ public class EmbarqueController implements Serializable {
             
             Collection<CargaTurno> cts = new ArrayList<CargaTurno>();
             for (CargaTurno ct : cargas){
-                if (ct.getCargador() != null)
+                if (ct.getCargador() != null){
                     cts.add(ct);
+                }
             }
             currentTE.setCargaTurnoCollection(cts);
             
@@ -571,8 +575,9 @@ public class EmbarqueController implements Serializable {
             
             currentTE.setTurnoEmbarqueObservacionesCollection(turnoObservaciones);
             
-            if (currentTE.getId() == null)
+            if (currentTE.getId() == null){
                 current.getTurnoEmbarqueCollection().add(currentTE);
+            }
             
             turnoEmbarqueF.persist(currentTE);
             ejbFacade.edit(current);
@@ -628,8 +633,9 @@ public class EmbarqueController implements Serializable {
         //Primero verifico que no se encuentre en el listado, sino no hago nada
         boolean estaPersonalEnLista = false;
         for (TrabajadorTurnoEmbarqueVO tteVO : trabajadoresTurno){
-            if (tteVO.getTte().getPersonal().equals(personalSeleccionado))
+            if (tteVO.getTte().getPersonal().equals(personalSeleccionado)){
                 estaPersonalEnLista = true;
+            }
         }
         
         if (!estaPersonalEnLista){
@@ -778,6 +784,10 @@ public class EmbarqueController implements Serializable {
                  .obtenerReportePDF();
     }
     
+    public void generarReporteCargaTurno(){
+        urlReporteCargaTurno =  (new ResumenCargasPorTurno(currentTE)).obtenerReportePDF();
+    }
+            
     public List<Personal> getTrabajadores(){
         if (trabajadores == null){
             trabajadores = personalF.findAll();
@@ -849,8 +859,11 @@ public class EmbarqueController implements Serializable {
     public String getUrlReportePlanillaTrabajadores() {
         return urlReportePlanillaTrabajadores;
     }
+
+    public String getUrlReporteCargaTurno() {
+        return urlReporteCargaTurno;
+    }
   
-    
      /*
      * Fin Funcionalidades turno Embarque
      */
