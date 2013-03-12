@@ -84,4 +84,18 @@ public class Calculadora implements Serializable {
     public BigDecimal getTotalGeneral(){
         return getTotal().add(getTotalLeyesSociales());
     }
+    
+    public BigDecimal getPorcentajeAdministracion(){
+        if (factura != null){
+            return factura.getPorcentajeAdministracion();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+    
+    public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion){
+        if (factura != null){
+            factura.setPorcentajeAdministracion(porcentajeAdministracion);
+        }
+    }
 }

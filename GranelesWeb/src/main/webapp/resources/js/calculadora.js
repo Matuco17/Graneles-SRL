@@ -17,6 +17,14 @@ function sumarTotales(){
     });
     
     jQuery("[name*=totalGeneral]").val(roundNumber(total, 2));
+    
+    var porcAdministracion = parseFloat(jQuery("[name*=porcentajeAdministracion]").val()); 
+    var totalLeyesSociales = total * porcAdministracion / 100;
+    
+    jQuery("[name*=totalLeyesSociales]").val(roundNumber(totalLeyesSociales, 2));
+    
+    jQuery("[name*=totalFinal]").val(roundNumber(total + totalLeyesSociales, 2));
+    
 }
 
 function sumarTipoJornal(idTipoJornal){

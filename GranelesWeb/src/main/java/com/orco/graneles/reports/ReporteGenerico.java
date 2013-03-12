@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -68,7 +69,7 @@ public abstract class ReporteGenerico {
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
             params.put("SUBREPORT_DIR", pathBaseReportes);
-            params.put("REPORT_LOCALE", new java.util.Locale("es_AR"));
+            params.put(JRParameter.REPORT_LOCALE, new java.util.Locale("es", "AR"));
     
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, ds);

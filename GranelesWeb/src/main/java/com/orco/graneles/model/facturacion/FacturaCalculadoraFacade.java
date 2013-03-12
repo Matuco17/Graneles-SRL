@@ -96,6 +96,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
         List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
         Collections.sort(tiposJornales, new ComparadorTipoJornal());
         calculadora.setTiposJornales(tiposJornales);
+        calculadora.setFactura(factura);
         
         for (Tarea tarea : tareaF.findAll()){
             FilaCalculadora fila = new FilaCalculadora(tarea);
@@ -137,6 +138,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
         List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
         Collections.sort(tiposJornales, new ComparadorTipoJornal());
         calculadora.setTiposJornales(tiposJornales);
+        calculadora.setFactura(factura);
         
         Map<String, FacturaCalculadora> fcMap = new HashMap<String, FacturaCalculadora>();
         for (FacturaCalculadora fc : factura.getFacturaCalculadoraCollection()){

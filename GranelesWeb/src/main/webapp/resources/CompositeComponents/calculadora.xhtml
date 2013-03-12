@@ -89,11 +89,12 @@
                 </p:row>
            </p:panelGrid>
           
-            <p:panelGrid rendered="#{!cc.attrs.editar}">
+            <p:panelGrid >
                 <p:row>
                     <p:column><h:outputText value="Personal Ocupado" /></p:column>
                     <p:column>
-                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" >
+                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
+                                      id="totalGeneral2">
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText> 
                     </p:column>
@@ -101,13 +102,20 @@
                 <p:row>
                     <p:column>
                         <h:outputText value="Leyes Sociales " />
-                        <h:inputText  value="#{cc.attrs.calculadora.factura.porcentajeAdministracion}" readonly="true" styleClass="fila-resultado" >
+                        <h:inputText  value="#{cc.attrs.calculadora.porcentajeAdministracion}" readonly="true" styleClass="fila-resultado" 
+                                      id="porcentajeAdministracion1" rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="#0.00" />
+                        </h:inputText>   
+                        <h:inputText  value="#{cc.attrs.calculadora.porcentajeAdministracion}"  
+                                      id="porcentajeAdministracion2" rendered="#{cc.attrs.editar}"
+                                      onkeyup="sumarTotales()">
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText>   
                         <h:outputText value="%" />
                     </p:column>
                     <p:column>
-                        <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado" >
+                        <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado" 
+                                      id="totalLeyesSociales">
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText> 
                     </p:column>
@@ -115,7 +123,8 @@
                 <p:row>
                     <p:column><h:outputText value="Total" /></p:column>
                     <p:column>
-                        <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado" >
+                        <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado"
+                                      id="totalFinal">
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText> 
                     </p:column>
