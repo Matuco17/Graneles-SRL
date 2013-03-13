@@ -95,6 +95,7 @@ public class EmbarqueController implements Serializable {
     private String urlReportePlano;
     private String urlReporteResumenCargasTurnos;
     private String urlReporteResumenCargasCoordinador;
+    private String urlReporteNoDanios;
     //Reportes Turno
     private String urlReportePlanillaTrabajadores;
     private String urlReporteCargaTurno;
@@ -137,6 +138,7 @@ public class EmbarqueController implements Serializable {
         urlReportePlano = null;
         urlReporteResumenCargasTurnos = null;
         urlReporteResumenCargasCoordinador = null;
+        urlReporteNoDanios = null;
         currentEC = null;
         cargadores = null;
         cargadoresModel = null;
@@ -382,6 +384,10 @@ public class EmbarqueController implements Serializable {
     public void generarReporteResumenCargasCoordinador(){
         urlReporteResumenCargasCoordinador = (new ResumenCargasPorCargador(current)).obtenerReportePDF();
     }
+    
+    public void generarReporteNoDanios(){
+        urlReporteNoDanios = (new NoDanios(current)).obtenerReportePDF();
+    }
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
@@ -466,6 +472,10 @@ public class EmbarqueController implements Serializable {
 
     public String getUrlReporteResumenCargasCoordinador(){
         return urlReporteResumenCargasCoordinador;
+    }
+
+    public String getUrlReporteNoDanios() {
+        return urlReporteNoDanios;
     }
     
     

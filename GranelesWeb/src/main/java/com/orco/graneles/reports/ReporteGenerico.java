@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,10 @@ public abstract class ReporteGenerico {
     protected String[] getUrlImagenes(){
         return null;
     };
+    
+    protected Locale getReportLocale(){
+        return new java.util.Locale("es", "AR");
+    }
     
     protected Map<String, Object> params = new HashMap<String, Object>();
     
@@ -69,7 +74,7 @@ public abstract class ReporteGenerico {
             String pathTemplate = pathBaseReportes + archivosJasper + ".jasper";
             
             params.put("SUBREPORT_DIR", pathBaseReportes);
-            params.put(JRParameter.REPORT_LOCALE, new java.util.Locale("es", "AR"));
+            params.put(JRParameter.REPORT_LOCALE, getReportLocale());
     
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(pathTemplate); 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, ds);

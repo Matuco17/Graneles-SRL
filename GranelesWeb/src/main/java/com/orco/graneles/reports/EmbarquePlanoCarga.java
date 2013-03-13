@@ -24,8 +24,11 @@ public class EmbarquePlanoCarga extends ReporteGenerico {
     protected String[] getUrlImagenes() {
         return new String[]{"logoGraneles.jpg"};
     }
-    
-    
+
+    @Override
+    protected Locale getReportLocale() {
+        return new Locale("en");
+    }
     
     public EmbarquePlanoCarga(Embarque embarque) {
         resumenEmbarque = new ResumenCargaEmbarqueVO(embarque);

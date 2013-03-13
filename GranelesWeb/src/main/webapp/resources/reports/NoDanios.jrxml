@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NoDanios" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="buqueDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[buqueDescripcion]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="fechaFinalizacion" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaFinalizacion]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<title>
+		<band height="340" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="64"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="76" width="95" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bahia Blanca,]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="95" y="76" width="208" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaFinalizacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="124" width="555" height="64"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["----------------------This is to certify that the cargo on board the \"M/V " + $F{buqueDescripcion}.toUpperCase() + "\"  at this port of Bahia Blanca, has been loaded and stowed under my supervision to my entire satisfaction and no damages were caused during such operations."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="176" y="289" width="204" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="176" y="290" width="204" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MASTER / CHIEF OFFICER ]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>
