@@ -8,6 +8,7 @@ import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.CargaTurnoCargas;
 import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.facturacion.Factura;
+import com.orco.graneles.domain.facturacion.FacturaCalculadora;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.Tarifa;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
@@ -25,9 +26,11 @@ import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.MercaderiaFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
+import com.orco.graneles.vo.Calculadora;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +52,9 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     private MercaderiaFacade mercaderiaF;
     @EJB
     private TipoJornalFacade tipoJornalF;
+    @EJB
+    private FacturaCalculadoraFacade facturaCalculadoraF;
+    
     
     protected EntityManager getEntityManager() {
         return em;
@@ -123,9 +129,18 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
      * @param factura
      * @return 
      */
-    public LineaFactura crearLineaAdministracion(Factura factura) {
+    public LineaFactura crearLineaAdministracion(Factura factura, Calculadora calculadora) {
         LineaFactura lf = null;
-        BigDecimal totalAdminstracion = BigDecimal.ZERO;
+        
+       // BigDecimal totalAdminstracion = calculadora.getTotalGeneral();
+        
+        factura.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
+        
+        BigDecimal totalAdminstracion = facturaCalculadoraF.generarCalculadoraDeFactura(factura).getTotalGeneral();
+     
+        
+        
+        /*
         for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
             if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)) {
                 totalAdminstracion = totalAdminstracion.add(tf.getValor());
@@ -133,6 +148,9 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
                 totalAdminstracion = totalAdminstracion.add(tf.getValor().subtract(tf.getTarifa()));
             }
         }
+        */
+        
+        
         if (totalAdminstracion.compareTo(BigDecimal.ZERO) > 0){
             lf = new LineaFactura();
             lf.setDescripcion("Personal por Administración: ");

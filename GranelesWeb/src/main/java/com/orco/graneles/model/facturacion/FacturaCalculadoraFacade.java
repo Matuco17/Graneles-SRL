@@ -159,15 +159,17 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
                     fCalculadora.setTarea(tarea);
                     fCalculadora.setSalarioBasico(obtenerSalarioBasico(tarea, factura.getFecha()));
                     fCalculadora.setTipoJornal(tipoJornal);
-                }
-                
-                fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
+                    
+                    fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
                           fCalculadora.getSalarioBasico(), 
                           6, 
                           true, 
                           tarea, 
                           tipoJornal).getValorBruto());
                 
+                }
+                
+               
                 fila.getFacturasCalculadoras().add(fCalculadora);                
             }
             calculadora.getFilas().add(fila);
@@ -215,10 +217,8 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
                             if (fCalculadora.getTipoJornal().getId() == turno.getCargaTurno().getTurnoEmbarque().getTipo().getId()){
                                 salarioBasicoDelegado = fCalculadora.getSalarioBasico();
                                 valorTurnoDelegado = fCalculadora.getValorTurno();
-                                break;
                             }
                         }
-                        break;
                     }
                 }
             }
@@ -234,10 +234,8 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
                                 fCalculadora.setSalarioBasico(salarioBasicoDelegado);
                                 fCalculadora.setValorTurno(valorTurnoDelegado);
                             }
-                            break;
                         }
                     }
-                    break;
                 }
             }            
         }
@@ -256,17 +254,15 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
         Map<Integer, TipoJornalVO> tjVOMap = new HashMap<Integer, TipoJornalVO> ();
         
         for (TipoJornal tJornal : calculadora.getTiposJornales()){
-            BigDecimal totalTJornal = BigDecimal.ZERO;
-
+            TipoJornalVO tipoJornalVO = new TipoJornalVO(tJornal);
+            
             for (FilaCalculadora fila : calculadora.getFilas()){
                 for (FacturaCalculadora fCalculadora : fila.getFacturasCalculadoras()){
                     if (fCalculadora.getTipoJornal().getId() == tJornal.getId()){
-                        totalTJornal = totalTJornal.add(fCalculadora.getValorTotal());
-                        break;
+                        tipoJornalVO.setTotal(tipoJornalVO.getTotal().add(fCalculadora.getValorTotal()));
                     }
                 }                    
             }
-            TipoJornalVO tipoJornalVO = new TipoJornalVO(tJornal, totalTJornal);
             calculadora.getTotalXTipoJornal().add(tipoJornalVO);
             tjVOMap.put(tipoJornalVO.getTipoJornal().getId(), tipoJornalVO);
         }

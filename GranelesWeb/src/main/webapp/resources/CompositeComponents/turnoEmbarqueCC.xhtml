@@ -237,6 +237,12 @@
                                 </h:selectOneMenu>
                             </h:panelGrid>
 
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Cantidad Líneas tomadas:" for="cantidadLineas" />
+                                <p:spinner value="#{cargaTurno.cantidadLineas}" min="0" rendered="#{cc.attrs.editar}" />                                
+                                <h:outputText value="#{cargaTurno.cantidadLineas}" rendered="#{!cc.attrs.editar}" />                                
+                            </h:panelGrid>
+                            
                             <p:dataTable value="#{cargaTurno.cargasSorted}" var="carga" >
                                 <p:column headerText="#{bundleCarga.BodegaTitle_nro}" style="text-align: right; " >
                                     <h:outputText value="#{carga.nroBodega}" />

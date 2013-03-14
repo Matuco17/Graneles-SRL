@@ -1,8 +1,8 @@
 function actualizarCalculadora(idTipoJornal, idTarea){
     var cantidad = jQuery("[name*=cant_tj" + idTipoJornal + "_tr" + idTarea + "]").val().replace(",", ".");
     var bruto = jQuery("[name*=bruto_tj" + idTipoJornal + "_tr" + idTarea + "]").val();
-    var total = parseFloat(cantidad) * parseFloat(bruto);
-    jQuery("[name*=total_tj" + idTipoJornal + "_tr" + idTarea + "]").val(roundNumber(total, 2));
+    var total = parseNumber(cantidad) * parseNumber(bruto);
+    jQuery("[name*=total_tj" + idTipoJornal + "_tr" + idTarea + "]").val(roundNumber(total));
     
     sumarTipoJornal(idTipoJornal);
     sumarTotales();
@@ -10,45 +10,48 @@ function actualizarCalculadora(idTipoJornal, idTarea){
 }
 
 function sumarTotales(){
-    var total = 0.0;
+    var total = 0.00;
     
     jQuery("[name*=totalTJ_]").each(function(idx, element){
-        total += parseFloat(jQuery(element).val());
+        total += parseNumber(jQuery(element).val());
     });
     
-    jQuery("[name*=totalGeneral]").val(roundNumber(total, 2));
+    jQuery("[name*=totalGeneral]").val(roundNumber(total));
     
-    var porcAdministracion = parseFloat(jQuery("[name*=porcentajeAdministracion]").val()); 
-    var totalLeyesSociales = total * porcAdministracion / 100;
+    var porcAdministracion = parseNumber(jQuery("[name*=porcentajeAdministracion]").val()); 
+    var totalLeyesSociales = total * porcAdministracion / 100.0;
     
-    jQuery("[name*=totalLeyesSociales]").val(roundNumber(totalLeyesSociales, 2));
+    jQuery("[name*=totalLeyesSociales]").val(roundNumber(totalLeyesSociales));
     
-    jQuery("[name*=totalFinal]").val(roundNumber(total + totalLeyesSociales, 2));
+    jQuery("[name*=totalFinal]").val(roundNumber(total + totalLeyesSociales));
     
 }
 
 function sumarTipoJornal(idTipoJornal){
-    var total = 0.0;
+    var total = 0.00;
     
     jQuery("[name*=total_tj" + idTipoJornal + "_tr]").each(function(idx, element){
-        total += parseFloat(jQuery(element).val());
+        total += parseNumber(jQuery(element).val());
     });
     
-    jQuery("[name*=totalTJ_" + idTipoJornal + "]").val(roundNumber(total, 2));
+    jQuery("[name*=totalTJ_" + idTipoJornal + "]").val(roundNumber(total));
 }
 
 function sumarTarea(idTarea){
-    var total = 0.0;
+    var total = 0.00;
     
     jQuery("[name*=_tr" + idTarea + "]").each(function(idx, element){
-        total += parseFloat(jQuery(element).val());
+        total += parseNumber(jQuery(element).val());
     });
     
-    jQuery("[name*=totalTarea_" + idTarea + "]").val(roundNumber(total, 2));
+    jQuery("[name*=totalTarea_" + idTarea + "]").val(roundNumber(total));
 }
 
 
-function roundNumber(num, dec) {
-    return num;
-    //return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+function roundNumber(num) {
+    return num.toFixed(2);
+}
+
+function parseNumber(text){
+    return parseFloat(text.replace(",", "."));
 }

@@ -47,6 +47,9 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     @ManyToOne(optional = false)
     private Empresa cargador;
     
+    @Column(name = "cantidad_lineas")
+    private Integer cantidadLineas;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargasCollection;
     
@@ -120,6 +123,16 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     public void setTurnoFacturado(TurnoFacturado turnoFacturado) {
         this.turnoFacturado = turnoFacturado;
     }
+
+    public Integer getCantidadLineas() {
+        return cantidadLineas;
+    }
+
+    public void setCantidadLineas(Integer cantidadLineas) {
+        this.cantidadLineas = cantidadLineas;
+    }
+    
+    
 
     @Override
     public int hashCode() {

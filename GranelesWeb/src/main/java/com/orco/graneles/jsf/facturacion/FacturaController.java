@@ -140,13 +140,13 @@ public class FacturaController implements Serializable {
     public void actualizarTurnosFacturados(){
         TurnoFacturado tfSeleccionado = turnosFacturados.get(turnosFacturadosModel.getRowIndex());
         if (tfSeleccionado != null){
-            turnoFacturadoF.actualizarLinea(tfSeleccionado);
+            turnoFacturadoF.actualizarLinea(tfSeleccionado, current);
         }
     }
     
     public void generarLineasFactura(){
         lineasTarifa = lineaFacturaF.crearLineasTarifa(current);
-        lineaAdministracion = lineaFacturaF.crearLineaAdministracion(current);
+        lineaAdministracion = lineaFacturaF.crearLineaAdministracion(current, calculadora);
         
         lineasConceptos = new ArrayList<LineaFactura>();
         lineasTarifaModel = new ListDataModel(lineasTarifa);
@@ -154,11 +154,22 @@ public class FacturaController implements Serializable {
         actualizarLineas();
     }
     
+    public void actualizarLineasCompleto(){
+        for (TurnoFacturado tf : turnosFacturados){
+            turnoFacturadoF.actualizarLinea(tf, current);
+        }
+        actualizarLineas();
+    }
+    
     public void actualizarLineas(){
         List<LineaFactura> lineasFactura = new ArrayList<LineaFactura>();
-        lineasFactura.addAll(lineasTarifa);
+        if (lineasTarifa != null){
+            lineasFactura.addAll(lineasTarifa);
+        }
         lineasFactura.add(lineaAdministracion);
-        lineasFactura.addAll(lineasConceptos);
+        if (lineasConceptos != null) {
+            lineasFactura.addAll(lineasConceptos);
+        }
         
         for (LineaFactura lf : lineasFactura){
             if (lf != null){
@@ -245,8 +256,14 @@ public class FacturaController implements Serializable {
             current.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
             
             getFacade().create(current);
-            
+        
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("FacturaCreated"));
+            
+            turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
+            Collections.sort(turnosFacturados);
+            turnosFacturadosModel = new ListDataModel(turnosFacturados);
+            calculadora = facturaCalculadoraF.generarCalculadoraDeFactura(current);
+        
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));

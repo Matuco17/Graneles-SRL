@@ -65,7 +65,14 @@
                     </p:tab>
                     <p:tab id="#{facturaController.STEP_SETEO_VALORES}" title="Cálculo"   >
                         <p:panel id="panelSeteoValores" header="Cálculo de los valores de los turnos a facturar" >
-                    
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Porcentaje de Administración: " />
+                                <p:inputText value="#{facturaController.selected.porcentajeAdministracion}" >
+                                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                                    <p:ajax event="blur" update="dtbLineaFactura" listener="#{facturaController.actualizarLineasCompleto}" /> 
+                                </p:inputText>
+                            </h:panelGrid>
+                            
                             <p:dataTable id="dtbLineaFactura" value="#{facturaController.turnosFacturadosModel}" var="turnoFacturado" >
 
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}"  style="text-align: right;">
@@ -81,6 +88,9 @@
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_tipo}" style="text-align: center;">
                                     <h:outputText value="#{turnoFacturado.tipoJornal}" />
+                                </p:column>
+                                <p:column headerText="Lineas" style="text-align: center;">
+                                    <h:outputText value="#{turnoFacturado.cantidadLineas}" />
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
                                     <h:outputText value="#{turnoFacturado.totalEmbarcado}" >
@@ -122,20 +132,11 @@
                                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="Tipo" style="min-width: 150px;">
+                                <p:column headerText="Tipo" style="min-width: 110px;">
                                         <p:selectOneMenu value="#{turnoFacturado.tipoTurnoFacturado}" style=" float: left;">
                                             <f:selectItems value="#{fixedListController.tipoTurnoFacturadoSelectOne}" />
                                             <p:ajax update="dtbLineaFactura" listener="#{facturaController.actualizarTurnosFacturados}" /> 
                                         </p:selectOneMenu>
-                                        <p:inputText id="porcentajeAdministracion" value="#{turnoFacturado.porcentajeAdministracion}"
-                                                     rendered="#{turnoFacturado.tipoTurnoFacturado.id == 150}" style="width: 40px; text-align: right; float: right;">
-                                            <p:ajax event="blur" update="dtbLineaFactura" listener="#{facturaController.actualizarTurnosFacturados}" /> 
-                                        </p:inputText>
-                                        <p:inputText id="valorAgregadoMixto" value="#{turnoFacturado.agregadoMixto}"
-                                                     rendered="#{turnoFacturado.tipoTurnoFacturado.id == 152}" style="width: 50px; text-align: right; float: right;">
-                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                            <p:ajax event="blur" update="dtbLineaFactura" listener="#{facturaController.actualizarTurnosFacturados}" /> 
-                                        </p:inputText>
                                     <f:facet name="footer" >
                                       <h:outputText value="#{bundleFacturacion.FacturaTitle_total}" />
                                     </f:facet>

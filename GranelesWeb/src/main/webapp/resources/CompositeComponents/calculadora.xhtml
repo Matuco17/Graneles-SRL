@@ -39,29 +39,41 @@
                             <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
                                 <c:if test="#{fCalculadora.totalTipoJornal.mostrar}" >
                                     <p:column styleClass="celda-limite-izquierdo">
-                                        <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"  />
+                                        <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"   />
                                         <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
                                                    id="cant_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.tipoJornal.id},#{fCalculadora.tarea.id})"/>
                                     </p:column>
                                     <p:column>
                                         <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
-                                                     id="bruto_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
+                                                     id="bruto_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
                                             <f:convertNumber pattern="#0.00" />
-                                        </h:inputText>                           
+                                        </h:inputText>  
+                                        <h:inputText  value="#{fCalculadora.valorTurno}" readonly="true" styleClass="fila-resultado"
+                                                rendered="#{!cc.attrs.editar}">
+                                              <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                                          </h:inputText>
                                     </p:column>
                                     <p:column >
                                         <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
-                                                     id="total_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}">
+                                                     id="total_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
                                             <f:convertNumber pattern="#0.00" />
-                                        </h:inputText>                           
+                                        </h:inputText>   
+                                         <h:inputText  value="#{fCalculadora.valorTotal}" readonly="true" styleClass="fila-resultado"
+                                                rendered="#{!cc.attrs.editar}">
+                                             <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                                          </h:inputText>
                                     </p:column> 
                                 </c:if>
                             </c:forEach>
                             <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
                                <h:inputText value="#{filaCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
-                                                id="totalTarea_#{filaCalculadora.tarea.id}">
+                                                id="totalTarea_#{filaCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
                                    <f:convertNumber pattern="#0.00" />
                                </h:inputText>   
+                                <h:inputText  value="#{filaCalculadora.valorTotal}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                                    <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                                </h:inputText> 
                             </p:column>
                         </p:row>
                      </c:if>
@@ -74,17 +86,25 @@
                            <p:column colspan="2" styleClass="celda-limite-izquierdo" ></p:column>
                            <p:column>
                                <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"  
-                                   id="totalTJ_#{totalTipoJornal.tipoJornal.id}">
+                                   id="totalTJ_#{totalTipoJornal.tipoJornal.id}" rendered="#{cc.attrs.editar}">
                                    <f:convertNumber pattern="#0.00" />
-                               </h:inputText>   
+                               </h:inputText>
+                               <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                                    <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                                </h:inputText> 
                            </p:column>
                        </c:if>
                    </c:forEach>    
                    <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
-                                     id="totalGeneral">
+                                     id="totalGeneral" rendered="#{cc.attrs.editar}">
                            <f:convertNumber pattern="#0.00" />
                        </h:inputText>   
+                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                        </h:inputText> 
                    </p:column>
                 </p:row>
            </p:panelGrid>
@@ -94,29 +114,38 @@
                     <p:column><h:outputText value="Personal Ocupado" /></p:column>
                     <p:column>
                         <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
-                                      id="totalGeneral2">
+                                      id="totalGeneral2" rendered="#{cc.attrs.editar}">
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText> 
+                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                        </h:inputText>                    
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
                         <h:outputText value="Leyes Sociales " />
-                        <h:inputText  value="#{cc.attrs.calculadora.porcentajeAdministracion}" readonly="true" styleClass="fila-resultado" 
-                                      id="porcentajeAdministracion1" rendered="#{!cc.attrs.editar}">
-                            <f:convertNumber pattern="#0.00" />
-                        </h:inputText>   
+                        <h:inputText  value="#{cc.attrs.calculadora.porcentajeAdministracion}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="#0.00" minFractionDigits="2" />
+                        </h:inputText> 
                         <h:inputText  value="#{cc.attrs.calculadora.porcentajeAdministracion}"  
                                       id="porcentajeAdministracion2" rendered="#{cc.attrs.editar}"
-                                      onkeyup="sumarTotales()">
+                                      onkeyup="sumarTotales()" >
                             <f:convertNumber pattern="#0.00" />
                         </h:inputText>   
                         <h:outputText value="%" />
                     </p:column>
                     <p:column>
                         <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado" 
-                                      id="totalLeyesSociales">
+                                      id="totalLeyesSociales" rendered="#{cc.attrs.editar}">
                             <f:convertNumber pattern="#0.00" />
+                        </h:inputText> 
+                        
+                        <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
                         </h:inputText> 
                     </p:column>
                 </p:row>
@@ -124,8 +153,13 @@
                     <p:column><h:outputText value="Total" /></p:column>
                     <p:column>
                         <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado"
-                                      id="totalFinal">
+                                      id="totalFinal" rendered="#{cc.attrs.editar}">
                             <f:convertNumber pattern="#0.00" />
+                        </h:inputText> 
+                        
+                        <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado"
+                                      rendered="#{!cc.attrs.editar}">
+                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
                         </h:inputText> 
                     </p:column>
                 </p:row>

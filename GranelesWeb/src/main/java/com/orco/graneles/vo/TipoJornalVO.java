@@ -20,9 +20,9 @@ public class TipoJornalVO {
     public TipoJornalVO() {
     }
 
-    public TipoJornalVO(TipoJornal tipoJornal, BigDecimal total) {
+    public TipoJornalVO(TipoJornal tipoJornal) {
         this.tipoJornal = tipoJornal;
-        this.total = total;
+        this.total = BigDecimal.ZERO;
     }
 
     public TipoJornal getTipoJornal() {

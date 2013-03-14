@@ -70,9 +70,9 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
         return lineas;
     }
     
-    public void actualizarLineas(List<TurnoFacturado> lineas){
+    public void actualizarLineas(List<TurnoFacturado> lineas, Factura factura){
         for(TurnoFacturado tf : lineas){
-            actualizarLinea(tf);
+            actualizarLinea(tf, factura);
         }
     }
     
@@ -127,23 +127,23 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
                ));
     }
 
-    public void actualizarLinea(TurnoFacturado tf) {
+    public void actualizarLinea(TurnoFacturado tf, Factura factura) {
+        if (factura.getPorcentajeAdministracion() == null){
+            factura.setPorcentajeAdministracion(BigDecimal.ZERO);
+        }
+        
         if (tf.getTipoTurnoFacturado() != null){
             switch (tf.getTipoTurnoFacturado().getId()){
                 case TipoTurnoFactura.ADMINISTRACION :
-                    tf.setAdministracion(calcularAdministracion(tf.getCargaTurno(), tf.getPorcentajeAdministracion()));
+                    tf.setAdministracion(calcularAdministracion(tf.getCargaTurno(), factura.getPorcentajeAdministracion()));
                     tf.setValor(tf.getAdministracion());
                     break;
                 case TipoTurnoFactura.TARIFA :
                     tf.setValor(tf.getTarifa());
                     break;
                 case TipoTurnoFactura.MIXTO :
-                    //En el mixto se cobra todo lo cargado con tarifa y luego se le agrega un plus
-                    if (tf.getAgregadoMixto() != null && !tf.getAgregadoMixto().equals(BigDecimal.ZERO)){
-                        tf.setValor(tf.getTarifa().add(tf.getAgregadoMixto()));
-                    } else {
-                        tf.setValor(tf.getTarifa());
-                    }
+                    tf.setAdministracion(calcularAdministracion(tf.getCargaTurno(), factura.getPorcentajeAdministracion()));
+                    tf.setValor(tf.getTarifa().add(tf.getAdministracion()));
                     break;                    
             }
         }

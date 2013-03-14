@@ -249,5 +249,17 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
         }
         return null;
     }
+    
+    public Integer getCantidadLineas(){
+        return this.getCargaTurno().getCantidadLineas();
+    }
+    
+    public String getBuqueDescripcion(){
+        return this.cargaTurno.getTurnoEmbarque().getEmbarque().getBuque().getDescripcion();
+    }
+    
+    public Long getEmbarqueCodigo(){
+        return this.cargaTurno.getTurnoEmbarque().getEmbarque().getCodigo();
+    }
 }
 

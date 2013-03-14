@@ -175,6 +175,9 @@ public class Factura implements Serializable {
     }
 
     public BigDecimal getPorcentajeAdministracion() {
+        if (porcentajeAdministracion == null){
+            porcentajeAdministracion = BigDecimal.ZERO;
+        }
         return porcentajeAdministracion;
     }
 
