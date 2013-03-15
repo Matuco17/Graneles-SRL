@@ -31,7 +31,8 @@
             <p:calendar id="obsDesde" value="#{embarqueController.currentTEO.desde}" pattern="HH:mm" timeOnly="true" disabled="#{!cc.attrs.editar}" />
             <p:calendar id="obsHasta" value="#{embarqueController.currentTEO.hasta}" pattern="HH:mm" timeOnly="true" disabled="#{!cc.attrs.editar}" />
             <h:selectOneMenu id="obsBodega" value="#{embarqueController.currentTEO.bodega}" >
-                <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}" var="bodega" itemLabel="#{bodega.nro}" />
+                <f:selectItem itemLabel="Todas" />
+                <f:selectItems value="#{embarqueController.selected.buque.bodegasList}" var="bodega" itemLabel="#{bodega.nro}" />
             </h:selectOneMenu>
             <p:inputText id="obsObservaciones" value="#{embarqueController.currentTEO.observacion}" style="width: 300px;" required="false"  />
             
@@ -61,9 +62,11 @@
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_bodega}" >
                 <h:selectOneMenu value="#{turnoObservacion.bodega}" rendered="#{cc.attrs.editar}"  >
-                    <f:selectItems value="#{embarqueController.selected.buque.bodegaCollection}"  var="bodega" itemLabel="#{bodega.nro}"   />
+                    <f:selectItem itemLabel="Todas" />
+                    <f:selectItems value="#{embarqueController.selected.buque.bodegasList}" var="bodega" itemLabel="#{bodega.nro}" />
                 </h:selectOneMenu>
-                <h:outputText value="#{turnoObservacion.bodega.nro}" rendered="#{!cc.attrs.editar}" />
+                <h:outputText value="#{turnoObservacion.bodega.nro}" rendered="#{!cc.attrs.editar and turnoObservacion.bodega.nro != null}" />
+                <h:outputText value="Todas" rendered="#{!cc.attrs.editar and turnoObservacion.bodega.nro == null}" />
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_observaciones}" style="max-width: 300px;" >
                 <p:inplace editor="#{cc.attrs.editar}" >

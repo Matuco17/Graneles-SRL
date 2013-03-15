@@ -8,7 +8,10 @@ import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -230,7 +233,11 @@ public class Buque implements Serializable, Comparable<Buque> {
         return this.getDescripcion().compareToIgnoreCase(o.getDescripcion());
     }
 
-   
+    public List<Bodega> getBodegasList(){
+        List<Bodega> bodegas = new ArrayList<Bodega>(this.getBodegaCollection());
+        Collections.sort(bodegas);
+        return bodegas;
+    }
 
 
 
