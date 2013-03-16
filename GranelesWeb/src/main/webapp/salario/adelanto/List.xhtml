@@ -77,6 +77,19 @@
                     </h:panelGrid>
                     
                 </h:panelGroup>
+                
+                <p:panel header="Totales" >
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Total Adelantos Semestre Anterior:" />
+                        <h:outputText value="#{adelantoController.totalSemestreAnterior}" >
+                            <f:convertNumber pattern="###,###,##0.00" />
+                        </h:outputText>
+                        <h:outputLabel value="Total Adelantos Semestre Actual:" />
+                        <h:outputText value="#{adelantoController.totalSemestreActual}" >
+                            <f:convertNumber pattern="###,###,##0.00" />
+                        </h:outputText>
+                    </h:panelGrid>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

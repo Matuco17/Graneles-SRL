@@ -9,6 +9,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.personal.PersonalFacade;
 import com.orco.graneles.model.salario.AdelantoFacade;
+import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.reports.ReciboAdelanto;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.joda.time.DateTime;
 
 @ManagedBean(name = "adelantoController")
 @SessionScoped
@@ -33,12 +35,15 @@ public class AdelantoController implements Serializable {
     private Adelanto current;
     private DataModel items = null;
     private Personal currentPersonal;
+    private List<Adelanto> adelantos;
     @EJB
     private AdelantoFacade ejbFacade;
     @EJB
     private FixedListFacade fixedListF;
     @EJB
     private PersonalFacade personalF;
+    @EJB
+    private PeriodoFacade periodoF;
     
     private int selectedItemIndex;
     private ListDataModel adelantosPersonalModel;
@@ -49,6 +54,9 @@ public class AdelantoController implements Serializable {
    
     private Date fechaReferencia;
 
+    BigDecimal totalSemestreActual;
+    BigDecimal totalSemestreAnterior;
+    
     public AdelantoController() {
     }
 
@@ -204,15 +212,39 @@ public class AdelantoController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            List<Adelanto> adelantos = getFacade().findAll();
-            Collections.sort(adelantos, new ComparadorAdelanto());
-            items = new ListDataModel(adelantos);
+            items = new ListDataModel(getAdelantos());
         }
         return items;
     }
+    
+    public List<Adelanto> getAdelantos(){
+        if (adelantos == null){
+            adelantos = getFacade().findAll();
+            Collections.sort(adelantos, new ComparadorAdelanto());
+            
+            DateTime fechaHoy = new DateTime();
+            Date fechaIniSemestreActual = periodoF.obtenerFechaInicioPeriodoSemestral(fechaHoy.toDate());
+            Date fechaFinSemestreActual = periodoF.obtenerFechaFinPeriodoSemestral(fechaHoy.toDate());
+            Date fechaIniSemestreAnterior = periodoF.obtenerFechaInicioPeriodoSemestral(fechaHoy.minusMonths(6).toDate());
+            Date fechaFinSemestreAnterior = periodoF.obtenerFechaFinPeriodoSemestral(fechaHoy.minusMonths(6).toDate());
 
+            totalSemestreActual = BigDecimal.ZERO;
+            totalSemestreAnterior = BigDecimal.ZERO;
+
+            for (Adelanto a : adelantos){
+                if (a.getFecha().after(fechaIniSemestreActual) && a.getFecha().before(fechaFinSemestreActual)){
+                    totalSemestreActual = totalSemestreActual.add(a.getValor());
+                } else if (a.getFecha().after(fechaIniSemestreAnterior) && a.getFecha().before(fechaFinSemestreAnterior)){
+                    totalSemestreAnterior = totalSemestreAnterior.add(a.getValor());
+                }
+            }
+        }
+        return adelantos;
+    }
+  
     private void recreateModel() {
         items = null;
+        adelantos = null;
         recreateModelCreate();
     }
 
@@ -314,6 +346,14 @@ public class AdelantoController implements Serializable {
 
     public void setFechaReferencia(Date fechaReferencia) {
         this.fechaReferencia = fechaReferencia;
+    }
+
+    public BigDecimal getTotalSemestreActual() {
+        return totalSemestreActual;
+    }
+
+    public BigDecimal getTotalSemestreAnterior() {
+        return totalSemestreAnterior;
     }
     
     

@@ -56,41 +56,41 @@
                         <p:column headerText="Valor Bruto" style="text-align: right" >
                            <f:facet name="footer" >
                                 <h:outputText value="#{periodoController.totalBruto}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber pattern="###,###,##0.00" />
                                 </h:outputText>
                             </f:facet>
                             <h:outputText value="#{item.proyeccionBruto}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber pattern="###,###,##0.00" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Valor Neto" style="text-align: right" >
                             <f:facet name="footer" >
                                 <h:outputText value="#{periodoController.totalNeto}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber pattern="###,###,##0.00" />
                                 </h:outputText>
                             </f:facet>
                             <h:outputText value="#{item.proyeccionNeto}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber pattern="###,###,##0.00" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Total Adelantos" style="text-align: right" >
                             <f:facet name="footer" >
                                 <h:outputText value="#{periodoController.totalAdelantos}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber pattern="###,###,##0.00" />
                                 </h:outputText>
                             </f:facet>
                             <h:outputText value="#{item.totalAdelantos}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber pattern="###,###,##0.00" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Valor Neto Con Adelantos" style="text-align: right" >
                             <f:facet name="footer" >
                                 <h:outputText value="#{periodoController.totalNetoConAdelantos}" >
-                                    <f:convertNumber maxFractionDigits="2" />
+                                    <f:convertNumber pattern="###,###,##0.00" />
                                 </h:outputText>
                             </f:facet>
                             <h:outputText value="#{item.proyeccionNetoConAdelantos}" >
-                                <f:convertNumber maxFractionDigits="2" />
+                                <f:convertNumber pattern="###,###,##0.00" />
                             </h:outputText>
                         </p:column>
                     </p:dataTable>
