@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TurnoEmbarque.findById", query = "SELECT t FROM TurnoEmbarque t WHERE t.id = :id"),
     @NamedQuery(name = "TurnoEmbarque.findByFecha", query = "SELECT t FROM TurnoEmbarque t WHERE t.fecha = :fecha"),
     @NamedQuery(name = "TurnoEmbarque.findByTurno", query = "SELECT t FROM TurnoEmbarque t WHERE t.turno = :turno"),
+    @NamedQuery(name = "TurnoEmbarque.findByNroPlanilla", query = "SELECT t FROM TurnoEmbarque t WHERE t.nroPlanilla = :nroPlanilla"),
     @NamedQuery(name = "TurnoEmbarque.findByTipo", query = "SELECT t FROM TurnoEmbarque t WHERE t.tipo = :tipo")})
 public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     private static final long serialVersionUID = 1L;

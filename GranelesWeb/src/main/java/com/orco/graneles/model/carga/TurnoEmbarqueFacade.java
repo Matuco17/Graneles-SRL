@@ -80,7 +80,22 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
         super.persist(entity);
     }
     
-    
+    /**
+     * Obtiene el Turno de Embarque por el nro de planilla
+     * @param nroPlanilla
+     * @return 
+     */
+    public TurnoEmbarque obtenerTurnoEmbarque(Integer nroPlanilla){
+        List<TurnoEmbarque> turnos = getEntityManager().createNamedQuery("TurnoEmbarque.findByNroPlanilla", TurnoEmbarque.class)
+                .setParameter("nroPlanilla", nroPlanilla)
+                .getResultList();
+        
+        if (turnos.size() > 0){
+            return turnos.get(0);
+        } else {
+            return null;
+        }
+    }
     
     public TurnoEmbarque crearNuevoTurnoEmbarque(Embarque embarque){
         TurnoEmbarque te = new TurnoEmbarque();

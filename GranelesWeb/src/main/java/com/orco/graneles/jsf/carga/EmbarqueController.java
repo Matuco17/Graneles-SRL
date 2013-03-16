@@ -560,6 +560,14 @@ public class EmbarqueController implements Serializable {
                   return null;
             }
             
+            if (currentTE.getNroPlanilla() != null && currentTE.getNroPlanilla() != 0){
+                TurnoEmbarque teConIgualPlanilla = turnoEmbarqueF.obtenerTurnoEmbarque(currentTE.getNroPlanilla());
+                if (teConIgualPlanilla != null){
+                    JsfUtil.addErrorMessage("Ya existe un embarque con ese nro de planilla, Embarque: " + teConIgualPlanilla.getEmbarque().getCodigo());
+                    return null;
+                }
+            }
+            
             Collection<CargaTurno> cts = new ArrayList<CargaTurno>();
             for (CargaTurno ct : cargas){
                 if (ct.getCargador() != null){
