@@ -1,10 +1,13 @@
 package com.orco.graneles.jsf.carga;
 
+import com.orco.graneles.domain.carga.ArchivoBuque;
+import com.orco.graneles.domain.carga.ArchivoEmbarque;
 import com.orco.graneles.domain.carga.Bodega;
 import com.orco.graneles.domain.carga.Buque;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.BuqueFacade;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +18,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -26,6 +31,8 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringUtils;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "buqueController")
 @SessionScoped
@@ -43,6 +50,12 @@ public class BuqueController implements Serializable {
     private static final int CANTIDAD_BODEGAS = 9;
     
     private Boolean capacidadPiesCubicos;
+    
+    
+    //Variables de Archivo
+    private DataModel archivosModel;
+    private List<ArchivoBuque> listaArchivos;
+    private UploadedFile currentFile;
     
     
     public BuqueController() {
@@ -100,6 +113,8 @@ public class BuqueController implements Serializable {
             bodegas = null;
             
             bodegasModel = null;
+            archivosModel = null;
+            listaArchivos = null;
             //current = (Buque) getItems().getRowData();
             //selectedItemIndex = getItems().getRowIndex();
             return "View";
@@ -114,6 +129,7 @@ public class BuqueController implements Serializable {
          bodegas = null;
             
         bodegasModel = null;
+        
           
         selectedItemIndex = -1;
         return "Create";
@@ -145,6 +161,8 @@ public class BuqueController implements Serializable {
             
             bodegas = null;
             bodegasModel = null;
+            listaArchivos = null;
+            archivosModel = null;
             //current = (Buque) getItems().getRowData();
             //selectedItemIndex = getItems().getRowIndex();
             return "Edit";
@@ -228,6 +246,8 @@ public class BuqueController implements Serializable {
     private void recreateModel() {
         items = null;
         capacidadPiesCubicos = Boolean.TRUE;
+        archivosModel = null;
+    
     }
     
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -323,6 +343,56 @@ public class BuqueController implements Serializable {
     }
 
     
+    /*
+     * Comienzo de funcionalidades de Archivos del embarque
+     */
     
+    public void subirArchivo(){
+        if (getCurrentFile() != null && StringUtils.isNotEmpty(getCurrentFile().getFileName())){
+            try {
+                ejbFacade.subirArchivo(currentFile.getInputstream(), currentFile.getFileName(), current);
+            } catch (IOException ex) {
+                Logger.getLogger(BuqueController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        listaArchivos = null;
+        archivosModel = null;
+    }
+    
+    public void eliminarArchivo(){
+        if (archivosModel.getRowData() != null){
+            getSelected().getArchivoBuqueCollection().remove((ArchivoBuque) archivosModel.getRowData());
+            listaArchivos = null;
+            archivosModel = null;
+        }
+    }    
+        
+    public List<ArchivoBuque> getListaArchivos() {
+        if (listaArchivos == null){
+            listaArchivos = new ArrayList<ArchivoBuque>(getSelected().getArchivoBuqueCollection());
+            Collections.sort(listaArchivos);
+        }
+        return listaArchivos;
+    }
+    
+    public DataModel getArchivosModel() {
+        if (archivosModel == null){
+            archivosModel = new ListDataModel(getListaArchivos());
+        }
+        return archivosModel;
+    }
+
+    public UploadedFile getCurrentFile() {
+        return currentFile;
+    }
+
+    public void setCurrentFile(UploadedFile currentFile) {
+        this.currentFile = currentFile;
+    }
+    
+    /*
+     * Fin de las funcionalidades del Archivos del embarque
+     */
+
     
 }

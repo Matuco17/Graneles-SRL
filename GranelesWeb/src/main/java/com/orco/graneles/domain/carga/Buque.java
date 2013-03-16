@@ -96,7 +96,10 @@ public class Buque implements Serializable, Comparable<Buque> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque")
     private Collection<Embarque> embarqueCollection;
   
-   
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque", orphanRemoval = true)
+    private Collection<ArchivoBuque> archivoBuqueCollection;
+    
+    
     public Buque() {
     }
 
@@ -187,6 +190,17 @@ public class Buque implements Serializable, Comparable<Buque> {
         this.embarqueCollection = embarqueCollection;
     }
 
+    @XmlTransient
+    public Collection<ArchivoBuque> getArchivoBuqueCollection() {
+        return archivoBuqueCollection;
+    }
+
+    public void setArchivoBuqueCollection(Collection<ArchivoBuque> archivoBuqueCollection) {
+        this.archivoBuqueCollection = archivoBuqueCollection;
+    }
+
+    
+    
     public FixedList getTipoBuque() {
         return tipoBuque;
     }

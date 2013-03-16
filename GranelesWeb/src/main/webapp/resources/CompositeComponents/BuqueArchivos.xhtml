@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
+            <p:fileUpload id="fupArchivoASubir" value="#{buqueController.currentFile}" mode="simple"  />
+
+            <p:commandButton value="+" ajax="false" process="panArchivos" 
+                             actionListener="#{buqueController.subirArchivo()}"
+                             /> 
+        </h:panelGrid>
+        <h:dataTable id="dtbLinkArchivos" value="#{buqueController.archivosModel}"  var="archivo"  >
+            <p:column>
+                <h:link value="#{archivo.nombreArchivo}" onclick="window.open('#{archivo.urlCompleto}','Download');window.close();" />
+            </p:column>
+            <p:column rendered="#{cc.attrs.editar}">
+                <p:commandButton value="x" ajax="false" process="panArchivos" 
+                                 actionListener="#{buqueController.eliminarArchivo()}"
+                                 /> 
+            </p:column>
+        </h:dataTable>
+    </co:implementation>
+</html>

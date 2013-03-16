@@ -4,11 +4,14 @@
       xmlns:co="http://java.sun.com/jsf/composite"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
+     >
 
     <!-- INTERFACE -->
     <co:interface>
         <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
     </co:interface>
 
     <!-- IMPLEMENTATION -->
@@ -93,5 +96,10 @@
                     </p:column>
                 </p:dataTable>
             </p:panel>
+        
+            <p:panel id="panArchivos" header="Archivos" style="float: left;" rendered="#{!cc.attrs.nuevo}"  >
+                <Cc:BuqueArchivos editar="#{cc.attrs.editar}" />
+            </p:panel>
+
     </co:implementation>
 </html>

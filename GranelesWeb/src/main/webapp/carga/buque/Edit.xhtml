@@ -12,9 +12,9 @@
             <h:outputText value="#{bundleCarga.EditBuqueTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form>
+            <h:form enctype="multipart/form-data">
              
-                <Co:buque editar="true" />
+                <Co:buque editar="true" nuevo="false" />
                 
                 <p:panel style="float: left; width: 100%;">
                     <h:panelGrid columns="3">
