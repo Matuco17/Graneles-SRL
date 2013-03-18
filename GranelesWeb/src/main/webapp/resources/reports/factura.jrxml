@@ -112,7 +112,7 @@
 	</columnHeader>
 	<detail>
 		<band height="24" splitType="Stretch">
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="34" y="0" width="303" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>

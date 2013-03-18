@@ -43,7 +43,6 @@ public class LineaFactura implements Serializable {
     @Column(name = "id")
     private Long id;
     
-    @Size(max = 256)
     @Column(name = "descripcion")
     private String descripcion;
     
