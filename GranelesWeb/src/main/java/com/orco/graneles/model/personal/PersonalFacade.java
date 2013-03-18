@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.Moneda;
+import com.orco.graneles.model.miscelaneos.CuilCuitCdi;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.persistence.NoResultException;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -58,6 +60,30 @@ public class PersonalFacade extends AbstractFacade<Personal> {
                             .setParameter("estado", fixedListFacade.find(EstadoPersonal.ACTIVO))
                             .getResultList();        
     }
+
+    @Override
+    public void create(Personal entity) {
+        CuilCuitCdi cuil = new CuilCuitCdi(entity.getCuil());
+        if (!cuil.isVerified()){
+            throw new EJBException("C.U.I.L. incorrecto.");
+        }
+        
+        super.create(entity);
+    }
+
+    @Override
+    public void edit(Personal entity) {
+        CuilCuitCdi cuil = new CuilCuitCdi(entity.getCuil());
+        if (!cuil.isVerified()){
+            throw new EJBException("C.U.I.L. incorrecto.");
+        }
+    
+        super.edit(entity);
+    }
+    
+    
+    
+    
     
     /**
      * Lee de la tabla dbf y genera un map con la lista del personal, existente o no
