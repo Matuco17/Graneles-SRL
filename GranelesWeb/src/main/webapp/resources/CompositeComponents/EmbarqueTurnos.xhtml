@@ -28,6 +28,12 @@
             <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalEmbarcado}" style="text-align: right;">
                 <h:outputText value="#{turno.totalEmbarcado}" />
             </p:column>
+            <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_aBordoAlInicio}" style="text-align: right;">
+                <h:outputText value="#{turno.totalEmbarcadoAlInicio}" />
+                <f:facet name="footer">
+                    <h:outputText value="#{embarqueController.selected.totalCargado}" />
+                </f:facet>
+            </p:column>
             <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}"  style="text-align: right;">
                 <h:outputText value="#{turno.totalBruto}" >
                     <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />

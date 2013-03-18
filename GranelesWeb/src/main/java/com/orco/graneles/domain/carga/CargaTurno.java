@@ -69,6 +69,22 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
         return total;
     }
     
+    /**
+     * Devuelve el total a bordo para esa carga turno.
+     * @return 
+     */
+    public BigDecimal getTotalEmbarcadoInicio() {
+        BigDecimal total = this.getTurnoEmbarque().getTotalEmbarcadoAlInicio();
+        
+        for (CargaTurno ct : this.getTurnoEmbarque().getCargaTurnoCollection()){
+            if (ct.compareTo(this) < 0){
+                total = total.add(ct.getTotalCargado());
+            }
+        }
+
+        return total;
+    }
+    
     public CargaTurno() {
     }
 
@@ -106,8 +122,9 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
 
     public List<CargaTurnoCargas> getCargasSorted(){
         List<CargaTurnoCargas> cargas = new ArrayList<CargaTurnoCargas>();
-        if (this.getCargasCollection() != null)
+        if (this.getCargasCollection() != null){
             cargas.addAll(this.getCargasCollection());
+        }
         Collections.sort(cargas);
         return cargas;
     }

@@ -139,9 +139,35 @@ public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
     public void setTotalBruto(BigDecimal totalBruto) {
         this.totalBruto = totalBruto;
     }
-       
     
-
+    public BigDecimal getTotalEmbarcadoRefrescado(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        for (CargaTurno ct : this.getCargaTurnoCollection()){
+            for (CargaTurnoCargas ctc : ct.getCargasCollection()){
+                total = total.add(ctc.getCarga());
+            }
+        }
+        
+        return total;        
+    }
+    
+    public BigDecimal getTotalEmbarcadoAlInicio(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+        for (TurnoEmbarque te : this.getEmbarque().getTurnoEmbarqueCollection()){
+            if (te.compareTo(this) < 0){
+                total = total.add(te.getTotalEmbarcadoRefrescado());
+            }
+        }
+        
+        return total;
+    }
+       
+    public BigDecimal getTotalEnBarcoAlFin(){
+        return this.getTotalEmbarcadoAlInicio().add(this.getTotalEmbarcadoRefrescado());
+    }
+    
     @XmlTransient
     public Collection<CargaTurno> getCargaTurnoCollection() {
         return cargaTurnoCollection;

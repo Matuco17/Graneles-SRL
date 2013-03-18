@@ -421,6 +421,17 @@ public class Embarque implements Serializable, Comparable<Embarque> {
         return total;
     }
     
+    public BigDecimal getTotalCargado(){
+        BigDecimal total = BigDecimal.ZERO;
+                
+        if (this.getTurnoEmbarqueCollection() != null){
+            for (TurnoEmbarque te : this.getTurnoEmbarqueCollection()){
+                total = total.add(te.getTotalEmbarcadoRefrescado());
+            }
+        }
+        
+        return total;
+    }
     
     @XmlTransient
     public Collection<Empresa> getEmpresaCollection() {

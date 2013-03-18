@@ -163,28 +163,32 @@
                             <h:outputText value="#{item.tte.personal.apellido}" />
                         </p:column>
                         <p:column id="colCategoria" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_categoria}" >
-                            <h:selectOneMenu id="selColCategoria" value="#{item.tte.categoria}"  disabled="#{!cc.attrs.editar}" >
+                            <h:selectOneMenu id="selColCategoria" value="#{item.tte.categoria}"  rendered="#{cc.attrs.editar}" >
                                 <f:selectItems value="#{categoriaController.itemsAvailableSelectMany}"/>
                             </h:selectOneMenu>
+                            <h:outputText value="#{item.tte.categoria.toString()}" rendered="#{!cc.attrs.editar}" />
                         </p:column>
                         <p:column id="colTarea" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_tarea}" >
-                            <h:selectOneMenu id="selColTarea" value="#{item.tte.tarea}"  disabled="#{!cc.attrs.editar}" >
+                            <h:selectOneMenu id="selColTarea" value="#{item.tte.tarea}"  rendered="#{cc.attrs.editar}" >
                                 <f:selectItems value="#{tareaController.itemsAvailableSelectMany}"/>
                             </h:selectOneMenu>
+                            <h:outputText value="#{item.tte.tarea.toString()}" rendered="#{!cc.attrs.editar}" />
                         </p:column>
                         <p:column id="colDesde" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_desde}"  >
-                            <h:selectOneMenu id="selColDesde" value="#{item.tte.desde}" disabled="#{!cc.attrs.editar}" >
+                            <h:selectOneMenu id="selColDesde" value="#{item.tte.desde}" rendered="#{cc.attrs.editar}" >
                                 <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                     <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                                 </c:forEach>
                             </h:selectOneMenu>
+                            <h:outputText value="#{item.tte.desde}" rendered="#{!cc.attrs.editar}" />
                         </p:column>
                         <p:column id="colHasta" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_hasta}"  >
-                            <h:selectOneMenu id="selColHasta" value="#{item.tte.hasta}" disabled="#{!cc.attrs.editar}" >
+                            <h:selectOneMenu id="selColHasta" value="#{item.tte.hasta}" rendered="#{cc.attrs.editar}" >
                                 <c:forEach begin="0" end="23" varStatus="hora" step="1">
                                     <f:selectItem itemValue="#{hora.count}" itemLabel="#{hora.count}" />
                                 </c:forEach>
                             </h:selectOneMenu>
+                            <h:outputText value="#{item.tte.hasta}" rendered="#{!cc.attrs.editar}" />
                         </p:column>
                         <p:column id="colValorBruto" headerText="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_valorBruto}" style="text-align: right;" >
                             <h:outputText value="#{item.valorBruto}" >
@@ -252,8 +256,11 @@
                                 </p:column>
                                 <p:column headerText="#{bundleCarga.CargaPreviaTitle_carga}" >
                                     <p:inputText value="#{carga.carga}" readonly="#{!cc.attrs.editar}" style="text-align: right;"  />
+                                    <f:facet name="footer">
+                                        <h:outputText value="#{embarqueController.currentTE.totalEmbarcadoRefrescado}"  />
+                                    </f:facet>
                                 </p:column>
-                            </p:dataTable>  
+                            </p:dataTable> 
                         </p:tab>
                     </c:forEach>
                 </p:accordionPanel>
@@ -263,7 +270,21 @@
                                  image="/faces/resources/images/new.png"
                                  rendered="#{cc.attrs.editar}">
                 </h:commandButton>
-
+                          
+                <p:panelGrid style="margin-left: 23px; margin-top: 15px;">
+                    <p:row>
+                        <p:column><h:outputLabel value="Total A Bordo al Inicio:" /></p:column>
+                        <p:column  style="text-align: right;"><h:outputText value="#{embarqueController.currentTE.totalEmbarcadoAlInicio}"  /></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputLabel value="Total Embarcado:" /></p:column>
+                        <p:column  style="text-align: right;"><h:outputText value="#{embarqueController.currentTE.totalEmbarcadoRefrescado}"  /></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputLabel value="Total A Bordo al Fin:" /></p:column>
+                        <p:column  style="text-align: right;"><h:outputText value="#{embarqueController.currentTE.totalEnBarcoAlFin}"  /></p:column>
+                    </p:row>
+                </p:panelGrid>    
             </p:tab>
 
             <p:tab id="panReportes" title="Reportes" rendered="#{!cc.attrs.editar}" >

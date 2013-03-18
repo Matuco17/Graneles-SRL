@@ -382,7 +382,7 @@ public class EmbarqueController implements Serializable {
     }
     
     public void generarReporteResumenCargasCoordinador(){
-        urlReporteResumenCargasCoordinador = (new ResumenCargasPorCargador(current)).obtenerReportePDF();
+        urlReporteResumenCargasCoordinador = (new ResumenCargasPorCargador(current, cargaTurnoF)).obtenerReportePDF();
     }
     
     public void generarReporteNoDanios(){

@@ -143,3 +143,8 @@ tr.jsfcrud_even_row {
     border-right-width: 3px !important;
 }
 
+.ui-accordion .ui-accordion-content {
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
