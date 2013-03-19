@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.carga;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.salario.TipoJornal;
 import java.io.Serializable;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TurnoEmbarque.findByTurno", query = "SELECT t FROM TurnoEmbarque t WHERE t.turno = :turno"),
     @NamedQuery(name = "TurnoEmbarque.findByNroPlanilla", query = "SELECT t FROM TurnoEmbarque t WHERE t.nroPlanilla = :nroPlanilla"),
     @NamedQuery(name = "TurnoEmbarque.findByTipo", query = "SELECT t FROM TurnoEmbarque t WHERE t.tipo = :tipo")})
-public class TurnoEmbarque implements Serializable, Comparable<TurnoEmbarque> {
+public class TurnoEmbarque extends EntidadAuditable implements Serializable, Comparable<TurnoEmbarque> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

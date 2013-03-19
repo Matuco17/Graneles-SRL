@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.carga;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.facturacion.Empresa;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -55,7 +56,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Embarque.findByTmo", query = "SELECT e FROM Embarque e WHERE e.tmo = :tmo"),
     @NamedQuery(name = "Embarque.findByMomentoFumigacion", query = "SELECT e FROM Embarque e WHERE e.momentoFumigacion = :momentoFumigacion"),
     @NamedQuery(name = "Embarque.findByBoletosPor", query = "SELECT e FROM Embarque e WHERE e.boletosPor = :boletosPor")})
-public class Embarque implements Serializable, Comparable<Embarque> {
+public class Embarque extends EntidadAuditable implements Serializable, Comparable<Embarque> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

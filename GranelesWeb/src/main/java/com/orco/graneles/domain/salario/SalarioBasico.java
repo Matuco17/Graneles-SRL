@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.salario;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.miscelaneos.FixedList;
@@ -58,7 +59,7 @@ import javax.xml.bind.annotation.XmlRootElement;
                                 + "AND s.tarea = :tarea "
                                 + "AND s.desde <= :fecha "
                                 + "AND (s.hasta IS NULL OR s.hasta >= :fecha)")})
-public class SalarioBasico implements Serializable, Comparable<SalarioBasico> {
+public class SalarioBasico extends EntidadAuditable implements Serializable, Comparable<SalarioBasico> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

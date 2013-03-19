@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.personal;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.salario.Sueldo;
 import java.io.Serializable;
@@ -40,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
                 + "WHERE a.personal = :personal "
                 + "AND a.desde <= :hasta "
                 + "AND (a.hasta IS NULL OR a.hasta >= :desde)")})
-public class Accidentado implements Serializable {
+public class Accidentado extends EntidadAuditable implements Serializable {
     
     private static final long serialVersionUID = 1L;
     

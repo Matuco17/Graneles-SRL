@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.personal;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.salario.Adelanto;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.miscelaneos.FixedList;
@@ -61,7 +62,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Personal.findByVersion", query = "SELECT p FROM Personal p WHERE p.version = :version"),
     @NamedQuery(name = "Personal.findByVersionActiva", query = "SELECT p FROM Personal p WHERE p.versionActiva = :versionActiva"),
     @NamedQuery(name = "Personal.findByUrlFoto", query = "SELECT p FROM Personal p WHERE p.urlFoto = :urlFoto")})
-public class Personal implements Serializable {
+public class Personal extends EntidadAuditable implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id

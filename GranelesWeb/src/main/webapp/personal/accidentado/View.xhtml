@@ -14,8 +14,14 @@
         <ui:define name="body">
             <h:form>
                 
-                <Co:accidentadoCC editar="false" nuevo="false"/>
-         
+                <p:accordionPanel multiple="true">
+                    <p:tab name="Datos del Accidentado" closable="false" >
+                        <Co:accidentadoCC editar="false" nuevo="false"/>
+                    </p:tab>
+                    <p:tab id="panAuditoria" title="Auditoría" >
+                         <Co:auditoria auditoria="#{accidentadoController.selected.auditoria}" />
+                    </p:tab>   
+                </p:accordionPanel>
 
                  <p:panel style="width: 100%; display: inline-block;">
                     <h:panelGrid columns="4">

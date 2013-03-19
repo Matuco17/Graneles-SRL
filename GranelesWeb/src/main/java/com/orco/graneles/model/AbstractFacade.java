@@ -4,18 +4,27 @@
  */
 package com.orco.graneles.model;
 
+import com.orco.graneles.domain.EntidadAuditable;
+import com.orco.graneles.domain.miscelaneos.Auditoria;
+import com.orco.graneles.model.miscelaneos.AuditoriaFacade;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import org.apache.commons.beanutils.BeanUtils;
 
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 
+    @EJB
+    private AuditoriaFacade auditoriaF;
+    
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -25,6 +34,10 @@ public abstract class AbstractFacade<T> {
     public void create(T entity) {
         try {
             getEntityManager().persist(entity);
+            
+            if (entity instanceof EntidadAuditable){
+                crearAuditoria(entity);
+            }
         } catch (EJBException e) {
             Logger.getLogger(AbstractVersionedFacade.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -33,6 +46,20 @@ public abstract class AbstractFacade<T> {
     public void edit(T entity) {
         try {
             getEntityManager().merge(entity);
+            
+            if (entity instanceof EntidadAuditable){
+                Auditoria a = ((EntidadAuditable) entity).getAuditoria();
+                
+                if (a == null){
+                    crearAuditoria(entity);
+                } else {
+                    //Edito solamente la auditoria
+                    a.setUsuarioModificacion(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+                    a.setFechaModificacion(new Date());
+
+                    auditoriaF.edit(a);
+                }
+            }
         } catch (EJBException e) {
             Logger.getLogger(AbstractVersionedFacade.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -41,9 +68,9 @@ public abstract class AbstractFacade<T> {
      public void persist(T entity){
         try {
             if ( BeanUtils.getProperty(entity, "id") != null){
-                getEntityManager().merge(entity);
+                create(entity);
             } else {
-                getEntityManager().persist(entity);
+                edit(entity);
             }
         } catch (IllegalAccessException ex) {
             getEntityManager().persist(entity);
@@ -108,6 +135,29 @@ public abstract class AbstractFacade<T> {
         } catch (EJBException e) {
             Logger.getLogger(AbstractVersionedFacade.class.getName()).log(Level.SEVERE, null, e);
             return -1;
+        }
+    }
+
+    private void crearAuditoria(T entity) throws NumberFormatException {
+        Auditoria a = new Auditoria();
+        try {
+            a.setEntidadId(Long.parseLong(BeanUtils.getProperty(entity, "id")));
+            a.setClase(entity.getClass().getSimpleName());
+            a.setUsuarioCreacion(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+            a.setFechaCreacion(new Date());
+            a.setUsuarioModificacion(a.getUsuarioCreacion());
+            a.setFechaModificacion(a.getFechaCreacion());
+
+            EntidadAuditable eA = (EntidadAuditable) entity;
+            eA.setAuditoria(a);
+            getEntityManager().merge(entity);
+
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

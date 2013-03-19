@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.salario;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
@@ -38,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adelanto.findByFecha", query = "SELECT a FROM Adelanto a WHERE a.fecha = :fecha"),
     @NamedQuery(name = "Adelanto.findByFechaPersonalDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.personal = :personal AND a.fecha BETWEEN :desde AND :hasta"),
     @NamedQuery(name = "Adelanto.findByFechaDesdeHasta", query = "SELECT a FROM Adelanto a WHERE a.fecha BETWEEN :desde AND :hasta")})
-public class Adelanto implements Serializable {
+public class Adelanto extends EntidadAuditable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

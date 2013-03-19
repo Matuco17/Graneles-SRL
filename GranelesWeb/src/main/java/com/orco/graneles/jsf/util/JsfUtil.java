@@ -38,7 +38,7 @@ public class JsfUtil {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/GranelesWeb/faces/accessDenied.xhtml");
             }            
         } catch (IOException ex) {
-            Logger.getLogger(ArchivoEmbarqueController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger("SinClase").log(Level.SEVERE, null, ex);
         }
     }
 
@@ -50,7 +50,7 @@ public class JsfUtil {
             addErrorMessage(defaultMsg);
         }
     }
-
+    
     public static void addErrorMessages(List<String> messages) {
         for (String message : messages) {
             addErrorMessage(message);

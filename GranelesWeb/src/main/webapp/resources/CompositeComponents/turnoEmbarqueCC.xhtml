@@ -308,6 +308,14 @@
 
 
             </p:tab>
+            
+                        
+            <p:tab id="panAuditoria" title="Auditoría" rendered="#{!cc.attrs.editar}" >
+
+                <o:auditoria auditoria="#{embarqueController.currentTE.auditoria}" />
+
+            </p:tab>    
+                    
         
         </p:accordionPanel>
         

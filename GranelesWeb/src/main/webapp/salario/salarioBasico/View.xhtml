@@ -4,7 +4,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
+      >
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,25 +14,32 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="4">
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tarea}" for="tarea"  />
-                    <h:selectOneMenu id="tarea" value="#{salarioBasicoController.selected.tarea}" disabled="true" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_tarea}" >
-                        <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_categoria}" for="categoria"  />
-                    <h:selectOneMenu id="categoria" value="#{salarioBasicoController.selected.categoria}"  disabled="true"  required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_categoria}">
-                        <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_desde}" for="desde"   />
-                    <p:calendar id="desde" value="#{salarioBasicoController.selected.desde}"  disabled="true"  title="#{bundleSalario.SalarioBasicoTitle_desde}" pattern="dd/MM/yyyy" />
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_hasta}" for="hasta"  />
-                    <p:calendar id="hasta" value="#{salarioBasicoController.selected.hasta}"  disabled="true"  title="#{bundleSalario.SalarioBasicoTitle_hasta}" pattern="dd/MM/yyyy" />
-                    <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_basico}" for="basico"  />
-                    <p:inputText id="basico" value="#{salarioBasicoController.selected.basico}"  disabled="true"  />
-                      
-               </h:panelGrid>
+                <p:accordionPanel multiple="true">
+                    <p:tab title="Datos Salario" closable="false" >
+                        <h:panelGrid columns="4">
+                            <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_tarea}" for="tarea"  />
+                            <h:selectOneMenu id="tarea" value="#{salarioBasicoController.selected.tarea}" disabled="true" required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_tarea}" >
+                                <f:selectItems value="#{tareaController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_categoria}" for="categoria"  />
+                            <h:selectOneMenu id="categoria" value="#{salarioBasicoController.selected.categoria}"  disabled="true"  required="true" requiredMessage="#{bundleSalario.SalarioBasicoRequiredMessage_categoria}">
+                                <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_desde}" for="desde"   />
+                            <p:calendar id="desde" value="#{salarioBasicoController.selected.desde}"  disabled="true"  title="#{bundleSalario.SalarioBasicoTitle_desde}" pattern="dd/MM/yyyy" />
+                            <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_hasta}" for="hasta"  />
+                            <p:calendar id="hasta" value="#{salarioBasicoController.selected.hasta}"  disabled="true"  title="#{bundleSalario.SalarioBasicoTitle_hasta}" pattern="dd/MM/yyyy" />
+                            <h:outputLabel value="#{bundleSalario.SalarioBasicoTitle_basico}" for="basico"  />
+                            <p:inputText id="basico" value="#{salarioBasicoController.selected.basico}"  disabled="true"  />
+                       </h:panelGrid>
+                    </p:tab>
+                    
+                    <p:tab id="panAuditoria" title="Auditoría" rendered="#{!cc.attrs.editar}" >
 
+                        <Cc:auditoria auditoria="#{salarioBasicoController.selected.auditoria}" />
 
+                    </p:tab>    
+                </p:accordionPanel>
                 <h:panelGrid columns="4">
                     <h:commandButton action="#{salarioBasicoController.destroyAndView}" 
                                      image="/faces/resources/images/destroy.png" 

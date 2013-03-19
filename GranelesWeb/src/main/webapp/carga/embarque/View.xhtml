@@ -44,6 +44,8 @@
                         <Cc:EmbarqueArchivos editar="false"/>
                         
                     </p:tab>    
+        
+                    
                 
                     <p:tab title="Reportes" rendered="#{embarqueController.selected.consolidado}">
                         <h:panelGrid columns="4">
@@ -86,6 +88,13 @@
                                 
                         </h:panelGrid>
                     </p:tab>
+                    
+                                
+                    <p:tab id="panAuditoria" title="Auditoría" >
+                        
+                        <Cc:auditoria auditoria="#{embarqueController.selected.auditoria}" />
+                        
+                    </p:tab>    
                     
                 </p:accordionPanel>
              

@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,26 +13,36 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
-                    <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
-                    <h:outputText value="" />
-                    <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
+                <p:accordionPanel multiple="true">
+                    <p:tab title="Datos del Adelanto" closable="false" >
+                        <h:panelGrid columns="2">
+                           <h:outputLabel value="#{bundleSalario.AdelantoTitle_personal}" for="personal"/>
+                           <h:outputText value="#{adelantoController.selected.personal.cuil}" id="personal" />
+                           <h:outputText value="" />
+                           <h:outputText value="#{adelantoController.selected.personal.apellido}"/>
 
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
-                    <h:outputText id="fecha" value="#{adelantoController.selected.fecha}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputText>
+                           <h:outputLabel value="#{bundleSalario.AdelantoTitle_fecha}" for="fecha"/>
+                           <h:outputText id="fecha" value="#{adelantoController.selected.fecha}">
+                                   <f:convertDateTime pattern="dd/MM/yyyy" />
+                           </h:outputText>
 
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
-                    <h:outputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />
+                           <h:outputLabel value="#{bundleSalario.AdelantoTitle_valor}" for="valor" />
+                           <h:outputText id="valor" value="#{adelantoController.selected.valor}" style="text-align: right;" />
 
-                    <h:outputLabel value="#{bundleSalario.AdelantoTitle_recibo}" for="recibo"/>
-                    <h:link id="recibo" value="#{bundleSalario.AdelantoTitle_reciboLink}" 
-                            onclick="window.open('#{adelantoController.urlRecibo}','Download');window.close();" rendered="#{adelantoController.urlRecibo != null}" />
-                    
-                </h:panelGrid>
+                           <h:outputLabel value="#{bundleSalario.AdelantoTitle_recibo}" for="recibo"/>
+                           <h:link id="recibo" value="#{bundleSalario.AdelantoTitle_reciboLink}" 
+                                   onclick="window.open('#{adelantoController.urlRecibo}','Download');window.close();" rendered="#{adelantoController.urlRecibo != null}" />
 
+                       </h:panelGrid>
+                    </p:tab>
+                    <p:tab id="panAuditoria" title="Auditoría" rendered="#{!cc.attrs.editar}" >
+
+                       <Cc:auditoria auditoria="#{adelantoController.selected.auditoria}" />
+
+                    </p:tab>   
+
+                </p:accordionPanel>
+                
                 <h:panelGrid columns="4">
                     <h:commandButton action="#{adelantoController.destroyAndView}" 
                                      image="/faces/resources/images/destroy.png" 

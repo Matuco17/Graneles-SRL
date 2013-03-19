@@ -4,7 +4,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
+      >
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,90 +14,103 @@
         </ui:define>
         <ui:define name="body">
             <h:form>
-                <h:panelGrid columns="6">
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_registro}" for="registro" />
-                    <h:outputText id="registro" value="#{personalController.selected.registro}" />
+                <p:accordionPanel multiple="true">
                     
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_apellido}" for="apellido" />
-                    <h:outputText id="apellido" value="#{personalController.selected.apellido}"  />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_categoriaPrincipal}" for="categoriaPrincipal" />
-                    <h:outputText id="categoriaPrincipal" value="#{personalController.selected.categoriaPrincipal.toString()}" />
-                                     
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_nroAfiliado}" for="nroAfiliado" />
-                    <h:outputText id="nroAfiliado" value="#{personalController.selected.nroAfiliado}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_documento}" for="documento" />
-                    <h:outputText id="documento" value="#{personalController.selected.documento}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_estadoCivil}" for="estadoCivil" />
-                    <h:outputText id="estadoCivil" value="#{personalController.selected.estadoCivil.toString()}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuil}" for="cuil" />
-                    <h:outputText id="cuil" value="#{personalController.selected.cuil}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_sindicato}" for="sindicato" />
-                    <p:selectBooleanCheckbox id="sindicato" value="#{personalController.selected.sindicato}" disabled="true" />
-                                       
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_domicilio}" for="domicilio" />
-                    <h:outputText id="domicilio" value="#{personalController.selected.domicilio}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_telefono}" for="telefono" />
-                    <h:outputText id="telefono" value="#{personalController.selected.telefono}" />
+                    <p:tab title="Datos del Personal" closable="false" >
+                        <h:panelGrid columns="6">
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_registro}" for="registro" />
+                            <h:outputText id="registro" value="#{personalController.selected.registro}" />
 
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_celular}" for="celular" />
-                    <h:outputText id="celular" value="#{personalController.selected.celular}" />
-     
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_fechaNacimiento}" for="fechaNacimiento" />
-                    <h:outputText id="fechaNacimiento" value="#{personalController.selected.fechaNacimiento}" title="#{bundlePersonal.PersonalTitle_fechaNacimiento}" >
-                         <f:convertDateTime pattern="dd/MM/yyyy"/> 
-                    </h:outputText>
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_estado}" for="estado" />
-                    <h:outputText id="estado" value="#{personalController.selected.estado.toString()}"  />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_obraSocial}" for="obraSocial" />
-                    <h:outputText id="obraSocial" value="#{personalController.selected.obraSocial.toString()}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_ingreso}" for="ingreso" />
-                    <h:outputText id="ingreso" value="#{personalController.selected.ingreso}" title="#{bundlePersonal.PersonalTitle_ingreso}">
-                         <f:convertDateTime pattern="dd/MM/yyyy"/> 
-                    </h:outputText>
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_baja}" for="baja" />
-                    <h:outputText id="baja" value="#{personalController.selected.baja}" title="#{bundlePersonal.PersonalTitle_baja}">
-                         <f:convertDateTime pattern="dd/MM/yyyy"/> 
-                    </h:outputText>
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_afjp}" for="afjp" />
-                    <p:selectBooleanCheckbox id="afjp" value="#{personalController.selected.afjp}" disabled="true" />
-                                     
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_localidad}" for="localidad" />
-                    <h:outputText id="localidad" value="#{personalController.selected.localidad}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuentaBancaria}" for="cuentaBancaria" />
-                    <h:outputText id="cuentaBancaria" value="#{personalController.selected.cuentaBancaria}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_esposa}" for="esposa" />
-                    <p:selectBooleanCheckbox id="esposa" value="#{personalController.selected.esposa}" disabled="true" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_hijos}" for="hijos" />
-                    <h:outputText id="hijos" value="#{personalController.selected.hijos}" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_prenatal}" for="prenatal" />
-                    <p:selectBooleanCheckbox id="prenatal" value="#{personalController.selected.prenatal}" disabled="true" />
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_escolaridad}" for="escolaridad" />
-                    <h:outputText id="escolaridad" value="#{personalController.selected.escolaridad}" />
-                    
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_tipoRecibo}" for="tipoRecibo" />
-                    <h:outputText id="tipoRecibo" value="#{personalController.selected.tipoRecibo.toString()}" />
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_apellido}" for="apellido" />
+                            <h:outputText id="apellido" value="#{personalController.selected.apellido}"  />
 
-                    
-                    <h:outputLabel value="#{bundlePersonal.PersonalTitle_descuentoJudicial}" for="descuentoJudicial" />
-                    <h:outputText id="descuentoJudicial" value="#{personalController.selected.descuentoJudicial}" />
-               </h:panelGrid>
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_categoriaPrincipal}" for="categoriaPrincipal" />
+                            <h:outputText id="categoriaPrincipal" value="#{personalController.selected.categoriaPrincipal.toString()}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_nroAfiliado}" for="nroAfiliado" />
+                            <h:outputText id="nroAfiliado" value="#{personalController.selected.nroAfiliado}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_documento}" for="documento" />
+                            <h:outputText id="documento" value="#{personalController.selected.documento}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_estadoCivil}" for="estadoCivil" />
+                            <h:outputText id="estadoCivil" value="#{personalController.selected.estadoCivil.toString()}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuil}" for="cuil" />
+                            <h:outputText id="cuil" value="#{personalController.selected.cuil}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_sindicato}" for="sindicato" />
+                            <p:selectBooleanCheckbox id="sindicato" value="#{personalController.selected.sindicato}" disabled="true" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_domicilio}" for="domicilio" />
+                            <h:outputText id="domicilio" value="#{personalController.selected.domicilio}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_telefono}" for="telefono" />
+                            <h:outputText id="telefono" value="#{personalController.selected.telefono}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_celular}" for="celular" />
+                            <h:outputText id="celular" value="#{personalController.selected.celular}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_fechaNacimiento}" for="fechaNacimiento" />
+                            <h:outputText id="fechaNacimiento" value="#{personalController.selected.fechaNacimiento}" title="#{bundlePersonal.PersonalTitle_fechaNacimiento}" >
+                                 <f:convertDateTime pattern="dd/MM/yyyy"/> 
+                            </h:outputText>
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_estado}" for="estado" />
+                            <h:outputText id="estado" value="#{personalController.selected.estado.toString()}"  />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_obraSocial}" for="obraSocial" />
+                            <h:outputText id="obraSocial" value="#{personalController.selected.obraSocial.toString()}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_ingreso}" for="ingreso" />
+                            <h:outputText id="ingreso" value="#{personalController.selected.ingreso}" title="#{bundlePersonal.PersonalTitle_ingreso}">
+                                 <f:convertDateTime pattern="dd/MM/yyyy"/> 
+                            </h:outputText>
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_baja}" for="baja" />
+                            <h:outputText id="baja" value="#{personalController.selected.baja}" title="#{bundlePersonal.PersonalTitle_baja}">
+                                 <f:convertDateTime pattern="dd/MM/yyyy"/> 
+                            </h:outputText>
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_afjp}" for="afjp" />
+                            <p:selectBooleanCheckbox id="afjp" value="#{personalController.selected.afjp}" disabled="true" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_localidad}" for="localidad" />
+                            <h:outputText id="localidad" value="#{personalController.selected.localidad}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuentaBancaria}" for="cuentaBancaria" />
+                            <h:outputText id="cuentaBancaria" value="#{personalController.selected.cuentaBancaria}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_esposa}" for="esposa" />
+                            <p:selectBooleanCheckbox id="esposa" value="#{personalController.selected.esposa}" disabled="true" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_hijos}" for="hijos" />
+                            <h:outputText id="hijos" value="#{personalController.selected.hijos}" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_prenatal}" for="prenatal" />
+                            <p:selectBooleanCheckbox id="prenatal" value="#{personalController.selected.prenatal}" disabled="true" />
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_escolaridad}" for="escolaridad" />
+                            <h:outputText id="escolaridad" value="#{personalController.selected.escolaridad}" />
+
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_tipoRecibo}" for="tipoRecibo" />
+                            <h:outputText id="tipoRecibo" value="#{personalController.selected.tipoRecibo.toString()}" />
+
+
+                            <h:outputLabel value="#{bundlePersonal.PersonalTitle_descuentoJudicial}" for="descuentoJudicial" />
+                            <h:outputText id="descuentoJudicial" value="#{personalController.selected.descuentoJudicial}" />
+                       </h:panelGrid>
+                    </p:tab>
+                            
+                    <p:tab id="panAuditoria" title="Auditoría"   >
+
+                        <Cc:auditoria auditoria="#{embarqueController.selected.auditoria}" />
+
+                    </p:tab>    
+
+                </p:accordionPanel>
+                
 
 
                 <h:panelGrid columns="4">

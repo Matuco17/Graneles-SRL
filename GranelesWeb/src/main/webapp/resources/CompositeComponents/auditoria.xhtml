@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="auditoria" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="4">
+            
+            <h:outputLabel value="Usuario Creación" for="usuarioCreacion" />
+            <h:outputText id="usuarioCreacion" value="#{cc.attrs.auditoria.usuarioCreacion}"/>
+        
+            <h:outputLabel value="Usuario Última Modificación" for="usuarioModificacion" />
+            <h:outputText id="usuarioModificacion" value="#{cc.attrs.auditoria.usuarioModificacion}"/>
+      
+            <h:outputLabel value="Fecha Creación" for="fechaCreacion" />
+            <h:outputText id="fechaCreacion" value="#{cc.attrs.auditoria.fechaCreacion}">
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+            
+            <h:outputLabel value="Fecha Última Modificación" for="fechaModificacion" />
+            <h:outputText id="fechaModificacion" value="#{cc.attrs.auditoria.fechaModificacion}">
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+            </h:outputText>
+      
+        </h:panelGrid>
+    </cc:implementation>
+</html>
