@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "LineaFactura.findById", query = "SELECT l FROM LineaFactura l WHERE l.id = :id"),
     @NamedQuery(name = "LineaFactura.findByDescripcion", query = "SELECT l FROM LineaFactura l WHERE l.descripcion = :descripcion")
   })
-public class LineaFactura implements Serializable {
+public class LineaFactura implements Serializable, Comparable<LineaFactura> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +60,9 @@ public class LineaFactura implements Serializable {
     @Column(name = "importe")
     private BigDecimal importe;
 
+    @Column(name = "nro_linea")
+    private Integer nroLinea;
+    
     public LineaFactura() {
     }
 
@@ -143,6 +146,15 @@ public class LineaFactura implements Serializable {
     public String toString() {
         return "com.orco.graneles.domain.LineaFactura[ id=" + id + " ]";
     }
+
+    public Integer getNroLinea() {
+        return nroLinea;
+    }
+
+    public void setNroLinea(Integer nroLinea) {
+        this.nroLinea = nroLinea;
+    }
+    
     
     
     /**
@@ -189,4 +201,14 @@ public class LineaFactura implements Serializable {
     public String getNombreBuque(){
         return factura.getEmbarque().getBuque().getDescripcion();
     }
+
+    @Override
+    public int compareTo(LineaFactura o) {
+        if (this.nroLinea != null && o.nroLinea != null){
+            return this.nroLinea.compareTo(o.nroLinea);
+        }
+        return 0;
+    }
+    
+    
 }

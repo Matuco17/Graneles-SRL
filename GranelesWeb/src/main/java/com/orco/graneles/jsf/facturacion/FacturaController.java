@@ -171,9 +171,12 @@ public class FacturaController implements Serializable {
             lineasFactura.addAll(lineasConceptos);
         }
         
+        int lineaFactura = 1;
         for (LineaFactura lf : lineasFactura){
             if (lf != null){
                 lf.setFactura(current);
+                lf.setNroLinea(lineaFactura);
+                lineaFactura++;
             }
         }
         
@@ -238,16 +241,17 @@ public class FacturaController implements Serializable {
     public String prepareView() {
         current = (Factura) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
-        turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
-        Collections.sort(turnosFacturados);
-        turnosFacturadosModel = new ListDataModel(turnosFacturados);
-        calculadora = facturaCalculadoraF.generarCalculadoraDeFactura(current);
+        setViewElements();
         return "View";
     }
 
     public String prepareCreate() {
         current = new Factura();
         selectedItemIndex = -1;
+        lineasFactura = null;
+        lineasFacturaModel = null;
+        turnosFacturados = null;
+        turnosFacturadosModel = null;
         return "Create";
     }
 
@@ -258,11 +262,8 @@ public class FacturaController implements Serializable {
             getFacade().create(current);
         
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("FacturaCreated"));
-            
-            turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
-            Collections.sort(turnosFacturados);
-            turnosFacturadosModel = new ListDataModel(turnosFacturados);
-            calculadora = facturaCalculadoraF.generarCalculadoraDeFactura(current);
+          
+            setViewElements();
         
             return "View";
         } catch (Exception e) {
@@ -341,6 +342,16 @@ public class FacturaController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    private void setViewElements() {
+        turnosFacturados = new ArrayList<TurnoFacturado>(current.getTurnosFacturadosCollection());
+        Collections.sort(turnosFacturados);
+        turnosFacturadosModel = new ListDataModel(turnosFacturados);
+        calculadora = facturaCalculadoraF.generarCalculadoraDeFactura(current);
+        lineasFactura = new ArrayList<LineaFactura>(current.getLineaFacturaCollection());
+        Collections.sort(lineasFactura);
+        lineasFacturaModel = new ListDataModel(lineasFactura);
     }
 
     @FacesConverter(forClass = Factura.class)

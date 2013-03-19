@@ -32,7 +32,7 @@ public class FacturaReport extends ReporteGenerico {
     public String obtenerReportePDF() {
         //INVIERTO LAS LINEAS YA QUE SE ESTAN GUARDANDO EN ORDEN INVERSO
         List<LineaFactura> datos = new ArrayList<LineaFactura>(this.factura.getLineaFacturaCollection());
-        //Collections.reverse(datos);
+        Collections.sort(datos);
         
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datos);
         

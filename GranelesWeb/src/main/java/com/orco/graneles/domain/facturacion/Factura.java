@@ -8,8 +8,11 @@ import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.Embarque;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -184,8 +187,6 @@ public class Factura implements Serializable {
     public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
         this.porcentajeAdministracion = porcentajeAdministracion;
     }
-
-    
     
     @Override
     public int hashCode() {
