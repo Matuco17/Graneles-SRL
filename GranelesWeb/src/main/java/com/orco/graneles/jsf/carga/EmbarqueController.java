@@ -562,7 +562,7 @@ public class EmbarqueController implements Serializable {
             
             if (currentTE.getNroPlanilla() != null && currentTE.getNroPlanilla() != 0){
                 TurnoEmbarque teConIgualPlanilla = turnoEmbarqueF.obtenerTurnoEmbarque(currentTE.getNroPlanilla());
-                if (teConIgualPlanilla != null){
+                if (teConIgualPlanilla != null && !teConIgualPlanilla.equals(currentTE)){
                     JsfUtil.addErrorMessage("Ya existe un embarque con ese nro de planilla, Embarque: " + teConIgualPlanilla.getEmbarque().getCodigo());
                     return null;
                 }
