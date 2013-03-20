@@ -35,6 +35,8 @@ public abstract class AbstractFacade<T> {
         try {
             getEntityManager().persist(entity);
             
+            getEntityManager().flush();
+            
             if (entity instanceof EntidadAuditable){
                 crearAuditoria(entity);
             }
