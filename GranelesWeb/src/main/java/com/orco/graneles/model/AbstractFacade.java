@@ -69,7 +69,7 @@ public abstract class AbstractFacade<T> {
     
      public void persist(T entity){
         try {
-            if ( BeanUtils.getProperty(entity, "id") != null){
+            if ( BeanUtils.getProperty(entity, "id") == null){
                 create(entity);
             } else {
                 edit(entity);

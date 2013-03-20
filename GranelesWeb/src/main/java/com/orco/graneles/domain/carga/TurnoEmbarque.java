@@ -144,9 +144,12 @@ public class TurnoEmbarque extends EntidadAuditable implements Serializable, Com
     public BigDecimal getTotalEmbarcadoRefrescado(){
         BigDecimal total = BigDecimal.ZERO;
         
-        for (CargaTurno ct : this.getCargaTurnoCollection()){
-            for (CargaTurnoCargas ctc : ct.getCargasCollection()){
-                total = total.add(ctc.getCarga());
+
+        if (this.getCargaTurnoCollection() != null){
+            for (CargaTurno ct : this.getCargaTurnoCollection()){
+                for (CargaTurnoCargas ctc : ct.getCargasCollection()){
+                    total = total.add(ctc.getCarga());
+                }
             }
         }
         
@@ -156,9 +159,11 @@ public class TurnoEmbarque extends EntidadAuditable implements Serializable, Com
     public BigDecimal getTotalEmbarcadoAlInicio(){
         BigDecimal total = BigDecimal.ZERO;
         
-        for (TurnoEmbarque te : this.getEmbarque().getTurnoEmbarqueCollection()){
-            if (te.compareTo(this) < 0){
-                total = total.add(te.getTotalEmbarcadoRefrescado());
+        if (this.getEmbarque().getTurnoEmbarqueCollection() != null){
+            for (TurnoEmbarque te : this.getEmbarque().getTurnoEmbarqueCollection()){
+                if (te.compareTo(this) < 0){
+                    total = total.add(te.getTotalEmbarcadoRefrescado());
+                }
             }
         }
         

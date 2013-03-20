@@ -63,8 +63,12 @@ public class PersonalFacade extends AbstractFacade<Personal> {
 
     @Override
     public void create(Personal entity) {
-        CuilCuitCdi cuil = new CuilCuitCdi(entity.getCuil());
-        if (!cuil.isVerified()){
+        try {
+            CuilCuitCdi cuil = new CuilCuitCdi(entity.getCuil());
+            if (!cuil.isVerified()){
+                throw new EJBException("C.U.I.L. incorrecto.");
+            }    
+        } catch (IllegalArgumentException e) {
             throw new EJBException("C.U.I.L. incorrecto.");
         }
         
