@@ -36,6 +36,19 @@
                                 </p:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
+                        
+                        <script type="text/javascript">
+                
+                            jQuery(document).ready(function (){
+                                jQuery(":text").on("keydown", function (e){
+                                    debugger;
+                                    if (e.which === 13) {
+                                        e.preventDefault();
+                                    }  
+                                });                                       
+                            });
+
+                        </script>
                     </p:tab>
                     <p:tab id="#{facturaController.STEP_SELECCION_TURNOS}" title="Turnos" >
                     
@@ -142,12 +155,11 @@
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Valor" style="width: 90px; text-align: right;">
-                                    <p:inputText value="#{turnoFacturado.valor}" id="valorLinea" style="width: 85px; text-align: right;"
-                                                 readonly="true"> 
+                                    <h:outputText value="#{turnoFacturado.valor}" id="valorLinea" > 
                                         <!-- 150 = Administracion, 151 = Tarifa -->
                                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-                                        <p:ajax  event="blur" update="dtbLineaFactura" listener="#{facturaController.actualizarTurnosFacturados()}" /> 
-                                    </p:inputText>
+                                    <!--    <p:ajax  event="blur" update="dtbLineaFactura" listener="#{facturaController.actualizarTurnosFacturados()}" /> -->
+                                    </h:outputText>
                                     
                                     <f:facet name="footer" >
                                         <h:outputText id="totalFactura" value="#{facturaController.selected.totalXTurnos}" >
@@ -169,11 +181,37 @@
                             </p:dataTable>
 
                         </p:panel>
+                        
+                        <script type="text/javascript">
+                
+                            jQuery(document).ready(function (){
+                                jQuery(":text").on("keydown", function (e){
+                                    debugger;
+                                    if (e.which === 13) {
+                                        e.preventDefault();
+                                    }  
+                                });                                       
+                            });
+
+                        </script>
 
                     </p:tab>
                     
                     <p:tab id="#{facturaController.STEP_CALCULADORA}" title="Calculadora">
                         <Cc:calculadora editar="true" calculadora="#{facturaController.calculadora}" />
+                        
+                         <script type="text/javascript">
+                
+                            jQuery(document).ready(function (){
+                                jQuery(":text").on("keydown", function (e){
+                                    debugger;
+                                    if (e.which === 13) {
+                                        e.preventDefault();
+                                    }  
+                                });                                       
+                            });
+
+                        </script>
                     </p:tab>
                     
                     <p:tab id="#{facturaController.STEP_CONFIRMAR}" title="Confirmación" >
@@ -313,6 +351,20 @@
                                   style="margin-top: 5px; font-size: 1.3em; font-weight: bold;"
                                   />
                         </p:panel>
+                        
+                        <script type="text/javascript">
+                
+                            jQuery(document).ready(function (){
+                                jQuery(":text").on("keydown", function (e){
+                                    debugger;
+                                    if (e.which === 13) {
+                                        e.preventDefault();
+                                    }  
+                                });                                       
+                            });
+
+                        </script>
+                        
                     </p:tab>
                 </p:wizard>
                 <h:panelGrid columns="2">
@@ -327,17 +379,7 @@
                 </h:panelGrid>
             </h:form>
             
-            <script type="text/javascript">
-                
-                jQuery(document).ready(function (){
-                    jQuery(":text").bind("keydown", function (e){
-                        if (e.which == 13) {
-                            e.preventDefault();
-                        }  
-                    });                                       
-                });
-                
-            </script>
+            
             
         </ui:define>
     </ui:composition>
