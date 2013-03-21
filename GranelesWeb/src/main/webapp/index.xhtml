@@ -3,16 +3,91 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
    
+     <f:metadata>  
+         <f:event type="preRenderView" listener="#{indexController.init()}" />  
+     </f:metadata> 
+    
      <ui:composition template="/template.xhtml">
         <ui:define name="title">
             Graneles SRL
         </ui:define>
       
        <ui:define name="body">
-                   
-        </ui:define>
+           
+           <div style="max-width: 490px; float: left; ">
+               <p:panel header="ETA Vencidos" style="width: 470px; float: left"  >
+                   <p:dataTable value="#{indexController.etaVencidos}" var="item" style="width: 450px;">
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" style="width: 200px;" >
+                           <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
+                                <h:outputText value="#{item.buque.descripcion}" />
+                           </a>
+                       </p:column>
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" style="width: 125px;" >
+                           <h:outputText value="#{item.eta}" style="color: red;" >
+                               <f:convertDateTime parent="dd/MM/yyyy HH:mm" />
+                           </h:outputText>
+                       </p:column>     
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_etb}" style="width: 125px;" >
+                           <h:outputText value="#{item.etb}" >
+                               <f:convertDateTime parent="dd/MM/yyyy HH:mm"   />
+                           </h:outputText>
+                       </p:column>  
+                   </p:dataTable>
+               </p:panel>
+               <p:panel header="Arribos" style="width: 470px; float: left;" >
+                   <p:dataTable value="#{indexController.etaNoVencidos}" var="item" style="width: 450px;">
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" style="width: 200px;" >
+                           <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
+                                <h:outputText value="#{item.buque.descripcion}" />
+                           </a>
+                       </p:column>
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_eta}" style="width: 125px;" >
+                           <h:outputText value="#{item.eta}" >
+                               <f:convertDateTime parent="dd/MM/yyyy HH:mm" />
+                           </h:outputText>
+                       </p:column>     
+                       <p:column headerText="#{bundleCarga.EmbarqueTitle_etb}" style="width: 125px;" >
+                           <h:outputText value="#{item.etb}" >
+                               <f:convertDateTime parent="dd/MM/yyyy HH:mm"   />
+                           </h:outputText>
+                       </p:column>  
+                   </p:dataTable>
+               </p:panel>
+           </div>
+           
+           <p:panel header="Últimas Planillas" style="max-width: 430px; float:left; " >
+               <p:dataTable value="#{indexController.ultimasPlanillas}" var="item">
+                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}" style="text-align: center;" >
+                        <a href="carga/embarque/ViewTurnoEmbarque.xhtml?turnoembarque=#{item.id}" >
+                            <h:outputText value="#{item.nroPlanilla}" /> 
+                        </a> 
+                   </p:column>
+                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;" >
+                        <h:outputText value="#{item.turno.toString()}" />
+                   </p:column>
+                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_embarque}" style="text-align: center;" >
+                        <a href="carga/embarque/View.xhtml?embarque=#{item.embarque.id}" >
+                            <h:outputText value="#{item.embarque.codigo}" /> 
+                        </a>                        
+                   </p:column>                       
+                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}" style="text-align: center;" >
+                        <h:outputText value="#{item.fecha}" >
+                            <f:convertDateTime parent="dd/MM/yyyy HH:mm" />
+                        </h:outputText>
+                   </p:column>
+                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}" style="text-align: right;" >
+                       <h:outputText value="#{item.totalBruto}">
+                           <f:convertNumber pattern="#0.00" />
+                       </h:outputText>
+                   </p:column> 
+                </p:dataTable>
+            </p:panel>
+           
+           
+       </ui:define>
     </ui:composition>
 
 </html>

@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TurnoEmbarque.findAll", query = "SELECT t FROM TurnoEmbarque t"),
+    @NamedQuery(name = "TurnoEmbarque.findAllInverse", query = "SELECT t FROM TurnoEmbarque t ORDER BY t.fecha DESC"),
     @NamedQuery(name = "TurnoEmbarque.findById", query = "SELECT t FROM TurnoEmbarque t WHERE t.id = :id"),
     @NamedQuery(name = "TurnoEmbarque.findByFecha", query = "SELECT t FROM TurnoEmbarque t WHERE t.fecha = :fecha"),
     @NamedQuery(name = "TurnoEmbarque.findByTurno", query = "SELECT t FROM TurnoEmbarque t WHERE t.turno = :turno"),

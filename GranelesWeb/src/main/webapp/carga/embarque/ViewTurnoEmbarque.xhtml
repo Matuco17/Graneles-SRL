@@ -6,6 +6,11 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
+
+    <f:metadata>
+        <f:viewParam name="turnoembarque" value="#{embarqueController.turnoEmbarqueId}" />
+        <f:event type="preRenderView" listener="#{embarqueController.init()}" />  
+    </f:metadata>
     
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -13,30 +18,15 @@
         </ui:define>
         <ui:define name="body">
             <h:form id="turnoEmarqueForm" prependId="false">
-                <Co:turnoEmbarqueCC editar="#{embarqueController.editarTurno}" embarque="#{embarqueController.selected}" />                
+                <Co:turnoEmbarqueCC editar="false" embarque="#{embarqueController.selected}" />                
                 
                 <p:panel style="width: 100%; float: left;" > 
                     <h:panelGrid columns="2">
-                        <h:commandButton action="#{embarqueController.saveTE}"
-                                         image="/faces/resources/images/save.png" 
-                                         value="#{bundleCarga.TurnoEmbarqueSaveLink}" 
-                                         title="#{bundleCarga.TurnoEmbarqueSaveLink}"
-                                         rendered="#{embarqueController.editarTurno}"
-                                         />
-
-                        <h:commandButton action="Edit" 
-                                         image="/faces/resources/images/viewAll.png" 
-                                         value="#{bundleCarga.EmbarqueEditLink}"
-                                         title="#{bundleCarga.EmbarqueEditLink}"
-                                         rendered="#{embarqueController.editarTurno}"                                         
-                                         />
-                        
                         <h:commandButton action="View" 
                                          image="/faces/resources/images/viewAll.png" 
                                          value="#{bundleCarga.EmbarqueViewLink}"
                                          title="#{bundleCarga.EmbarqueViewLink}"
                                          immediate="true"
-                                         rendered="#{!embarqueController.editarTurno}"                                         
                                          />
                     </h:panelGrid>
                 </p:panel>

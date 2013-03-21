@@ -97,6 +97,17 @@ public class TurnoEmbarqueFacade extends AbstractFacade<TurnoEmbarque> {
         }
     }
     
+    /**
+     * Obtiene las ultimas planillas
+     * @param cantidad
+     * @return 
+     */
+    public List<TurnoEmbarque> getRecientes(Integer cantidad){
+        return getEntityManager().createNamedQuery("TurnoEmbarque.findAllInverse", TurnoEmbarque.class)
+                .setMaxResults(cantidad)
+                .getResultList();
+    }
+    
     public TurnoEmbarque crearNuevoTurnoEmbarque(Embarque embarque){
         TurnoEmbarque te = new TurnoEmbarque();
         te.setEmbarque(embarque);

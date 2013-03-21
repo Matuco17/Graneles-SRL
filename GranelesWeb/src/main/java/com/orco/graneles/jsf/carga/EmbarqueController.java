@@ -112,6 +112,10 @@ public class EmbarqueController implements Serializable {
     private List<TurnoEmbarqueObservaciones> turnoObservaciones;
     private DataModel turnoObservacionesModel;
     
+    //Variables de acceso directo a visualizacion
+    private Long turnoEmbarqueId;
+    private Long embarqueId;
+    
     public EmbarqueController() {
     }
 
@@ -1092,5 +1096,50 @@ public class EmbarqueController implements Serializable {
         }
       
   } 
+
+  
     
+  
+  /*****************************************
+   * Manejo de acceso directo a visualacion
+   * **************************************/
+   
+    public Long getTurnoEmbarqueId() {
+        if (turnoEmbarqueId == null && currentTE != null){
+            turnoEmbarqueId = currentTE.getId();
+        }
+        return turnoEmbarqueId;
+    }
+
+    public void setTurnoEmbarqueId(Long turnoEmbarqueId) {
+        if (this.turnoEmbarqueId == null || this.turnoEmbarqueId != turnoEmbarqueId ){
+            this.turnoEmbarqueId = turnoEmbarqueId;
+
+            if (currentTE == null && turnoEmbarqueId != null){
+                currentTE = turnoEmbarqueF.find(turnoEmbarqueId);
+                recreateModelTurno();
+                editarTurno = false;
+                current = currentTE.getEmbarque();
+            }
+        }
+    }
+
+    public Long getEmbarqueId() {
+        if (embarqueId == null && current != null ){
+            embarqueId = current.getId();
+        }
+        return embarqueId;
+    }
+
+    public void setEmbarqueId(Long embarqueId) {
+        if (this.embarqueId == null || this.embarqueId != embarqueId){
+            recreateModelEmbarqueIndividual();
+            current = getFacade().find(embarqueId);
+        }
+        this.embarqueId = embarqueId;
+    }
+  
+  
+  
+   
 }
