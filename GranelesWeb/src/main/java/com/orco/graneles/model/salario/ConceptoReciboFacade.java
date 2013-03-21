@@ -241,7 +241,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * @return el monto del descuento judicial
      */
     public double calcularDescuentoJudicial(TrabajadoresTurnoEmbarque tte, double bruto){
-        if (tte.getPersonal().getDescuentoJudicial() != null 
+        if (tte.getPersonal() != null && tte.getPersonal().getDescuentoJudicial() != null 
                 && tte.getPersonal().getDescuentoJudicial().doubleValue() >= 0.01){
             
             //Primero obtengo el minimo vital y movil correspondiente
@@ -343,7 +343,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             case TipoValorConcepto.JUBILACION:
                 return totalBruto * concepto.getValor().doubleValue() / 100; 
             case TipoValorConcepto.OBRA_SOCIAL:
-                if (personal.getObraSocial() != null){
+                if (personal != null && personal.getObraSocial() != null){
                     return totalBruto * personal.getObraSocial().getAportes().doubleValue() / 100;
                 } else {
                     return totalBruto * concepto.getValor().doubleValue() / 100;

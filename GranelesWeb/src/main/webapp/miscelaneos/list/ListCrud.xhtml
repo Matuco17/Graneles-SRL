@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{listController.init()}" />  
+        <f:viewParam name="listid" value="#{listController.currentListId}" />
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{listController.selected.descripcion}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleMiscelaneos.ListEmpty}" rendered="#{listController.items.rowCount == 0}"/>
+                
+                <h:panelGrid columns="3">
+                    <h:outputLabel value="#{bundleMiscelaneos.FixedListTitle_descripcion}" for="descripcion"  />
+                    <h:outputLabel value="#{bundleMiscelaneos.FixedListTitle_valor_defecto}" for="valorDefecto" rendered="#{listController.selected.configurable}" />
+                    <h:outputText value="" />
+                    <h:outputText value="" rendered="#{!listController.selected.configurable}"/>
+                                                      
+                    <p:inputText id="descripcion" value="#{listController.newListItem.descripcion}" style="width: 150px" />
+                    <p:inputText id="valorDefecto" value="#{listController.newListItem.valorDefecto}" style="text-align: right;"/>
+                    <h:outputText value="" rendered="#{!listController.selected.configurable}"/>
+                    
+                    <h:commandButton 
+                        image="/faces/resources/images/new.png" 
+                        action="#{listController.agregarNuevo()}" 
+                        value="#{bundleMiscelaneos.ListCreateLink}"
+                        title="#{bundleMiscelaneos.ListCreateLink}"
+                    />
+                </h:panelGrid>
+                                
+                <h:panelGroup rendered="#{listController.listItemsModel.rowCount > 0}">
+                    <p:dataTable value="#{listController.listItemsModel}" var="item" style="max-width: 400px;" >
+                        <p:column headerText="#{bundleMiscelaneos.FixedListTitle_descripcion}" >
+                            <p:inputText value="#{item.descripcion}" style="width: 150px;" />
+                        </p:column>
+                        <p:column headerText="#{bundleMiscelaneos.FixedListTitle_valor_defecto}" rendered="#{listController.selected.configurable}">
+                            <p:inputText value="#{item.valorDefecto}" style="text-align: right;" >
+                                <f:convertNumber pattern="#0.00" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Elemento?');" 
+                                action="#{listController.borrarElemento()}" 
+                                title="#{bundleMiscelaneos.ListDestroyLink}"
+                                value="#{bundleMiscelaneos.ListDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/save.png" 
+                    action="#{listController.actualizarValores()}" 
+                    value="#{bundleMiscelaneos.ListSaveLink}"
+                    title="#{bundleMiscelaneos.ListSaveLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

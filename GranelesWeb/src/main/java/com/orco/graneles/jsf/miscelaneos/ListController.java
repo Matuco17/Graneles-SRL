@@ -1,11 +1,15 @@
 package com.orco.graneles.jsf.miscelaneos;
 
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.List;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.miscelaneos.ListFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -17,6 +21,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringUtils;
 
 @ManagedBean(name = "listController")
 @SessionScoped
@@ -26,8 +31,16 @@ public class ListController implements Serializable {
     private DataModel items = null;
     @EJB
     private ListFacade ejbFacade;
+    @EJB
+    private FixedListFacade fixedListF;
     private int selectedItemIndex;
 
+    private Integer currentListId;
+    private FixedList newListItem;
+    private DataModel listItemsModel;
+    private java.util.List<FixedList> listItems;
+    
+    
     public ListController() {
     }
 
@@ -39,7 +52,12 @@ public class ListController implements Serializable {
 
     public List getSelected() {
         if (current == null) {
-            current = new List();
+            if (currentListId != null){
+                current = getFacade().find(currentListId);
+            } else  {
+                current = new List();
+                selectedItemIndex = -1;
+            }
             selectedItemIndex = -1;
         }
         return current;
@@ -93,6 +111,8 @@ public class ListController implements Serializable {
             return null;
         }
     }
+    
+
 
     public String destroy() {
         current = (List) getItems().getRowData();
@@ -115,6 +135,45 @@ public class ListController implements Serializable {
         }
     }
 
+    public void agregarNuevo(){
+        try {
+            if (StringUtils.isNotEmpty(getNewListItem().getDescripcion())){
+                fixedListF.create(getNewListItem());
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleMiscelaneos").getString("FixedListDeleted"));
+                newListItem = null;
+                listItemsModel = null;
+                listItems = null;
+            } else {
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/BundleMiscelaneos").getString("FixedListRequiredMessage_descripcion"));
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleMiscelaneos").getString("PersistenceErrorOccured"));
+        }
+    }
+    
+    public void borrarElemento(){
+        try {
+            FixedList fl = (FixedList) getListItemsModel().getRowData();
+            fixedListF.remove(fl);
+            listItemsModel = null;
+            listItems = null;
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleMiscelaneos").getString("FixedListDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleMiscelaneos").getString("PersistenceErrorOccured"));
+        }
+    }
+    
+    public void actualizarValores(){
+        try {
+            for (FixedList fl : getListItems()){
+                fixedListF.edit(fl);
+            }
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleMiscelaneos").getString("FixedListUpdatedList"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleMiscelaneos").getString("PersistenceErrorOccured"));
+        }
+    }
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -123,23 +182,7 @@ public class ListController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleMiscelaneos").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
-
+  
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(getFacade().findAll());;
@@ -149,6 +192,9 @@ public class ListController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        newListItem = null;
+        listItems = null;
+        listItemsModel = null;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -195,4 +241,44 @@ public class ListController implements Serializable {
             }
         }
     }
+
+    public Integer getCurrentListId() {
+        return currentListId;
+    }
+
+    public void setCurrentListId(Integer currentListId) {
+        this.currentListId = currentListId;
+    }
+
+    public FixedList getNewListItem() {
+        if (newListItem == null){
+            newListItem = new FixedList();
+            newListItem.setLista(getSelected());
+        }
+        return newListItem;
+    }
+
+    public void setNewListItems(FixedList newListItem) {
+        this.newListItem = newListItem;
+    }
+
+    public DataModel getListItemsModel() {
+        if (listItemsModel == null){
+            listItemsModel = new ListDataModel(getListItems());
+        }
+        return listItemsModel;
+    }
+
+    public java.util.List<FixedList> getListItems() {
+        if (listItems == null && current != null){
+            listItems = new ArrayList<FixedList>(fixedListF.findByLista(current.getId()));
+            Collections.sort(listItems);
+        }        
+        return listItems;
+    }
+
+   
+
+    
+    
 }
