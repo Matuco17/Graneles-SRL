@@ -54,6 +54,8 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     private TipoJornalFacade tipoJornalF;
     @EJB
     private FacturaCalculadoraFacade facturaCalculadoraF;
+    @EJB
+    private TurnoFacturadoFacade turnoFacturaF;
     
     
     protected EntityManager getEntityManager() {
@@ -132,24 +134,7 @@ public class LineaFacturaFacade extends AbstractFacade<LineaFactura> {
     public LineaFactura crearLineaAdministracion(Factura factura, Calculadora calculadora) {
         LineaFactura lf = null;
         
-       // BigDecimal totalAdminstracion = calculadora.getTotalGeneral();
-        
-        factura.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
-        
-        BigDecimal totalAdminstracion = facturaCalculadoraF.generarCalculadoraDeFactura(factura).getTotalGeneral();
-     
-        
-        
-        /*
-        for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
-            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)) {
-                totalAdminstracion = totalAdminstracion.add(tf.getValor());
-            } else if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO)) {
-                totalAdminstracion = totalAdminstracion.add(tf.getValor().subtract(tf.getTarifa()));
-            }
-        }
-        */
-        
+        BigDecimal totalAdminstracion = calculadora.getTotalGeneral();
         
         if (totalAdminstracion.compareTo(BigDecimal.ZERO) > 0){
             lf = new LineaFactura();

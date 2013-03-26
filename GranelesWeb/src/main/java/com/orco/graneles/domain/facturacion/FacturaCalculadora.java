@@ -43,9 +43,9 @@ public class FacturaCalculadora implements Serializable, Comparable<FacturaCalcu
     @Column(name = "id")
     private Long id;
     
-    @JoinColumn(name = "factura", referencedColumnName = "id")
+    @JoinColumn(name = "turno_facturado", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Factura factura;
+    private TurnoFacturado turnoFacturado;
     
     @Column(name = "cantidad")
     private BigDecimal cantidad;
@@ -81,12 +81,12 @@ public class FacturaCalculadora implements Serializable, Comparable<FacturaCalcu
         this.id = id;
     }
 
-    public Factura getFactura() {
-        return factura;
+    public TurnoFacturado getTurnoFacturado() {
+        return turnoFacturado;
     }
 
-    public void setFactura(Factura factura) {
-        this.factura = factura;
+    public void setTurnoFacturado(TurnoFacturado turnoFacturado) {
+        this.turnoFacturado = turnoFacturado;
     }
 
     public BigDecimal getCantidad() {

@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import com.orco.graneles.vo.Calculadora;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,7 @@ public class TurnoFacturadoFacade extends AbstractFacade<TurnoFacturado> {
             tf.setCosto(calcularCosto(ct));
             tf.setTarifa(calcularTarifa(ct));
             
-            tf.setPorcentajeAdministracion(BigDecimal.ZERO);
-            tf.setAdministracion(calcularAdministracion(ct, tf.getPorcentajeAdministracion()));
+            tf.setAdministracion(calcularAdministracion(ct, tf.getFactura().getPorcentajeAdministracion()));
             
             lineas.add(tf);
         }

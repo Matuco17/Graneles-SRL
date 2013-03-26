@@ -21,11 +21,13 @@ public class Calculadora implements Serializable {
     
     
     private List<FilaCalculadora> filas;
-    private List<TipoJornal> tiposJornales;
-    private List<TipoJornalVO> totalXtipoJornal;
     private Factura factura;
-
+    private List<CalculadoraTurno> calculadorasTurno;
+    
     public List<FilaCalculadora> getFilas() {
+        if (filas == null){
+            filas = new ArrayList<FilaCalculadora>();
+        }
         return filas;
     }
 
@@ -33,13 +35,6 @@ public class Calculadora implements Serializable {
         this.filas = filas;
     }
 
-    public List<TipoJornal> getTiposJornales() {
-        return tiposJornales;
-    }
-
-    public void setTiposJornales(List<TipoJornal> tiposJornales) {
-        this.tiposJornales = tiposJornales;
-    }
     
     public BigDecimal getTotal(){
         BigDecimal total = BigDecimal.ZERO;
@@ -49,7 +44,13 @@ public class Calculadora implements Serializable {
                 total = total.add(fila.getValorTotal());
             }
         }
-        
+        /*
+        if (calculadorasTurno != null){
+            for (CalculadoraTurno ct : calculadorasTurno){
+                total = total.add(ct.getTotalTurno());
+            }
+        }
+        */
         return total;
     }
     
@@ -57,14 +58,6 @@ public class Calculadora implements Serializable {
         
     }
     
-    public List<TipoJornalVO> getTotalXTipoJornal(){
-        return this.totalXtipoJornal;
-    }
-
-    public void setTotalXtipoJornal(List<TipoJornalVO> totalXtipoJornal) {
-        this.totalXtipoJornal = totalXtipoJornal;
-    }
-
     public Factura getFactura() {
         return factura;
     }
@@ -98,4 +91,17 @@ public class Calculadora implements Serializable {
             factura.setPorcentajeAdministracion(porcentajeAdministracion);
         }
     }
+
+    public List<CalculadoraTurno> getCalculadorasTurno() {
+        if (calculadorasTurno == null){
+            calculadorasTurno = new ArrayList<CalculadoraTurno>();
+        }
+        return calculadorasTurno;
+    }
+
+    public void setCalculadorasTurno(List<CalculadoraTurno> calculadorasTurno) {
+        this.calculadorasTurno = calculadorasTurno;
+    }
+    
+    
 }

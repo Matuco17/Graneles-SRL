@@ -100,6 +100,9 @@ public class FacturaController implements Serializable {
             seleccionarCargaTurnos();
         } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CALCULADORA)){
             generarRegistrosCalculadora();
+            if (calculadora.getCalculadorasTurno().isEmpty()){
+                return STEP_CONFIRMAR;
+            }
         } else if (event.getOldStep().equals(STEP_CALCULADORA) && event.getNewStep().equals(STEP_CONFIRMAR)){
         //} else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
             generarLineasFactura();
@@ -145,6 +148,7 @@ public class FacturaController implements Serializable {
     }
     
     public void generarLineasFactura(){
+        facturaCalculadoraF.aplicarCalculadora(current, calculadora);
         lineasTarifa = lineaFacturaF.crearLineasTarifa(current);
         lineaAdministracion = lineaFacturaF.crearLineaAdministracion(current, calculadora);
         
@@ -185,7 +189,7 @@ public class FacturaController implements Serializable {
     
     private void generarRegistrosCalculadora(){
         this.calculadora = facturaCalculadoraF.generarCalculadoraNueva(current);
-        
+        /*
         for (TurnoFacturado tf : turnosFacturados){
             if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)
                 ||tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
@@ -193,6 +197,7 @@ public class FacturaController implements Serializable {
                 facturaCalculadoraF.agregarTurno(calculadora, tf, current);
             }
         }
+        * */
     }
     
     public void agregarConcepto(){
@@ -257,7 +262,7 @@ public class FacturaController implements Serializable {
 
     public String create() {
         try {
-            current.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
+            //current.setFacturaCalculadoraCollection(facturaCalculadoraF.cleanCalculadora(calculadora));
             
             getFacade().create(current);
         

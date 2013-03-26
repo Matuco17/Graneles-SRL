@@ -27,6 +27,7 @@ import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.SalarioBasicoFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
 import com.orco.graneles.vo.Calculadora;
+import com.orco.graneles.vo.CalculadoraTurno;
 import com.orco.graneles.vo.FilaCalculadora;
 import com.orco.graneles.vo.TipoJornalVO;
 import java.math.BigDecimal;
@@ -92,39 +93,121 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
      */
     public Calculadora generarCalculadoraNueva(Factura factura){
         Calculadora calculadora = new Calculadora();
-        calculadora.setFilas(new ArrayList<FilaCalculadora>());
-        List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
-        Collections.sort(tiposJornales, new ComparadorTipoJornal());
-        calculadora.setTiposJornales(tiposJornales);
         calculadora.setFactura(factura);
         
-        for (Tarea tarea : tareaF.findAll()){
-            FilaCalculadora fila = new FilaCalculadora(tarea);
-            fila.setFacturasCalculadoras(new ArrayList<FacturaCalculadora>());
-            
-            for (TipoJornal tipoJornal : tiposJornales){
-                FacturaCalculadora fCalculadora = new FacturaCalculadora();
-                fCalculadora.setCantidad(BigDecimal.ZERO);
-                fCalculadora.setFactura(factura);
-                fCalculadora.setTarea(tarea);
-                fCalculadora.setSalarioBasico(obtenerSalarioBasico(tarea, factura.getFecha()));
-                fCalculadora.setTipoJornal(tipoJornal);
-                
-                fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
-                        fCalculadora.getSalarioBasico(), 
-                        6, 
-                        true, 
-                        tarea, 
-                        tipoJornal).getValorBruto());
-                
-                fila.getFacturasCalculadoras().add(fCalculadora);                
-            }
-            calculadora.getFilas().add(fila);
+        for (Tarea t : tareaF.findAll()){
+            calculadora.getFilas().add(new FilaCalculadora(t));
         }
         
-        agregarTotales(calculadora);
+        for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
+            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION) ||
+                   tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
+            {
+                CalculadoraTurno ct = new CalculadoraTurno(tf);
+
+                Map<Integer, FacturaCalculadora> fcMap = new HashMap<Integer, FacturaCalculadora>();
+
+                for (TrabajadoresTurnoEmbarque tte : tf.getCargaTurno().getTurnoEmbarque().getTrabajadoresTurnoEmbarqueCollection()){
+                    FacturaCalculadora currentFC = fcMap.get(tte.getTarea().getId());
+
+                    if (tte.getDelegado() || currentFC == null){
+                        currentFC = new FacturaCalculadora();
+                        currentFC.setCantidad(BigDecimal.ZERO);
+                        currentFC.setTurnoFacturado(tf);
+                        currentFC.setTarea((tte.getDelegado()) ? tareaF.find(Tarea.DELEGADO_ID) : tte.getTarea());
+                        currentFC.setSalarioBasico(obtenerSalarioBasico(tte.getTarea(), tte.getPlanilla().getFecha()));
+                        currentFC.setTipoJornal(tte.getPlanilla().getTipo());
+
+                        currentFC.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
+                              currentFC.getSalarioBasico(), 
+                              6, 
+                              true, 
+                              currentFC.getTarea(), 
+                              currentFC.getTipoJornal()).getValorBruto());
+                    }
+
+                    currentFC.setCantidad(currentFC.getCantidad().add(new BigDecimal(tte.getHoras().doubleValue() / 6)));
+
+                    if (tte.getDelegado()){
+                        fcMap.put(Tarea.DELEGADO_ID, currentFC);
+                    } else {
+                        fcMap.put(tte.getTarea().getId(), currentFC);
+                    }
+                }
+
+                List<FacturaCalculadora> fcList = new ArrayList<FacturaCalculadora>(fcMap.values());
+                Collections.sort(fcList);
+                ct.setFcs(fcList);
+                calculadora.getCalculadorasTurno().add(ct);
+
+                for (FilaCalculadora filaC : calculadora.getFilas()){
+                    FacturaCalculadora currentFC = fcMap.get(filaC.getTarea().getId());
+                    if (currentFC == null){
+                        currentFC = new FacturaCalculadora();
+                        currentFC.setCantidad(BigDecimal.ZERO);
+                        currentFC.setTurnoFacturado(tf);
+                        currentFC.setTarea(filaC.getTarea());
+                        currentFC.setSalarioBasico(obtenerSalarioBasico(filaC.getTarea(), tf.getCargaTurno().getTurnoEmbarque().getFecha()));
+                        currentFC.setTipoJornal(tf.getCargaTurno().getTurnoEmbarque().getTipo());
+
+                        currentFC.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
+                              currentFC.getSalarioBasico(), 
+                              6, 
+                              true, 
+                              currentFC.getTarea(), 
+                              currentFC.getTipoJornal()).getValorBruto());
+                    }
+
+                    filaC.getFacturasCalculadoras().add(currentFC);
+                }
+            }
+        }
         
         return calculadora;
+    }
+    
+    /**
+     * Metodo que aplica la calculadora a la factura (turnos facturados y facturas calculadoras
+     * @param factura
+     * @param calculadora 
+     */
+    public void aplicarCalculadora(Factura factura, Calculadora calculadora){
+        //Creo un mapeo desde el turno embarque con los elementos de la calculadora para agruparlos
+        Map<Long, Collection<FacturaCalculadora>> fcMap = new HashMap<Long, Collection<FacturaCalculadora>>();
+        for (FilaCalculadora filaC : calculadora.getFilas()){
+            for (FacturaCalculadora fc : filaC.getFacturasCalculadoras()){
+                Collection<FacturaCalculadora> fcColl = fcMap.get(fc.getTurnoFacturado().getCargaTurno().getTurnoEmbarque().getId());
+                if (fcColl == null){
+                    fcColl = new ArrayList<FacturaCalculadora>();
+                }
+                if (fc.getValorTotal().doubleValue() > 0.0){
+                    fcColl.add(fc);
+                }
+                fcMap.put(fc.getTurnoFacturado().getCargaTurno().getTurnoEmbarque().getId(), fcColl);
+            }
+        }
+        
+        for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
+            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)
+                            || tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
+            {
+                tf.setFacturaCalculadoraCollection(fcMap.get(tf.getCargaTurno().getTurnoEmbarque().getId()));
+                
+                BigDecimal totalAdmin = BigDecimal.ZERO;
+                if (tf.getFacturaCalculadoraCollection() != null){
+                    for (FacturaCalculadora fc : tf.getFacturaCalculadoraCollection()){
+                        totalAdmin = totalAdmin.add(fc.getValorTotal());
+                    }
+                }
+                tf.setAdministracion(totalAdmin.add(totalAdmin.multiply(factura.getPorcentajeAdministracion()).divide(new BigDecimal(100.0))));
+                
+                if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION)){
+                    tf.setValor(tf.getAdministracion());
+                } else {
+                    tf.setValor(tf.getAdministracion().add(tf.getTarifa()));
+                }                
+            }
+        }
     }
     
     /**
@@ -134,48 +217,50 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
      */
     public Calculadora generarCalculadoraDeFactura(Factura factura){
         Calculadora calculadora = new Calculadora();
-        calculadora.setFilas(new ArrayList<FilaCalculadora>());
-        List<TipoJornal> tiposJornales = new ArrayList<TipoJornal>(tipoJornalF.findAll());
-        Collections.sort(tiposJornales, new ComparadorTipoJornal());
-        calculadora.setTiposJornales(tiposJornales);
         calculadora.setFactura(factura);
         
-        Map<String, FacturaCalculadora> fcMap = new HashMap<String, FacturaCalculadora>();
-        for (FacturaCalculadora fc : factura.getFacturaCalculadoraCollection()){
-            fcMap.put(fc.getTarea().getId() + "_" + fc.getTipoJornal().getId(), fc);
+        for (Tarea t : tareaF.findAll()){
+            calculadora.getFilas().add(new FilaCalculadora(t));
         }
-        
-        
-        for (Tarea tarea : tareaF.findAll()){
-            FilaCalculadora fila = new FilaCalculadora(tarea);
-            fila.setFacturasCalculadoras(new ArrayList<FacturaCalculadora>());
-            
-            for (TipoJornal tipoJornal : tiposJornales){
-                FacturaCalculadora fCalculadora = fcMap.get(tarea.getId() + "_" + tipoJornal.getId());
-                if (fCalculadora == null){
-                    fCalculadora = new FacturaCalculadora();
-                    fCalculadora.setCantidad(BigDecimal.ZERO);
-                    fCalculadora.setFactura(factura);
-                    fCalculadora.setTarea(tarea);
-                    fCalculadora.setSalarioBasico(obtenerSalarioBasico(tarea, factura.getFecha()));
-                    fCalculadora.setTipoJornal(tipoJornal);
-                    
-                    fCalculadora.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
-                          fCalculadora.getSalarioBasico(), 
-                          6, 
-                          true, 
-                          tarea, 
-                          tipoJornal).getValorBruto());
-                
+      
+        for (TurnoFacturado tf : factura.getTurnosFacturadosCollection()){
+            if (tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.ADMINISTRACION) ||
+                   tf.getTipoTurnoFacturado().getId().equals(TipoTurnoFactura.MIXTO))
+            {
+                CalculadoraTurno ct = new CalculadoraTurno(tf);
+                List<FacturaCalculadora> fcsList = new ArrayList<FacturaCalculadora>(tf.getFacturaCalculadoraCollection());
+                Collections.sort(fcsList);
+                ct.setFcs(fcsList);
+                calculadora.getCalculadorasTurno().add(ct);
+
+                for (FilaCalculadora filaC : calculadora.getFilas()){
+                    FacturaCalculadora fcFila = null;
+                    for (FacturaCalculadora fc : ct.getFcs()){
+                        if (fc.getTarea().getId().equals(filaC.getTarea().getId())){
+                            fcFila = fc;
+                        }
+                    }
+                    if (fcFila == null){
+                        fcFila = new FacturaCalculadora();
+                        fcFila.setCantidad(BigDecimal.ZERO);
+                        fcFila.setTurnoFacturado(tf);
+                        fcFila.setTarea(filaC.getTarea());
+                        fcFila.setSalarioBasico(obtenerSalarioBasico(filaC.getTarea(), tf.getCargaTurno().getTurnoEmbarque().getFecha()));
+                        fcFila.setTipoJornal(tf.getCargaTurno().getTurnoEmbarque().getTipo());
+
+                        fcFila.setValorTurno(conceptoReciboF.calculaDiaTTE(null, 
+                              fcFila.getSalarioBasico(), 
+                              6, 
+                              true, 
+                              fcFila.getTarea(), 
+                              fcFila.getTipoJornal()).getValorBruto());
+                    }
+
+                    filaC.getFacturasCalculadoras().add(fcFila);
                 }
-                
-               
-                fila.getFacturasCalculadoras().add(fCalculadora);                
             }
-            calculadora.getFilas().add(fila);
         }
-        
-        agregarTotales(calculadora);
+        Collections.sort(calculadora.getCalculadorasTurno());
         
         return calculadora;
     }
@@ -195,7 +280,15 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
                 }
             }
         }
-        
+        /*
+        for (CalculadoraTurno ct : calculadora.getCalculadorasTurno()){
+            for (FacturaCalculadora fc : ct.getFcs()){
+                 if (fc.getCantidad().doubleValue() > 0.0 && fc.getValorTurno().doubleValue() > 0.0){
+                    fcs.add(fc);
+                }
+            }
+        }
+        */
         return fcs;
     }
     
@@ -204,6 +297,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
      * @param calculadora
      * @param turno 
      */
+    /*
     public void agregarTurno(Calculadora calculadora, TurnoFacturado turno, Factura factura){
         //Extraigo el salario basico, para ver si es mayor o no al que figura
         SalarioBasico salarioBasicoDelegado = null;
@@ -246,8 +340,8 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
            || factura.getPorcentajeAdministracion().doubleValue() < turno.getPorcentajeAdministracion().doubleValue() ){
            factura.setPorcentajeAdministracion(turno.getPorcentajeAdministracion()); 
         }
-    }
-
+    }*/
+/*
     private void agregarTotales(Calculadora calculadora) {
         //Agrego los valores de totales
         calculadora.setTotalXtipoJornal(new ArrayList<TipoJornalVO>());
@@ -275,7 +369,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
         }
         
     }
-    
+  */  
     private class ComparadorTipoJornal implements Comparator<TipoJornal>{
 
         @Override

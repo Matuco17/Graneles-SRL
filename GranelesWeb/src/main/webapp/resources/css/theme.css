@@ -107,6 +107,7 @@ tr.jsfcrud_even_row {
 .fila-resultado {
     text-align: right;
     border: none;
+    max-width: 65px;
 }
 
 .spinner-calcuadora input {

@@ -9,8 +9,10 @@ import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,10 +22,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -53,9 +57,6 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
     @ManyToOne(optional = true)
     private CargaTurno cargaTurno;
   
-    @Column(name = "porc_administracion")
-    private BigDecimal porcentajeAdministracion;
-     
     @Column(name = "total_bruto")
     private BigDecimal totalBruto;
     
@@ -71,8 +72,10 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
     @Column(name = "valor")
     private BigDecimal valor;
     
-    @Column(name = "agregado_mixto")
-    private BigDecimal agregadoMixto;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turnoFacturado", orphanRemoval = true)
+    private Collection<FacturaCalculadora> facturaCalculadoraCollection;
+
 
     public TurnoFacturado() {
     }
@@ -111,14 +114,6 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
 
     public void setCargaTurno(CargaTurno cargaTurno) {
         this.cargaTurno = cargaTurno;
-    }
-
-    public BigDecimal getPorcentajeAdministracion() {
-        return porcentajeAdministracion;
-    }
-
-    public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
-        this.porcentajeAdministracion = porcentajeAdministracion;
     }
 
     public BigDecimal getTotalBruto() {
@@ -161,14 +156,6 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
         this.valor = valor;
     }
 
-    public BigDecimal getAgregadoMixto() {
-        return agregadoMixto;
-    }
-
-    public void setAgregadoMixto(BigDecimal agregadoMixto) {
-        this.agregadoMixto = agregadoMixto;
-    }
-
     public BigDecimal getDiferencia(){
         if (this.valor != null){
             return this.valor.subtract(this.costo);
@@ -177,6 +164,17 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
         }
     }
 
+    @XmlTransient
+    public Collection<FacturaCalculadora> getFacturaCalculadoraCollection() {
+        return facturaCalculadoraCollection;
+    }
+
+    public void setFacturaCalculadoraCollection(Collection<FacturaCalculadora> facturaCalculadoraCollection) {
+        this.facturaCalculadoraCollection = facturaCalculadoraCollection;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -241,13 +239,7 @@ public class TurnoFacturado implements Serializable, Comparable<TurnoFacturado> 
     }
     
     public BigDecimal getAdicionalAdminMixto () {
-        switch (this.getTipoTurnoFacturado().getId()){
-            case TipoTurnoFactura.ADMINISTRACION :
-                return this.getPorcentajeAdministracion();
-            case TipoTurnoFactura.MIXTO :
-                return this.getAgregadoMixto();
-        }
-        return null;
+        return this.getFactura().getPorcentajeAdministracion();
     }
     
     public Integer getCantidadLineas(){

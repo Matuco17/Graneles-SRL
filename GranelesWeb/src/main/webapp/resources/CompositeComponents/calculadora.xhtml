@@ -18,15 +18,23 @@
      
             <h:outputScript name="js/calculadora.js" />
         
-            
             <p:panelGrid id="calculadora" styleClass="calculadora">
                 <f:facet name="header" >
                     <p:row>
                         <p:column styleClass="celda-limite-izquierdo"></p:column>
-                        <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
-                            <c:if test="#{totalTipoJornal.mostrar}" >
-                                <p:column colspan="3" styleClass="celda-limite-izquierdo"><h:outputText value="#{totalTipoJornal.tipoJornal.descripcion}" /> </p:column>   
-                            </c:if>
+                        <c:forEach items="#{cc.attrs.calculadora.calculadorasTurno}" var="calculadoraTurno" >
+                            <p:column colspan="3" styleClass="celda-limite-izquierdo">
+                                <h:outputText value="Planilla: #{calculadoraTurno.turno.cargaTurno.turnoEmbarque.nroPlanilla} - Líneas: #{calculadoraTurno.turno.cargaTurno.cantidadLineas}" />
+                            </p:column>   
+                        </c:forEach>
+                        <p:column styleClass="celda-limite-izquierdo celda-limite-derecho"></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column styleClass="celda-limite-izquierdo"></p:column>
+                        <c:forEach items="#{cc.attrs.calculadora.calculadorasTurno}" var="calculadoraTurno" >
+                            <p:column colspan="3" styleClass="celda-limite-izquierdo">
+                                <h:outputText value="#{calculadoraTurno.turno.cargaTurno.turnoEmbarque.tipo.descripcion} - #{calculadoraTurno.turno.tipoTurnoFacturado.descripcion}" />
+                            </p:column>   
                         </c:forEach>
                         <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">Total</p:column>
                     </p:row>
@@ -37,33 +45,31 @@
                         <p:row>
                             <p:column styleClass="celda-limite-izquierdo"><h:outputText value="#{filaCalculadora.toString()}" /></p:column>
                             <c:forEach items="#{filaCalculadora.facturasCalculadoras}"  var="fCalculadora" >
-                                <c:if test="#{fCalculadora.totalTipoJornal.mostrar}" >
-                                    <p:column styleClass="celda-limite-izquierdo">
-                                        <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"   />
-                                        <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
-                                                   id="cant_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.tipoJornal.id},#{fCalculadora.tarea.id})"/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
-                                                     id="bruto_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
-                                            <f:convertNumber pattern="#0.00" />
-                                        </h:inputText>  
-                                        <h:inputText  value="#{fCalculadora.valorTurno}" readonly="true" styleClass="fila-resultado"
-                                                rendered="#{!cc.attrs.editar}">
-                                              <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
-                                          </h:inputText>
-                                    </p:column>
-                                    <p:column >
-                                        <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
-                                                     id="total_tj#{fCalculadora.tipoJornal.id}_tr#{fCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
-                                            <f:convertNumber pattern="#0.00" />
-                                        </h:inputText>   
-                                         <h:inputText  value="#{fCalculadora.valorTotal}" readonly="true" styleClass="fila-resultado"
-                                                rendered="#{!cc.attrs.editar}">
-                                             <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
-                                          </h:inputText>
-                                    </p:column> 
-                                </c:if>
+                                <p:column styleClass="celda-limite-izquierdo">
+                                    <h:inputText value="#{fCalculadora.cantidad}" rendered="#{!cc.attrs.editar}" styleClass="fila-resultado" style="width: 28px;" readonly="true" disabled="disabled"   />
+                                    <p:spinner min="0" stepFactor="0.5" value="#{fCalculadora.cantidad}" styleClass="spinner-calcuadora" rendered="#{cc.attrs.editar}"
+                                               id="cant_te#{fCalculadora.turnoFacturado.cargaTurno.turnoEmbarque.id}_tr#{fCalculadora.tarea.id}" onchange="actualizarCalculadora(#{fCalculadora.turnoFacturado.cargaTurno.turnoEmbarque.id},#{fCalculadora.tarea.id})"/>
+                                </p:column>
+                                <p:column>
+                                    <h:inputText value="#{fCalculadora.valorTurno}" readonly="true"  disabled="disabled" styleClass="fila-resultado"
+                                                 id="bruto_te#{fCalculadora.turnoFacturado.cargaTurno.turnoEmbarque.id}_tr#{fCalculadora.tarea.id}" rendered="#{cc.attrs.editar}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:inputText>  
+                                    <h:inputText  value="#{fCalculadora.valorTurno}" readonly="true" styleClass="fila-resultado"
+                                            rendered="#{!cc.attrs.editar}">
+                                          <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
+                                      </h:inputText>
+                                </p:column>
+                                <p:column >
+                                    <h:inputText value="#{fCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
+                                                 id="total_te#{fCalculadora.turnoFacturado.cargaTurno.turnoEmbarque.id}_tr#{fCalculadora.tarea.id}_total" rendered="#{cc.attrs.editar}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:inputText>   
+                                     <h:inputText  value="#{fCalculadora.valorTotal}" readonly="true" styleClass="fila-resultado"
+                                            rendered="#{!cc.attrs.editar}">
+                                         <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
+                                      </h:inputText>
+                                </p:column> 
                             </c:forEach>
                             <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
                                <h:inputText value="#{filaCalculadora.valorTotal}" readonly="true" disabled="disabled" styleClass="fila-resultado"
@@ -72,7 +78,7 @@
                                </h:inputText>   
                                 <h:inputText  value="#{filaCalculadora.valorTotal}" readonly="true" styleClass="fila-resultado"
                                       rendered="#{!cc.attrs.editar}">
-                                    <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                                    <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
                                 </h:inputText> 
                             </p:column>
                         </p:row>
@@ -81,30 +87,28 @@
                 
                 <p:row>
                    <p:column styleClass="celda-limite-izquierdo"></p:column>
-                   <c:forEach items="#{cc.attrs.calculadora.totalXTipoJornal}" var="totalTipoJornal" >
-                       <c:if test="#{totalTipoJornal.mostrar}">
-                           <p:column colspan="2" styleClass="celda-limite-izquierdo" ></p:column>
-                           <p:column>
-                               <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"  
-                                   id="totalTJ_#{totalTipoJornal.tipoJornal.id}" rendered="#{cc.attrs.editar}">
-                                   <f:convertNumber pattern="#0.00" />
-                               </h:inputText>
-                               <h:inputText  value="#{totalTipoJornal.total}" readonly="true" styleClass="fila-resultado"
-                                      rendered="#{!cc.attrs.editar}">
-                                    <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
-                                </h:inputText> 
-                           </p:column>
-                       </c:if>
-                   </c:forEach>    
+                   <c:forEach items="#{cc.attrs.calculadora.calculadorasTurno}" var="calculadoraTurno" >
+                        <p:column colspan="2" styleClass="celda-limite-izquierdo" ></p:column>
+                        <p:column>
+                            <h:inputText  value="#{calculadoraTurno.totalTurno}" readonly="true" styleClass="fila-resultado"  
+                                 id="totalTE_#{calculadoraTurno.turno.cargaTurno.turnoEmbarque.id}" rendered="#{cc.attrs.editar}">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:inputText>
+                            <h:inputText  value="#{calculadoraTurno.totalTurno}" readonly="true" styleClass="fila-resultado"
+                                   rendered="#{!cc.attrs.editar}">
+                                 <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
+                             </h:inputText> 
+                        </p:column>
+                    </c:forEach>    
                    <p:column styleClass="celda-limite-izquierdo celda-limite-derecho">
                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado" 
                                      id="totalGeneral" rendered="#{cc.attrs.editar}">
                            <f:convertNumber pattern="#0.00" />
                        </h:inputText>   
-                        <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
+                       <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
                                       rendered="#{!cc.attrs.editar}">
-                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
-                        </h:inputText> 
+                            <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
+                       </h:inputText> 
                    </p:column>
                 </p:row>
            </p:panelGrid>
@@ -119,7 +123,7 @@
                         </h:inputText> 
                         <h:inputText  value="#{cc.attrs.calculadora.total}" readonly="true" styleClass="fila-resultado"
                                       rendered="#{!cc.attrs.editar}">
-                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                            <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
                         </h:inputText>                    
                     </p:column>
                 </p:row>
@@ -145,7 +149,7 @@
                         
                         <h:inputText  value="#{cc.attrs.calculadora.totalLeyesSociales}" readonly="true" styleClass="fila-resultado"
                                       rendered="#{!cc.attrs.editar}">
-                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                            <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
                         </h:inputText> 
                     </p:column>
                 </p:row>
@@ -159,7 +163,7 @@
                         
                         <h:inputText  value="#{cc.attrs.calculadora.totalGeneral}" readonly="true" styleClass="fila-resultado"
                                       rendered="#{!cc.attrs.editar}">
-                            <f:convertNumber pattern="$ #,###,###.00" minFractionDigits="2" />
+                            <f:convertNumber pattern="$ #,###,##0.00" minFractionDigits="2" />
                         </h:inputText> 
                     </p:column>
                 </p:row>

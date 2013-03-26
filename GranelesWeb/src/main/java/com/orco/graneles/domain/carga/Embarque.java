@@ -560,7 +560,12 @@ public class Embarque extends EntidadAuditable implements Serializable, Comparab
 
     @Override
     public int compareTo(Embarque o) {
-        return this.codigo.compareTo(o.codigo);
+        if (this.consolidado && o.consolidado){
+            return this.codigo.compareTo(o.codigo);
+        } else {
+            return this.eta.compareTo(o.eta);
+        }
+        
     }
     
 }

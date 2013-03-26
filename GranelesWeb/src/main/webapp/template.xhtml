@@ -48,6 +48,7 @@
                         </p:submenu>
                         <p:submenu label="Facturación" rendered="true" >  
                             <p:menuitem value="Facturas" url="/faces/facturacion/factura/List.xhtml" />
+                            <p:menuitem value="Tarifas" url="/faces/facturacion/tarifa/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Concepto Facturado" url="/faces/miscelaneos/list/ListCrud.xhtml?listid=17" />
                         </p:submenu>
                         <p:submenu label="Tablas" >  
@@ -61,7 +62,6 @@
                             <p:menuitem value="Salarios Básicos" url="/faces/salario/salarioBasico/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Sindicatos" url="/faces/personal/sindicato/List.xhtml" rendered="#{loginController.esGerente()}" />  
                             <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" rendered="#{loginController.esGerente()}" />
-                            <p:menuitem value="Tarifas" url="/faces/facturacion/tarifa/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Aportes y Contribuciones" url="/faces/salario/aporteContribucion/Config.xhtml" rendered="#{loginController.esGerente()}" />
                         </p:submenu>    

@@ -86,9 +86,7 @@ public class Factura implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
-    private Collection<FacturaCalculadora> facturaCalculadoraCollection;
-
+    
     public Factura() {
     }
 
@@ -166,15 +164,6 @@ public class Factura implements Serializable {
 
     public void setTurnosFacturadosCollection(Collection<TurnoFacturado> turnosFacturadosCollection) {
         this.turnosFacturadosCollection = turnosFacturadosCollection;
-    }
-
-    @XmlTransient
-    public Collection<FacturaCalculadora> getFacturaCalculadoraCollection() {
-        return facturaCalculadoraCollection;
-    }
-
-    public void setFacturaCalculadoraCollection(Collection<FacturaCalculadora> facturaCalculadoraCollection) {
-        this.facturaCalculadoraCollection = facturaCalculadoraCollection;
     }
 
     public BigDecimal getPorcentajeAdministracion() {

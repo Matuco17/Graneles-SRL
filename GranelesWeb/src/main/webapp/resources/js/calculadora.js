@@ -1,10 +1,11 @@
-function actualizarCalculadora(idTipoJornal, idTarea){
-    var cantidad = jQuery("[name*=cant_tj" + idTipoJornal + "_tr" + idTarea + "]").val().replace(",", ".");
-    var bruto = jQuery("[name*=bruto_tj" + idTipoJornal + "_tr" + idTarea + "]").val();
+function actualizarCalculadora(idTurnoEmbarque, idTarea){
+    var cantidad = jQuery("[name*=cant_te" + idTurnoEmbarque + "_tr" + idTarea + "]").val().replace(",", ".");
+    var bruto = jQuery("[name*=bruto_te" + idTurnoEmbarque + "_tr" + idTarea + "]").val();
     var total = parseNumber(cantidad) * parseNumber(bruto);
-    jQuery("[name*=total_tj" + idTipoJornal + "_tr" + idTarea + "]").val(roundNumber(total));
+    jQuery("[name*=total_te" + idTurnoEmbarque + "_tr" + idTarea + "]").val(roundNumber(total));
     
-    sumarTipoJornal(idTipoJornal);
+    sumarTurnoEmbarque(idTurnoEmbarque);
+    sumarTarea(idTarea);
     sumarTotales();
     return total;
 }
@@ -12,7 +13,7 @@ function actualizarCalculadora(idTipoJornal, idTarea){
 function sumarTotales(){
     var total = 0.00;
     
-    jQuery("[name*=totalTJ_]").each(function(idx, element){
+    jQuery("[name*=totalTE_]").each(function(idx, element){
         total += parseNumber(jQuery(element).val());
     });
     
@@ -27,20 +28,20 @@ function sumarTotales(){
     
 }
 
-function sumarTipoJornal(idTipoJornal){
+function sumarTurnoEmbarque(idTurnoEmbarque){
     var total = 0.00;
     
-    jQuery("[name*=total_tj" + idTipoJornal + "_tr]").each(function(idx, element){
+    jQuery("[name*=total_te" + idTurnoEmbarque + "_tr]").each(function(idx, element){
         total += parseNumber(jQuery(element).val());
     });
     
-    jQuery("[name*=totalTJ_" + idTipoJornal + "]").val(roundNumber(total));
+    jQuery("[name*=totalTE_" + idTurnoEmbarque + "]").val(roundNumber(total));
 }
 
 function sumarTarea(idTarea){
     var total = 0.00;
     
-    jQuery("[name*=_tr" + idTarea + "]").each(function(idx, element){
+    jQuery("[name*=_tr" + idTarea + "_total]").each(function(idx, element){
         total += parseNumber(jQuery(element).val());
     });
     
