@@ -33,6 +33,9 @@ public class PlanoEmbarqueVO {
     
     public PlanoEmbarqueVO(Embarque embarque){
         this.embarque = embarque;
+        totalCargaActual = BigDecimal.ZERO;
+        totalCargaPrevia = BigDecimal.ZERO;
+        totalEnBuque = BigDecimal.ZERO;
         totalesCargaActual = new ArrayList<TotalesCargaVO>();
         totalesCargaEnBuque = new ArrayList<TotalesCargaVO>();
         totalesCargaPrevia = new ArrayList<TotalesCargaVO>();
@@ -55,6 +58,7 @@ public class PlanoEmbarqueVO {
                     
                     agregarAlListaTotal(totalesCargaActual, ctc.getMercaderiaBodega().getDescripcionIngles(), ctc.getCarga());
                     agregarAlListaTotal(totalesCargaEnBuque, ctc.getMercaderiaBodega().getDescripcionIngles(), ctc.getCarga());
+                    totalCargaActual = totalCargaActual.add(ctc.getCarga());
                 }
             }
         }
@@ -71,14 +75,20 @@ public class PlanoEmbarqueVO {
                 pcVO.setPuertoPrevio(cp.getPuertoAnterior());
             }
             
+            
             agregarAlListaTotal(totalesCargaPrevia, cp.getMercaderia().getDescripcionIngles(), cp.getCarga());
             agregarAlListaTotal(totalesCargaEnBuque, cp.getMercaderia().getDescripcionIngles(), cp.getCarga());
+            if (cp.getCarga() != null){
+                totalCargaPrevia = totalCargaPrevia.add(cp.getCarga());
+            }
         }
         
         Collections.sort(totalesCargaActual);
         Collections.sort(totalesCargaEnBuque);
         Collections.sort(totalesCargaPrevia);
         Collections.reverse(planosBodegas);
+        
+        totalEnBuque = totalCargaActual.add(totalCargaPrevia);
         
     }
     

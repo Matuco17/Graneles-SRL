@@ -47,7 +47,7 @@ public class ListController implements Serializable {
     public void init() {
         recreateModel();
         
-        JsfUtil.minimoRolRequerido(Grupo.ROL_ADMINISTRADOR);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_GERENTE);
     }
 
     public List getSelected() {

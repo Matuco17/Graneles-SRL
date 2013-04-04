@@ -349,7 +349,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     return totalBruto * concepto.getValor().doubleValue() / 100;
                 }
             case TipoValorConcepto.SINDICATO:
-                if (personal.getSindicato()){
+                if (personal != null && personal.getSindicato()){
                     double porcSindicato = concepto.getValor().doubleValue();
                     if (personal.getCategoriaPrincipal().getSindicato() != null){
                         porcSindicato = personal.getCategoriaPrincipal().getSindicato().getPorcentaje().doubleValue();

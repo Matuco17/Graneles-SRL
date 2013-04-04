@@ -56,7 +56,7 @@
             </p:column>
             <p:column headerText="#{bundleCarga.ObservacionesTurnoEmbarqueTitle_hasta}" >
                 <p:calendar value="#{turnoObservacion.hasta}" pattern="HH:mm" timeOnly="true" rendered="#{cc.attrs.editar}" />
-                <h:outputText value="#{turnoObservacion.desde}" rendered="#{!cc.attrs.editar}" >
+                <h:outputText value="#{turnoObservacion.hasta}" rendered="#{!cc.attrs.editar}" >
                     <f:convertDateTime  pattern="HH:mm" />
                 </h:outputText>
             </p:column>

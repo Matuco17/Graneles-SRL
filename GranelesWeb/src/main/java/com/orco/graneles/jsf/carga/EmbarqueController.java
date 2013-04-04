@@ -602,8 +602,9 @@ public class EmbarqueController implements Serializable {
             }
             
             turnoEmbarqueF.persist(currentTE);
-            ejbFacade.edit(current);
-            
+            if (current != null){
+                ejbFacade.edit(current);
+            }
             listaTurnos = null;            
         }
         return "Edit";

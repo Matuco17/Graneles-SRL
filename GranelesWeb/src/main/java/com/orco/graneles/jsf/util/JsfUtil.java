@@ -1,8 +1,8 @@
 package com.orco.graneles.jsf.util;
 
-import com.orco.graneles.domain.seguridad.Grupo;
-import com.orco.graneles.jsf.carga.ArchivoEmbarqueController;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,18 +13,18 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 public class JsfUtil {
+    
+    private static SelectItemComparator itemsComparator = new SelectItemComparator();
 
     public static SelectItem[] getSelectItems(List<?> entities, boolean selectOne) {
         int size = selectOne ? entities.size() + 1 : entities.size();
         SelectItem[] items = new SelectItem[size];
-        int i = 0;
-        if (selectOne) {
-            items[0] = new SelectItem("", "---");
-            i++;
-        }
+        int i = selectOne ? 1 : 0;
         for (Object x : entities) {
             items[i++] = new SelectItem(x, x.toString());
         }
+        Arrays.sort(items, itemsComparator);
+        if (selectOne) {items[0] = new SelectItem("", "---");}
         return items;
     }
     
@@ -75,4 +75,20 @@ public class JsfUtil {
         String theId = JsfUtil.getRequestParameter(requestParameterName);
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
+    
+    private static class SelectItemComparator implements Comparator<SelectItem>{
+
+        @Override
+        public int compare(SelectItem o1, SelectItem o2) {
+            if (o1 != null && o2 != null){
+                return o1.getLabel().compareToIgnoreCase(o2.getLabel());
+            } else if (o1 == null) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        
+    }
+    
 }

@@ -133,8 +133,9 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
         } finally {
             try {
                 fip.close();
-                if (fop != null)
+                if (fop != null){
                     fop.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -154,9 +155,9 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
     public List<Embarque> findAll() {
         List<Embarque> embarques = super.findAll();
         
-        for (Embarque e : embarques)
+        for (Embarque e : embarques){
             e.setConsolidadoEnBusqueda(e.getConsolidado());
-        
+        }
         return embarques;
     }
     
@@ -172,9 +173,9 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
                                         .setParameter("consolidado", consolidado)
                                         .getResultList();
         
-        for (Embarque e : embarques)
+        for (Embarque e : embarques){
             e.setConsolidadoEnBusqueda(e.getConsolidado());
-        
+        }
         return embarques;
     }
 

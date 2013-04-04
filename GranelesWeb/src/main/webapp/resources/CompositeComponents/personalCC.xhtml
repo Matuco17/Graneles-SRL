@@ -36,7 +36,7 @@
             </h:selectOneMenu>
 
             <h:outputLabel value="#{bundlePersonal.PersonalTitle_cuil}" for="cuil" />
-            <p:inputText id="cuil" value="#{personalController.selected.cuil}" />
+            <p:inputMask id="cuil" value="#{personalController.selected.cuil}" mask="99-99999999-9" />
 
             <h:outputLabel value="#{bundlePersonal.PersonalTitle_sindicato}" for="sindicato" />
             <p:selectBooleanCheckbox id="sindicato" value="#{personalController.selected.sindicato}" required="true" requiredMessage="#{bundlePersonal.PersonalRequiredMessage_sindicato}" />

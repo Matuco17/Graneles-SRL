@@ -67,16 +67,16 @@ public class BuqueFacade extends AbstractFacade<Buque> {
             
             fop.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BuqueFacade.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BuqueFacade.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 fip.close();
                 if (fop != null)
                     fop.close();
             } catch (IOException ex) {
-                Logger.getLogger(EmbarqueFacade.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BuqueFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
