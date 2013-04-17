@@ -32,6 +32,9 @@
                             <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" filterBy="#{item.buque}" filterMatchMode="exact" filterOptions="#{buqueController.itemsAvailableSelectOne}" >
                                  <h:outputText value="#{item.buque.toString()}"/>
                             </p:column>
+                            <p:column headerText="#{bundleCarga.EmbarqueTitle_coordinador}" filterBy="#{item.coordinador}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableExportadoresSelectOne}" >
+                                <h:outputText value="#{item.coordinador.toString()}" />
+                            </p:column>
                             <p:column headerText="#{bundleCarga.EmbarqueTitle_muelle}" filterBy="#{item.muelle}" filterMatchMode="exact" filterOptions="#{muelleController.itemsAvailableSelectOne}" >
                                 <h:outputText value="#{item.muelle.toString()}"/>
                             </p:column>
