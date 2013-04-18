@@ -62,7 +62,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Personal.findByVersion", query = "SELECT p FROM Personal p WHERE p.version = :version"),
     @NamedQuery(name = "Personal.findByVersionActiva", query = "SELECT p FROM Personal p WHERE p.versionActiva = :versionActiva"),
     @NamedQuery(name = "Personal.findByUrlFoto", query = "SELECT p FROM Personal p WHERE p.urlFoto = :urlFoto")})
-public class Personal extends EntidadAuditable implements Serializable {
+public class Personal extends EntidadAuditable implements Serializable, Comparable<Personal> {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -512,6 +512,11 @@ public class Personal extends EntidadAuditable implements Serializable {
     
     public String getCuilApellidoYNombre(){
         return this.cuil + " - " + this.apellido;
+    }
+
+    @Override
+    public int compareTo(Personal o) {
+        return this.apellido.compareToIgnoreCase(o.apellido);
     }
     
 }
