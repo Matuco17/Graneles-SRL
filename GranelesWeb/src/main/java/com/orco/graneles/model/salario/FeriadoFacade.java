@@ -74,13 +74,13 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         //Evaluación de casos
         //Caso 1: Si un estibador trabaja en cualquiera de los 1 turno habil el día habil anterior al día del feriado y mete 1 jornal habil en los 5 días habiles posteriores al feriado
         for (Personal p : trabajadoresDiaAnterior.keySet()){
-            if (trabajadoresXDiasPosteriores.get(p) >= 6){
+            if (trabajadoresXDiasPosteriores.containsKey(p) && trabajadoresXDiasPosteriores.get(p) >= 6){
                 trabajadoresIncluidos.add(p);
             }
         }
         
         //Caso 2: si el estibador en los 10 días hábiles previos al feriado tiene trabajadas 36 hs hábiles,
-        for (Map.Entry<Personal, Integer> horasPersonal : trabajadoresXDiasPosteriores.entrySet()){
+        for (Map.Entry<Personal, Integer> horasPersonal : trabajadoresXDiasAnteriores.entrySet()){
             if (horasPersonal.getValue() >= 36){
                 trabajadoresIncluidos.add(horasPersonal.getKey());
             }

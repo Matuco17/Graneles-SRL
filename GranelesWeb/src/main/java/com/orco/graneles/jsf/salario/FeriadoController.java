@@ -1,5 +1,6 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Feriado;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
@@ -29,6 +30,9 @@ public class FeriadoController implements Serializable {
     @EJB
     private FeriadoFacade ejbFacade;
     private int selectedItemIndex;
+    
+    private DataModel trabajadoresFeriadoModel;
+    private List<Personal> trabajadoresFeriado;
 
     public FeriadoController() {
     }
@@ -36,9 +40,18 @@ public class FeriadoController implements Serializable {
     public void init() {
         recreateModel();
         
-        JsfUtil.minimoRolRequerido(null);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
+    public void obtenerTrabajadoresFeriado(){
+        trabajadoresFeriadoModel = null;
+        trabajadoresFeriado = null;
+        if (current != null){
+            trabajadoresFeriado = ejbFacade.obtenerTrabajadoresIncluidos(current.getFecha());
+            trabajadoresFeriadoModel = new ListDataModel(trabajadoresFeriado);
+        }
+    }
+    
     public Feriado getSelected() {
         if (current == null) {
             current = new Feriado();
@@ -59,6 +72,7 @@ public class FeriadoController implements Serializable {
     public String prepareView() {
         current = (Feriado) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
+        obtenerTrabajadoresFeriado();
         return "View";
     }
 
@@ -71,6 +85,7 @@ public class FeriadoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            obtenerTrabajadoresFeriado();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("FeriadoCreated"));
             return "View";
         } catch (Exception e) {
@@ -89,6 +104,7 @@ public class FeriadoController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("FeriadoUpdated"));
+            obtenerTrabajadoresFeriado();
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
@@ -125,23 +141,7 @@ public class FeriadoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
         }
     }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
-
+    
     public DataModel getItems() {
         if (items == null) {
             List<Feriado> feriados = getFacade().findAll();
@@ -199,4 +199,14 @@ public class FeriadoController implements Serializable {
             }
         }
     }
+
+    public DataModel getTrabajadoresFeriadoModel() {
+        return trabajadoresFeriadoModel;
+    }
+
+    public List<Personal> getTrabajadoresFeriado() {
+        return trabajadoresFeriado;
+    }
+    
+    
 }

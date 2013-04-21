@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{feriadoController.init()}" />  
@@ -24,25 +24,13 @@
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.FeriadoTitle_fecha}"/>
-                            </f:facet>
+                        <p:column headerText="#{bundleSalario.FeriadoTitle_fecha}">
                             <h:outputText value="#{item.fecha}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.FeriadoTitle_feriadocol}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.feriadocol}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.FeriadoTitle_tipo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.tipo}"/>
+                        <p:column headerText="#{bundleSalario.FeriadoTitle_descripcion}">
+                            <h:outputText value="#{item.descripcion}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">

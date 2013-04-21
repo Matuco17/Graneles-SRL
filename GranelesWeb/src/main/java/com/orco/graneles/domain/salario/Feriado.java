@@ -35,22 +35,24 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Feriado.findAll", query = "SELECT f FROM Feriado f"),
     @NamedQuery(name = "Feriado.findById", query = "SELECT f FROM Feriado f WHERE f.id = :id"),
     @NamedQuery(name = "Feriado.findByFecha", query = "SELECT f FROM Feriado f WHERE f.fecha = :fecha"),
-    @NamedQuery(name = "Feriado.findByFeriadocol", query = "SELECT f FROM Feriado f WHERE f.feriadocol = :feriadocol")})
+    @NamedQuery(name = "Feriado.findByDescripcion", query = "SELECT f FROM Feriado f WHERE f.descripcion = :descripcion")})
 public class Feriado implements Serializable, Comparable<Feriado> {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
+    @NotNull
     private Date fecha;
+    
     @Size(max = 45)
-    @Column(name = "feriadocol")
-    private String feriadocol;
-    @JoinColumn(name = "tipo", referencedColumnName = "id")
-    @ManyToOne
-    private FixedList tipo;
+    @Column(name = "descripcion")
+    private String descripcion;
+  
 
     public Feriado() {
     }
@@ -75,21 +77,14 @@ public class Feriado implements Serializable, Comparable<Feriado> {
         this.fecha = fecha;
     }
 
-    public String getFeriadocol() {
-        return feriadocol;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setFeriadocol(String feriadocol) {
-        this.feriadocol = feriadocol;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public FixedList getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(FixedList tipo) {
-        this.tipo = tipo;
-    }
 
     @Override
     public int hashCode() {
@@ -113,7 +108,7 @@ public class Feriado implements Serializable, Comparable<Feriado> {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.Feriado[ id=" + id + " ]";
+        return this.getFecha().toString();
     }
 
     @Override
