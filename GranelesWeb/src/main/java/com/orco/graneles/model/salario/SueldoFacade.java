@@ -49,6 +49,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     ConceptoRecibo conceptoReciboAdelantoAccidentadoCache;
     ConceptoRecibo conceptoReciboAdelantoAguinaldoCache;
     ConceptoRecibo conceptoReciboDtoJudicialCache;
+    ConceptoRecibo conceptoReciboFeriadoCache;
     
     
     @EJB
@@ -235,8 +236,8 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                 desdeSAC = new DateTime(accidentado.getDesde());
             }
             
-            Sueldo sueldoSAC = sueldoSAC(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true);
-            Sueldo sueldoVac = sueldoVacaciones(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true);
+            Sueldo sueldoSAC = sueldoSAC(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true, false);
+            Sueldo sueldoVac = sueldoVacaciones(periodo, desdeSAC.toDate(), hastaSAC.toDate(), accidentado.getPersonal(), conceptos, false, true, false);
             
             sueldoAcc = mergeSueldos(sueldoAcc, sueldoSAC);
             sueldoAcc = mergeSueldos(sueldoAcc, sueldoVac);
@@ -249,6 +250,22 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
         return sueldoAcc;
     }
+    
+    public Sueldo calcularSueldoFeriado(TrabajadoresTurnoEmbarque tte, Periodo periodo, Map<Integer, List<ConceptoRecibo>> conceptos){
+        
+        if (conceptoReciboFeriadoCache == null || !conceptoReciboFeriadoCache.getTipoRecibo().equals(tte.getPersonal().getTipoRecibo())){
+            conceptoReciboFeriadoCache = conceptoReciboF.obtenerConcepto(
+                                                tte.getPersonal().getTipoRecibo(), 
+                                                fixedListF.find(TipoValorConcepto.HORAS_HABILES));
+        }
+        
+        double brutoCalculado = conceptoReciboF.calcularDiaBrutoTTE(tte, true);
+        
+        return crearSueldoXItemBruto(conceptoReciboFeriadoCache, 
+                        new BigDecimal(6),
+                        new Moneda(brutoCalculado),
+                        periodo, conceptos, tte.getPersonal());
+     }
     
     public void agregarAdelanto(Sueldo s, boolean suprimirAccidentado, boolean suprimirHoras){
         
@@ -352,7 +369,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     }
     
     
-    public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente){
+    public Sueldo sueldoSAC(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente, boolean incluirFeriado){
         
         if (conceptoReciboSACCache == null 
             || !conceptoReciboSACCache.getTipoRecibo().getId().equals(personal.getTipoRecibo().getId())){
@@ -363,7 +380,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         }
         
        
-        double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache, incluirHoras, incluirAccidente);
+        double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache, incluirHoras, incluirAccidente, incluirFeriado);
         
         return crearSueldoXItemBruto(conceptoReciboSACCache, null, 
                                 new Moneda(calculadoSAC),
@@ -371,7 +388,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
     }
     
-    public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente){
+    public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente, boolean incluirFeriado){
         
         if (conceptoReciboVacacionesCache == null 
             || !conceptoReciboVacacionesCache.getTipoRecibo().getId().equals(personal.getTipoRecibo().getId())){
@@ -381,7 +398,7 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                                                                     fixedListF.find(TipoValorConcepto.VACACIONES));
         }
         
-        double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta, conceptoReciboVacacionesCache, incluirHoras, incluirAccidente);
+        double calculadoVacaciones = conceptoReciboF.calcularValorVacaciones(personal, desde, hasta, conceptoReciboVacacionesCache, incluirHoras, incluirAccidente, incluirFeriado);
         
         return crearSueldoXItemBruto(conceptoReciboVacacionesCache, null,
                     new Moneda(calculadoVacaciones),

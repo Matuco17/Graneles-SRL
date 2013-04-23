@@ -7,6 +7,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.FeriadoFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,7 +48,8 @@ public class FeriadoController implements Serializable {
         trabajadoresFeriadoModel = null;
         trabajadoresFeriado = null;
         if (current != null){
-            trabajadoresFeriado = ejbFacade.obtenerTrabajadoresIncluidos(current.getFecha());
+            trabajadoresFeriado = new ArrayList<Personal>(ejbFacade.obtenerTrabajadoresIncluidos(current.getFecha()).keySet());
+            Collections.sort(trabajadoresFeriado);
             trabajadoresFeriadoModel = new ListDataModel(trabajadoresFeriado);
         }
     }

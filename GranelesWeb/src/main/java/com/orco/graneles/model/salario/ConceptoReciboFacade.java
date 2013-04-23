@@ -53,6 +53,8 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
     private AccidentadoFacade accidentadoF;
     @EJB
     private MinimoVitalMovilHoraFacade minVitalMovilF;
+    @EJB
+    private FeriadoFacade feriadoF;
     
         
     //Singletos que no se tienen que cargar de nuevo, solamente con una vez me alcanzan
@@ -69,7 +71,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * Metodo que levanta el acumulado por las horas del trabajador en el periodo seleccionado
      * @return 
      */
-    public double acumuladoBrutoTrabajadores(Personal personal, Date desde, Date hasta, boolean incluirHoras, boolean incluirAccidentes) {
+    public double acumuladoBrutoTrabajadores(Personal personal, Date desde, Date hasta, boolean incluirHoras, boolean incluirAccidentes, boolean incluirFeriado) {
         if (personalCacheId == personal.getId() && desdeCache == desde && hastaCache == hasta){
             return totalAcumuladoCache;
         } else {
@@ -78,6 +80,11 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             
             if (incluirHoras) {
                 List<TrabajadoresTurnoEmbarque> ttes = tteF.getTrabajadoresPeriodo(personal, desde, hasta);
+                
+                //TODO: INCLUIR LA PARTE DE FERIADOS ACA
+                if (incluirFeriado){
+                    ttes.addAll(feriadoF.obtenerTTEsFeriados(personal, desde, hasta));
+                }
                 for (TrabajadoresTurnoEmbarque tte : ttes){
                     //Verifico que tengo un salario basico para ese periodo
                     if (salarioActivo == null 
@@ -88,7 +95,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     totalAcumulado += calcularDiaBrutoTTE(salarioActivo, tte, true);
                 }
             }
-
+            
             if (incluirAccidentes) {
                 List<Accidentado> accs = accidentadoF.getAccidentadosPeriodoYPersonal(desde, hasta, personal);
                 for (Accidentado acc : accs){
@@ -429,7 +436,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * @param conceptoSAC concepto del recibo, si es null el metodo se encarga de proveerlo
      * @return 
      */
-    public double calcularValorSAC(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoSAC, boolean incluirHoras, boolean incluirAccidentes){
+    public double calcularValorSAC(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoSAC, boolean incluirHoras, boolean incluirAccidentes, boolean incluirFeriados){
                 
         switch (personal.getTipoRecibo().getId()){
             case TipoRecibo.HORAS :
@@ -442,10 +449,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     conceptoSAC = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.SAC));
                 }
                 
-                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes);
+                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes, incluirFeriados);
                 
                 //Modificación por issue 72 ahora tambien se agregan las vacaciones el calculo
-                totalAcumulado += calcularValorVacaciones(personal, desde, hasta, null, incluirHoras, incluirAccidentes);
+                totalAcumulado += calcularValorVacaciones(personal, desde, hasta, null, incluirHoras, incluirAccidentes, incluirFeriados);
                 
                 return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
                 
@@ -465,7 +472,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      * @param conceptoVacaciones concepto del recibo, si es null el metodo se encarga de proveerlo
       * @return 
      */
-    public double calcularValorVacaciones(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoVacaciones, boolean incluirHoras, boolean incluirAccidentes){
+    public double calcularValorVacaciones(Personal personal, Date desde, Date hasta, ConceptoRecibo conceptoVacaciones, boolean incluirHoras, boolean incluirAccidentes, boolean incluirFeriados){
                 
         switch (personal.getTipoRecibo().getId()){
             case TipoRecibo.HORAS :
@@ -478,7 +485,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     conceptoVacaciones = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.VACACIONES));
                 }
                 
-                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes);
+                double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes, incluirFeriados);
                            
                 return totalAcumulado * conceptoVacaciones.getValor().doubleValue() / 100;
                                 

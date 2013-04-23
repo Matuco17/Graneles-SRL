@@ -65,6 +65,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private AdelantoFacade adelantoF;
     @EJB
     private AporteConfiguracionConfiguracionFacade aporteContribucionConfigF;
+    @EJB
+    private FeriadoFacade feriadoF;
 
     protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
         //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
@@ -74,7 +76,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
             if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo, null)){
                 
-                s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras, true, false, true, null);
+                s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras, true, false, true, true, null);
                 
                 sueldoF.persist(s);
             }
@@ -94,7 +96,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setPersonal(p);
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false, true, null);
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false, true, true, null);
 
                     if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
                         sueldoF.create(sueldoSacNuevo);
@@ -151,13 +153,13 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param conceptosHoras
      * @return 
      */
-    protected Sueldo generarSACyVacacionesIndividual(Periodo periodo, Sueldo s, Map<Integer, List<ConceptoRecibo>> conceptosHoras, boolean incluirHoras, boolean incluirAccidente, boolean incluirAdelanto, Date hastaFijo) {
+    protected Sueldo generarSACyVacacionesIndividual(Periodo periodo, Sueldo s, Map<Integer, List<ConceptoRecibo>> conceptosHoras, boolean incluirHoras, boolean incluirAccidente, boolean incluirAdelanto, boolean incluirFeriado, Date hastaFijo) {
         Date desde = obtenerDesdeSAC(periodo, s.getPersonal());
         Date hasta = (hastaFijo == null)? obtenerHastaSAC(periodo, s.getPersonal()) : hastaFijo;
         switch (s.getPersonal().getTipoRecibo().getId()){
             case TipoRecibo.HORAS:
-                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente);
-                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente);
+                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
+                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
                 
                 if (sueldoSAC.getItemsSueldoCollection() != null && sueldoSAC.getItemsSueldoCollection().size() > 0){
                     s = sueldoF.mergeSueldos(s, sueldoSAC);
@@ -247,7 +249,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setPersonal(p);
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false , true, null);
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false , true, true, null);
                     
                     sueldos.add(sueldoSacNuevo);
                }
@@ -271,7 +273,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
                     //TODO: CAMBIAR el ultimo por true
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, false, true, false, periodo.getHasta());
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, false, true, false, true, periodo.getHasta());
                     
                     if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
                         sueldos.add(sueldoSacNuevo);    
@@ -299,8 +301,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         for (Personal p : personalF.findAll()){
             //Por ahora salteo los empleados mensuales
             if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
-                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false);
-                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false));
+                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true);
+                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true));
 
                 ProyeccionSacVacYAdelantosVO currentProyeccion = new ProyeccionSacVacYAdelantosVO(p);
 
@@ -423,6 +425,34 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         
         return mapSueldosXIdPers;
+    }
+    
+    private Map<Long, Sueldo> generarSueldosFeriados(Periodo periodo, Map<Long, Sueldo> mapSueldoCreados, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
+        List<Feriado> listaFeriados = feriadoF.obtenerFeriados(periodo.getDesde(), periodo.getHasta());
+        
+        for (Feriado feriado : listaFeriados){
+            Collection<TrabajadoresTurnoEmbarque> ttesFeriado = feriadoF.obtenerTrabajadoresIncluidos(feriado.getFecha()).values();
+            
+            for (TrabajadoresTurnoEmbarque tteFeriado : ttesFeriado){
+                Sueldo sueldoFeriado = sueldoF.calcularSueldoFeriado(tteFeriado, periodo, conceptosHoras);
+                                
+                //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
+                Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(tteFeriado.getPersonal().getId());
+                if (sueldoCreadoAnterior != null){
+                    mapSueldoCreados.put(tteFeriado.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoFeriado));
+
+                    sueldoF.edit(sueldoCreadoAnterior);
+                } else {
+                    mapSueldoCreados.put(tteFeriado.getPersonal().getId(), sueldoFeriado);
+
+                    sueldoF.create(sueldoFeriado);
+                    periodo.getSueldoCollection().add(sueldoFeriado);
+                }                
+            }
+        }
+        
+        
+        return mapSueldoCreados;
     }
     
     private Map<Long, Sueldo> generarSueldosAccidentados(Periodo periodo, Map<Long, Sueldo> mapSueldoCreados, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
@@ -555,6 +585,14 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         System.out.println("{" + (new Date()).toString() + "} " 
                 + "Sueldos de los Trabajadores de Turno generado");
 
+        sueldosCalculados = generarSueldosFeriados(periodo, sueldosCalculados, conceptosHoras);
+        
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Sueldos de Feriados generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Sueldos de Feriados generado");
+
+        
         sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
 
         Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 

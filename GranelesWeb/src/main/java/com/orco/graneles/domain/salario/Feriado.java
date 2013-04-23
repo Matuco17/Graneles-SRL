@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Feriado.findAll", query = "SELECT f FROM Feriado f"),
     @NamedQuery(name = "Feriado.findById", query = "SELECT f FROM Feriado f WHERE f.id = :id"),
     @NamedQuery(name = "Feriado.findByFecha", query = "SELECT f FROM Feriado f WHERE f.fecha = :fecha"),
+    @NamedQuery(name = "Feriado.findByFechaDesdeHasta", query = "SELECT f FROM Feriado f WHERE f.fecha BETWEEN :fechaDesde AND :fechaHasta"),
     @NamedQuery(name = "Feriado.findByDescripcion", query = "SELECT f FROM Feriado f WHERE f.descripcion = :descripcion")})
 public class Feriado implements Serializable, Comparable<Feriado> {
     private static final long serialVersionUID = 1L;
