@@ -101,13 +101,16 @@ public class FacturaController implements Serializable {
         } else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CALCULADORA)){
             generarRegistrosCalculadora();
             if (calculadora.getCalculadorasTurno().isEmpty()){
+                generarLineasFactura();
                 return STEP_CONFIRMAR;
             }
         } else if (event.getOldStep().equals(STEP_CALCULADORA) && event.getNewStep().equals(STEP_CONFIRMAR)){
         //} else if (event.getOldStep().equals(STEP_SETEO_VALORES) && event.getNewStep().equals(STEP_CONFIRMAR)){
             generarLineasFactura();
+        } else if  (event.getOldStep().equals(STEP_CONFIRMAR) && event.getNewStep().equals(STEP_CALCULADORA)){
+            return STEP_SETEO_VALORES;
         }
-        
+                
         return event.getNewStep();  
     }  
 
@@ -170,7 +173,9 @@ public class FacturaController implements Serializable {
         if (lineasTarifa != null){
             lineasFactura.addAll(lineasTarifa);
         }
-        lineasFactura.add(lineaAdministracion);
+        if (lineaAdministracion != null){
+            lineasFactura.add(lineaAdministracion);
+        }
         if (lineasConceptos != null) {
             lineasFactura.addAll(lineasConceptos);
         }
