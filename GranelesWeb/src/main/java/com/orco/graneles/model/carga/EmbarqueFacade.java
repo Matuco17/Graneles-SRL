@@ -181,11 +181,26 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
 
     @Override
     public void edit(Embarque entity) {
-        if (entity.getConsolidadoEnBusqueda() && !entity.getConsolidado()){
+        if (entity.getConsolidadoEnBusqueda() != null && entity.getConsolidadoEnBusqueda() && !entity.getConsolidado()){
             throw new NegocioException("No se puede desconosolidar un embarque previamente consolidado");
         }
         
         super.edit(entity);
     }
+    
+    public List<Embarque> findByFacturado(Boolean facturado){
+        List<Embarque> embarques = getEntityManager().createNamedQuery("Embarque.findByFacturado", Embarque.class)
+                                        .setParameter("facturado", facturado)
+                                        .getResultList();
+        
+        for (Embarque e : embarques){
+            e.setConsolidadoEnBusqueda(e.getConsolidado());
+        }
+        
+        Collections.sort(embarques);
+        return embarques;
+    }
+    
+    
     
 }

@@ -32,7 +32,7 @@
 
                                 <h:outputLabel value="#{bundleFacturacion.FacturaTitle_embarque}" for="embarque" />
                                 <p:selectOneMenu id="embarque" value="#{facturaController.selected.embarque}"  >
-                                    <f:selectItems value="#{embarqueController.itemsAvailableSelectOne}"/>
+                                    <f:selectItems value="#{embarqueController.itemsNoFacturadosSelectOne}"/>
                                 </p:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>

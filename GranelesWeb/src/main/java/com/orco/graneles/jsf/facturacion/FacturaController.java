@@ -331,7 +331,10 @@ public class FacturaController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
+            List<Factura> facturas = getFacade().findAll();
+            Collections.sort(facturas);
+            Collections.reverse(facturas);
+            items = new ListDataModel(facturas);
         }
         return items;
     }

@@ -58,34 +58,54 @@
                </p:panel>
            </div>
            
-           <p:panel header="Últimas Planillas" style="max-width: 430px; float:left; " >
-               <p:dataTable value="#{indexController.ultimasPlanillas}" var="item">
-                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}" style="text-align: center;" >
-                        <a href="carga/embarque/ViewTurnoEmbarque.xhtml?turnoembarque=#{item.id}" >
-                            <h:outputText value="#{item.nroPlanilla}" /> 
-                        </a> 
-                   </p:column>
-                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;" >
-                        <h:outputText value="#{item.turno.toString()}" />
-                   </p:column>
-                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_embarque}" style="text-align: center;" >
-                        <a href="carga/embarque/View.xhtml?embarque=#{item.embarque.id}" >
-                            <h:outputText value="#{item.embarque.codigo}" /> 
-                        </a>                        
-                   </p:column>                       
-                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}" style="text-align: center;" >
-                        <h:outputText value="#{item.fecha}" >
-                            <f:convertDateTime parent="dd/MM/yyyy HH:mm" />
-                        </h:outputText>
-                   </p:column>
-                   <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}" style="text-align: right;" >
-                       <h:outputText value="#{item.totalBruto}">
-                           <f:convertNumber pattern="#0.00" />
-                       </h:outputText>
-                   </p:column> 
-                </p:dataTable>
-            </p:panel>
+           <div style="max-width: 450px; float: left; ">
            
+                <p:panel header="Últimas Planillas" style="max-width: 430px; float:left; " >
+                    <p:dataTable value="#{indexController.ultimasPlanillas}" var="item">
+                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}" style="text-align: center;" >
+                             <a href="carga/embarque/ViewTurnoEmbarque.xhtml?turnoembarque=#{item.id}" >
+                                 <h:outputText value="#{item.nroPlanilla}" /> 
+                             </a> 
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_turno}" style="text-align: center;" >
+                             <h:outputText value="#{item.turno.toString()}" />
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_embarque}" style="text-align: center;" >
+                             <a href="carga/embarque/View.xhtml?embarque=#{item.embarque.id}" >
+                                 <h:outputText value="#{item.embarque.codigo}" /> 
+                             </a>                        
+                        </p:column>                       
+                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_fecha}" style="text-align: center;" >
+                             <h:outputText value="#{item.fecha}" >
+                                 <f:convertDateTime parent="dd/MM/yyyy HH:mm" />
+                             </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_totalBruto}" style="text-align: right;" >
+                            <h:outputText value="#{item.totalBruto}">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:outputText>
+                        </p:column> 
+                     </p:dataTable>
+                </p:panel>
+               
+                <p:panel header="Embarque No Facturados" style="max-width: 430px; float:left; " >
+                    <p:dataTable value="#{indexController.embarquesNoFacturados}" var="item">
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" style="text-align: center;" >
+                             <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
+                                 <h:outputText value="#{item.codigo}" /> 
+                             </a>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" style="width: 170px;" >
+                           <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
+                                <h:outputText value="#{item.buque.descripcion}" />
+                           </a>
+                        </p:column>
+                        <p:column headerText="#{bundleCarga.EmbarqueTitle_coordinador}" style="width: 170px;">
+                            <h:outputText value="#{item.coordinador.toString()}" />
+                        </p:column>
+                     </p:dataTable>
+                </p:panel>
+           </div>
            
        </ui:define>
     </ui:composition>

@@ -29,10 +29,10 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="#{bundleFacturacion.FacturaTitle_comprobante}">
+                        <p:column headerText="#{bundleFacturacion.FacturaTitle_comprobante}" filterBy="#{item.comprobante}" filterMatchMode="contains" >
                             <h:outputText value="#{item.comprobante}"/>
                         </p:column>
-                        <p:column headerText="#{bundleFacturacion.FacturaTitle_cliente}">
+                        <p:column headerText="#{bundleFacturacion.FacturaTitle_cliente}" filterBy="#{item.exportador}" filterMatchMode="exact" filterOptions="#{empresaController.itemsAvailableExportadoresSelectOne}">
                             <h:outputText value="#{item.exportador.toString()}"/>
                         </p:column>
                         <p:column>

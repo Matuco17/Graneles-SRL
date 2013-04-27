@@ -36,6 +36,7 @@ public class IndexController {
     private DataModel etaVencidos;
     private DataModel etaNoVencidos;
     private DataModel ultimasPlanillas;
+    private DataModel embarquesNoFacturados;
     
     /** Creates a new instance of MenuController */
     public IndexController() {
@@ -63,6 +64,8 @@ public class IndexController {
         
         //Calculos de los ultimas planillas
         ultimasPlanillas = new ListDataModel(turnoEmbarqueF.getRecientes(5));
+        
+        embarquesNoFacturados = new ListDataModel(embarqueF.findByFacturado(false));
     }
     
     public DataModel getEtaVencidos() {
@@ -87,6 +90,14 @@ public class IndexController {
 
     public void setUltimasPlanillas(DataModel ultimasPlanillas) {
         this.ultimasPlanillas = ultimasPlanillas;
+    }
+
+    public DataModel getEmbarquesNoFacturados() {
+        return embarquesNoFacturados;
+    }
+
+    public void setEmbarquesNoFacturados(DataModel embarquesNoFacturados) {
+        this.embarquesNoFacturados = embarquesNoFacturados;
     }
 
     

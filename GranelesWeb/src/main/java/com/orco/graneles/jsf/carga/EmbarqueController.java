@@ -400,6 +400,10 @@ public class EmbarqueController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAllSelected(), true);
     }
+    
+    public SelectItem[] getItemsNoFacturadosSelectOne(){
+        return JsfUtil.getSelectItems(ejbFacade.findByFacturado(false), true);
+    }
 
     @FacesConverter(forClass = Embarque.class)
     public static class EmbarqueControllerConverter implements Converter {

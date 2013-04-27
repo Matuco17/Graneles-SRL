@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
     @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva")
   })
-public class Factura implements Serializable {
+public class Factura implements Serializable, Comparable<Factura> {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -280,6 +280,11 @@ public class Factura implements Serializable {
         }
         
         return total;        
+    }
+
+    @Override
+    public int compareTo(Factura o) {
+        return this.fecha.compareTo(o.fecha);
     }
     
     
