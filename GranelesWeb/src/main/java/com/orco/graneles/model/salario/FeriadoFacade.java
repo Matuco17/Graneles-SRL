@@ -6,6 +6,7 @@ package com.orco.graneles.model.salario;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.TipoJornal;
+import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
 import com.orco.graneles.domain.personal.Personal;
 import com.orco.graneles.domain.salario.Feriado;
 import javax.ejb.Stateless;
@@ -59,6 +60,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         Map<Personal, Integer> trabajadoresDiaAnterior = new HashMap<Personal, Integer>();
         Map<Personal, Integer> trabajadoresXDiasPosteriores = new HashMap<Personal, Integer>();
         Map<Personal, Integer> trabajadoresXDiasAnteriores = new HashMap<Personal, Integer>();
+        Map<Personal, TrabajadoresTurnoEmbarque> trabajadores = new HashMap<Personal, TrabajadoresTurnoEmbarque>(); //Map que lo lleno con todos lso tte y luego elimino los q no pertenecen al feriado
         Map<Personal, TrabajadoresTurnoEmbarque> trabajadoresIncluidos = new HashMap<Personal, TrabajadoresTurnoEmbarque>(); //Map que lo lleno con todos lso tte y luego elimino los q no pertenecen al feriado
         Set<Personal> personalIncluido = new HashSet<Personal>();
         Set<Personal> personalMismoDia = new HashSet<Personal>();
@@ -70,7 +72,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         for (TrabajadoresTurnoEmbarque tte : tteF.getTrabajadoresPeriodo(diaInicioAnteriores.toDate(), diaFinPosteriores.toDate())){
             Date fechaPlanilla = tte.getPlanilla().getFecha();
             //Para contar las horas, solamente tengo que contar las jornadas habiles, las otras no se tienen en cuenta
-            if (tte.getPlanilla().getTipo().getId() == TipoJornal.HABIL){
+            if (tte.getPlanilla().getTipo().getConceptoRecibo().getTipoValor().getId() == TipoValorConcepto.HORAS_HABILES){
                 if (fechaPlanilla.equals(diaAnterior.toDate())){
                     agregarTTE(trabajadoresDiaAnterior, tte);
                 }
@@ -80,7 +82,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
                 if (fechaPlanilla.after(fechaFeriado)){
                     agregarTTE(trabajadoresXDiasPosteriores, tte);
                 }
-                trabajadoresIncluidos.put(tte.getPersonal(), tte); //Guardo el ultimo tte del trabajador
+                trabajadores.put(tte.getPersonal(), tte); //Guardo el ultimo tte del trabajador
             }
             if (fechaPlanilla.equals(fechaFeriado)){
                 personalMismoDia.add(tte.getPersonal());
@@ -103,14 +105,12 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         }
         
         //Eliminación de los trabajadores que trabajaron en el feriado
-        for (Personal p : personalMismoDia){
-            trabajadoresIncluidos.remove(p);
-        }
+        personalIncluido.removeAll(personalMismoDia);
         
         //Limpio el listado de todos los trabajadores que no estan incluidos en el feriado
-        for (Map.Entry<Personal, TrabajadoresTurnoEmbarque> ttePersonal : trabajadoresIncluidos.entrySet()){
-            if (!personalIncluido.contains(ttePersonal.getKey())){
-                trabajadoresIncluidos.remove(ttePersonal.getKey());
+        for (Map.Entry<Personal, TrabajadoresTurnoEmbarque> ttePersonal : trabajadores.entrySet()){
+            if (personalIncluido.contains(ttePersonal.getKey())){
+                trabajadoresIncluidos.put(ttePersonal.getKey(), ttePersonal.getValue());
             }
         }
         
@@ -142,7 +142,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
             for (TrabajadoresTurnoEmbarque tte : tteF.getTrabajadoresPeriodo(personal, diaInicioAnteriores.toDate(), diaFinPosteriores.toDate())){
                 Date fechaPlanilla = tte.getPlanilla().getFecha();
                 //Para contar las horas, solamente tengo que contar las jornadas habiles, las otras no se tienen en cuenta
-                if (tte.getPlanilla().getTipo().getId() == TipoJornal.HABIL){
+                if (tte.getPlanilla().getTipo().getConceptoRecibo().getTipoValor().getId() == TipoValorConcepto.HORAS_HABILES){
                     if (fechaPlanilla.equals(diaAnterior.toDate())){
                         trabajoDiaAnterior = true;
                     }
