@@ -15,7 +15,10 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +53,10 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
     private static int DIAS_ANTERIORES_FERIADO = 10;
     private static int DIAS_POSTERIORES_FERIADO = 5;
     
+    private String[] feriadosCache = null;
+    private Date fechaFeriadoCache = null;
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    
     /**
      * Metodo que calcula los trabajadores que corresponden cobrar el feriado
      * @param fechaFeriado
@@ -57,6 +64,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
      */
     public Map<Personal, TrabajadoresTurnoEmbarque> obtenerTrabajadoresIncluidos(Date fechaFeriado){
         DateTime feriadoDT = new DateTime(fechaFeriado);
+        cargarFeriadosCache(feriadoDT);
         Map<Personal, Integer> trabajadoresDiaAnterior = new HashMap<Personal, Integer>();
         Map<Personal, Integer> trabajadoresXDiasPosteriores = new HashMap<Personal, Integer>();
         Map<Personal, Integer> trabajadoresXDiasAnteriores = new HashMap<Personal, Integer>();
@@ -66,8 +74,8 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         Set<Personal> personalMismoDia = new HashSet<Personal>();
         
         DateTime diaAnterior = diaAnteriorFeriado(feriadoDT);
-        DateTime diaInicioAnteriores = diasAnterioresFeriado(feriadoDT);
-        DateTime diaFinPosteriores = diasPosterioresFeriado(feriadoDT);
+        DateTime diaInicioAnteriores = diasAnterioresFeriado(feriadoDT, DIAS_ANTERIORES_FERIADO);
+        DateTime diaFinPosteriores = diasPosterioresFeriado(feriadoDT, DIAS_POSTERIORES_FERIADO);
         
         for (TrabajadoresTurnoEmbarque tte : tteF.getTrabajadoresPeriodo(diaInicioAnteriores.toDate(), diaFinPosteriores.toDate())){
             Date fechaPlanilla = tte.getPlanilla().getFecha();
@@ -129,6 +137,7 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         List<TrabajadoresTurnoEmbarque> ttesFeriados = new ArrayList<TrabajadoresTurnoEmbarque>();
         for (Feriado feriado : obtenerFeriados(desde, hasta)){
             DateTime feriadoDT = new DateTime(feriado.getFecha());
+            cargarFeriadosCache(feriadoDT);
             boolean trabajoDiaAnterior = false;
             boolean trabajoMismoDia = false;
             int horasDiasAnteriores = 0;
@@ -136,8 +145,8 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
             TrabajadoresTurnoEmbarque ultimoTTE = null;
             
             DateTime diaAnterior = diaAnteriorFeriado(feriadoDT);
-            DateTime diaInicioAnteriores = diasAnterioresFeriado(feriadoDT);
-            DateTime diaFinPosteriores = diasPosterioresFeriado(feriadoDT);
+            DateTime diaInicioAnteriores = diasAnterioresFeriado(feriadoDT, DIAS_ANTERIORES_FERIADO);
+            DateTime diaFinPosteriores = diasPosterioresFeriado(feriadoDT, DIAS_POSTERIORES_FERIADO);
 
             for (TrabajadoresTurnoEmbarque tte : tteF.getTrabajadoresPeriodo(personal, diaInicioAnteriores.toDate(), diaFinPosteriores.toDate())){
                 Date fechaPlanilla = tte.getPlanilla().getFecha();
@@ -185,32 +194,50 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
     private DateTime diaAnteriorFeriado(DateTime feriadoDT) {
         //Configuro los dias parametrizados q tengo
         DateTime diaAnterior = feriadoDT.minusDays(1);
-        if (diaAnterior.getDayOfWeek() == DateTimeConstants.SUNDAY){
-            diaAnterior = diaAnterior.minusDays(1);
+        if (diaAnterior.getDayOfWeek() == DateTimeConstants.SUNDAY
+            || Arrays.binarySearch(feriadosCache, df.format(diaAnterior.toDate())) >= 0){
+            return diaAnteriorFeriado(diaAnterior);
         }
         return diaAnterior;
     }
 
-    private DateTime diasAnterioresFeriado(DateTime feriadoDT) {
-        DateTime diaInicioAnteriores = feriadoDT;
-        for (int i = 0; i < DIAS_ANTERIORES_FERIADO; i++){
-            diaInicioAnteriores = diaInicioAnteriores.minusDays(1);
-            if (diaInicioAnteriores.getDayOfWeek() == DateTimeConstants.SUNDAY){
-                diaInicioAnteriores = diaInicioAnteriores.minusDays(1);
+    private DateTime diasAnterioresFeriado(DateTime feriadoDT, int diasAnterioresRestantes) {
+        DateTime diaInicioAnteriores = feriadoDT.minusDays(1);
+        if (diaInicioAnteriores.getDayOfWeek() == DateTimeConstants.SUNDAY
+                || Arrays.binarySearch(feriadosCache, df.format(diaInicioAnteriores.toDate())) >= 0){
+            return diasAnterioresFeriado(diaInicioAnteriores, diasAnterioresRestantes);
+        } else {
+            if (diasAnterioresRestantes > 1){
+                return diasAnterioresFeriado(diaInicioAnteriores, diasAnterioresRestantes - 1);
+            } else {
+                return diaInicioAnteriores;
             }
         }
-        return diaInicioAnteriores;
     }
 
-    private DateTime diasPosterioresFeriado(DateTime feriadoDT) {
-        DateTime diaFinPosteriores = feriadoDT;
-        for (int i = 0; i < DIAS_POSTERIORES_FERIADO; i++){
-            diaFinPosteriores = diaFinPosteriores.plusDays(1);
-            if (diaFinPosteriores.getDayOfWeek() == DateTimeConstants.SUNDAY){
-                diaFinPosteriores = diaFinPosteriores.plusDays(1);
+    private DateTime diasPosterioresFeriado(DateTime feriadoDT, int diasPosterioresRestantes) {
+        DateTime diaFinPosteriores = feriadoDT.plusDays(1);
+        
+        if (diaFinPosteriores.getDayOfWeek() == DateTimeConstants.SUNDAY
+            || Arrays.binarySearch(feriadosCache, df.format(diaFinPosteriores.toDate())) >= 0){
+            return diasPosterioresFeriado(diaFinPosteriores, diasPosterioresRestantes);
+        } else {
+            if (diasPosterioresRestantes > 1){
+                return diasPosterioresFeriado(diaFinPosteriores, diasPosterioresRestantes - 1);
+            } else {
+                return diaFinPosteriores;
             }
         }
-        return diaFinPosteriores;
+    }
+    
+    private void cargarFeriadosCache(DateTime feriado){
+        if (feriadosCache == null) {
+            List<Feriado> feriados = obtenerFeriados(feriado.minusYears(1).toDate(), feriado.plusYears(1).toDate());
+            feriadosCache = new String[feriados.size()];
+            for (int i = 0; i < feriados.size(); i++){
+                feriadosCache[i] = df.format(feriados.get(i).getFecha());
+            }
+        } 
     }
     
 }

@@ -189,8 +189,9 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
     }
     
     public List<Embarque> findByFacturado(Boolean facturado){
-        List<Embarque> embarques = getEntityManager().createNamedQuery("Embarque.findByFacturado", Embarque.class)
+        List<Embarque> embarques = getEntityManager().createNamedQuery("Embarque.findByFacturadoYConsolidado", Embarque.class)
                                         .setParameter("facturado", facturado)
+                                        .setParameter("consolidado", Boolean.TRUE)
                                         .getResultList();
         
         for (Embarque e : embarques){

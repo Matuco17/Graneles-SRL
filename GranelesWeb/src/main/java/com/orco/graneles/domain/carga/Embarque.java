@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Embarque.findByCzo", query = "SELECT e FROM Embarque e WHERE e.czo = :czo"),
     @NamedQuery(name = "Embarque.findByTmo", query = "SELECT e FROM Embarque e WHERE e.tmo = :tmo"),
     @NamedQuery(name = "Embarque.findByMomentoFumigacion", query = "SELECT e FROM Embarque e WHERE e.momentoFumigacion = :momentoFumigacion"),
-    @NamedQuery(name = "Embarque.findByFacturado", query = "SELECT e FROM Embarque e WHERE e.facturado = :facturado"),
+    @NamedQuery(name = "Embarque.findByFacturadoYConsolidado", query = "SELECT e FROM Embarque e WHERE e.facturado = :facturado AND e.consolidado = :consolidado"),
     @NamedQuery(name = "Embarque.findByBoletosPor", query = "SELECT e FROM Embarque e WHERE e.boletosPor = :boletosPor")})
 public class Embarque extends EntidadAuditable implements Serializable, Comparable<Embarque> {
     private static final long serialVersionUID = 1L;
