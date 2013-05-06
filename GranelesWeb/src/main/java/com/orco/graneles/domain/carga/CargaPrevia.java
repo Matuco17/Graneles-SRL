@@ -112,7 +112,7 @@ public class CargaPrevia implements Serializable, Comparable<CargaPrevia> {
      * Calculo realizado por kilos en vez de toneladas
      */
     public BigDecimal getCapacidadBodegaMercaderia(){
-        if ((mercaderia != null) && 
+        if ((mercaderia != null) && (mercaderia.getFactorEstiba() != null) && 
              (bodega != null) &&
              (bodega.getCapacidadPiesCubicos().abs().doubleValue() > 0.1)){
             double factorEstiva = mercaderia.getFactorEstiba().doubleValue();
