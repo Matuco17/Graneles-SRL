@@ -84,6 +84,7 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
         nuevoEmbarque.setCodigo(maximo + 1);
         nuevoEmbarque.setConsolidado(Boolean.TRUE);
         nuevoEmbarque.setConsolidadoEnBusqueda(Boolean.FALSE);
+        nuevoEmbarque.setFacturado(Boolean.FALSE);
         
         return nuevoEmbarque;
     }

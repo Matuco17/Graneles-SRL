@@ -87,6 +87,10 @@ public class Factura implements Serializable, Comparable<Factura> {
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
     
+    @OneToMany(mappedBy = "factura", orphanRemoval = true)
+    private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
+   
+    
     public Factura() {
     }
 
@@ -166,6 +170,17 @@ public class Factura implements Serializable, Comparable<Factura> {
         this.turnosFacturadosCollection = turnosFacturadosCollection;
     }
 
+    @XmlTransient
+    public Collection<MovimientoCtaCte> getMovimientoCtaCtesCollection() {
+        return movimientoCtaCtesCollection;
+    }
+
+    public void setMovimientoCtaCtesCollection(Collection<MovimientoCtaCte> movimientoCtaCtesCollection) {
+        this.movimientoCtaCtesCollection = movimientoCtaCtesCollection;
+    }
+
+    
+    
     public BigDecimal getPorcentajeAdministracion() {
         if (porcentajeAdministracion == null){
             porcentajeAdministracion = BigDecimal.ZERO;

@@ -103,6 +103,10 @@ public class Empresa implements Serializable {
     @OneToMany(mappedBy = "cargador")
     private Collection<TurnoEmbarqueObservaciones> turnoEmbarqueObservacionesCollection;
     
+    @OneToMany(mappedBy = "empresa", orphanRemoval = true)
+    private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
+    
+    
     transient private UploadedFile logoFile;
     
     public Empresa() {
@@ -245,6 +249,15 @@ public class Empresa implements Serializable {
         this.turnoEmbarqueObservacionesCollection = turnoEmbarqueObservacionesCollection;
     }
 
+    @XmlTransient
+    public Collection<MovimientoCtaCte> getMovimientoCtaCtesCollection() {
+        return movimientoCtaCtesCollection;
+    }
+
+    public void setMovimientoCtaCtesCollection(Collection<MovimientoCtaCte> movimientoCtaCtesCollection) {
+        this.movimientoCtaCtesCollection = movimientoCtaCtesCollection;
+    }
+    
     public UploadedFile getLogoFile() {
         return logoFile;
     }

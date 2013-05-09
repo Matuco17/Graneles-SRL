@@ -93,7 +93,7 @@ public class Buque implements Serializable, Comparable<Buque> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque", orphanRemoval = true)
     private Collection<Bodega> bodegaCollection;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque", orphanRemoval = false)
     private Collection<Embarque> embarqueCollection;
   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buque", orphanRemoval = true)
