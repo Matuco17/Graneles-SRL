@@ -1,17 +1,28 @@
 /*
- * To change thit template, choose Toolt | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.orco.graneles.domain.facturacion;
 
-import com.orco.graneles.domain.salario.*;
-import com.orco.graneles.domain.personal.Categoria;
-import com.orco.graneles.domain.personal.Tarea;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -19,68 +30,65 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author orco
  */
 @Entity
-@Table(name = "mov_cta_cte")
+@Table(name = "mov_cta_cte", catalog = "graneles", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MovimientoCtaCte.findAll", query = "SELECT m FROM MovimientoCtaCte m"),
     @NamedQuery(name = "MovimientoCtaCte.findById", query = "SELECT m FROM MovimientoCtaCte m WHERE m.id = :id"),
-    @NamedQuery(name = "MovimientoCtaCte.findByEmpresa", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa")
-    })
-public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaCte> {
-    
-    
+    @NamedQuery(name = "MovimientoCtaCte.findByFecha", query = "SELECT m FROM MovimientoCtaCte m WHERE m.fecha = :fecha"),
+    @NamedQuery(name = "MovimientoCtaCte.findByValor", query = "SELECT m FROM MovimientoCtaCte m WHERE m.valor = :valor"),
+    @NamedQuery(name = "MovimientoCtaCte.findByObservaciones", query = "SELECT m FROM MovimientoCtaCte m WHERE m.observaciones = :observaciones"),
+    @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual")})
+public class MovimientoCtaCte implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-    
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fieldt consider using these annotationt to enforce field validation
-    @Column(name = "valor")
-    private BigDecimal valor;
-    
-    @Column(name = "fecha")
+    @Column(name = "id", nullable = false)
+    private Long id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    
-    @Column(name = "observaciones")
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valor", nullable = false, precision = 19, scale = 2)
+    private BigDecimal valor;
+    @Size(max = 256)
+    @Column(name = "observaciones", length = 256)
     private String observaciones;
-    
-    @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id")
+    @Column(name = "manual")
+    private Boolean manual;
+    @JoinColumn(name = "factura", referencedColumnName = "id")
+    @ManyToOne
+    private Factura factura;
+    @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private FixedList tipoMovimiento;
-
-    @JoinColumn(name = "empresa", referencedColumnName = "id")
+    @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
-
-    @JoinColumn(name = "factura", referencedColumnName = "id")
-    @ManyToOne(optional = true)
-    private Factura factura;
-
-    
-    
 
     public MovimientoCtaCte() {
     }
 
-    public MovimientoCtaCte(Integer id) {
+    public MovimientoCtaCte(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public MovimientoCtaCte(Long id, Date fecha, BigDecimal valor) {
+        this.id = id;
+        this.fecha = fecha;
+        this.valor = valor;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
     }
 
     public Date getFecha() {
@@ -91,12 +99,36 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         this.fecha = fecha;
     }
 
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
     public String getObservaciones() {
         return observaciones;
     }
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public Boolean getManual() {
+        return manual;
+    }
+
+    public void setManual(Boolean manual) {
+        this.manual = manual;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     public FixedList getTipoMovimiento() {
@@ -115,17 +147,6 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         this.empresa = empresa;
     }
 
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
-    }
-
-   
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -135,7 +156,7 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - thit method won't work in the case the id fieldt are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof MovimientoCtaCte)) {
             return false;
         }
@@ -148,12 +169,7 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
 
     @Override
     public String toString() {
-        return "com.orco.granelet.domain.MovimientoCtaCte[ id=" + id + " ]";
-    }
-
-    @Override
-    public int compareTo(MovimientoCtaCte o) {
-        return fecha.compareTo(o.fecha);
+        return "com.orco.graneles.domain.facturacion.MovimientoCtaCte[ id=" + id + " ]";
     }
     
 }

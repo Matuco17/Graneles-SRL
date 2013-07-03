@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+        <cc:attribute name="editar" type="java.lang.Boolean" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div style="float: left;">
+            <h:panelGrid columns="4">
+                <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_empresa}" for="empresa" />
+                <h:selectOneMenu id="empresa" value="#{movimientoCtaCteController.selected.empresa}" rendered="#{cc.attrs.editar}">
+                    <f:selectItems value="#{empresaController.itemsAvailableSelectOne}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{movimientoCtaCteController.selected.empresa.toString()}" rendered="#{!cc.attrs.editar}" />
+                
+                <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_fecha}" for="fecha" />
+                <p:calendar value="#{movimientoCtaCteController.selected.fecha}" pattern="dd/MM/yyyy" />
+                <h:outputText value="#{movimientoCtaCteController.selected.fecha}" rendered="#{!cc.attrs.editar}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+                    
+                <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_tipoMovimiento}" for="tipoMovimiento" />
+                <h:selectOneMenu id="tipoMovimiento" value="#{movimientoCtaCteController.selected.tipoMovimiento}" rendered="#{cc.attrs.editar}" >
+                    <f:selectItems value="#{fixedListController.tipoMovimientoCtaCteSelectOne}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{movimientoCtaCteController.selected.tipoMovimiento.toString()}" rendered="#{!cc.attrs.editar}" />
+                
+                <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_tipo}" for="tipo" />
+                <p:selectOneRadio id="tipo" value="#{movimientoCtaCteController.tipo}" disabled="#{!cc.attrs.editar}" >
+                    <f:selectItem itemValue="#{movimientoCtaCteController.TIPO_INGRESO}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_ingreso}" />
+                    <f:selectItem itemValue="#{movimientoCtaCteController.TIPO_EGRESO}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_egreso}" />
+                </p:selectOneRadio>
+                
+                <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_monto}" for="valor" />
+                
+                
+                
+            </h:panelGrid>
+        </div>
+        <c:if test="#{!cc.attrs.nuevo}" >
+            <div style="float: left; margin-bottom: 5px;"  >
+                <img src="~/../../../resources/uploadedFiles/logosEmpresas/#{empresaController.selected.id}" 
+                     alt="Logo" style="max-height: 150px;"  />
+            </div>
+        </c:if>
+    </cc:implementation>
+</html>

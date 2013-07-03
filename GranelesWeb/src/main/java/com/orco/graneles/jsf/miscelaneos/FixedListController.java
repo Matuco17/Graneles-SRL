@@ -205,6 +205,10 @@ public class FixedListController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(Lugar.ID_LISTA), true);
     }
     
+    public SelectItem[] getTipoMovimientoCtaCteSelectOne() {
+        return JsfUtil.getSelectItems(ejbFacade.findByLista(TipoMovimientoCtaCte.ID_LISTA), true);
+    }
+    
     public SelectItem[] getItemsAvailableSelectMany(int idLista) {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(idLista), false);
     }

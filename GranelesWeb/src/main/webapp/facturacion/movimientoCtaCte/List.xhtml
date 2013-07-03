@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{movimientoCtaCteController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ListMovimientoCtaCteTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleFacturacion.ListMovimientoCtaCteEmpty}" rendered="#{movimientoCtaCteController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{movimientoCtaCteController.items.rowCount > 0}">
+                    <p:dataTable value="#{movimientoCtaCteController.items}" 
+                                 var="item" rowKey="#{item.id}"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{movimientoCtaCteController.selected}" selectionMode="single">
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_nombre}" filterBy="#{item.nombre}" filterMatchMode="contains">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_direccion}">
+                           <h:outputText value="#{item.direccion}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_cuit}">
+                           <h:outputText value="#{item.cuit}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_tipoMovimientoCtaCte}" filterBy="#{item.tipoMovimientoCtaCte}" filterOptions="#{fixedListController.tipoMovimientoCtaCteSelectOne}" filterMatchMode="exact">
+                           <h:outputText value="#{item.tipoMovimientoCtaCte.toString()}"/>
+                        </p:column>
+                
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGrid columns="4" >
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{movimientoCtaCteController.prepareCreate}" 
+                    value="#{bundleFacturacion.MovimientoCtaCteCreateLink}"
+                    title="#{bundleFacturacion.MovimientoCtaCteCreateLink}"
+                    />
+                 <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{movimientoCtaCteController.prepareView}" 
+                                value="#{bundleFacturacion.MovimientoCtaCteViewLink}"
+                                title="#{bundleFacturacion.MovimientoCtaCteViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{movimientoCtaCteController.prepareEdit}" 
+                                value="#{bundleFacturacion.MovimientoCtaCteEditLink}"
+                                title="#{bundleFacturacion.MovimientoCtaCteEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Movimiento de Cuenta Corriente?');" 
+                                action="#{movimientoCtaCteController.destroy}" 
+                                title="#{bundleFacturacion.MovimientoCtaCteDestroyLink}"
+                                value="#{bundleFacturacion.MovimientoCtaCteDestroyLink}"
+                                rendered="#{loginController.esGerente()}"
+                                />
+                            
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

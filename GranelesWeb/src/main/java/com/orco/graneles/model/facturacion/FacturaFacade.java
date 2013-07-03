@@ -11,10 +11,12 @@ import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import com.orco.graneles.domain.facturacion.Tarifa;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.GrupoFacturacion;
+import com.orco.graneles.domain.miscelaneos.TipoMovimientoCtaCte;
 import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
 import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
@@ -24,7 +26,9 @@ import javax.persistence.PersistenceContext;
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.TurnosFacturados;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 /**
  *
@@ -39,6 +43,8 @@ public class FacturaFacade extends AbstractFacade<Factura> {
     private CargaTurnoFacade cargaTurnoF; 
     @EJB
     private EmbarqueFacade embarqueF;
+    @EJB
+    private FixedListFacade fixedListF;
     
     protected EntityManager getEntityManager() {
         return em;
@@ -50,6 +56,19 @@ public class FacturaFacade extends AbstractFacade<Factura> {
 
     @Override
     public void create(Factura entity) {
+        //Creo el movimiento en cta cte para la factura
+        MovimientoCtaCte movCtaCteFact = new MovimientoCtaCte();
+        movCtaCteFact.setEmpresa(entity.getExportador());
+        movCtaCteFact.setFactura(entity);
+        movCtaCteFact.setFecha(entity.getFecha());
+        movCtaCteFact.setObservaciones("Factura: " + entity.getComprobante());
+        movCtaCteFact.setTipoMovimiento(fixedListF.find(TipoMovimientoCtaCte.FACTURA));
+        movCtaCteFact.setValor(entity.getTotalConIVA());
+        movCtaCteFact.setManual(Boolean.FALSE);
+        
+        entity.setMovimientoCtaCtesCollection(new ArrayList<MovimientoCtaCte>());
+        entity.getMovimientoCtaCtesCollection().add(movCtaCteFact);
+        
         super.create(entity);
         actualizarTurnos(entity);
         actualizarEmbarque(entity);

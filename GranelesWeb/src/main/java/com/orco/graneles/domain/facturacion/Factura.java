@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.facturacion;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.Embarque;
 import java.io.Serializable;
@@ -47,7 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
     @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva")
   })
-public class Factura implements Serializable, Comparable<Factura> {
+public class Factura extends EntidadAuditable implements Serializable, Comparable<Factura> {
+
+
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -87,7 +90,7 @@ public class Factura implements Serializable, Comparable<Factura> {
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
     
-    @OneToMany(mappedBy = "factura", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
    
     
@@ -301,6 +304,7 @@ public class Factura implements Serializable, Comparable<Factura> {
     public int compareTo(Factura o) {
         return this.fecha.compareTo(o.fecha);
     }
+
     
     
     

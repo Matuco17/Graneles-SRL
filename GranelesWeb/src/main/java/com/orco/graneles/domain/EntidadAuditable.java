@@ -5,7 +5,9 @@
 package com.orco.graneles.domain;
 
 import com.orco.graneles.domain.miscelaneos.Auditoria;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -20,7 +22,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class EntidadAuditable {
     
     @JoinColumn(name = "auditoria", referencedColumnName = "id")
-    @ManyToOne()
+    @ManyToOne(optional= false, fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     private Auditoria auditoria;
 
     public Auditoria getAuditoria() {

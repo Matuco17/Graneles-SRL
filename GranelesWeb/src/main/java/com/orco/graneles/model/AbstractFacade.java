@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import org.apache.commons.beanutils.BeanUtils;
 
 public abstract class AbstractFacade<T> {
@@ -33,12 +34,33 @@ public abstract class AbstractFacade<T> {
 
     public void create(T entity) {
         try {
+            if (entity instanceof EntidadAuditable){
+                Auditoria a = new Auditoria();
+                a.setEntidadId(-1L);
+                a.setClase(entity.getClass().getSimpleName());
+                a.setUsuarioCreacion(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+                a.setFechaCreacion(new Date());
+                a.setUsuarioModificacion(a.getUsuarioCreacion());
+                a.setFechaModificacion(a.getFechaCreacion());
+
+                EntidadAuditable eA = (EntidadAuditable) entity;
+                eA.setAuditoria(a);
+            }
             getEntityManager().persist(entity);
-            
+                        
             getEntityManager().flush();
             
             if (entity instanceof EntidadAuditable){
-                crearAuditoria(entity);
+                Auditoria a = ((EntidadAuditable) entity).getAuditoria();
+                try {
+                    a.setEntidadId(Long.parseLong(BeanUtils.getProperty(entity, "id")));                    
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } catch (EJBException e) {
             Logger.getLogger(AbstractVersionedFacade.class.getName()).log(Level.SEVERE, null, e);
@@ -47,8 +69,6 @@ public abstract class AbstractFacade<T> {
 
     public void edit(T entity) {
         try {
-            getEntityManager().merge(entity);
-            
             if (entity instanceof EntidadAuditable){
                 Auditoria a = ((EntidadAuditable) entity).getAuditoria();
                 
@@ -62,6 +82,9 @@ public abstract class AbstractFacade<T> {
                     auditoriaF.edit(a);
                 }
             }
+            
+            getEntityManager().merge(entity);
+            
         } catch (EJBException e) {
             Logger.getLogger(AbstractVersionedFacade.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -143,16 +166,18 @@ public abstract class AbstractFacade<T> {
     private void crearAuditoria(T entity) throws NumberFormatException {
         Auditoria a = new Auditoria();
         try {
-            a.setEntidadId(Long.parseLong(BeanUtils.getProperty(entity, "id")));
+            if (BeanUtils.getProperty(entity, "id") != null){
+                a.setEntidadId(Long.parseLong(BeanUtils.getProperty(entity, "id")));
+            }
+            
             a.setClase(entity.getClass().getSimpleName());
             a.setUsuarioCreacion(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
             a.setFechaCreacion(new Date());
             a.setUsuarioModificacion(a.getUsuarioCreacion());
             a.setFechaModificacion(a.getFechaCreacion());
-
+            
             EntidadAuditable eA = (EntidadAuditable) entity;
             eA.setAuditoria(a);
-            getEntityManager().merge(entity);
 
         } catch (IllegalAccessException ex) {
             Logger.getLogger(AbstractFacade.class.getName()).log(Level.SEVERE, null, ex);

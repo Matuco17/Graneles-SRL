@@ -55,9 +55,8 @@ public class Adelanto extends EntidadAuditable implements Serializable {
     @NotNull
     private BigDecimal valor;
     
-    @JoinColumn(name = "personal", referencedColumnName = "id")
+    @JoinColumn(name = "personal", referencedColumnName = "id" )
     @ManyToOne(optional = false)
-    @NotNull
     private Personal personal;
     
     

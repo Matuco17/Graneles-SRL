@@ -28,6 +28,6 @@
     </property>
   </jsp-config>
   <system-properties>
-    <propertie name="java.util.logging.config.file" value="WEB-INF/loggin.properties"/>
+    <propertie name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
 </sun-web-app>
