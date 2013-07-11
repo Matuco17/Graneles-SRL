@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TipoJornal.findByPorcExtraBruto", query = "SELECT t FROM TipoJornal t WHERE t.porcExtraBruto = :porcExtraBruto")})
 public class TipoJornal implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    public static final Integer BASICO = 6;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

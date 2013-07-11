@@ -1,6 +1,7 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
+import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
 
@@ -37,7 +38,7 @@ public class MovimientoCtaCteController implements Serializable {
 
     public void init() {
         recreateModel();
-        JsfUtil.minimoRolRequerido(null);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
     public MovimientoCtaCte getSelected() {

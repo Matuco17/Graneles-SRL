@@ -228,4 +228,12 @@ public class TrabajadoresTurnoEmbarque implements Serializable, Comparable<Traba
         return this.getPlanilla().getFecha().compareTo(o.getPlanilla().getFecha());
     }
     
+    public String getDescripcionPlanilla(){
+        if (this.getPlanilla() != null){
+            return String.valueOf(this.getPlanilla().getNroPlanilla());
+        } else {
+            return "Feriado";
+        }
+    }
+    
 }

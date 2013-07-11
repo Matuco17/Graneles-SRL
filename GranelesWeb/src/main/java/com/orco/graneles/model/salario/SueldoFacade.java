@@ -379,7 +379,6 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
                                                                 fixedListF.find(TipoValorConcepto.SAC));
         }
         
-       
         double calculadoSAC = conceptoReciboF.calcularValorSAC(personal, desde, hasta, conceptoReciboSACCache, incluirHoras, incluirAccidente, incluirFeriado);
         
         return crearSueldoXItemBruto(conceptoReciboSACCache, null, 

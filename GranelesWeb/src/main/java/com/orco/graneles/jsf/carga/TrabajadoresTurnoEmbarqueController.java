@@ -7,9 +7,12 @@ import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.fileExport.JornalesXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
+import com.orco.graneles.vo.JornalVO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,6 +43,7 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
     private Personal personalFilter;
     private Date desdeFilter;
     private Date hastaFilter;
+    private Boolean incluirFeriadosFilter;
     
     private DataModel jornales;
     private BigDecimal totalJornalesBruto;
@@ -62,18 +66,20 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
     }
     
     public void buscarJornales(){
-        List<TrabajadoresTurnoEmbarque> ttes = ejbFacade.getTrabajadores(categoriaFilter, personalFilter, desdeFilter, hastaFilter);
+        List<JornalVO> jornalesVO = ejbFacade.getJornales(categoriaFilter, personalFilter, desdeFilter, hastaFilter, incluirFeriadosFilter);
         
         totalJornalesBruto = BigDecimal.ZERO;
         totalHoras = 0;
-        for (TrabajadoresTurnoEmbarque tte : ttes){
-            totalJornalesBruto = totalJornalesBruto.add(tte.getBruto());
-            totalHoras += tte.getHoras();
+        for (JornalVO jornal : jornalesVO){
+            totalJornalesBruto = totalJornalesBruto.add(jornal.getBruto());
+            totalHoras += jornal.getHoras();
         }
         
-        jornales = new ListDataModel(ttes);
+        Collections.sort(jornalesVO);
         
-        urlJornalesXLS = (new JornalesXLS(categoriaFilter, personalFilter, desdeFilter, hastaFilter, totalHoras, totalJornalesBruto, ttes))
+        jornales = new ListDataModel(jornalesVO);
+        
+        urlJornalesXLS = (new JornalesXLS(categoriaFilter, personalFilter, desdeFilter, hastaFilter, incluirFeriadosFilter, totalHoras, totalJornalesBruto, jornalesVO))
                             .generarArchivo("Jornales_" + (new Date()).toString().replaceAll(" ", "_"));
     }
     
@@ -202,6 +208,13 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
     public String getUrlJornalesXLS() {
         return urlJornalesXLS;
     }
-    
-    
+
+    public Boolean getIncluirFeriadosFilter() {
+        return incluirFeriadosFilter;
+    }
+
+    public void setIncluirFeriadosFilter(Boolean incluirFeriadosFilter) {
+        this.incluirFeriadosFilter = incluirFeriadosFilter;
+    }
+      
 }

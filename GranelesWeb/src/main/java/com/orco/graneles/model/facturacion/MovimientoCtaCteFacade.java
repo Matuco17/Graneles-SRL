@@ -36,4 +36,13 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
                 .getResultList();
     }
     
+    /**
+     * Metodo que de vuelve los ultimos X movimientos (utilizando fecha de modificación)
+     * @param cantidad
+     * @return 
+     */
+    public List<MovimientoCtaCte> findUltimos(Integer cantidad){
+        return null; //TODO: implementar
+    }
+    
 }

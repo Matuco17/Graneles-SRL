@@ -49,6 +49,9 @@
                          </p:submenu>
                         <p:submenu label="Facturación" rendered="true" >  
                             <p:menuitem value="Facturas" url="/faces/facturacion/factura/List.xhtml" />
+                            <!--
+                            <p:menuitem value="Cuentas Corrientes" url="/faces/facturacion/movimientoCtaCte/List.xhtml" />
+                            -->
                             <p:menuitem value="Tarifas" url="/faces/facturacion/tarifa/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Concepto Facturado" url="/faces/miscelaneos/list/ListCrud.xhtml?listid=17" rendered="#{loginController.esGerente()}" />
                         </p:submenu>

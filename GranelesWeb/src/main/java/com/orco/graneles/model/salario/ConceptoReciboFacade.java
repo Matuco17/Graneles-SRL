@@ -78,6 +78,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             double totalAcumulado = 0;
             SalarioBasico salarioActivo = null; //Variable del salario activo que me sirve de cache para no tener que hacer la busqueda por cada jornal trabajado
             
+            
             if (incluirHoras) {
                 List<TrabajadoresTurnoEmbarque> ttes = tteF.getTrabajadoresPeriodo(personal, desde, hasta);
                 
@@ -87,11 +88,19 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 }
                 for (TrabajadoresTurnoEmbarque tte : ttes){
                     //Verifico que tengo un salario basico para ese periodo
-                    if (salarioActivo == null 
-                        || (salarioActivo.getHasta() != null && salarioActivo.getHasta().before(tte.getPlanilla().getFecha()))){
-                        salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+                    salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
+                    /*
+                    if (calcularDiaBrutoTTE(salarioActivo, tte, true) - tte.getBruto().doubleValue() > 1){
+                        String s = personal.getCuil();
+                        s+= "," + tte.getBruto().toString();
+                        s+= "," + String.valueOf(calcularDiaBrutoTTE(salarioActivo, tte, true));
+                        s+= "," + String.valueOf(tte.getPlanilla().getNroPlanilla()) + "(" + String.valueOf(tte.getPlanilla().getId()) + ")";
+                        s+= "," + tte.getPlanilla().getEmbarque().getCodigo() + "(" + String.valueOf(tte.getPlanilla().getEmbarque().getId()) + ")";
+                        s+= "," + tte.getTarea().getDescripcion() + "," + tte.getCategoria() + "," + tte.getDelegado().toString();
+                        s+= "," + tte.getPlanilla().getFecha().toString();
+                        System.out.println(s);                        
                     }
-
+                    */
                     totalAcumulado += calcularDiaBrutoTTE(salarioActivo, tte, true);
                 }
             }
@@ -216,16 +225,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
      
     
     public TrabajadorTurnoEmbarqueVO calcularDiaCompletoTTTE(SalarioBasico salario, TrabajadoresTurnoEmbarque tte, boolean incluirAdicionales) {
-        com.orco.graneles.domain.salario.TipoJornal tipoJornal = tte.getPlanilla().getTipo();
-        Tarea tarea = tte.getTarea();
-        Integer horas = tte.getHoras();
-                
-        
-        double basicoBruto = 0.0;
-        double totalConcepto = 0.0; //resultado de la suma del concepto
-        TrabajadorTurnoEmbarqueVO tteVO = calculaDiaTTE(tte, salario, horas, incluirAdicionales, tarea, tipoJornal);
-        
-        return tteVO;
+        return calculaDiaTTE(tte, salario, tte.getHoras(), incluirAdicionales, tte.getTarea(), tte.getPlanilla().getTipo());
     }
     
     /**

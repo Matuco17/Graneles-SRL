@@ -18,7 +18,7 @@
         <ui:define name="body">
             <h:form >
                 <p:panel>
-                    <h:panelGrid columns="5">
+                    <h:panelGrid columns="6">
                         <h:outputLabel value="Categoria" for="categoria" />
                         <h:selectOneMenu id="categoria" value="#{trabajadoresTurnoEmbarqueController.categoriaFilter}" >
                             <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
@@ -36,6 +36,7 @@
                             <p:ajax event="itemSelect" update="personalNombre" />
                         </p:autoComplete> 
                         <h:outputText id="personalNombre" value="#{trabajadoresTurnoEmbarqueController.personalFilter.apellido}" style="width: 300px;"                                       />
+                        <h:outputText value="" />
                         
                         <h:outputLabel value="Desde" for="desde" />
                         <p:calendar id="desde" value="#{trabajadoresTurnoEmbarqueController.desdeFilter}" required="true" requiredMessage="Complete el campo desde" />
@@ -43,7 +44,8 @@
                         <h:outputLabel value="Hasta" for="hasta" />
                         <p:calendar id="hasta" value="#{trabajadoresTurnoEmbarqueController.hastaFilter}" required="true" requiredMessage="Complete el campo hasta" />
                         
-                        <h:outputText value="" />
+                        <p:selectBooleanCheckbox id="incluirFeriados" value="#{trabajadoresTurnoEmbarqueController.incluirFeriadosFilter}" />
+                        <h:outputLabel value="Incluir Feriados" for="incluirFeriados" />
                         
                         <h:outputText value="" />
                         <h:commandButton action="#{trabajadoresTurnoEmbarqueController.buscarJornales()}"
@@ -60,13 +62,13 @@
             <p:dataTable value="#{trabajadoresTurnoEmbarqueController.jornales}" 
                          var="item" paginator="false">
                 
-                <p:column headerText="Fecha" style="text-align: center;" sortBy="#{item.planilla.fecha}" >
-                    <h:outputText value="#{item.planilla.fecha}" >
+                <p:column headerText="Fecha" style="text-align: center;" sortBy="#{item.fecha}" >
+                    <h:outputText value="#{item.fecha}" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Planilla" style="text-align: right;" sortBy="#{item.planilla.nroPlanilla}">
-                    <h:outputText value="#{item.planilla.nroPlanilla}" />
+                <p:column headerText="Planilla" style="text-align: right;" sortBy="#{item.planilla}">
+                    <h:outputText value="#{item.planilla}" />
                 </p:column>
                 <p:column headerText="CUIL Trabajador" sortBy="#{item.personal.cuil}" rendered="#{trabajadoresTurnoEmbarqueController.personalFilter == null}" >
                     <h:outputText value="#{item.personal.cuil}" />
@@ -77,8 +79,8 @@
                 <p:column headerText="Categoria" sortBy="#{item.categoria.toString()}" rendered="#{trabajadoresTurnoEmbarqueController.categoriaFilter == null}">
                     <h:outputText value="#{item.categoria.toString()}" />
                 </p:column>
-                <p:column headerText="Tipo Jornal" sortBy="#{item.planilla.tipo.toString()}" >
-                    <h:outputText value="#{item.planilla.tipo.toString()}" />
+                <p:column headerText="Tipo Jornal" sortBy="#{item.tipoJornal.toString()}" >
+                    <h:outputText value="#{item.tipoJornal.toString()}" />
                 </p:column>
                 <p:column headerText="Horas" sortBy="#{item.horas}" style="text-align: center;">
                     <h:outputText value="#{item.horas}" />

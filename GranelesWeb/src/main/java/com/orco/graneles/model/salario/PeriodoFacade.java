@@ -158,6 +158,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         Date hasta = (hastaFijo == null)? obtenerHastaSAC(periodo, s.getPersonal()) : hastaFijo;
         switch (s.getPersonal().getTipoRecibo().getId()){
             case TipoRecibo.HORAS:
+
                 Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
                 Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
                 

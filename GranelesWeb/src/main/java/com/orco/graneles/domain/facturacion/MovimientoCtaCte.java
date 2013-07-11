@@ -38,34 +38,44 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovimientoCtaCte.findByFecha", query = "SELECT m FROM MovimientoCtaCte m WHERE m.fecha = :fecha"),
     @NamedQuery(name = "MovimientoCtaCte.findByValor", query = "SELECT m FROM MovimientoCtaCte m WHERE m.valor = :valor"),
     @NamedQuery(name = "MovimientoCtaCte.findByObservaciones", query = "SELECT m FROM MovimientoCtaCte m WHERE m.observaciones = :observaciones"),
-    @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual")})
-public class MovimientoCtaCte implements Serializable {
+    @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual"),
+    @NamedQuery(name = "MovimientoCtaCte.findByEmpresa", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa"),
+})
+public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaCte> {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "valor", nullable = false, precision = 19, scale = 2)
     private BigDecimal valor;
+    
     @Size(max = 256)
     @Column(name = "observaciones", length = 256)
     private String observaciones;
+    
     @Column(name = "manual")
     private Boolean manual;
+    
     @JoinColumn(name = "factura", referencedColumnName = "id")
     @ManyToOne
     private Factura factura;
+    
     @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private FixedList tipoMovimiento;
+    
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
@@ -170,6 +180,11 @@ public class MovimientoCtaCte implements Serializable {
     @Override
     public String toString() {
         return "com.orco.graneles.domain.facturacion.MovimientoCtaCte[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(MovimientoCtaCte o) {
+        return this.getFecha().compareTo(o.getFecha());
     }
     
 }

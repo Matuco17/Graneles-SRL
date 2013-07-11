@@ -7,18 +7,28 @@ package com.orco.graneles.model.carga;
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.personal.Categoria;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.salario.Feriado;
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.SalarioBasico;
+import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
+import com.orco.graneles.model.salario.FeriadoFacade;
+import com.orco.graneles.model.salario.TipoJornalFacade;
+import com.orco.graneles.vo.JornalVO;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
+import com.sun.faces.util.CollectionsUtils;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
+import org.bouncycastle.util.CollectionStore;
 /**
  *
  * @author orco
@@ -30,7 +40,11 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
     
     @EJB
     private ConceptoReciboFacade conceptoReciboF;
-
+    @EJB
+    private FeriadoFacade feriadoF;
+    @EJB
+    private TipoJornalFacade tipoJornalF;
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -84,6 +98,35 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
         
     }
     
+    public List<JornalVO> getJornales(Categoria categoria, Personal personal, Date desde, Date hasta, Boolean incluirFeriados){
+        List<JornalVO> jornalesVOs = new ArrayList<JornalVO>();
+        
+        for (TrabajadoresTurnoEmbarque tte : getTrabajadores(categoria, personal, desde, hasta)){
+            jornalesVOs.add(new JornalVO(tte, null, null));
+        }
+        
+        if (incluirFeriados){
+            TipoJornal tjBasico = tipoJornalF.find(TipoJornal.BASICO);
+            
+            for (Feriado f : feriadoF.obtenerFeriados(desde, hasta)){
+                for (Map.Entry<Personal, TrabajadoresTurnoEmbarque> tte : feriadoF.obtenerTrabajadoresIncluidos(f.getFecha()).entrySet()){
+                    boolean agregarTTE = true;
+                    if (categoria != null && categoria.getId() != tte.getValue().getCategoria().getId()){
+                        agregarTTE = false;
+                    }
+                    if (agregarTTE && personal != null && personal.getId() != tte.getValue().getPersonal().getId()){
+                        agregarTTE = false;
+                    }
+                    if (agregarTTE){
+                        jornalesVOs.add(new JornalVO(tte.getValue(), f, tjBasico));
+                    }
+                }
+            }
+        }
+        
+        return jornalesVOs;
+    }
+    
     /**
      * Busca los tte de acuerdo a los parametros seleccionados, los primeros 2 son opcionales
      * @param categora
@@ -110,10 +153,24 @@ public class TrabajadoresTurnoEmbarqueFacade extends AbstractFacade<Trabajadores
         for (TrabajadoresTurnoEmbarque tte : ttes){
             TrabajadorTurnoEmbarqueVO tteVO = conceptoReciboF.calcularDiaTTE(tte, true);
             
-            tte.setBruto(tteVO.getValorBruto());
-            tte.setNeto(tteVO.getValorTurno());
+            if (tte.getBruto().doubleValue() - tteVO.getValorBruto().doubleValue() > 0.01){
+                tte.setBruto(tteVO.getValorBruto());
+                tte.setNeto(tteVO.getValorTurno());
+                
+                    String s = tte.getPersonal().getCuil();
+                        s+= "," + tte.getBruto().toString();
+                        s+= "," + String.valueOf(tteVO.getValorBruto().toString());
+                        s+= "," + String.valueOf(tte.getPlanilla().getNroPlanilla()) + "(" + String.valueOf(tte.getPlanilla().getId()) + ")";
+                        s+= "," + tte.getPlanilla().getEmbarque().getCodigo() + "(" + String.valueOf(tte.getPlanilla().getEmbarque().getId()) + ")";
+                        s+= "," + tte.getTarea().getDescripcion() + "," + tte.getCategoria() + "," + tte.getDelegado().toString();
+                        s+= "," + tte.getPlanilla().getFecha().toString();
+                        System.out.println(s);                        
+                   
+                
+            }
             
-            edit(tte);
+            
+            //edit(tte);
         }
     }
     
