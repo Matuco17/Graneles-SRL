@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findById", query = "SELECT t FROM TrabajadoresTurnoEmbarque t WHERE t.id = :id"),
     @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXPeriodo",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
-                               + " WHERE t.planilla.fecha BETWEEN :desde AND :hasta"),
+                               + " WHERE t.planilla.fecha BETWEEN :desde AND :hasta"
+                               + " ORDER BY t.planilla.fecha"),
         @NamedQuery(name = "TrabajadoresTurnoEmbarque.findXSalarioBasico",
                 query = "SELECT t FROM TrabajadoresTurnoEmbarque t JOIN t.planilla p "
                                + " WHERE t.planilla.fecha >= :desde "

@@ -86,16 +86,17 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 if (incluirFeriado){
                     ttes.addAll(feriadoF.obtenerTTEsFeriados(personal, desde, hasta));
                 }
+                
                 for (TrabajadoresTurnoEmbarque tte : ttes){
                     //Verifico que tengo un salario basico para ese periodo
                     salarioActivo = salarioBasicoF.obtenerSalarioActivo(tte.getTarea(), tte.getCategoria(), tte.getPlanilla().getFecha());
                     /*
-                    if (calcularDiaBrutoTTE(salarioActivo, tte, true) - tte.getBruto().doubleValue() > 1){
+                    if (personal.getId() == 865){
                         String s = personal.getCuil();
                         s+= "," + tte.getBruto().toString();
                         s+= "," + String.valueOf(calcularDiaBrutoTTE(salarioActivo, tte, true));
                         s+= "," + String.valueOf(tte.getPlanilla().getNroPlanilla()) + "(" + String.valueOf(tte.getPlanilla().getId()) + ")";
-                        s+= "," + tte.getPlanilla().getEmbarque().getCodigo() + "(" + String.valueOf(tte.getPlanilla().getEmbarque().getId()) + ")";
+                        //s+= "," + tte.getPlanilla().getEmbarque().getCodigo() + "(" + String.valueOf(tte.getPlanilla().getEmbarque().getId()) + ")";
                         s+= "," + tte.getTarea().getDescripcion() + "," + tte.getCategoria() + "," + tte.getDelegado().toString();
                         s+= "," + tte.getPlanilla().getFecha().toString();
                         System.out.println(s);                        
@@ -449,10 +450,18 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                     conceptoSAC = obtenerConcepto(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoValorConcepto.SAC));
                 }
                 
+                String s = personal.getCuil() + "," + personal.getApellido();
+                
                 double totalAcumulado = acumuladoBrutoTrabajadores(personal, desde, hasta, incluirHoras, incluirAccidentes, incluirFeriados);
+                
+                s+= "," + String.valueOf(totalAcumulado);
                 
                 //Modificación por issue 72 ahora tambien se agregan las vacaciones el calculo
                 totalAcumulado += calcularValorVacaciones(personal, desde, hasta, null, incluirHoras, incluirAccidentes, incluirFeriados);
+                
+                s+= "," + String.valueOf(totalAcumulado);
+                
+                //System.out.println(s);
                 
                 return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
                 

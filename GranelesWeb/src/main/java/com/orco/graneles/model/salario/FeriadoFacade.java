@@ -5,6 +5,7 @@
 package com.orco.graneles.model.salario;
 
 import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.carga.TurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.TipoJornal;
 import com.orco.graneles.domain.miscelaneos.TipoValorConcepto;
 import com.orco.graneles.domain.personal.Personal;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.TrabajadoresTurnoEmbarqueFacade;
+import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.ejb.EJB;
 import org.joda.time.DateTime;
@@ -40,6 +43,10 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
 
     @EJB
     private TrabajadoresTurnoEmbarqueFacade tteF;
+    @EJB
+    private TipoJornalFacade tipoJornalF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
     
     
     protected EntityManager getEntityManager() {
@@ -118,7 +125,9 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
         //Limpio el listado de todos los trabajadores que no estan incluidos en el feriado
         for (Map.Entry<Personal, TrabajadoresTurnoEmbarque> ttePersonal : trabajadores.entrySet()){
             if (personalIncluido.contains(ttePersonal.getKey())){
-                trabajadoresIncluidos.put(ttePersonal.getKey(), ttePersonal.getValue());
+                TrabajadoresTurnoEmbarque tteFeriado = crearTTEFeriadoFantasma(fechaFeriado, ttePersonal.getValue());
+                
+                trabajadoresIncluidos.put(ttePersonal.getKey(), tteFeriado);
             }
         }
         
@@ -172,11 +181,11 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
             if (!trabajoMismoDia) {
                 //Caso 1: Si un estibador trabaja en cualquiera de los 1 turno habil el día habil anterior al día del feriado y mete 1 jornal habil en los 5 días habiles posteriores al feriado
                 if (trabajoDiaAnterior && horasDiasPosteriores >= 6){
-                    ttesFeriados.add(ultimoTTE);
+                    ttesFeriados.add(crearTTEFeriadoFantasma(feriado.getFecha(), ultimoTTE));
                 } else {
                     //Caso 2: si el estibador en los 10 días hábiles previos al feriado tiene trabajadas 36 hs hábiles,
                     if (horasDiasAnteriores >= 36){
-                        ttesFeriados.add(ultimoTTE);
+                        ttesFeriados.add(crearTTEFeriadoFantasma(feriado.getFecha(), ultimoTTE));
                     }
                 }
             }
@@ -238,6 +247,26 @@ public class FeriadoFacade extends AbstractFacade<Feriado> {
                 feriadosCache[i] = df.format(feriados.get(i).getFecha());
             }
         } 
+    }
+
+    private TrabajadoresTurnoEmbarque crearTTEFeriadoFantasma(Date fechaFeriado, TrabajadoresTurnoEmbarque tte) {
+        TurnoEmbarque teFeriado = new TurnoEmbarque();
+        teFeriado.setTipo(tipoJornalF.find(com.orco.graneles.domain.salario.TipoJornal.BASICO));
+        teFeriado.setFecha(fechaFeriado);
+        getEntityManager().detach(teFeriado);
+        TrabajadoresTurnoEmbarque tteFeriado = new TrabajadoresTurnoEmbarque();
+        tteFeriado.setPersonal(tte.getPersonal());
+        tteFeriado.setPlanilla(teFeriado);
+        tteFeriado.setCategoria(tte.getCategoria());
+        tteFeriado.setTarea(tte.getTarea());
+        tteFeriado.setDelegado(Boolean.FALSE);
+        tteFeriado.setDesde(tte.getDesde());
+        tteFeriado.setHasta(tte.getHasta());
+        TrabajadorTurnoEmbarqueVO tteVO = conceptoReciboF.calcularDiaTTE(tteFeriado, true);
+        tteFeriado.setBruto(tteVO.getValorBruto());
+        tteFeriado.setNeto(tteVO.getValorTurno());
+        getEntityManager().detach(tteFeriado);
+        return tteFeriado;
     }
     
 }
