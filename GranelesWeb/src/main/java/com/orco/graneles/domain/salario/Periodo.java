@@ -6,8 +6,11 @@ package com.orco.graneles.domain.salario;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +48,7 @@ import org.joda.time.DateTime;
     @NamedQuery(name = "Periodo.findByFolioLibro", query = "SELECT p FROM Periodo p WHERE p.folioLibro = :folioLibro"),
     @NamedQuery(name = "Periodo.findByNroPrimeraHoja", query = "SELECT p FROM Periodo p WHERE p.nroPrimeraHoja = :nroPrimeraHoja"),
     @NamedQuery(name = "Periodo.findByDesdeHasta", query = "SELECT p FROM Periodo p WHERE p.desde = :desde AND p.hasta = :hasta")})
-public class Periodo implements Serializable {
+public class Periodo implements Serializable, Comparable<Periodo> {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -156,7 +159,12 @@ public class Periodo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.Periodo[ id=" + id + " ]";
+        return descripcion;
+    }
+
+    @Override
+    public int compareTo(Periodo o) {
+        return this.getDescripcion().compareToIgnoreCase(o.getDescripcion());
     }
     
     

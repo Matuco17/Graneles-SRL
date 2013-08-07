@@ -1,11 +1,17 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.salario.SueldoFacade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -14,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -27,6 +34,14 @@ public class SueldoController implements Serializable {
     @EJB
     private SueldoFacade ejbFacade;
     private int selectedItemIndex;
+    
+    private Periodo periodoDesdeFilter;
+    private Periodo periodoHastaFilter;
+    private Personal personalFilter;
+    
+    private BigDecimal totalRemunerativo;
+    private BigDecimal totalDeductivo;
+    
 
     public SueldoController() {
     }
@@ -34,17 +49,13 @@ public class SueldoController implements Serializable {
     public void init() {
         recreateModel();
         
-        JsfUtil.minimoRolRequerido(null);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
-    public Sueldo getSelected() {
-        if (current == null) {
-            current = new Sueldo();
-            selectedItemIndex = -1;
-        }
-        return current;
+    public void seleccionarPersonal(ValueChangeEvent e){
+        personalFilter = (Personal) e.getNewValue();
     }
-
+   
     private SueldoFacade getFacade() {
         return ejbFacade;
     }
@@ -54,95 +65,21 @@ public class SueldoController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Sueldo) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "View";
-    }
-
-    public String prepareCreate() {
-        current = new Sueldo();
-        selectedItemIndex = -1;
-        return "Create";
-    }
-
-    public String create() {
-        try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SueldoCreated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
-    public String prepareEdit() {
-        current = (Sueldo) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
-    }
-
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SueldoUpdated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
-    public String destroy() {
-        current = (Sueldo) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
-        return "List";
-    }
-
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        //updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
-    }
-
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("SueldoDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleSalario").getString("PersistenceErrorOccured"));
-        }
-    }
-    /*
-    private void updateCurrentItem() {
-    int count = getFacade().count();
-    if (selectedItemIndex >= count) {
-    // selected index cannot be bigger than number of items:
-    selectedItemIndex = count-1;
-    // go to previous page if last page disappeared:
-    if (pagination.getPageFirstItem() >= count) {
-    pagination.previousPage();
-    }
-    }
-    if (selectedItemIndex >= 0) {
-    current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex+1}).get(0);
-    }
-    }
-     */
-
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
+            if (personalFilter != null || periodoDesdeFilter != null || periodoHastaFilter != null){
+                List<Sueldo> sueldos = getFacade().obtenerSueldos(personalFilter, periodoDesdeFilter, periodoHastaFilter);
+                Collections.sort(sueldos);
+
+                totalDeductivo = BigDecimal.ZERO;
+                totalRemunerativo = BigDecimal.ZERO;
+                for (Sueldo s: sueldos){
+                    totalDeductivo = totalDeductivo.add(s.getTotalDeductivo(true));
+                    totalRemunerativo = totalRemunerativo.add(s.getTotalRemunerativo(true));
+                }
+
+                items = new ListDataModel(sueldos);
+            }
         }
         return items;
     }
@@ -195,4 +132,47 @@ public class SueldoController implements Serializable {
             }
         }
     }
+
+    public Periodo getPeriodoDesdeFilter() {
+        return periodoDesdeFilter;
+    }
+
+    public void setPeriodoDesdeFilter(Periodo periodoDesdeFilter) {
+        this.periodoDesdeFilter = periodoDesdeFilter;
+    }
+
+    public Periodo getPeriodoHastaFilter() {
+        return periodoHastaFilter;
+    }
+
+    public void setPeriodoHastaFilter(Periodo periodoHastaFilter) {
+        this.periodoHastaFilter = periodoHastaFilter;
+    }
+
+    public Personal getPersonalFilter() {
+        return personalFilter;
+    }
+
+    public void setPersonalFilter(Personal personalFilter) {
+        this.personalFilter = personalFilter;
+    }
+
+    public BigDecimal getTotalRemunerativo() {
+        return totalRemunerativo;
+    }
+
+    public void setTotalRemunerativo(BigDecimal totalRemunerativo) {
+        this.totalRemunerativo = totalRemunerativo;
+    }
+
+    public BigDecimal getTotalDeductivo() {
+        return totalDeductivo;
+    }
+
+    public void setTotalDeductivo(BigDecimal totalDeductivo) {
+        this.totalDeductivo = totalDeductivo;
+    }
+
+    
+    
 }

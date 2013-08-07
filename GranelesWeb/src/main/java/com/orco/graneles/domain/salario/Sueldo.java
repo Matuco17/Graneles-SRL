@@ -25,7 +25,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,8 +38,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Sueldo.findAll", query = "SELECT s FROM Sueldo s"),
     @NamedQuery(name = "Sueldo.findById", query = "SELECT s FROM Sueldo s WHERE s.id = :id"),
-    @NamedQuery(name = "Sueldo.findByNroRecibo", query = "SELECT s FROM Sueldo s WHERE s.nroRecibo = :nroRecibo")})
-public class Sueldo implements Serializable {
+    @NamedQuery(name = "Sueldo.findByNroRecibo", query = "SELECT s FROM Sueldo s WHERE s.nroRecibo = :nroRecibo"),
+    @NamedQuery(name = "Sueldo.findByPersonalYPeriodos", 
+            query = "SELECT s FROM Sueldo s "
+                    + "WHERE (:personal IS NULL OR s.personal = :personal)"
+                    + " AND (:periodoDesdeDescripcion IS NULL OR s.periodo.descripcion >= :periodoDesdeDescripcion) "
+                    + " AND (:periodoHastaDescripcion IS NULL OR s.periodo.descripcion <= :periodoHastaDescripcion) "
+                    ),
+    })
+public class Sueldo implements Serializable, Comparable<Sueldo> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -184,6 +190,15 @@ public class Sueldo implements Serializable {
     @Override
     public String toString() {
         return "com.orco.graneles.domain.Sueldo[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Sueldo o) {
+        if (this.getPeriodo().equals(o.getPeriodo())){
+            return this.getPersonal().compareTo(o.getPersonal());
+        } else {
+            return this.getPeriodo().compareTo(o.getPeriodo());
+        }
     }
     
 }

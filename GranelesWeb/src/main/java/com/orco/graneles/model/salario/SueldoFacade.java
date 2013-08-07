@@ -515,6 +515,20 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
     }
 
 
+    /**
+     * Devuelve todos los sueldos para los parametros especificados (no mandatorios)
+     * @param persona
+     * @param desde
+     * @param hasta
+     * @return 
+     */
+    public List<Sueldo> obtenerSueldos(Personal personal, Periodo desde, Periodo hasta){
+        return getEntityManager().createNamedQuery("Sueldo.findByPersonalYPeriodos", Sueldo.class)
+                .setParameter("personal", personal)
+                .setParameter("periodoDesdeDescripcion", (desde != null ? desde.getDescripcion() : null))
+                .setParameter("periodoHastaDescripcion", (hasta != null ? hasta.getDescripcion() : null))
+                .getResultList();
+    }
     
     
 }

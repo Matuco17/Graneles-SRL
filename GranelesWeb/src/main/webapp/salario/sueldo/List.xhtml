@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{sueldoController.init()}" />  
@@ -13,100 +13,66 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundleSalario.ListSueldoTitle}"></h:outputText>
+            <h:outputText value="Resumen de Sueldos" />
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:outputText escape="false" value="#{bundleSalario.SueldoEmpty}" rendered="#{sueldoController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{sueldoController.items.rowCount > 0}">
-                    <p:dataTable value="#{sueldoController.items}" 
-                                 var="item"
-                                 paginator="true" rows="10"
-                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_totalRemunerativo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.totalRemunerativo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_totalDeductivo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.totalDeductivo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_totalNoRemunerativo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.totalNoRemunerativo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_totalSueldoNeto}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.totalSueldoNeto}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_nroRecibo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nroRecibo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_periodo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.periodo}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleSalario.SueldoTitle_personal}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.personal}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandButton 
-                                image="/faces/resources/images/view.png" 
-                                action="#{sueldoController.prepareView}" 
-                                value="#{bundleSalario.SueldoViewLink}"
-                                title="#{bundleSalario.SueldoViewLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/edit.png" 
-                                action="#{sueldoController.prepareEdit}" 
-                                value="#{bundleSalario.SueldoEditLink}"
-                                title="#{bundleSalario.SueldoEditLink}"
-                                />
-
-                            <h:commandButton 
-                                image="/faces/resources/images/destroy.png"
-                                onclick="return confirm('¿Esta seguro que desea eliminar este Sueldo?');" 
-                                action="#{sueldoController.destroy}" 
-                                title="#{bundleSalario.SueldoDestroyLink}"
-                                value="#{bundleSalario.SueldoDestroyLink}"
-                                />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-                <h:commandButton 
-                    image="/faces/resources/images/new.png" 
-                    action="#{sueldoController.prepareCreate}" 
-                    value="#{bundleSalario.SueldoCreateLink}"
-                    title="#{bundleSalario.SueldoCreateLink}"
-                    />
+            <h:form >
+                <p:panel>
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="Trabajador" for="personal" />
+                        <p:autoComplete id="personal" 
+                                        value="#{sueldoController.personalFilter}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    forceSelection="true" valueChangeListener="#{sueldoController.seleccionarPersonal}" 
+                                    style="width: 100px;"
+                                    >  
+                            <p:ajax event="itemSelect" update="personalNombre" />
+                        </p:autoComplete> 
+                        <h:outputText id="personalNombre" value="#{sueldoController.personalFilter.apellido}" style="width: 300px;"/>
+                        <h:outputText value="" />
+                        
+                        <h:outputLabel value="Desde" for="desde" />
+                        <h:selectOneMenu id="desde" value="#{sueldoController.periodoDesdeFilter}" >
+                            <f:selectItems value="#{periodoController.itemsAvailableSelectOne}" />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value="Hasta" for="hasta" />
+                        <h:selectOneMenu id="hasta" value="#{sueldoController.periodoHastaFilter}" >
+                            <f:selectItems value="#{periodoController.itemsAvailableSelectOne}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="" />
+                        
+                        <h:commandButton action="#{sueldoController.prepareList()}"
+                                         value="Buscar"
+                                         label="Buscar"/>
+                        
+                        
+                    </h:panelGrid>
+                </p:panel>                
             </h:form>
+               
+            <p:panel>
+                
+                <p:dataTable value="#{sueldoController.items}" var="item" paginator="false">
+                    <p:column headerText="Periodo" sortBy="#{item.periodo.descripcion}">
+                        <h:outputText value="#{item.periodo.descripcion}" />
+                    </p:column>         
+                    <p:column headerText="Remunerativo" style="text-align: right;">
+                        <h:outputText value="#{item.getTotalRemunerativo(true)}" />
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalRemunerativo}" />
+                        </f:facet>
+                    </p:column>             
+                    <p:column headerText="Deductivo" style="text-align: right;">
+                        <h:outputText value="#{item.getTotalDeductivo(true)}" />
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalDeductivo}" />
+                        </f:facet>
+                    </p:column>             
+                </p:dataTable>
+            </p:panel>
         </ui:define>
     </ui:composition>
 
