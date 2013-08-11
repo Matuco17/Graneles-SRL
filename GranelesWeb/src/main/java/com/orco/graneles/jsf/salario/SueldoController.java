@@ -1,18 +1,28 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.salario.ConceptoRecibo;
+import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.SueldoFacade;
+import com.orco.graneles.vo.ItemSueldoVO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,11 +38,18 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "sueldoController")
 @SessionScoped
 public class SueldoController implements Serializable {
+    public static final int MAX_CONCEPTOS_REMUNERATIVOS = 20;
 
     private Sueldo current;
     private DataModel items = null;
     @EJB
     private SueldoFacade ejbFacade;
+    
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    private FixedListFacade fixedListF;
+    
     private int selectedItemIndex;
     
     private Periodo periodoDesdeFilter;
@@ -42,6 +59,8 @@ public class SueldoController implements Serializable {
     private BigDecimal totalRemunerativo;
     private BigDecimal totalDeductivo;
     
+    private String[] conceptosRemunerativosDescripcion;
+    private BigDecimal[] totalesConceptos;
 
     public SueldoController() {
     }
@@ -67,15 +86,20 @@ public class SueldoController implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            if (personalFilter != null || periodoDesdeFilter != null || periodoHastaFilter != null){
+            if (personalFilter != null){
                 List<Sueldo> sueldos = getFacade().obtenerSueldos(personalFilter, periodoDesdeFilter, periodoHastaFilter);
                 Collections.sort(sueldos);
 
-                totalDeductivo = BigDecimal.ZERO;
-                totalRemunerativo = BigDecimal.ZERO;
+                totalesConceptos = new BigDecimal[getConceptosRemunerativosDescripcion().length];
+                Arrays.fill(totalesConceptos, BigDecimal.ZERO);
+                
                 for (Sueldo s: sueldos){
-                    totalDeductivo = totalDeductivo.add(s.getTotalDeductivo(true));
-                    totalRemunerativo = totalRemunerativo.add(s.getTotalRemunerativo(true));
+                   for (ItemsSueldo is : s.getItemsSueldoCollection()){
+                       if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
+                            int indiceConcepto = Arrays.binarySearch(getConceptosRemunerativosDescripcion(), is.getConceptoRecibo().getConcepto().toUpperCase());
+                            totalesConceptos[indiceConcepto] = totalesConceptos[indiceConcepto].add(is.getValorCalculado());
+                       }
+                   } 
                 }
 
                 items = new ListDataModel(sueldos);
@@ -173,6 +197,35 @@ public class SueldoController implements Serializable {
         this.totalDeductivo = totalDeductivo;
     }
 
+    public String[] getConceptosRemunerativosDescripcion() {
+        if (conceptosRemunerativosDescripcion == null){
+            Set<String> agrupacionDescripcion = new HashSet<String>();
+            
+            for (ConceptoRecibo cr : conceptoReciboF.obtenerConceptos(fixedListF.find(TipoRecibo.HORAS), fixedListF.find(TipoConceptoRecibo.REMUNERATIVO))){
+                if (!agrupacionDescripcion.contains(cr.getConcepto().toUpperCase())){
+                    agrupacionDescripcion.add(cr.getConcepto().toUpperCase());
+                }
+            }
+            
+            conceptosRemunerativosDescripcion = new String[agrupacionDescripcion.size()];
+            
+            int i = 0;
+            for (String concepto : agrupacionDescripcion){
+                conceptosRemunerativosDescripcion[i] = concepto;
+                i++;
+            }
+            
+            Arrays.sort(conceptosRemunerativosDescripcion);
+        }
+        return conceptosRemunerativosDescripcion;
+    }
+
+    public BigDecimal[] getTotalesConceptos() {
+        return totalesConceptos;
+    }
+
+    
+    
     
     
 }

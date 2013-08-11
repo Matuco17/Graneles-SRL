@@ -109,6 +109,17 @@ public class Sueldo implements Serializable, Comparable<Sueldo> {
                 .subtract(getTotalNoRemunerativoNegativo(oficial));
     }
     
+    public BigDecimal getValorXDescripcionConcepto(String descripcionConcepto){
+        BigDecimal valor = BigDecimal.ZERO;
+        
+        for (ItemsSueldo is : itemsSueldoCollection){
+            if (is.getConceptoRecibo().getConcepto().toUpperCase().equals(descripcionConcepto)){
+                valor = valor.add(is.getValorCalculado());
+            }
+        }
+        return valor;
+    }
+    
     public Sueldo(){
         
     }

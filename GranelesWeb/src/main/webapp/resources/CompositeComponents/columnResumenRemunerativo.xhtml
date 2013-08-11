@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="indice" type="java.lang.Integer" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+        <p:column 
+            rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > cc.attrs.editar}"
+            headerText="#{sueldoController.conceptosRemunerativosDescripcion[cc.attrs.editar]}"
+                   style="text-align: right;">
+            <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[cc.attrs.editar])}" />
+            <f:facet name="footer" >
+                <h:outputText value="#{sueldoController.totalesConceptos[sueldoController.conceptosRemunerativosDescripcion[cc.attrs.editar]]}" />
+            </f:facet>
+        </p:column>  
+    </cc:implementation>
+</html>
