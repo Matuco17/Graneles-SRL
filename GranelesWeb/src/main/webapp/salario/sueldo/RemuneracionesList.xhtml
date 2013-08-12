@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:Co="http://java.sun.com/jsf/composite/CompositeComponents">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{sueldoController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Resumen de Remuneraciones" />
+        </ui:define>
+        <ui:define name="body">
+            <h:form >
+                <p:panel>
+                    <h:panelGrid columns="4">
+                        <h:outputLabel value="Trabajador" for="personal" />
+                        <p:autoComplete id="personal" 
+                                        value="#{sueldoController.personalFilter}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuil}" itemValue="#{p}"  
+                                    forceSelection="true" valueChangeListener="#{sueldoController.seleccionarPersonal}" 
+                                    style="width: 100px;"
+                                    >  
+                            <p:ajax event="itemSelect" update="personalNombre" />
+                        </p:autoComplete> 
+                        <h:outputText id="personalNombre" value="#{sueldoController.personalFilter.apellido}" style="width: 300px;"/>
+                        <h:outputText value="" />
+                        
+                        <h:outputLabel value="Desde" for="desde" />
+                        <h:selectOneMenu id="desde" value="#{sueldoController.periodoDesdeFilter}" >
+                            <f:selectItems value="#{periodoController.itemsAvailableSelectOne}" />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value="Hasta" for="hasta" />
+                        <h:selectOneMenu id="hasta" value="#{sueldoController.periodoHastaFilter}" >
+                            <f:selectItems value="#{periodoController.itemsAvailableSelectOne}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="" />
+                        
+                        <h:commandButton action="#{sueldoController.prepareList()}"
+                                         value="Buscar"
+                                         label="Buscar"/>
+                        
+                        
+                    </h:panelGrid>
+                </p:panel>                
+            </h:form>
+               
+            <p:panel>
+                <h:form>
+             
+                
+                <p:dataTable id="resumen" value="#{sueldoController.items}" var="item" paginator="false">
+                    <f:facet name="header">
+                        Resumen de Remuneraciones:  <h:outputText value="#{sueldoController.personalFilter.apellido}" style="width: 300px;"/>
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Periodo" />
+                        </f:facet>
+                        <h:outputText value="#{item.periodo.descripcion}" />
+                        <f:facet name="footer">
+                            <h:outputText value="Totales X Concepto" />
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 0}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[0]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[0])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[0]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 1}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[1]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[1])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[1]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 2}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[2]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[2])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[2]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 3}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[3]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[3])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[3]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 4}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[4]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[4])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[4]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 5}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[5]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[5])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[5]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 6}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[6]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[6])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[6]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 7}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[7]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[7])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[7]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 8}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[8]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[8])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[8]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 9}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[9]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[9])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[9]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                    <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 10}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[10]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[10])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[10]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                   
+                     <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 11}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[11]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[11])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[11]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                   
+                     <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 12}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[12]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[12])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[12]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                   
+                     <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 13}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[13]}" />
+                        </f:facet>
+                        <h:outputText value="#{item.getValorXDescripcionConcepto(sueldoController.conceptosRemunerativosDescripcion[13])}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        <f:facet name="footer" >
+                            <h:outputText value="#{sueldoController.totalesConceptos[13]}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        </f:facet>
+                    </p:column>  
+                    
+                   
+                                
+                </p:dataTable>
+            
+                <h:commandLink  value="Descargar Planilla Excel">  
+                    <p:dataExporter  type="xls" target="resumen" fileName="Resumen_Remuneraciones_#{sueldoController.personalFilter.apellido}" />  
+                </h:commandLink>  
+                   
+                </h:form>
+            </p:panel>
+            
+            
+        </ui:define>
+    </ui:composition>
+
+</html>
