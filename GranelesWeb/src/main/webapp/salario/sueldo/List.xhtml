@@ -249,9 +249,8 @@
                                 
                 </p:dataTable>
             
-                <h:commandLink>  
-                    <p:dataExporter type="xls" target="tbl" fileName="Resumen_Remuneraciones_#{sueldoController.personalFilter.apellido}" pageOnly="true"/>  
-                </h:commandLink>  
+                <h:link id="lnkReporteXLS" value="Descargar Resumen Excel" outcome="#{sueldoController.urlResumenRemuneracionesXLS}" style="font-weight: bold" rendered="#{sueldoController.urlResumenRemuneracionesXLS != null}" />
+                  
             </p:panel>
             
             

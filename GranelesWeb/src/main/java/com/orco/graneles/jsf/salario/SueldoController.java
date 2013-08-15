@@ -8,6 +8,7 @@ import com.orco.graneles.domain.salario.ItemsSueldo;
 import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
+import com.orco.graneles.fileExport.ResumenRemuneracionesXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
@@ -61,6 +62,8 @@ public class SueldoController implements Serializable {
     
     private String[] conceptosRemunerativosDescripcion;
     private BigDecimal[] totalesConceptos;
+    
+    private String urlResumenRemuneracionesXLS;
 
     public SueldoController() {
     }
@@ -92,16 +95,23 @@ public class SueldoController implements Serializable {
 
                 totalesConceptos = new BigDecimal[getConceptosRemunerativosDescripcion().length];
                 Arrays.fill(totalesConceptos, BigDecimal.ZERO);
+                totalRemunerativo = BigDecimal.ZERO;
+                totalDeductivo = BigDecimal.ZERO;
                 
                 for (Sueldo s: sueldos){
                    for (ItemsSueldo is : s.getItemsSueldoCollection()){
                        if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
                             int indiceConcepto = Arrays.binarySearch(getConceptosRemunerativosDescripcion(), is.getConceptoRecibo().getConcepto().toUpperCase());
                             totalesConceptos[indiceConcepto] = totalesConceptos[indiceConcepto].add(is.getValorCalculado());
+                            totalRemunerativo = totalRemunerativo.add(is.getValorCalculado());
+                       } if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.DEDUCTIVO)){
+                            totalDeductivo = totalDeductivo.add(is.getValorCalculado());
                        }
                    } 
                 }
-
+                
+                urlResumenRemuneracionesXLS = (new ResumenRemuneracionesXLS(personalFilter, periodoDesdeFilter, periodoHastaFilter, sueldos, conceptosRemunerativosDescripcion, totalesConceptos)).generarArchivo("ResumenRemuneraciones" + personalFilter.getId());
+              
                 items = new ListDataModel(sueldos);
             }
         }
@@ -222,6 +232,10 @@ public class SueldoController implements Serializable {
 
     public BigDecimal[] getTotalesConceptos() {
         return totalesConceptos;
+    }
+
+    public String getUrlResumenRemuneracionesXLS() {
+        return urlResumenRemuneracionesXLS;
     }
 
     
