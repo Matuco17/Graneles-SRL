@@ -59,6 +59,7 @@ public class SueldoController implements Serializable {
     
     private BigDecimal totalRemunerativo;
     private BigDecimal totalDeductivo;
+    private Integer totalHoras;
     
     private String[] conceptosRemunerativosDescripcion;
     private BigDecimal[] totalesConceptos;
@@ -97,6 +98,7 @@ public class SueldoController implements Serializable {
                 Arrays.fill(totalesConceptos, BigDecimal.ZERO);
                 totalRemunerativo = BigDecimal.ZERO;
                 totalDeductivo = BigDecimal.ZERO;
+                totalHoras = 0;
                 
                 for (Sueldo s: sueldos){
                    for (ItemsSueldo is : s.getItemsSueldoCollection()){
@@ -108,9 +110,10 @@ public class SueldoController implements Serializable {
                             totalDeductivo = totalDeductivo.add(is.getValorCalculado());
                        }
                    } 
+                   totalHoras += s.getCantidadHorasSueldo();
                 }
                 
-                urlResumenRemuneracionesXLS = (new ResumenRemuneracionesXLS(personalFilter, periodoDesdeFilter, periodoHastaFilter, sueldos, conceptosRemunerativosDescripcion, totalesConceptos)).generarArchivo("ResumenRemuneraciones" + personalFilter.getId());
+                urlResumenRemuneracionesXLS = (new ResumenRemuneracionesXLS(personalFilter, periodoDesdeFilter, periodoHastaFilter, sueldos, conceptosRemunerativosDescripcion, totalesConceptos, totalHoras)).generarArchivo("ResumenRemuneraciones" + personalFilter.getId());
               
                 items = new ListDataModel(sueldos);
             }
@@ -118,7 +121,7 @@ public class SueldoController implements Serializable {
         return items;
     }
 
-    private void recreateModel() {
+    public void recreateModel() {
         items = null;
     }
 
@@ -236,6 +239,14 @@ public class SueldoController implements Serializable {
 
     public String getUrlResumenRemuneracionesXLS() {
         return urlResumenRemuneracionesXLS;
+    }
+
+    public Integer getTotalHoras() {
+        return totalHoras;
+    }
+
+    public void setTotalHoras(Integer totalHoras) {
+        this.totalHoras = totalHoras;
     }
 
     

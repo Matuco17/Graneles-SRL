@@ -46,6 +46,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ConceptoRecibo.findByCalculado", query = "SELECT c FROM ConceptoRecibo c WHERE c.calculado = :calculado")})
 public class ConceptoRecibo implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    public static final String SUFIJO_HS = "hs";
+    public static final String SUFIJO_PORCENTAJE = "%";
+    
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

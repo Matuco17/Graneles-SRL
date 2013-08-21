@@ -46,7 +46,7 @@
                         </h:selectOneMenu>
                         <h:outputText value="" />
                         
-                        <h:commandButton action="#{sueldoController.prepareList()}"
+                        <h:commandButton action="#{sueldoController.recreateModel()}"
                                          value="Buscar"
                                          label="Buscar"/>
                         
@@ -59,6 +59,17 @@
                 <p:dataTable value="#{sueldoController.items}" var="item" paginator="false">
                     <p:column headerText="Periodo" sortBy="#{item.periodo.descripcion}">
                         <h:outputText value="#{item.periodo.descripcion}" />
+                    </p:column>  
+                    
+                    
+                      <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Horas" />
+                        </f:facet>
+                        <h:outputText value="#{item.cantidadHorasSueldo}" />
+                        <f:facet name="footer">
+                            <h:outputText value="#{sueldoController.totalHoras}" />
+                        </f:facet>
                     </p:column>  
                     
                     <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 0}"

@@ -25,7 +25,7 @@ public class ResumenRemuneracionesXLS extends ExportadorXLSGenerico<Sueldo> {
         return "resumenRemuneraciones";
     }
 
-    public ResumenRemuneracionesXLS(Personal personal, Periodo desde, Periodo hasta, List<Sueldo> datos, String[] conceptos, BigDecimal[] totalConceptos) {
+    public ResumenRemuneracionesXLS(Personal personal, Periodo desde, Periodo hasta, List<Sueldo> datos, String[] conceptos, BigDecimal[] totalConceptos, Integer totalHoras) {
         super(datos);
         
         addBean("personal", personal);
@@ -34,6 +34,7 @@ public class ResumenRemuneracionesXLS extends ExportadorXLSGenerico<Sueldo> {
         addBean("conceptos", conceptos);
         addBean("totalConceptos", totalConceptos);
         addBean("cantidadConceptos", conceptos.length);
+        addBean("totalHoras", totalHoras);
         addBean("sueldos", datos);
     }
     

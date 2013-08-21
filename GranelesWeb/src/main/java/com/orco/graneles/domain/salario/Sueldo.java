@@ -120,6 +120,18 @@ public class Sueldo implements Serializable, Comparable<Sueldo> {
         return valor;
     }
     
+    public int getCantidadHorasSueldo(){
+        int horas = 0;
+        
+        for (ItemsSueldo is : getItemsSueldoCollection()){
+            if (is.getConceptoRecibo().getSufijoCantidad() != null && is.getConceptoRecibo().getSufijoCantidad().equalsIgnoreCase(ConceptoRecibo.SUFIJO_HS)){
+                horas += is.getCantidad().intValue();
+            }
+        }
+        
+        return horas;
+    }
+    
     public Sueldo(){
         
     }

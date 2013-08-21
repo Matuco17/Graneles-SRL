@@ -73,6 +73,16 @@
                         </f:facet>
                     </p:column>  
                     
+                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Horas" />
+                        </f:facet>
+                        <h:outputText value="#{item.cantidadHorasSueldo}" />
+                        <f:facet name="footer">
+                            <h:outputText value="#{sueldoController.totalHoras}" />
+                        </f:facet>
+                    </p:column>  
+                    
                     <p:column  rendered="#{fn:length(sueldoController.conceptosRemunerativosDescripcion) > 0}" style="text-align: right;">
                         <f:facet name="header">
                             <h:outputText value="#{sueldoController.conceptosRemunerativosDescripcion[0]}" />
@@ -275,9 +285,9 @@
                                 
                 </p:dataTable>
             
-                <h:commandLink  value="Descargar Planilla Excel">  
-                    <p:dataExporter  type="xls" target="resumen" fileName="Resumen_Remuneraciones_#{sueldoController.personalFilter.apellido}" />  
-                </h:commandLink>  
+                 
+                <h:link id="lnkReporteXLS" value="Descargar Resumen Excel" outcome="#{sueldoController.urlResumenRemuneracionesXLS}" style="font-weight: bold" rendered="#{sueldoController.urlResumenRemuneracionesXLS != null}" />
+          
                    
                 </h:form>
             </p:panel>
