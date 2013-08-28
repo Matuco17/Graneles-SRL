@@ -187,4 +187,21 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         return this.getFecha().compareTo(o.getFecha());
     }
     
+    public BigDecimal getDebito(){
+        if (this.getValor().doubleValue() >= 0){
+            return this.getValor();
+        } else {
+            return null;
+        }
+    }
+    
+    public BigDecimal getCredito(){
+        if (this.getValor().doubleValue() < 0){
+            return  this.getValor().abs();
+        } else {
+            return null;
+        }
+    }
+    
+    
 }
