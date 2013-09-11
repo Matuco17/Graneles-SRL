@@ -9,7 +9,8 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundleFacturacion.EditMovimientoCtaCteTitle}"></h:outputText>
+            <h:outputText value="#{bundleFacturacion.EditMovimientoCtaCteTitle}" />
+            <h:outputText value="#{movimientoCtaCteController.sufijoTitulo}" />
         </ui:define>
         <ui:define name="body">
             <h:form enctype="multipart/form-data">

@@ -35,6 +35,13 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
                 .setParameter("empresa", empresa)
                 .getResultList();
     }
+        
+    public List<MovimientoCtaCte> findByEmpresaYTipoValor(Empresa empresa, FixedList tipoValor){
+        return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYValor", MovimientoCtaCte.class)
+                .setParameter("empresa", empresa)
+                .setParameter("tipoValor", tipoValor)
+                .getResultList();
+    }
     
     /**
      * Metodo que de vuelve los ultimos X movimientos (utilizando fecha de modificación)

@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovimientoCtaCte.findByObservaciones", query = "SELECT m FROM MovimientoCtaCte m WHERE m.observaciones = :observaciones"),
     @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual"),
     @NamedQuery(name = "MovimientoCtaCte.findByEmpresa", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa"),
+    @NamedQuery(name = "MovimientoCtaCte.findByEmpresaYValor", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa AND m.tipoValor = :tipoValor")
 })
 public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaCte> {
     private static final long serialVersionUID = 1L;
@@ -80,6 +81,11 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @ManyToOne(optional = false)
     private Empresa empresa;
 
+    @JoinColumn(name = "tipo_valor", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private FixedList tipoValor;
+    
+    
     public MovimientoCtaCte() {
     }
 
@@ -157,6 +163,15 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         this.empresa = empresa;
     }
 
+    public FixedList getTipoValor() {
+        return tipoValor;
+    }
+
+    public void setTipoValor(FixedList tipoValor) {
+        this.tipoValor = tipoValor;
+    }
+
+        
     @Override
     public int hashCode() {
         int hash = 0;
