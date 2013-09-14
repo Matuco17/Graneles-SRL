@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCtaCteXFactura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.210000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
+	<parameter name="desde" class="java.util.Date"/>
+	<parameter name="hasta" class="java.util.Date"/>
+	<parameter name="ocultarFacturas" class="java.lang.Boolean"/>
+	<parameter name="ocultarEmpresas" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="creditoDinero" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[creditoDinero]]></fieldDescription>
+	</field>
+	<field name="creditoToneladas" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[creditoToneladas]]></fieldDescription>
+	</field>
+	<field name="debitoDinero" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[debitoDinero]]></fieldDescription>
+	</field>
+	<field name="debitoToneladas" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[debitoToneladas]]></fieldDescription>
+	</field>
+	<field name="empresaNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[empresaNombre]]></fieldDescription>
+	</field>
+	<field name="facturaDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[facturaDescripcion]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="fechaFactura" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaFactura]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<fieldDescription><![CDATA[observaciones]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<variable name="creditoDinero_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoDinero}]]></variableExpression>
+	</variable>
+	<variable name="debitoDinero_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoDinero}]]></variableExpression>
+	</variable>
+	<variable name="creditoToneladas_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoToneladas}]]></variableExpression>
+	</variable>
+	<variable name="debitoToneladas_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoToneladas}]]></variableExpression>
+	</variable>
+	<variable name="creditoDinero_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoDinero}]]></variableExpression>
+	</variable>
+	<variable name="creditoToneladas_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoToneladas}]]></variableExpression>
+	</variable>
+	<variable name="debitoDinero_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoDinero}]]></variableExpression>
+	</variable>
+	<variable name="debitoToneladas_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoToneladas}]]></variableExpression>
+	</variable>
+	<variable name="creditoDinero_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoDinero}]]></variableExpression>
+	</variable>
+	<variable name="creditoToneladas_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{creditoToneladas}]]></variableExpression>
+	</variable>
+	<variable name="debitoDinero_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoDinero}]]></variableExpression>
+	</variable>
+	<variable name="debitoToneladas_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debitoToneladas}]]></variableExpression>
+	</variable>
+	<group name="GrupoEmpresa">
+		<groupExpression><![CDATA[$F{empresaNombre}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="86" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Empresa:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="86" y="0" width="469" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empresaNombre}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="44" y="19" width="510" height="1">
+						<printWhenExpression><![CDATA[$P{ocultarFacturas}]]></printWhenExpression>
+					</reportElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<rectangle>
+					<reportElement x="248" y="0" width="147" height="20"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="395" y="0" width="80" height="20"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="475" y="0" width="80" height="20"/>
+				</rectangle>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="476" y="0" width="79" height="20">
+						<printWhenExpression><![CDATA[($V{creditoDinero_2} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{creditoDinero_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="395" y="0" width="80" height="20">
+						<printWhenExpression><![CDATA[($V{debitoDinero_2} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debitoDinero_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="476" y="0" width="79" height="20">
+						<printWhenExpression><![CDATA[($V{creditoToneladas_2} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{creditoToneladas_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="395" y="0" width="80" height="20">
+						<printWhenExpression><![CDATA[($V{debitoToneladas_2} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debitoToneladas_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="248" y="0" width="148" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14"/>
+						<paragraph leftIndent="2"/>
+					</textElement>
+					<text><![CDATA[Totales Empresa]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="GrupoFacturacion">
+		<groupExpression><![CDATA[$F{facturaDescripcion}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<printWhenExpression><![CDATA[!($P{ocultarFacturas})]]></printWhenExpression>
+				<staticText>
+					<reportElement x="24" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Factura:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="124" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{facturaDescripcion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="224" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaFactura}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="45" y="19" width="510" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<printWhenExpression><![CDATA[!($P{ocultarFacturas})]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="248" y="0" width="147" height="20"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="395" y="0" width="80" height="20"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="475" y="0" width="80" height="20"/>
+				</rectangle>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="476" y="0" width="79" height="20">
+						<printWhenExpression><![CDATA[($$V{creditoDinero_1} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{creditoDinero_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="395" y="0" width="80" height="20">
+						<printWhenExpression><![CDATA[($V{debitoDinero_1} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debitoDinero_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="476" y="0" width="79" height="20">
+						<printWhenExpression><![CDATA[($F{creditoToneladas} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{creditoToneladas_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="395" y="0" width="80" height="20">
+						<printWhenExpression><![CDATA[($F{debitoToneladas} != null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debitoToneladas_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="248" y="0" width="147" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+						<paragraph leftIndent="2"/>
+					</textElement>
+					<text><![CDATA[Totales Factura]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="59"/>
+				<imageExpression><![CDATA[$P{logoReducido.jpg}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="59" width="555" height="25"/>
+				<textElement verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Cuentas Corrientes]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement x="63" y="84" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement x="248" y="84" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="84" width="63" height="20">
+					<printWhenExpression><![CDATA[($P{desde} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="84" width="60" height="20">
+					<printWhenExpression><![CDATA[($P{hasta} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="dd/MM/yy">
+				<reportElement x="44" y="0" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="0" width="271" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($F{creditoDinero} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{creditoDinero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="475" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($F{creditoToneladas} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{creditoToneladas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($F{debitoDinero}!= null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debitoDinero}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="395" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($F{debitoToneladas} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debitoToneladas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="44" y="20" width="511" height="1"/>
+			</line>
+			<line>
+				<reportElement x="44" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="474" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="123" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="123" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="50">
+			<rectangle>
+				<reportElement x="248" y="0" width="147" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="395" y="0" width="80" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="475" y="0" width="80" height="20"/>
+			</rectangle>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="476" y="0" width="79" height="20">
+					<printWhenExpression><![CDATA[($V{creditoDinero_3} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{creditoDinero_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($V{debitoDinero_3} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{debitoDinero_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="476" y="0" width="79" height="20">
+					<printWhenExpression><![CDATA[($V{creditoToneladas_3} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{creditoToneladas_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="80" height="20">
+					<printWhenExpression><![CDATA[($V{debitoToneladas_3} != null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{debitoToneladas_3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="248" y="0" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
