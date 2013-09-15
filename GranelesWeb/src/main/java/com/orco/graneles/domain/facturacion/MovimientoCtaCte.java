@@ -40,6 +40,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MovimientoCtaCte.findByObservaciones", query = "SELECT m FROM MovimientoCtaCte m WHERE m.observaciones = :observaciones"),
     @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual"),
     @NamedQuery(name = "MovimientoCtaCte.findByEmpresa", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa"),
+    @NamedQuery(name = "MovimientoCtaCte.findByEmpresaYFechas", query = "SELECT m FROM MovimientoCtaCte m "
+        + "     WHERE m.tipoValor = :tipoValor"
+        + "     AND (:empresa IS NULL OR m.empresa = :empresa)"
+        + "     AND (:desde IS NULL OR m.fecha >= :desde)"
+        + "     AND (:hasta IS NULL OR m.fecha <= :hasta)"),
     @NamedQuery(name = "MovimientoCtaCte.findByEmpresaYValor", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa AND m.tipoValor = :tipoValor")
 })
 public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaCte> {

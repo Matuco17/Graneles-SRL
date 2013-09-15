@@ -27,6 +27,9 @@ public class MovCtaCteReport extends ReporteGenerico {
     private Date hasta;
     private Boolean ocultarFacturas;
     private Boolean ocultarEmpresas;
+    private Boolean ocultarTotales;
+    private Boolean ocultarDetalles;
+    private Boolean dinero;
     
     
     @Override
@@ -34,11 +37,14 @@ public class MovCtaCteReport extends ReporteGenerico {
         return new String[]{"logoReducido.jpg"};
     }
     
-    public MovCtaCteReport(List<MovimientoCtaCte> movimientos, Date desde, Date hasta, Boolean ocultarEmpresas, Boolean ocultarFacturas){
+    public MovCtaCteReport(List<MovimientoCtaCte> movimientos, Date desde, Date hasta, Boolean ocultarEmpresas, Boolean ocultarFacturas, Boolean ocultarTotales, Boolean ocultarDetalles, boolean dinero){
         this.desde = desde;
         this.hasta = hasta;
         this.ocultarEmpresas = ocultarEmpresas;
         this.ocultarFacturas = ocultarFacturas;
+        this.ocultarDetalles = ocultarDetalles;
+        this.ocultarTotales = ocultarTotales;
+        this.dinero = dinero;
     
         Comparator<MovCtaCteVO> comparador = null;
         
@@ -67,8 +73,12 @@ public class MovCtaCteReport extends ReporteGenerico {
         params.put("hasta", hasta);
         params.put("ocultarEmpresas", ocultarEmpresas);
         params.put("ocultarFacturas", ocultarFacturas);
+        params.put("ocultarDetalles", ocultarDetalles);
+        params.put("ocultarTotales", ocultarTotales);
+        params.put("dinero", dinero);
         
-        return printGenerico(ds, "ResumenCtaCteXFactura", "ResumenCuentaCorriente_"+ (new Date()).toString());
+        
+        return printGenerico(ds, "ResumenCtaCteXFactura", "ResumenCuentaCorriente_"+ (new Date()).getTime());
     }
 
    

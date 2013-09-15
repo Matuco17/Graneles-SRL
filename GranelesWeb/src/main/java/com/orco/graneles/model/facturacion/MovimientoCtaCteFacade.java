@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.util.Date;
 import java.util.List;
 /**
  *
@@ -33,6 +34,16 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
     public List<MovimientoCtaCte> findByEmpresa(Empresa empresa){
         return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresa", MovimientoCtaCte.class)
                 .setParameter("empresa", empresa)
+                .getResultList();
+    }
+    
+    
+    public List<MovimientoCtaCte> findByEmpresaYFechaYTipoValor(Empresa empresa, Date desde, Date hasta, FixedList tipoValor){
+        return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYFechas", MovimientoCtaCte.class)
+                .setParameter("empresa", empresa)
+                .setParameter("desde", desde)
+                .setParameter("hasta", hasta)
+                .setParameter("tipoValor", tipoValor)
                 .getResultList();
     }
         

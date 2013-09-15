@@ -50,34 +50,38 @@ public class MovCtaCteVO {
     }
     
     public BigDecimal getCreditoToneladas(){
-        if (movCtaCte.getTipoValor().equals(TipoValorMovimientoCtaCte.TONELADA)){
+        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.TONELADA)){
             return movCtaCte.getCredito();
         } else {
-            return null;
+            return BigDecimal.ZERO;
         }
     }
     
     public BigDecimal getDebitoToneladas(){
-        if (movCtaCte.getTipoValor().equals(TipoValorMovimientoCtaCte.TONELADA)){
+        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.TONELADA)){
             return movCtaCte.getDebito();
         } else {
-            return null;
+            return BigDecimal.ZERO;
         }
     }
     
     public BigDecimal getCreditoDinero(){
-        if (movCtaCte.getTipoValor().equals(TipoValorMovimientoCtaCte.DINERO)){
+        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.DINERO)){
             return movCtaCte.getCredito();
         } else {
-            return null;
+            return BigDecimal.ZERO;
         }
     }
     
     public BigDecimal getDebitoDinero(){
-        if (movCtaCte.getTipoValor().equals(TipoValorMovimientoCtaCte.DINERO)){
+        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.DINERO)){
             return movCtaCte.getDebito();
         } else {
-            return null;
+            return BigDecimal.ZERO;
         }
+    }
+    
+    public BigDecimal getValor(){
+        return movCtaCte.getValor();
     }
 }
