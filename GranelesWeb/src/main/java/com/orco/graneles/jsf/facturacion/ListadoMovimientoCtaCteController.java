@@ -57,7 +57,9 @@ public class ListadoMovimientoCtaCteController implements Serializable {
     public void generarReporte(){
         movimientos = ejbFacade.findByEmpresaYFechaYTipoValor(currentEmpresa, currentDesde, currentHasta, tipoMovimiento);
         boolean esDinero = tipoMovimiento.getId().equals(TipoValorMovimientoCtaCte.DINERO);
-        urlReporte =  (new MovCtaCteReport(movimientos, currentDesde, currentHasta, !agruparXEmpresa, !agruparXFactura, noMostrarDetalles, noMostrarDetalles, esDinero)).obtenerReportePDF();
+        boolean ocultarEmpresa = !agruparXEmpresa && (currentEmpresa == null);
+        
+        urlReporte =  (new MovCtaCteReport(movimientos, currentDesde, currentHasta, ocultarEmpresa, !agruparXFactura, noMostrarDetalles, noMostrarDetalles, esDinero)).obtenerReportePDF();
     }
 
     public Empresa getCurrentEmpresa() {

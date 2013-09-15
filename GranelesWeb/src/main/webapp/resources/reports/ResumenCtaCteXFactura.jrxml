@@ -513,6 +513,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Resumen de Movimientos de Cuentas Corrientes " + (($P{dinero})? "en Dinero" : "en Toneladas")]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="44" y="106" width="510" height="1">
+					<printWhenExpression><![CDATA[(($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarFacturas}))
+&&
+($P{ocultarFacturas} || $P{ocultarTotales}))]]></printWhenExpression>
+				</reportElement>
+			</line>
 		</band>
 	</title>
 	<detail>
