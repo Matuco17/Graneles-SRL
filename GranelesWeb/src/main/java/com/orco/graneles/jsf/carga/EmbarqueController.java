@@ -954,7 +954,13 @@ public class EmbarqueController implements Serializable {
         if (getCurrentEC().getCargador() != null){
             for (EmbarqueCargador ec : getListaCargadores()){
                 if (getCurrentEC().getCargador().getId().equals(ec.getCargador().getId())){
-                    return;
+                    if (ec.getMercaderia() == null){
+                        if (getCurrentEC().getMercaderia() == null){
+                            return;
+                        }
+                    } else if (ec.getMercaderia().equals(getCurrentEC().getMercaderia())){
+                        return;
+                    }
                 }
             }
             

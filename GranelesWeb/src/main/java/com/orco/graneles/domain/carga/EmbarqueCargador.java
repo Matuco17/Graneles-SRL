@@ -47,6 +47,10 @@ public class EmbarqueCargador implements Serializable {
     @ManyToOne(optional = false)
     private Empresa cargador;
     
+    @JoinColumn(name = "mercaderia", referencedColumnName = "id", nullable = true)
+    @ManyToOne()
+    private Mercaderia mercaderia;
+    
     @Column(name = "comienzo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date comienzo;
@@ -131,9 +135,16 @@ public class EmbarqueCargador implements Serializable {
     public void setDestino(String destino) {
         this.destino = destino;
     }
-    
-    
 
+    public Mercaderia getMercaderia() {
+        return mercaderia;
+    }
+
+    public void setMercaderia(Mercaderia mercaderia) {
+        this.mercaderia = mercaderia;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -156,7 +167,11 @@ public class EmbarqueCargador implements Serializable {
 
     @Override
     public String toString() {
-        return "com.orco.graneles.domain.carga.EmbarqueCargadores[ id=" + id + " ]";
+        StringBuffer descSb = new StringBuffer(cargador.getNombre());
+        if (mercaderia != null){
+            descSb = descSb.append(" - ").append(mercaderia.getDescripcion());
+        }
+        return descSb.toString();
     }
 
     public String getUrlDeclaracionJurada() {

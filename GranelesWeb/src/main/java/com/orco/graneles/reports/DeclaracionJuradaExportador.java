@@ -26,8 +26,7 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
 
     private List<ResumenExportadorVO> dataSource;
     private EmbarqueCargador embarqueCargador;
-    
-   
+       
     private CargaTurnoCargasFacade cargaTurnoCargasF;
 
     public DeclaracionJuradaExportador(EmbarqueCargador embarqueCargador, CargaTurnoCargasFacade ctcFacade) {
@@ -40,7 +39,10 @@ public class DeclaracionJuradaExportador extends ReporteGenerico {
         BigDecimal totalCargas = BigDecimal.ZERO;
         
         for (CargaTurnoCargas ctc : cargaTurnoCargasF.obtenerCargas(embarqueCargador.getCargador(), embarqueCargador.getEmbarque())){
-            if (ctc.getCarga().compareTo(BigDecimal.ZERO) > 0){
+            if (ctc.getCarga().compareTo(BigDecimal.ZERO) > 0
+                && (embarqueCargador.getMercaderia() == null
+                    || (embarqueCargador.getMercaderia().equals(ctc.getMercaderiaBodega()))
+                )){
                 ResumenExportadorVO rExpVO = mapDataSource.get(ctc.getNroBodega());
                 if (rExpVO == null){
                     rExpVO = new ResumenExportadorVO(ctc.getNroBodega(), embarqueCargador, ctc.getMercaderiaBodega());

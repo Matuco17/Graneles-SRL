@@ -14,8 +14,9 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <h:panelGrid columns="6" rendered="#{cc.attrs.editar}">
+        <h:panelGrid columns="7" rendered="#{cc.attrs.editar}">
             <h:outputLabel for="cargador" value="#{bundleCarga.EmbarqueCargadorTitle_cargador}" />
+            <h:outputLabel for="mercaderia" value="#{bundleCarga.EmbarqueCargadorTitle_mercaderia}" />
             <h:outputLabel for="minACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" />
             <h:outputLabel for="maxACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" />
             <h:outputLabel for="comienzo" value="#{bundleCarga.EmbarqueCargadorTitle_comienzo}"  />
@@ -26,6 +27,9 @@
             
             <h:selectOneMenu id="cargador" value="#{embarqueController.currentEC.cargador}" >
                 <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
+            </h:selectOneMenu>
+            <h:selectOneMenu id="mercaderia" value="#{embarqueController.currentEC.mercaderia}" >
+                <f:selectItems value="#{mercaderiaController.itemsAvailableSelectOne}" />
             </h:selectOneMenu>
             <p:inputText id="minACargar" value="#{embarqueController.currentEC.minimo}" />
             <p:inputText id="maxACargar" value="#{embarqueController.currentEC.maximo}" />
@@ -42,6 +46,11 @@
         <p:dataTable id="dtbCargadores" value="#{embarqueController.cargadoresModel}" var="cargador" >
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_cargador}" >
                 <h:outputText value="#{cargador.cargador.toString()}" />
+                <f:facet name="footer" >
+                </f:facet>
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_mercaderia}" >
+                <h:outputText value="#{cargador.mercaderia.toString()}" />
                 <f:facet name="footer" >
                     <h:outputText value="Totales" />
                 </f:facet>
