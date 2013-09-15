@@ -387,6 +387,23 @@ public class SueldoFacade extends AbstractFacade<Sueldo> {
         
     }
     
+    public Sueldo sueldoManual(ReciboManual recibo, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
+        Sueldo sueldoManual = new Sueldo();
+        sueldoManual.setPeriodo(recibo.getPeriodo());
+        sueldoManual.setPersonal(recibo.getPersonal());
+        
+        if (conceptosHoras == null){
+            conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+        }
+        
+        for (ItemsReciboManual iRM : recibo.getItemsReciboManualCollection()){
+            Sueldo sueldoIRM = crearSueldoXItemBruto(iRM.getConceptoRecibo(), iRM.getCantidad(), iRM.getValor(), recibo.getPeriodo(), conceptosHoras, recibo.getPersonal());
+            sueldoManual = mergeSueldos(sueldoManual, sueldoIRM);
+        }
+        
+        return sueldoManual;
+    }
+    
     public Sueldo sueldoVacaciones(Periodo periodo, Date desde, Date hasta, Personal personal, Map<Integer, List<ConceptoRecibo>> conceptos, boolean incluirHoras, boolean incluirAccidente, boolean incluirFeriado){
         
         if (conceptoReciboVacacionesCache == null 

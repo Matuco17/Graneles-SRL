@@ -14,7 +14,9 @@ import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.PeriodoFacade;
 import com.orco.graneles.model.salario.ReciboManualFacade;
+import com.orco.graneles.model.salario.SueldoFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
+import com.orco.graneles.reports.RecibosSueldoReport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,6 +50,8 @@ public class ReciboManualController implements Serializable {
     private FixedListFacade fixedListF;
     @EJB
     private PeriodoFacade periodoF;
+    @EJB
+    private SueldoFacade sueldoF;
     
     private Integer selectedItemIndex;
     
@@ -58,6 +62,8 @@ public class ReciboManualController implements Serializable {
     private ItemsReciboManual newItemRecibo;
     
     private List<ConceptoRecibo> conceptosPersonal;
+    
+    private String urlRecibo;
 
     public ReciboManualController() {
     }
@@ -114,13 +120,16 @@ public class ReciboManualController implements Serializable {
     }
 
     public String prepareView() {
-        current = (ReciboManual) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        reciboSeleccionado();
+        generarRecibo();
+        
         return "View";
     }
 
     public String prepareCreate() {
         current = new ReciboManual();
+        itemsRecibo = null;
+        itemsReciboModel = null;
         selectedItemIndex = -1;
         return "Create";
     }
@@ -134,7 +143,11 @@ public class ReciboManualController implements Serializable {
             
             current.setPeriodo(currentPeriodo);
             
+            current.setItemsReciboManualCollection(itemsRecibo);
+            
             getFacade().create(current);
+            
+            generarRecibo();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("ReciboManualCreated"));
             return "View";
         } catch (Exception e) {
@@ -144,14 +157,30 @@ public class ReciboManualController implements Serializable {
     }
 
     public String prepareEdit() {
+        reciboSeleccionado();
+        return "Edit";
+    }
+    
+    private void reciboSeleccionado(){
         current = (ReciboManual) getItems().getRowData();
         selectedItemIndex = getItems().getRowIndex();
-        return "Edit";
+        
+        Personal currentPersonal = current.getPersonal();
+        conceptosPersonal = conceptoReciboF.obtenerConceptos(currentPersonal.getTipoRecibo(), fixedListF.find(TipoConceptoRecibo.REMUNERATIVO));
+        conceptosPersonal.addAll(conceptoReciboF.obtenerConceptos(currentPersonal.getTipoRecibo(), fixedListF.find(TipoConceptoRecibo.NO_REMUNERATIVO)));
+     
+        itemsRecibo = new ArrayList<ItemsReciboManual>(current.getItemsReciboManualCollection());
+        itemsReciboModel = null;
     }
 
     public String update() {
         try {
+            current.setItemsReciboManualCollection(itemsRecibo);
+            
             getFacade().edit(current);
+            
+            generarRecibo();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleSalario").getString("ReciboManualUpdated"));
             return "View";
         } catch (Exception e) {
@@ -208,6 +237,17 @@ public class ReciboManualController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    private void generarRecibo() {
+        if (current.getItemsReciboManualCollection().size() > 0){
+            urlRecibo = (new RecibosSueldoReport(
+                    current.getPeriodo(), 
+                    sueldoF.sueldoManual(current, null), 
+                    true)).obtenerReportePDF();
+        } else {
+            urlRecibo = null;
+        }
     }
   
 
@@ -296,6 +336,10 @@ public class ReciboManualController implements Serializable {
             conceptosPersonal = new ArrayList<ConceptoRecibo>();
         } 
         return conceptosPersonal;
+    }
+
+    public String getUrlRecibo() {
+        return urlRecibo;
     }
     
     

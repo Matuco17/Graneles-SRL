@@ -38,21 +38,26 @@ import org.joda.time.Years;
     @NamedQuery(name = "ItemsSueldo.findByValorCalculado", query = "SELECT i FROM ItemsSueldo i WHERE i.valorCalculado = :valorCalculado")})
 public class ItemsSueldo implements Serializable {
     private static final long serialVersionUID = 1L;
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor_ingresado")
     private BigDecimal valorIngresado;
+    
     @Column(name = "valor_calculado")
     private BigDecimal valorCalculado;
+    
     @Column(name = "cantidad")
     private BigDecimal cantidad;
 
     @JoinColumn(name = "concepto_recibo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ConceptoRecibo conceptoRecibo;
+   
     @JoinColumn(name = "sueldo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Sueldo sueldo;

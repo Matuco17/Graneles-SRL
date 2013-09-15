@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemsReciboManual.findByValor", query = "SELECT i FROM ItemsReciboManual i WHERE i.valor = :valor")})
 public class ItemsReciboManual implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

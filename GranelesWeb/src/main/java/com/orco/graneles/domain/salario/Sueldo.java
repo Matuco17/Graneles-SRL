@@ -10,6 +10,7 @@ import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
 import com.orco.graneles.domain.miscelaneos.TipoConceptoRecibo;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -133,7 +134,7 @@ public class Sueldo implements Serializable, Comparable<Sueldo> {
     }
     
     public Sueldo(){
-        
+        this.itemsSueldoCollection = new ArrayList<ItemsSueldo>();
     }
     
     public Sueldo(Long id) {

@@ -30,13 +30,13 @@
                                 <p:inputText id="globalFilter" onkeyup="recibosManualTable.filter()" style="width:350px" />  
                             </p:outputPanel>  
                         </f:facet>                       
-                        <p:column headerText="#{bundleSalario.ReciboManualTitle_periodo}">
+                        <p:column headerText="#{bundleSalario.ReciboManualTitle_periodo}" filterBy="#{item.periodo.toString()}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;">
                             <h:outputText value="#{item.periodo.toString()}"/>
                         </p:column>
-                        <p:column headerText="#{bundlePersonal.PersonalTitle_cuil}">
+                        <p:column headerText="#{bundlePersonal.PersonalTitle_cuil}" filterBy="#{item.personal.cuil}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;">
                             <h:outputText value="#{item.personal.cuil}"/>
                         </p:column>
-                        <p:column headerText="#{bundleSalario.ReciboManualTitle_personal}">
+                        <p:column headerText="#{bundleSalario.ReciboManualTitle_personal}" filterBy="#{item.personal.apellido}" filterOptions="contains" filterStyle="visibility: hidden; height: 0px;">
                             <h:outputText value="#{item.personal.apellido}"/>
                         </p:column>
                         <p:column>

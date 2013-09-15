@@ -17,9 +17,10 @@
                 
                 <Cc:reciboManualCC editar="false" nuevo="false" />
             
-                <p:panel>
-                    
-
+                <p:panel style="width: 550px;">
+                    <h:link value="Descargar Recibo de Sueldo" 
+                            onclick="window.open('#{reciboManualController.urlRecibo}','Download');window.close();" 
+                         rendered="#{reciboManualController.urlRecibo != null}" />
                 </p:panel>
                     
                 <p:panel header="Auditoria">                    
