@@ -1,11 +1,18 @@
 package com.orco.graneles.jsf.facturacion;
 
+import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
+import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.miscelaneos.TipoValorMovimientoCtaCte;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.reports.MovCtaCteReport;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -22,16 +29,36 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class MovimientoCtaCteController implements Serializable {
 
-    public static final String TIPO_INGRESO = "+";
-    public static final String TIPO_EGRESO = "-";
+    public static final String TIPO_DEBITO = "+";
+    public static final String TIPO_CREDITO = "-";
     
     private MovimientoCtaCte current;
     private DataModel items = null;
+    private DataModel currentEmpresaMovimientos;
+    
     @EJB
     private MovimientoCtaCteFacade ejbFacade;
+    @EJB
+    private FixedListFacade fixedListF;
+    
     private int selectedItemIndex;
     
+    private Empresa currentEmpresa;
+    
+    
+    List<MovimientoCtaCte> movimientos = null;
+            
     private String tipo;
+    private BigDecimal totalDebitos;
+    private BigDecimal totalCreditos;
+    private BigDecimal monto;
+    
+    private FixedList tipoValorMovimientoXDefecto;
+    
+    private String urlReporteXEmpresa;
+    private String urlReporteXEmpresaYFactura;
+    
+    
 
     public MovimientoCtaCteController() {
     }
@@ -48,6 +75,42 @@ public class MovimientoCtaCteController implements Serializable {
         }
         return current;
     }
+    
+    public void seleccionarEmpresa(){
+        if (currentEmpresa == null){
+            currentEmpresaMovimientos = null;
+        } else {
+            
+            if (this.tipoValorMovimientoXDefecto != null){
+                movimientos = ejbFacade.findByEmpresaYTipoValor(currentEmpresa, tipoValorMovimientoXDefecto);
+            } else {
+                movimientos = ejbFacade.findByEmpresa(currentEmpresa);
+            }
+            
+            totalDebitos = BigDecimal.ZERO;
+            totalCreditos = BigDecimal.ZERO;
+            for (MovimientoCtaCte mCC : movimientos){
+                if (mCC.getDebito()!= null){
+                    totalDebitos = totalDebitos.add(mCC.getDebito());
+                }
+                if (mCC.getCredito()!= null){
+                    totalCreditos = totalCreditos.add(mCC.getCredito());
+                }
+            }
+            
+            currentEmpresaMovimientos = new ListDataModel(movimientos);
+            urlReporteXEmpresa = null;
+            urlReporteXEmpresaYFactura = null;            
+        }
+    }
+    
+    public void generarReporteEmpresa(){
+        urlReporteXEmpresa =  (new MovCtaCteReport(movimientos, null, null, false, true, false, false, tipoValorMovimientoXDefecto.getId().equals(TipoValorMovimientoCtaCte.DINERO))).obtenerReportePDF();
+    }
+
+    public void generarReporteEmpresaYFactura(){
+        urlReporteXEmpresaYFactura =  (new MovCtaCteReport(movimientos, null, null, false, false, false, false, tipoValorMovimientoXDefecto.getId().equals(TipoValorMovimientoCtaCte.DINERO))).obtenerReportePDF();
+    }
 
     private MovimientoCtaCteFacade getFacade() {
         return ejbFacade;
@@ -55,23 +118,27 @@ public class MovimientoCtaCteController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        seleccionarEmpresa();
         return "List";
     }
 
     public String prepareView() {
-        current = (MovimientoCtaCte) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        seleccionarMovimiento();        
         return "View";
     }
 
     public String prepareCreate() {
         current = new MovimientoCtaCte();
+        current.setEmpresa(currentEmpresa);
+        current.setTipoValor(tipoValorMovimientoXDefecto);
         selectedItemIndex = -1;
         return "Create";
     }
 
     public String create() {
         try {
+            prepararParaGuardar(); 
+            current.setManual(Boolean.TRUE);
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteCreated"));
             return "View";
@@ -82,13 +149,13 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (MovimientoCtaCte) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        seleccionarMovimiento();
         return "Edit";
     }
 
     public String update() {
         try {
+            prepararParaGuardar(); 
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteUpdated"));
             return "View";
@@ -99,10 +166,11 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String destroy() {
-        current = (MovimientoCtaCte) getItems().getRowData();
-        selectedItemIndex = getItems().getRowIndex();
+        current = (MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData();
+        selectedItemIndex = getCurrentEmpresaMovimientos().getRowIndex();
         performDestroy();
         recreateModel();
+        seleccionarEmpresa();
         return "List";
     }
 
@@ -128,13 +196,6 @@ public class MovimientoCtaCteController implements Serializable {
         }
     }
     
-    public DataModel getItems() {
-        if (items == null) {
-            items = new ListDataModel(getFacade().findAll());;
-        }
-        return items;
-    }
-
     private void recreateModel() {
         items = null;
     }
@@ -145,6 +206,26 @@ public class MovimientoCtaCteController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    private void seleccionarMovimiento() {
+        current = (MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData();
+        selectedItemIndex = getCurrentEmpresaMovimientos().getRowIndex();
+        if (current.getValor().doubleValue() >= 0){
+            tipo = TIPO_DEBITO;
+        } else {
+            tipo = TIPO_CREDITO;
+        }
+        monto = current.getValor().abs();
+    }
+
+    private void prepararParaGuardar() {
+        if (tipo.equalsIgnoreCase(TIPO_DEBITO)){
+            current.setValor(monto.abs());
+        }
+        if (tipo.equalsIgnoreCase(TIPO_CREDITO)){
+            current.setValor(monto.abs().negate());
+        }
     }
 
     @FacesConverter(forClass = MovimientoCtaCte.class)
@@ -192,14 +273,86 @@ public class MovimientoCtaCteController implements Serializable {
         this.tipo = tipo;
     }
 
-    public static String getTIPO_INGRESO() {
-        return TIPO_INGRESO;
+    public Empresa getCurrentEmpresa() {
+        return currentEmpresa;
     }
 
-    public static String getTIPO_EGRESO() {
-        return TIPO_EGRESO;
+    public void setCurrentEmpresa(Empresa currentEmpresa) {
+        this.currentEmpresa = currentEmpresa;
+    }
+
+
+    public DataModel getCurrentEmpresaMovimientos() {
+        if (currentEmpresaMovimientos == null){
+            currentEmpresaMovimientos = new ListDataModel();
+        }
+        return currentEmpresaMovimientos;
+    }
+
+    public BigDecimal getTotalDebitos() {
+        return totalDebitos;
+    }
+
+    public BigDecimal getTotalCreditos() {
+        return totalCreditos;
     }
     
+    public BigDecimal getSaldo(){
+        return totalDebitos.subtract(totalCreditos);
+    }
+
+    public String getTipo_debito(){
+        return TIPO_DEBITO;
+    }
+    
+    public String getTipo_credito(){
+        return TIPO_CREDITO;
+    }
+
+    public BigDecimal getMonto() {
+        return monto;
+    }
+
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
+    }
+
+    public Integer getTipoValorMovimientoXDefectoId() {
+        if (this.tipoValorMovimientoXDefecto != null){
+            return this.tipoValorMovimientoXDefecto.getId();
+        } else {
+            return null;
+        }
+    }
+
+    public void setTipoValorMovimientoXDefectoId(Integer tipoValorMovimientoXDefectoId) {
+        if (tipoValorMovimientoXDefectoId != null){
+            if (this.tipoValorMovimientoXDefecto == null || !this.tipoValorMovimientoXDefecto.getId().equals(tipoValorMovimientoXDefectoId)){
+                this.tipoValorMovimientoXDefecto = fixedListF.find(tipoValorMovimientoXDefectoId);
+                currentEmpresaMovimientos = null;
+                currentEmpresa = null;
+            }
+        } else {
+            this.tipoValorMovimientoXDefecto = null;
+        }        
+    }
+    
+    
+    public String getSufijoTitulo(){
+        if (this.tipoValorMovimientoXDefecto != null){
+            return " - " + this.tipoValorMovimientoXDefecto.getDescripcion();
+        } else {
+            return "";
+        }
+    }
+
+    public String getUrlReporteXEmpresa() {
+        return urlReporteXEmpresa;
+    }
+
+    public String getUrlReporteXEmpresaYFactura() {
+        return urlReporteXEmpresaYFactura;
+    }
     
     
 }

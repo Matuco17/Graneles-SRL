@@ -227,7 +227,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         //Si es nulo entonces devuelvo el periodo seleccionado nuevo para ser completado
         if (per == null){
             per = new Periodo();
-            per.setDescripcion(String.valueOf(anio) + "-" + String.valueOf(mes));
+            per.setDescripcion(anio + "-" + (mes < 10 ? "0" : "") + mes);
             per.setDesde(calDesde.getTime());
             per.setHasta(calHasta.getTime());
             //TODO: Falta obtener el nro de Tomo (libro) y la hoja desde el historial
