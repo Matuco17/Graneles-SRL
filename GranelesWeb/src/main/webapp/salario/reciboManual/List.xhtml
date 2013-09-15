@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{reciboManualController.init()}" />  
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ListReciboManualTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{bundleSalario.ListReciboManualEmpty}" rendered="#{reciboManualController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{reciboManualController.items.rowCount > 0}">
+                    <p:dataTable value="#{reciboManualController.items}" 
+                                 var="item" widgetVar="recibosManualTable"
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                        <f:facet name="header">  
+                            <p:outputPanel>  
+                                <h:outputText value="Buscar:" />  
+                                <p:inputText id="globalFilter" onkeyup="recibosManualTable.filter()" style="width:350px" />  
+                            </p:outputPanel>  
+                        </f:facet>                       
+                        <p:column headerText="#{bundleSalario.ReciboManualTitle_periodo}">
+                            <h:outputText value="#{item.periodo.toString()}"/>
+                        </p:column>
+                        <p:column headerText="#{bundlePersonal.PersonalTitle_cuil}">
+                            <h:outputText value="#{item.personal.cuil}"/>
+                        </p:column>
+                        <p:column headerText="#{bundleSalario.ReciboManualTitle_personal}">
+                            <h:outputText value="#{item.personal.apellido}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{reciboManualController.prepareView}" 
+                                value="#{bundleSalario.ReciboManualViewLink}"
+                                title="#{bundleSalario.ReciboManualViewLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{reciboManualController.prepareEdit}" 
+                                value="#{bundleSalario.ReciboManualEditLink}"
+                                title="#{bundleSalario.ReciboManualEditLink}"
+                                />
+
+                            <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Recibo Manual?');" 
+                                action="#{reciboManualController.destroy}" 
+                                title="#{bundleSalario.ReciboManualDestroyLink}"
+                                value="#{bundleSalario.ReciboManualDestroyLink}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{reciboManualController.prepareCreate}" 
+                    value="#{bundleSalario.ReciboManualCreateLink}"
+                    title="#{bundleSalario.ReciboManualCreateLink}"
+                    />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

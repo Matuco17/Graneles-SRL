@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:co="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <co:interface>
+        <co:attribute name="editar" type="java.lang.Boolean" required="true" />
+        <co:attribute name="nuevo" type="java.lang.Boolean" required="true" />
+    </co:interface>
+
+    <!-- IMPLEMENTATION -->
+    <co:implementation>
+        <p:panel style="max-width: 550px;">
+            <h:panelGrid columns="2">
+                <h:outputLabel value="#{bundleSalario.ReciboManualTitle_periodo}" />
+
+                <h:panelGrid columns="2" rendered="#{cc.attrs.nuevo}">
+                    <h:selectOneMenu id="mes" value="#{reciboManualController.mes}" >
+                        <f:selectItem itemValue="1"  itemLabel="Enero"  />
+                        <f:selectItem itemValue="2"  itemLabel="Febrero"  />
+                        <f:selectItem itemValue="3"  itemLabel="Marzo"  />
+                        <f:selectItem itemValue="4"  itemLabel="Abril" />
+                        <f:selectItem itemValue="5"  itemLabel="Mayo" />
+                        <f:selectItem itemValue="6"  itemLabel="Junio" />
+                        <f:selectItem itemValue="7"  itemLabel="Julio" />
+                        <f:selectItem itemValue="8"  itemLabel="Agosto" />
+                        <f:selectItem itemValue="9"  itemLabel="Septiembre" />
+                        <f:selectItem itemValue="10" itemLabel="Octubre" />
+                        <f:selectItem itemValue="11" itemLabel="Noviembre" />
+                        <f:selectItem itemValue="12" itemLabel="Diciembre" />
+                    </h:selectOneMenu>
+                    <p:spinner id="anio" value="#{reciboManualController.anio}" maxlength="4" min="1980" max="2100" />
+                </h:panelGrid>
+                <h:outputText value="#{reciboManualController.selected.periodo.toString()}" rendered="#{!cc.attrs.nuevo}" />
+
+                <h:outputLabel value="#{bundleSalario.ReciboManualTitle_personal}" />
+                <h:panelGrid columns="2" rendered="#{cc.attrs.nuevo}">
+                    <p:autoComplete id="personal" value="#{reciboManualController.selected.personal}" 
+                                    completeMethod="#{personalController.completePersonal}"
+                                    maxResults="15" 
+                                    var="p" itemLabel="#{p.cuilApellidoYNombre}" itemValue="#{p}"  
+                                    forceSelection="true" style="width: 250px" >  
+                    </p:autoComplete> 
+                    <h:commandButton action="#{reciboManualController.seleccionarPersonal}" 
+                                     value="#{bundleSalario.ReciboManualCreateLink}"
+                                     title="#{bundleSalario.ReciboManualCreateLink}" >
+                    </h:commandButton>
+                </h:panelGrid>
+                <h:outputText value="#{reciboManualController.selected.personal.cuilApellidoYNombre}" rendered="#{!cc.attrs.nuevo}" />
+
+            </h:panelGrid>
+        </p:panel>
+        <p:panel id="conceptos" header="Conceptos" rendered="#{reciboManualController.selected.personal != null}" style="max-width: 550px">
+            <h:panelGrid columns="4" rendered="#{cc.attrs.editar}">
+                <h:outputLabel value="#{bundleSalario.ItemsReciboManualTitle_concepto}" for="concepto" />
+                <h:outputLabel value="#{bundleSalario.ItemsReciboManualTitle_cantidad}" for="cantidad" />
+                <h:outputLabel value="#{bundleSalario.ItemsReciboManualTitle_valor}" for="valor" />
+                <h:outputText value="" />
+
+                <h:selectOneMenu id="concepto" value="#{reciboManualController.newItemRecibo.conceptoRecibo}" >
+                    <f:selectItems value="#{reciboManualController.conceptosPersonal}" var="item" itemValue="#{item}" itemLabel="#{item.concepto}" />
+                </h:selectOneMenu>
+                <p:inputText id="cantidad" value="#{reciboManualController.newItemRecibo.cantidad}" />
+                <p:inputText id="valor" value="#{reciboManualController.newItemRecibo.valor}" />
+
+                <h:commandButton image="/faces/resources/images/new.png" 
+                                 action="#{reciboManualController.agregarItemRecibo()}" 
+                                 value="#{bundleSalario.ReciboManualCreateLink}"
+                                 title="#{bundleSalario.ReciboManualCreateLink}" >
+                </h:commandButton>
+
+            </h:panelGrid>      
+
+            <p:dataTable id="dtbItems" value="#{reciboManualController.itemsReciboModel}" var="item" >
+                <p:column headerText="#{bundleSalario.ItemsReciboManualTitle_concepto}" >
+                    <h:outputText value="#{item.conceptoRecibo.toString()}" />
+                </p:column>
+                <p:column headerText="#{bundleSalario.ItemsReciboManualTitle_concepto}" >
+                    <h:outputText value="#{item.cantidad}" />
+                </p:column>
+                <p:column headerText="#{bundleSalario.ItemsReciboManualTitle_concepto}" >
+                    <h:outputText value="#{item.valor}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <h:commandButton image="/faces/resources/images/destroy.png"
+                                     action="#{reciboManualController.borrarItemRecibo()}"
+                                     rendered="#{cc.attrs.editar}">  
+                    </h:commandButton> 
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </co:implementation>
+</html>

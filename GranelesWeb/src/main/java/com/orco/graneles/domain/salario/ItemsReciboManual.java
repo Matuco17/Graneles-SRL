@@ -36,7 +36,7 @@ public class ItemsReciboManual implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id")
     private Long id;
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -45,6 +45,10 @@ public class ItemsReciboManual implements Serializable {
     
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal valor;
+    
+    @JoinColumn(name = "concepto", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private ConceptoRecibo conceptoRecibo;
     
     @JoinColumn(name = "recibo", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -93,6 +97,16 @@ public class ItemsReciboManual implements Serializable {
     public void setRecibo(ReciboManual recibo) {
         this.recibo = recibo;
     }
+
+    public ConceptoRecibo getConceptoRecibo() {
+        return conceptoRecibo;
+    }
+
+    public void setConceptoRecibo(ConceptoRecibo conceptoRecibo) {
+        this.conceptoRecibo = conceptoRecibo;
+    }
+    
+    
 
     @Override
     public int hashCode() {

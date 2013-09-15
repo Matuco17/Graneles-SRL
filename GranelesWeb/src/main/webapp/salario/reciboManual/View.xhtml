@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents">
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleSalario.ViewReciboManualTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                
+                <Cc:reciboManualCC editar="false" nuevo="false" />
+            
+                <p:panel>
+                    
+
+                </p:panel>
+                    
+                <p:panel header="Auditoria">                    
+                    <Cc:auditoria auditoria="#{reciboManualController.selected.auditoria}" />
+                </p:panel>
+                    
+                <p:panel>
+                <h:panelGrid columns="4">
+                    <h:commandButton action="#{reciboManualController.destroyAndView}" 
+                                     image="/faces/resources/images/destroy.png" 
+                                     value="#{bundleSalario.ReciboManualDestroyLink}"
+                                     title="#{bundleSalario.ReciboManualDestroyLink}"
+                                     onclick="return confirm('¿Esta seguro que desea eliminar este ReciboManual?');" 
+                                     />
+
+                    <h:commandButton action="Edit" 
+                                     image="/faces/resources/images/edit.png" 
+                                     value="#{bundleSalario.ReciboManualEditLink}"
+                                     title="#{bundleSalario.ReciboManualEditLink}"
+                                     />
+                    <h:commandButton action="#{reciboManualController.prepareCreate}" 
+                                     image="/faces/resources/images/new.png" 
+                                     value="#{bundleSalario.ReciboManualCreateLink}"
+                                     title="#{bundleSalario.ReciboManualCreateLink}"
+                                     />
+                    <h:commandButton action="#{reciboManualController.prepareList}"
+                                     image="/faces/resources/images/viewAll.png" 
+                                     value="#{bundleSalario.ReciboManualShowAllLink}"
+                                     title="#{bundleSalario.ReciboManualShowAllLink}"
+                                     />
+                </h:panelGrid>
+                </p:panel>
+               
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

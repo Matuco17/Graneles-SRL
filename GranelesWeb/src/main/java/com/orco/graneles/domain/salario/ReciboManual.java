@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.domain.salario;
 
+import com.orco.graneles.domain.EntidadAuditable;
 import com.orco.graneles.domain.personal.Personal;
 import java.io.Serializable;
 import java.util.Collection;
@@ -34,12 +35,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ReciboManual.findAll", query = "SELECT r FROM ReciboManual r"),
     @NamedQuery(name = "ReciboManual.findById", query = "SELECT r FROM ReciboManual r WHERE r.id = :id")})
-public class ReciboManual implements Serializable {
+public class ReciboManual extends EntidadAuditable implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id")
     private Long id;
     
     @JoinColumn(name = "periodo", referencedColumnName = "id")
@@ -49,8 +50,7 @@ public class ReciboManual implements Serializable {
     @JoinColumn(name = "personal", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Personal personal;
-   
-    
+       
     @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER, mappedBy="recibo", orphanRemoval = true)
     private Collection<ItemsReciboManual> itemsReciboManualCollection;
 
