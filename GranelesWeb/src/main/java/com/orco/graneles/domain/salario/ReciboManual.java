@@ -34,7 +34,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ReciboManual.findAll", query = "SELECT r FROM ReciboManual r"),
-    @NamedQuery(name = "ReciboManual.findById", query = "SELECT r FROM ReciboManual r WHERE r.id = :id")})
+    @NamedQuery(name = "ReciboManual.findByPeriodo", query = "SELECT r FROM ReciboManual r WHERE r.periodo = :periodo"),
+    @NamedQuery(name = "ReciboManual.findById", query = "SELECT r FROM ReciboManual r WHERE r.id = :id"),
+    @NamedQuery(name = "ReciboManual.findByFechaYPersonal", query = "SELECT r FROM ReciboManual r "
+        + " WHERE r.personal = :personal "
+        + " AND r.periodo.desde >= :desde "
+        + " AND r.periodo.desde <= :hasta ")})
 public class ReciboManual extends EntidadAuditable implements Serializable {
     private static final long serialVersionUID = 1L;
     

@@ -67,6 +67,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private AporteConfiguracionConfiguracionFacade aporteContribucionConfigF;
     @EJB
     private FeriadoFacade feriadoF;
+    @EJB
+    private ReciboManualFacade reciboManualF;
 
     protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
         //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
@@ -76,7 +78,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
             if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo, null)){
                 
-                s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras, true, false, true, true, null);
+                s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras, true, false, true, true, true, null);
                 
                 sueldoF.persist(s);
             }
@@ -96,7 +98,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setPersonal(p);
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false, true, true, null);
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false, true, true, true, null);
 
                     if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
                         sueldoF.create(sueldoSacNuevo);
@@ -153,14 +155,14 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @param conceptosHoras
      * @return 
      */
-    protected Sueldo generarSACyVacacionesIndividual(Periodo periodo, Sueldo s, Map<Integer, List<ConceptoRecibo>> conceptosHoras, boolean incluirHoras, boolean incluirAccidente, boolean incluirAdelanto, boolean incluirFeriado, Date hastaFijo) {
+    protected Sueldo generarSACyVacacionesIndividual(Periodo periodo, Sueldo s, Map<Integer, List<ConceptoRecibo>> conceptosHoras, boolean incluirHoras, boolean incluirAccidente, boolean incluirAdelanto, boolean incluirFeriado, boolean incluirManual, Date hastaFijo) {
         Date desde = obtenerDesdeSAC(periodo, s.getPersonal());
         Date hasta = (hastaFijo == null)? obtenerHastaSAC(periodo, s.getPersonal()) : hastaFijo;
         switch (s.getPersonal().getTipoRecibo().getId()){
             case TipoRecibo.HORAS:
 
-                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
-                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado);
+                Sueldo sueldoSAC = sueldoF.sueldoSAC(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado, incluirManual);
+                Sueldo sueldoVacaciones = sueldoF.sueldoVacaciones(periodo, desde, hasta, s.getPersonal(), conceptosHoras, incluirHoras, incluirAccidente, incluirFeriado, incluirManual);
                 
                 if (sueldoSAC.getItemsSueldoCollection() != null && sueldoSAC.getItemsSueldoCollection().size() > 0){
                     s = sueldoF.mergeSueldos(s, sueldoSAC);
@@ -250,7 +252,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setPersonal(p);
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false , true, true, null);
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, true, false , true, true, true, null);
                     
                     sueldos.add(sueldoSacNuevo);
                }
@@ -274,7 +276,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                     sueldoSacNuevo.setItemsSueldoCollection(new ArrayList<ItemsSueldo>());
 
                     //TODO: CAMBIAR el ultimo por true
-                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, false, true, false, true, periodo.getHasta());
+                    sueldoSacNuevo = generarSACyVacacionesIndividual(periodo, sueldoSacNuevo, conceptosHoras, false, true, false, true, false, periodo.getHasta());
                     
                     if (sueldoSacNuevo.getItemsSueldoCollection() != null && sueldoSacNuevo.getItemsSueldoCollection().size() > 0){
                         sueldos.add(sueldoSacNuevo);    
@@ -302,8 +304,8 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         for (Personal p : personalF.findAll()){
             //Por ahora salteo los empleados mensuales
             if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
-                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true);
-                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true));
+                Sueldo sueldoSACyVac = sueldoF.sueldoSAC(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true, true);
+                sueldoSACyVac = sueldoF.mergeSueldos(sueldoSACyVac, sueldoF.sueldoVacaciones(null, desde.toDate(), hasta.toDate(), p, conceptosHoras, true, false, true, true));
 
                 ProyeccionSacVacYAdelantosVO currentProyeccion = new ProyeccionSacVacYAdelantosVO(p);
 
@@ -437,18 +439,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             for (TrabajadoresTurnoEmbarque tteFeriado : ttesFeriado){
                 Sueldo sueldoFeriado = sueldoF.calcularSueldoFeriado(tteFeriado, periodo, conceptosHoras);
                                 
-                //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
-                Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(tteFeriado.getPersonal().getId());
-                if (sueldoCreadoAnterior != null){
-                    mapSueldoCreados.put(tteFeriado.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoFeriado));
-
-                    sueldoF.edit(sueldoCreadoAnterior);
-                } else {
-                    mapSueldoCreados.put(tteFeriado.getPersonal().getId(), sueldoFeriado);
-
-                    sueldoF.create(sueldoFeriado);
-                    periodo.getSueldoCollection().add(sueldoFeriado);
-                }                
+                agregarSueldoAlPeriodo(mapSueldoCreados, sueldoFeriado, periodo);                
             }
         }
         
@@ -463,20 +454,19 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         for (Accidentado acc : listaAcc){
             Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, true);
             
-            //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
-            Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
-            if (sueldoCreadoAnterior != null){
-                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoAcc));
-               
-                sueldoF.edit(sueldoCreadoAnterior);
-            } else {
-                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoAcc);
-               
-                sueldoF.create(sueldoAcc);
-                periodo.getSueldoCollection().add(sueldoAcc);
-            }
+            agregarSueldoAlPeriodo(mapSueldoCreados, sueldoAcc, periodo);
         }
        
+        return mapSueldoCreados;
+    }
+    
+    private Map<Long, Sueldo> generarSueldosManuales(Periodo periodo, Map<Long, Sueldo> mapSueldoCreados, Map<Integer, List<ConceptoRecibo>> conceptosHoras){
+        for (ReciboManual rm : reciboManualF.getRecibosXPeriodo(periodo)){
+            Sueldo sueldoRM = sueldoF.sueldoManual(rm, conceptosHoras);
+            
+            agregarSueldoAlPeriodo(mapSueldoCreados, sueldoRM, periodo);
+        }
+        
         return mapSueldoCreados;
     }
     
@@ -593,6 +583,12 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         System.out.println("{" + (new Date()).toString() + "} " 
                 + "Sueldos de Feriados generado");
 
+        sueldosCalculados = generarSueldosManuales(periodo, sueldosCalculados, conceptosHoras);
+        
+        Logger.getLogger(PeriodoFacade.class.getName()).log(Level.SEVERE, null, "{" + (new Date()).toString() + "} " 
+                + "Sueldos de Manuales generado");
+        System.out.println("{" + (new Date()).toString() + "} " 
+                + "Sueldos de Manuales generado");
         
         sueldosCalculados = generarSueldosAccidentados(periodo, sueldosCalculados, conceptosHoras);
 
@@ -600,7 +596,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 + "Sueldos de los Accidentados generado");
         System.out.println("{" + (new Date()).toString() + "} " 
                 + "Sueldos de los Accidentados generado");
-
+        
         //TODO: FALTA GENERAR LOS SUELDOS MENSUALES
 
         generarSueldosSACyVacaciones(periodo, sueldosCalculados, conceptosHoras);
@@ -609,7 +605,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
                 + "Sac y Vacaciones Generado");
         System.out.println("{" + (new Date()).toString() + "} " 
                 + "Sac y Vacaciones Generado");
-
 
         persist(periodo);  
 
@@ -751,6 +746,20 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         acVO.addAll(acVOSindicato.values());
         
         return acVO;
+    }
+
+    private void agregarSueldoAlPeriodo(Map<Long, Sueldo> mapSueldoCreados, Sueldo sueldoAAgregar, Periodo periodo) {
+        Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(sueldoAAgregar.getPersonal().getId());
+        if (sueldoCreadoAnterior != null){
+            mapSueldoCreados.put(sueldoAAgregar.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoAAgregar));
+
+            sueldoF.edit(sueldoCreadoAnterior);
+        } else {
+            mapSueldoCreados.put(sueldoAAgregar.getPersonal().getId(), sueldoAAgregar);
+
+            sueldoF.create(sueldoAAgregar);
+            periodo.getSueldoCollection().add(sueldoAAgregar);
+        }
     }
     
     
