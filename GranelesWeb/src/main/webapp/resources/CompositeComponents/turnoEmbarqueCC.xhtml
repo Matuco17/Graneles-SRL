@@ -62,7 +62,7 @@
             <p:tab title="Trabajadores" id="tabTrabajadores"   >
                 
                 
-                <h:panelGroup id="panTrabajadores">
+                <h:panelGroup id="panTrabajadores" >
                     <h:panelGrid columns="10" rendered="#{cc.attrs.editar}">
                         <h:outputText value="#{bundleCarga.TrabajadoresTurnoEmbarqueTitle_personal}"  />
                         <p:spacer width="180px" height="15px" />
@@ -146,10 +146,11 @@
                     </h:panelGrid>
 
                     <p:dataTable value="#{embarqueController.trabajadoresTurnoModel}" var="item"
-                                 rowKey="#{item.tte.personal.cuil}"
+                                 rowKey="#{item.tte.personal.cuil}" lazy="true"
                                  selection="#{embarqueController.selectedTTE}" selectionMode="single"
                                  paginator="false" rowIndexVar="indiceFila" 
-                                 sortBy="#{item.tte.planilla.id}">
+                                 sortBy="#{item.tte.planilla.id}"
+                                 id="dtbTrabajadores">
 
                         <p:ajax event="rowSelect" listener="#{embarqueController.onRowSelect}"  />
 
@@ -323,7 +324,15 @@
         <script type="text/javascript" >
             
            function setearFoco(componentName){
-               jQuery("[name*='" + componentName + "']").focus();               
+               jQuery("[name*='" + componentName + "']").focus();    
+               
+               //Trato de ver si hay mas de un footer en la tabla y elimino los previos
+               var footers = jQuery("[class*=ui-datatable][id*=dtbTrabajadores] > .ui-datatable-summaryrow");
+               for (var i = 0; (footers.length-1) > i ; i++){
+                   $(footers[i]).remove();
+               }
+               
+               
            }
             /*
            jQuery(document).ready(function(){

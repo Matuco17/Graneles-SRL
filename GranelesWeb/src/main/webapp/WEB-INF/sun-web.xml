@@ -22,6 +22,8 @@
  </security-role-mapping>
 
   <class-loader delegate="true"/>
+  <!--<class-loader delegate="false" />  
+  <property name="useBundledJsf" value="true" />-->
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>
@@ -30,4 +32,5 @@
   <system-properties>
     <propertie name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
+  
 </sun-web-app>

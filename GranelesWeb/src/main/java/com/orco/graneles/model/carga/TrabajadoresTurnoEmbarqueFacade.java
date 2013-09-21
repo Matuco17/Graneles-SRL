@@ -21,14 +21,11 @@ import com.orco.graneles.model.salario.FeriadoFacade;
 import com.orco.graneles.model.salario.TipoJornalFacade;
 import com.orco.graneles.vo.JornalVO;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
-import com.sun.faces.util.CollectionsUtils;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import org.bouncycastle.util.CollectionStore;
 /**
  *
  * @author orco

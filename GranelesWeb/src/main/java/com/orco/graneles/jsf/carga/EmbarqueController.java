@@ -39,7 +39,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
-import org.primefaces.event.DateSelectEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "embarqueController")
@@ -648,8 +648,8 @@ public class EmbarqueController implements Serializable {
         getCurrentTE().setTipo((TipoJornal) e.getNewValue());
     }
     
-    public void seleccionarFecha(DateSelectEvent event) {  
-        getCurrentTE().setFecha(event.getDate());
+    public void seleccionarFecha(SelectEvent event) {  
+        getCurrentTE().setFecha((Date)  event.getObject());
         mapTareasXCategoria = null;
         tareasActivas = null;
     }  

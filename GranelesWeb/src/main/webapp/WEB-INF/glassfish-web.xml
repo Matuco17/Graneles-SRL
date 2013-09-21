@@ -26,4 +26,5 @@
   <system-properties>
     <propertie name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
+  
 </glassfish-web-app>
