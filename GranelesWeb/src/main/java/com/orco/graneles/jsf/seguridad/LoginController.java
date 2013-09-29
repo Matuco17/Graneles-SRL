@@ -86,6 +86,10 @@ public class LoginController {
         }
     }
     
+    public boolean esContador(){
+        return getContexto().isUserInRole(Grupo.ROL_CONTADOR);
+    }
+    
     public boolean esUsuario(){
         return getContexto().isUserInRole(Grupo.ROL_USUARIO);
     }

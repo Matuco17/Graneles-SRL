@@ -58,6 +58,7 @@
                                              style="width: 100%; font-weight: bold;"
                                              rendered="#{loginController.esGerente()}"
                                              />
+                               <h:outputText value="" rendered="#{!loginController.esGerente()}" />
                                
                                
                                <h:outputLabel value="Cantidad de Sueldos Cargados" />

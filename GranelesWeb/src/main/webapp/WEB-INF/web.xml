@@ -68,6 +68,9 @@
     </login-config>
     <!-- Roles -->
     <security-role>
+        <role-name>CONTADOR</role-name>
+    </security-role>
+    <security-role>
         <role-name>USUARIO</role-name>
     </security-role>
     <security-role>
@@ -93,7 +96,7 @@
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>USUARIO</role-name>
+            <role-name>CONTADOR</role-name>
         </auth-constraint>
     </security-constraint>
     

@@ -33,32 +33,32 @@
         <div style="float:left; width: 100%;">
                 <h:form>
                    <p:menubar  >  
-                       <p:submenu label="Ingreso" >  
+                       <p:submenu label="Ingreso" rendered="#{loginController.esUsuario()}" >  
                             <p:menuitem value="Personal" url="/faces/personal/personal/List.xhtml" />  
                             <p:menuitem value="Accidentados"  url="/faces/personal/accidentado/List.xhtml" />
                             <p:menuitem value="Embarques" url="/faces/carga/embarque/List.xhtml" />
                             <p:menuitem value="Hacer Adelanto" url="/faces/salario/adelanto/Create.xhtml" />
                             <p:menuitem value="Recibo Manual" url="/faces/salario/reciboManual/List.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Listados" >
+                       </p:submenu>
+                       <p:submenu label="Listados" >
                             <p:menuitem value="Periodo Mensual" url="/faces/salario/periodo/Periodo.xhtml" />
                             <p:menuitem value="Adelantos" url ="/faces/salario/adelanto/List.xhtml" />
                             <p:menuitem value="Proyeccion SAC y Vacaciones" url="/faces/salario/periodo/ProyeccionSacYVacaciones.xhtml" />
-                            <p:menuitem value="Anuncios" url="/faces/carga/embarque/Anuncios.xhtml" />
+                            <p:menuitem value="Anuncios" url="/faces/carga/embarque/Anuncios.xhtml" rendered="#{loginController.esUsuario()}" />
                             <p:menuitem value="Jornales" url="/faces/carga/trabajadoresTurnoEmbarque/List.xhtml" />
                             <p:menuitem value="Resumen Sueldos" url="/faces/salario/sueldo/List.xhtml" />
                             <p:menuitem value="Resumen Remuneraciones" url="/faces/salario/sueldo/RemuneracionesList.xhtml" />
                             <p:menuitem value="Resumen Cuentas Corrientes" url="/faces/facturacion/movimientoCtaCte/ReporteGenerico.xhtml" />
                             <p:menuitem value="Feriados" url="/faces/salario/feriado/List.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Facturación" rendered="true" >  
+                       </p:submenu>
+                       <p:submenu label="Facturación" rendered="#{loginController.esUsuario()}" >  
                             <p:menuitem value="Facturas" url="/faces/facturacion/factura/List.xhtml" />
                             <p:menuitem value="Cuentas Corrientes - Dinero" url="/faces/facturacion/movimientoCtaCte/List.xhtml?tipoid=230" />
                             <p:menuitem value="Cuentas Corrientes - Toneladas" url="/faces/facturacion/movimientoCtaCte/List.xhtml?tipoid=231" />
                             <p:menuitem value="Tarifas" url="/faces/facturacion/tarifa/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Concepto Facturado" url="/faces/miscelaneos/list/ListCrud.xhtml?listid=17" rendered="#{loginController.esGerente()}" />
-                        </p:submenu>
-                        <p:submenu label="Tablas" >  
+                       </p:submenu>
+                       <p:submenu label="Tablas" rendered="#{loginController.esUsuario()}" >  
                             <p:menuitem value="Buques" url="/faces/carga/buque/List.xhtml" />  
                             <p:menuitem value="Categorias" url="/faces/personal/categoria/List.xhtml" rendered="#{loginController.esGerente()}"/>  
                             <p:menuitem value="Empresas" url="/faces/facturacion/empresa/List.xhtml" />
@@ -71,11 +71,11 @@
                             <p:menuitem value="Tareas" url="/faces/personal/tarea/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Tipos de Jornales" url="/faces/salario/tipoJornal/List.xhtml" rendered="#{loginController.esGerente()}" />
                             <p:menuitem value="Aportes y Contribuciones" url="/faces/salario/aporteContribucion/Config.xhtml" rendered="#{loginController.esGerente()}" />
-                        </p:submenu>    
-                        <p:submenu label="Administrador" rendered="#{loginController.esAdministrador()}" >
+                       </p:submenu>    
+                       <p:submenu label="Administrador" rendered="#{loginController.esAdministrador()}" >
                             <p:menuitem value="Usuarios" url="/faces/seguridad/usuario/List.xhtml" />
                             <p:menuitem value="Procesos Administrador" url="/faces/miscelaneos/procesosAdministrador.xhtml" />
-                        </p:submenu>
+                       </p:submenu>
                     </p:menubar>
                 </h:form>
         </div>

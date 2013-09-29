@@ -58,7 +58,7 @@ public class TrabajadoresTurnoEmbarqueController implements Serializable {
         recreateModel();
        
         
-        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_CONTADOR);
     }
 
     public void seleccionarPersonal(ValueChangeEvent e){

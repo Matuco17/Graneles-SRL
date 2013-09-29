@@ -51,7 +51,7 @@ public class ListadoMovimientoCtaCteController implements Serializable {
     }
 
     public void init() {
-        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_CONTADOR);
     }
 
     public void generarReporte(){

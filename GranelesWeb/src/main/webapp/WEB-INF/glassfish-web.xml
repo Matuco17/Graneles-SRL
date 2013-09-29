@@ -3,7 +3,10 @@
 <glassfish-web-app error-url="">
   <!--Configuraciones de Grupos y Roles para seguridad -->
   <security-role-mapping>
-    <role-name>ADMINISTRADOR</role-name>
+    <role-name>CONTADOR</role-name>
+    <group-name>CON</group-name>
+    <group-name>USR</group-name>
+    <group-name>GTE</group-name>
     <group-name>ADM</group-name>
   </security-role-mapping>
   <security-role-mapping>
@@ -15,6 +18,10 @@
   <security-role-mapping>
     <role-name>GERENTE</role-name>
     <group-name>GTE</group-name>
+    <group-name>ADM</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>ADMINISTRADOR</role-name>
     <group-name>ADM</group-name>
   </security-role-mapping>
   <class-loader delegate="true"/>

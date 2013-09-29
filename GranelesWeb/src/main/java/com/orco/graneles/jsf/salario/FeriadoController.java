@@ -41,7 +41,7 @@ public class FeriadoController implements Serializable {
     public void init() {
         recreateModel();
         
-        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_CONTADOR);
     }
 
     public void obtenerTrabajadoresFeriado(){

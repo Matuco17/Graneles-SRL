@@ -17,8 +17,8 @@
       
        <ui:define name="body">
            
-           <div style="max-width: 490px; float: left; ">
-               <p:panel header="ETA Vencidos" style="width: 470px; float: left"  >
+           <div style="max-width: 490px; float: left; " >
+               <p:panel header="ETA Vencidos" style="width: 470px; float: left" rendered="#{loginController.esUsuario()}"  >
                    <p:dataTable value="#{indexController.etaVencidos}" var="item" style="width: 450px;">
                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" style="width: 200px;" >
                            <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
@@ -37,7 +37,7 @@
                        </p:column>  
                    </p:dataTable>
                </p:panel>
-               <p:panel header="Arribos" style="width: 470px; float: left;" >
+               <p:panel header="Arribos" style="width: 470px; float: left;"  rendered="#{loginController.esUsuario()}" >
                    <p:dataTable value="#{indexController.etaNoVencidos}" var="item" style="width: 450px;">
                        <p:column headerText="#{bundleCarga.EmbarqueTitle_buque}" style="width: 200px;" >
                            <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >
@@ -60,7 +60,7 @@
            
            <div style="max-width: 450px; float: left; ">
            
-                <p:panel header="Últimas Planillas" style="max-width: 430px; float:left; " >
+                <p:panel header="Últimas Planillas" style="max-width: 430px; float:left; "  rendered="#{loginController.esUsuario()}" >
                     <p:dataTable value="#{indexController.ultimasPlanillas}" var="item">
                         <p:column headerText="#{bundleCarga.TurnoEmbarqueTitle_nroPlanilla}" style="text-align: center;" >
                              <a href="carga/embarque/ViewTurnoEmbarque.xhtml?turnoembarque=#{item.id}" >
@@ -88,7 +88,7 @@
                      </p:dataTable>
                 </p:panel>
                
-                <p:panel header="Embarque No Facturados" style="max-width: 430px; float:left; " >
+                <p:panel header="Embarque No Facturados" style="max-width: 430px; float:left; "  rendered="#{loginController.esUsuario()}" >
                     <p:dataTable value="#{indexController.embarquesNoFacturados}" var="item">
                         <p:column headerText="#{bundleCarga.EmbarqueTitle_codigo}" style="text-align: center;" >
                              <a href="carga/embarque/View.xhtml?embarque=#{item.id}" >

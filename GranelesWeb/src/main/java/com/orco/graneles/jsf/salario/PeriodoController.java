@@ -88,7 +88,7 @@ public class PeriodoController implements Serializable {
     }
 
     public void init() {
-        JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
+        JsfUtil.minimoRolRequerido(Grupo.ROL_CONTADOR);
         
         Calendar calHoy = new GregorianCalendar();
         this.anio = calHoy.get(Calendar.YEAR);

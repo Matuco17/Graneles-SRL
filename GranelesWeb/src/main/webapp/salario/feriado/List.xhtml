@@ -48,6 +48,7 @@
                                 action="#{feriadoController.prepareEdit}" 
                                 value="#{bundleSalario.FeriadoEditLink}"
                                 title="#{bundleSalario.FeriadoEditLink}"
+                                rendered="#{loginController.esUsuario()}"
                                 />
 
                             <h:commandButton 
@@ -56,6 +57,7 @@
                                 action="#{feriadoController.destroy}" 
                                 title="#{bundleSalario.FeriadoDestroyLink}"
                                 value="#{bundleSalario.FeriadoDestroyLink}"
+                                rendered="#{loginController.esUsuario()}"
                                 />
                         </p:column>
                     </p:dataTable>
@@ -65,7 +67,8 @@
                     action="#{feriadoController.prepareCreate}" 
                     value="#{bundleSalario.FeriadoCreateLink}"
                     title="#{bundleSalario.FeriadoCreateLink}"
-                    />
+                    rendered="#{loginController.esUsuario()}"
+                   />
             </h:form>
         </ui:define>
     </ui:composition>

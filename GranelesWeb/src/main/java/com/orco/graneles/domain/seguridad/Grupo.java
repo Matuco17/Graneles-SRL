@@ -36,10 +36,12 @@ public class Grupo implements Serializable {
     public static final String GRUPO_ADMINISTRADOR = "ADM";
     public static final String GRUPO_GERENTE = "GTE";
     public static final String GRUPO_USUARIO_PROMOTOR = "USR";
+    public static final String GRUPO_CONTADOR = "CON";
     
     public static final String ROL_ADMINISTRADOR = "ADMINISTRADOR";
     public static final String ROL_GERENTE = "GERENTE";
     public static final String ROL_USUARIO = "USUARIO";
+    public static final String ROL_CONTADOR  = "CONTADOR";
     
         
     @Id
