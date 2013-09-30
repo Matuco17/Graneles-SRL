@@ -24,6 +24,8 @@ public class ItemSueldoVO {
     private Date periodoDesde;
     private Date periodoHasta;
     
+    private String conceptoDescripcion;
+    
     public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial){
         item = itemSueldo;
         this.oficial = oficial;
@@ -32,6 +34,15 @@ public class ItemSueldoVO {
     
     public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta){
         item = itemSueldo;
+        this.conceptoDescripcion = itemSueldo.getConceptoRecibo().getConcepto();
+        this.oficial = oficial;
+        this.periodoDesde = desde;
+        this.periodoHasta = hasta;
+    }
+    
+    public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta, String descripcionConcepto){
+        item = itemSueldo;
+        this.conceptoDescripcion = descripcionConcepto;
         this.oficial = oficial;
         this.periodoDesde = desde;
         this.periodoHasta = hasta;
@@ -102,7 +113,7 @@ public class ItemSueldoVO {
     }
     
     public String getConceptoDescripcion(){
-        return item.getConceptoRecibo().getConcepto();
+        return conceptoDescripcion;
     }
     
     public BigDecimal getConceptoCantidad(){

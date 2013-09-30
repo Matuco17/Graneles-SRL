@@ -1,15 +1,26 @@
 package com.orco.graneles.jsf.salario;
 
+import com.orco.graneles.domain.carga.TrabajadoresTurnoEmbarque;
+import com.orco.graneles.domain.miscelaneos.TipoRecibo;
 import com.orco.graneles.domain.personal.Personal;
+import com.orco.graneles.domain.salario.ConceptoRecibo;
 import com.orco.graneles.domain.salario.Feriado;
+import com.orco.graneles.domain.salario.Periodo;
+import com.orco.graneles.domain.salario.Sueldo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import com.orco.graneles.model.salario.ConceptoReciboFacade;
 import com.orco.graneles.model.salario.FeriadoFacade;
+import com.orco.graneles.model.salario.PeriodoFacade;
+import com.orco.graneles.model.salario.SueldoFacade;
+import com.orco.graneles.reports.RecibosSueldoFeriados;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -21,6 +32,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.codehaus.groovy.control.io.URLReaderSource;
+import org.joda.time.DateTime;
 
 @ManagedBean(name = "feriadoController")
 @SessionScoped
@@ -30,11 +43,22 @@ public class FeriadoController implements Serializable {
     private DataModel items = null;
     @EJB
     private FeriadoFacade ejbFacade;
+    @EJB
+    private SueldoFacade sueldoF;
+    @EJB
+    private ConceptoReciboFacade conceptoReciboF;
+    @EJB
+    private PeriodoFacade periodoF;
+    @EJB
+    private FixedListFacade fixedListF;
+    
     private int selectedItemIndex;
     
     private DataModel trabajadoresFeriadoModel;
     private List<Personal> trabajadoresFeriado;
 
+    private String urlLinkRecibos;
+    
     public FeriadoController() {
     }
 
@@ -48,9 +72,24 @@ public class FeriadoController implements Serializable {
         trabajadoresFeriadoModel = null;
         trabajadoresFeriado = null;
         if (current != null){
-            trabajadoresFeriado = new ArrayList<Personal>(ejbFacade.obtenerTrabajadoresIncluidos(current.getFecha()).keySet());
+            Map<Personal, TrabajadoresTurnoEmbarque> trabajadoresIncluidos = ejbFacade.obtenerTrabajadoresIncluidos(current.getFecha());
+            trabajadoresFeriado = new ArrayList<Personal>(trabajadoresIncluidos.keySet());
             Collections.sort(trabajadoresFeriado);
             trabajadoresFeriadoModel = new ListDataModel(trabajadoresFeriado);
+            
+            DateTime fechaFeriadoDT = new DateTime(current.getFecha());
+            List<Sueldo> sueldosFeriado = new ArrayList<Sueldo>();
+            Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
+            Periodo periodo = periodoF.verPeriodo(fechaFeriadoDT.getYear(), fechaFeriadoDT.getMonthOfYear());
+            
+            for (TrabajadoresTurnoEmbarque tteFeriado : trabajadoresIncluidos.values()){
+                
+                Sueldo sueldoFeriado = sueldoF.calcularSueldoFeriado(tteFeriado, periodo, conceptosHoras);
+                                
+                sueldosFeriado.add(sueldoFeriado);
+            }
+         
+            urlLinkRecibos = (new RecibosSueldoFeriados(periodo, sueldosFeriado, current)).obtenerReportePDF();
         }
     }
     
@@ -208,6 +247,10 @@ public class FeriadoController implements Serializable {
 
     public List<Personal> getTrabajadoresFeriado() {
         return trabajadoresFeriado;
+    }
+
+    public String getUrlLinkRecibos() {
+        return urlLinkRecibos;
     }
     
     

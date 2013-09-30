@@ -29,6 +29,11 @@
                             <h:outputText value="#{item.apellido}" />
                         </p:column>
                     </p:dataTable> 
+                    
+                    <h:link value="Recibos de Sueldo del Feriado" 
+                            onclick="window.open('#{feriadoController.urlLinkRecibos}','Download');window.close();" 
+                             rendered="#{feriadoController.urlLinkRecibos != null}" />
+
                 </p:panel>
             </h:panelGroup>
            
