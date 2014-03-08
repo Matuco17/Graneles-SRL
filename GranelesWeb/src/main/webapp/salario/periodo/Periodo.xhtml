@@ -70,44 +70,44 @@
 
                                <h:outputLabel value="Descargar Libro de Sueldos para AFIP" />
                                <h:commandButton value="Generar Libro para AFIP v36" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivoTxt == null}" />
-                               <h:link id="lnkLibroTXT" value="Libro AFIP v36" outcome="#{periodoController.urlArchivoTxt}"  rendered="#{periodoController.urlArchivoTxt != null}" />
+                               <h:outputLink id="lnkLibroTXT" value="#{periodoController.urlArchivoTxt}" rendered="#{periodoController.urlArchivoTxt != null}" >Libro AFIP v36</h:outputLink>
 
                                <h:outputText value="" />
                                <h:commandButton value="Generar Libro para AFIP v34" action="#{periodoController.generarArchivoAfipPeriodo()}" rendered="#{periodoController.urlArchivo34Txt == null}" />
-                               <h:link id="lnkLibro34TXT" value="Libro AFIP v34" outcome="#{periodoController.urlArchivo34Txt}"  rendered="#{periodoController.urlArchivo34Txt != null}" />
+                               <h:outputLink id="lnkLibro34TXT" value="#{periodoController.urlArchivo34Txt}"  rendered="#{periodoController.urlArchivo34Txt != null}" >Libro AFIP v34</h:outputLink>
 
                                
                                <h:outputLabel value="Descargar Listado de Cierre de Mes" />
                                <h:commandButton value="Generar Listado de Cierre de Mes" action="#{periodoController.generarListadoCierreMes()}" rendered="#{periodoController.urlArchivoCierreMes == null}" />
-                               <h:link id="lnkCierreMes" value="Listado de Cierre de Mes" outcome="#{periodoController.urlArchivoCierreMes}"  rendered="#{periodoController.urlArchivoCierreMes != null}" />
+                               <h:link id="lnkCierreMes" value="Listado de Cierre de Mes" onclick="window.open('#{periodoController.urlArchivoCierreMes}','Download');window.close();"  rendered="#{periodoController.urlArchivoCierreMes != null}" />
 
                                <h:outputLabel value="Descargar Listado de SAC y Vacaciones" />
                                <h:commandButton value="Generar Listado de SAC y Vacaciones" action="#{periodoController.generarListadoSacYVacaciones()}" rendered="#{periodoController.urlArchivoSacYVacaciones == null}" />
-                               <h:link id="lnkSacYVac" value="Listado de SAC y Vacaciones" outcome="#{periodoController.urlArchivoSacYVacaciones}"  rendered="#{periodoController.urlArchivoSacYVacaciones != null}" />
+                               <h:link id="lnkSacYVac" value="Listado de SAC y Vacaciones" onclick="window.open('#{periodoController.urlArchivoSacYVacaciones}','Download');window.close();"  rendered="#{periodoController.urlArchivoSacYVacaciones != null}" />
 
                                <h:outputLabel value="Descargar Recibos de Sueldos SAC y Vacaciones" />
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones" action="#{periodoController.generarRecibosSacYVac()}" rendered="#{periodoController.urlArchivoRecibosSacYVac == null}" />
-                               <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" outcome="#{periodoController.urlArchivoRecibosSacYVac}"  rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />
+                               <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" onclick="window.open('#{periodoController.urlArchivoRecibosSacYVac}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />
 
                                <h:outputText value="" />
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones Oficiales" action="#{periodoController.generarRecibosSacYVacOficiales()}" rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales == null}" />
-                               <h:link id="lnkRecibosSACyVacOficial" value="Recibos de SAC y Vacaciones Oficiales" outcome="#{periodoController.urlArchivoRecibosSavYVacOficiales}"  rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales != null}" />
+                               <h:link id="lnkRecibosSACyVacOficial" value="Recibos de SAC y Vacaciones Oficiales" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosOficiales}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales != null}" />
 
                                <h:outputLabel value="Descargar Recibos de Sueldos Accidentados" />
                                <h:commandButton value="Generar Recibos de Accidentados" action="#{periodoController.generarRecibosAcc()}" rendered="#{periodoController.urlArchivoRecibosAccidentados == null}" />
-                               <h:link id="lnkRecibosAcc" value="Recibos de Accidentados" outcome="#{periodoController.urlArchivoRecibosAccidentados}"  rendered="#{periodoController.urlArchivoRecibosAccidentados != null}" />
+                               <h:link id="lnkRecibosAcc" value="Recibos de Accidentados" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentados}','Download');window.close();"  rendered="#{periodoController.urlArchivoRecibosAccidentados != null}" />
                                
                                <h:outputText value="" />
                                <h:commandButton value="Generar Recibos de Accidentados Oficiales" action="#{periodoController.generarRecibosAccOficiales()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales == null}" />
-                               <h:link id="lnkRecibosAccOficial" value="Recibos de Accidentados Oficiales" outcome="#{periodoController.urlArchivoRecibosAccidentadosOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales != null}" />
+                               <h:link id="lnkRecibosAccOficial" value="Recibos de Accidentados Oficiales" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosOficiales}','Download');window.close();"  rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales != null}" />
                                
                                <h:outputText value="" />
                                <h:commandButton value="Generar Recibos de Accidentados Sac y Vacaciones" action="#{periodoController.generarRecibosAccSacYVac()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales == null}" />
-                               <h:link id="lnkRecibosAccSacYVac" value="Recibos de Accidentados Sac y Vacaciones" outcome="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales}"  rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales != null}" />
+                               <h:link id="lnkRecibosAccSacYVac" value="Recibos de Accidentados Sac y Vacaciones" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales != null}" />
                      
                                <h:outputLabel value="Descargar Cuadro de Aportes y Contribuciones" />
                                <h:commandButton value="Generar Aportes y Contribuciones" action="#{periodoController.generarAportesYContribuciones()}" rendered="#{periodoController.urlArchivoAportesYContribuciones == null}" />
-                               <h:link id="lnkAportesYContribuciones" value="Aportes y Contribuciones" outcome="#{periodoController.urlArchivoAportesYContribuciones}"  rendered="#{periodoController.urlArchivoAportesYContribuciones != null}" />
+                               <h:link id="lnkAportesYContribuciones" value="Aportes y Contribuciones" onclick="window.open('#{periodoController.urlArchivoAportesYContribuciones}','Download');window.close();"  rendered="#{periodoController.urlArchivoAportesYContribuciones != null}" />
                      
                                
                            </h:panelGrid>

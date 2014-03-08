@@ -31,7 +31,7 @@
                 </p:panel>
                 <p:panel rendered="#{periodoController.proyeccionesSacYVacaciones != null}">
                     <p:panel>
-                        <h:link id="lnkReporteXLS" value="Descargar proyección en hoja de cálculo" outcome="#{periodoController.urlArchivoProyeccionSacYVac}" style="font-weight: bold" />
+                        <h:link id="lnkReporteXLS" value="Descargar proyección en hoja de cálculo" onclick="window.open('#{periodoController.urlArchivoProyeccionSacYVac}','Download');window.close();" style="font-weight: bold" />
                     </p:panel>
                     <p:dataTable value="#{periodoController.proyeccionesSacYVacaciones}" 
                                      var="item" widgetVar="proyeccionTable"

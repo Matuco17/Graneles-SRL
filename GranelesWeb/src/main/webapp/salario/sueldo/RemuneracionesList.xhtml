@@ -286,7 +286,7 @@
                 </p:dataTable>
             
                  
-                <h:link id="lnkReporteXLS" value="Descargar Resumen Excel" outcome="#{sueldoController.urlResumenRemuneracionesXLS}" style="font-weight: bold" rendered="#{sueldoController.urlResumenRemuneracionesXLS != null}" />
+                    <h:link id="lnkReporteXLS" value="Descargar Resumen Excel" onclick="window.open('#{sueldoController.urlResumenRemuneracionesXLS}','Download');window.close();" style="font-weight: bold" rendered="#{sueldoController.urlResumenRemuneracionesXLS != null}" />
           
                    
                 </h:form>

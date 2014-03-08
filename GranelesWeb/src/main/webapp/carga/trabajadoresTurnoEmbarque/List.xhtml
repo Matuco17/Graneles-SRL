@@ -52,7 +52,7 @@
                                          value="Buscar"
                                          label="Buscar"/>
                         
-                        <h:link id="lnkReporteXLS" value="Descargar jornales en hoja de cálculo" outcome="#{trabajadoresTurnoEmbarqueController.urlJornalesXLS}" style="font-weight: bold" rendered="#{trabajadoresTurnoEmbarqueController.urlJornalesXLS != null}" />
+                        <h:link id="lnkReporteXLS" value="Descargar jornales en hoja de cálculo" onclick="window.open('#{trabajadoresTurnoEmbarqueController.urlJornalesXLS}','Download');window.close();" style="font-weight: bold" rendered="#{trabajadoresTurnoEmbarqueController.urlJornalesXLS != null}" />
                   
                         
                     </h:panelGrid>
