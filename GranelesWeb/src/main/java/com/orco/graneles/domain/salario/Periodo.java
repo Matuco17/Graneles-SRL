@@ -51,6 +51,8 @@ import org.joda.time.DateTime;
 public class Periodo implements Serializable, Comparable<Periodo> {
     private static final long serialVersionUID = 1L;
     
+    private static final DateFormat dfDescription = new SimpleDateFormat("yyyy-MM");
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -89,6 +91,9 @@ public class Periodo implements Serializable, Comparable<Periodo> {
     }
 
     public String getDescripcion() {
+        if (descripcion.length() != 7){
+            descripcion = dfDescription.format(desde);
+        }
         return descripcion;
     }
 
@@ -159,7 +164,7 @@ public class Periodo implements Serializable, Comparable<Periodo> {
 
     @Override
     public String toString() {
-        return descripcion;
+        return getDescripcion();
     }
 
     @Override
