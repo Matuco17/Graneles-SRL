@@ -90,6 +90,8 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @ManyToOne(optional = false)
     private FixedList tipoValor;
     
+    transient BigDecimal saldo;
+    
     
     public MovimientoCtaCte() {
     }
@@ -196,6 +198,16 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         }
         return true;
     }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+    
+    
 
     @Override
     public String toString() {

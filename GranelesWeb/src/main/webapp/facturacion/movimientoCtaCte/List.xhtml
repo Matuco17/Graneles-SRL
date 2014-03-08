@@ -33,17 +33,40 @@
                 <h:outputText escape="false" value="#{bundleFacturacion.ListMovimientoCtaCteEmpty}" rendered="#{movimientoCtaCteController.currentEmpresaMovimientos.rowCount == 0}"/>
                 <p:panel rendered="#{movimientoCtaCteController.currentEmpresaMovimientos.rowCount > 0}">
                     
-                    <h:panelGrid columns="4">
+                    <h:panelGrid columns="6">
                         <h:outputLabel value="Empresa"  />
                         <h:outputText value="#{movimientoCtaCteController.currentEmpresa.nombre}" />
                         <h:outputLabel value="Saldo:" />
                         <h:outputText value="#{movimientoCtaCteController.saldo}" >
                             <f:convertNumber pattern="#,###,##0.00" />
                         </h:outputText>
+                        
+                        <h:commandButton action="#{movimientoCtaCteController.generarReporteEmpresa}"
+                                        label="Reporte de Movimientos"
+                                        value="Reporte de Movimientos"
+                                        rendered="#{movimientoCtaCteController.urlReporteXEmpresa == null}"
+                                        />
+
+                        <h:link value="Reporte de Movimientos" 
+                                onclick="window.open('#{movimientoCtaCteController.urlReporteXEmpresa}','Download');window.close();" 
+                                rendered="#{movimientoCtaCteController.urlReporteXEmpresa != null}" />
+
+                        <h:commandButton action="#{movimientoCtaCteController.generarReporteEmpresaYFactura}"
+                                        label="Reporte de Movimientos por Factura"
+                                        value="Reporte de Movimientos por Factura"
+                                        rendered="#{movimientoCtaCteController.urlReporteXEmpresaYFactura == null}"
+                                        />
+
+                        <h:link value="Reporte de Movimientos por Factura" 
+                                onclick="window.open('#{movimientoCtaCteController.urlReporteXEmpresaYFactura}','Download');window.close();" 
+                                rendered="#{movimientoCtaCteController.urlReporteXEmpresaYFactura != null}" />
+
                     </h:panelGrid>
                     
                     <p:dataTable value="#{movimientoCtaCteController.currentEmpresaMovimientos}" 
-                                 var="item"   >
+                                 var="item" paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"   >
                         <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_fecha}">
                             <h:outputText value="#{item.fecha}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -65,6 +88,12 @@
                             <h:outputText value="#{item.credito}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
                             <f:facet name="footer">
                                 <h:outputText value="#{movimientoCtaCteController.totalCreditos}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_saldo}" style="text-align: right" >
+                            <h:outputText value="#{item.saldo}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            <f:facet name="footer">
+                                <h:outputText value="#{movimientoCtaCteController.saldo}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
                             </f:facet>
                         </p:column>
                         <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTitle_observaciones}" >
@@ -96,33 +125,6 @@
                                />
                         </p:column>
                     </p:dataTable>
-                    
-                    <h:panelGrid columns="2">
-                        <h:commandButton action="#{movimientoCtaCteController.generarReporteEmpresa}"
-                                        label="Reporte de Movimientos"
-                                        value="Reporte de Movimientos"
-                                        rendered="#{movimientoCtaCteController.urlReporteXEmpresa == null}"
-                                        />
-
-                        <h:link value="Reporte de Movimientos" 
-                                onclick="window.open('#{movimientoCtaCteController.urlReporteXEmpresa}','Download');window.close();" 
-                                rendered="#{movimientoCtaCteController.urlReporteXEmpresa != null}" />
-
-                        <h:commandButton action="#{movimientoCtaCteController.generarReporteEmpresaYFactura}"
-                                        label="Reporte de Movimientos por Factura"
-                                        value="Reporte de Movimientos por Factura"
-                                        rendered="#{movimientoCtaCteController.urlReporteXEmpresaYFactura == null}"
-                                        />
-
-                        <h:link value="Reporte de Movimientos por Factura" 
-                                onclick="window.open('#{movimientoCtaCteController.urlReporteXEmpresaYFactura}','Download');window.close();" 
-                                rendered="#{movimientoCtaCteController.urlReporteXEmpresaYFactura != null}" />
-
-                                
-                        
-                        
-                    </h:panelGrid>
-                    
                     
                 </p:panel>
                 <h:commandButton 

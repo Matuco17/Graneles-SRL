@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 /**
@@ -32,26 +34,40 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
     }
     
     public List<MovimientoCtaCte> findByEmpresa(Empresa empresa){
-        return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresa", MovimientoCtaCte.class)
+        List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresa", MovimientoCtaCte.class)
                 .setParameter("empresa", empresa)
                 .getResultList();
+        Collections.sort(movimientos);
+        return movimientos;
     }
     
     
     public List<MovimientoCtaCte> findByEmpresaYFechaYTipoValor(Empresa empresa, Date desde, Date hasta, FixedList tipoValor){
-        return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYFechas", MovimientoCtaCte.class)
+        List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYFechas", MovimientoCtaCte.class)
                 .setParameter("empresa", empresa)
                 .setParameter("desde", desde)
                 .setParameter("hasta", hasta)
                 .setParameter("tipoValor", tipoValor)
                 .getResultList();
+        Collections.sort(movimientos);
+        return movimientos;
     }
         
     public List<MovimientoCtaCte> findByEmpresaYTipoValor(Empresa empresa, FixedList tipoValor){
-        return getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYValor", MovimientoCtaCte.class)
+        List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYValor", MovimientoCtaCte.class)
                 .setParameter("empresa", empresa)
                 .setParameter("tipoValor", tipoValor)
                 .getResultList();
+        
+        Collections.sort(movimientos);
+        
+        BigDecimal saldo = BigDecimal.ZERO;
+        for (MovimientoCtaCte movCtaCte : movimientos){
+            movCtaCte.setSaldo(saldo.add(movCtaCte.getValor()));
+            saldo = saldo.add(movCtaCte.getValor());
+        } 
+        
+        return movimientos;
     }
     
     /**
