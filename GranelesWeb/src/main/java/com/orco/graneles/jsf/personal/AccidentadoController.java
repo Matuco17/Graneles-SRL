@@ -7,7 +7,7 @@ import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.personal.AccidentadoFacade;
 import com.orco.graneles.model.personal.JornalCaidoFacade;
-import com.orco.graneles.reports.ReciboJornalCaído;
+import com.orco.graneles.reports.ReciboJornalCaido;
 import com.orco.graneles.vo.AccidentadoVO;
 
 import java.io.Serializable;
@@ -332,7 +332,7 @@ public class AccidentadoController implements Serializable {
                         //Genero cada uno de los recibos
             for (JornalCaido jc : jornalesCaidos){
                 if (StringUtils.isEmpty(jc.getUrlRecibo())){
-                    ReciboJornalCaído recibo = new ReciboJornalCaído(jc);
+                    ReciboJornalCaido recibo = new ReciboJornalCaido(jc);
                     jc.setUrlRecibo(recibo.obtenerReportePDF());
                 }
             }      

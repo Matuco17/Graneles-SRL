@@ -8,6 +8,7 @@ import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.domain.seguridad.Usuario;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.seguridad.UsuarioFacade;
+import java.io.Serializable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import javax.faces.context.ExternalContext;
  */
 @ManagedBean(name = "loginController")
 @SessionScoped
-public class LoginController {
+public class LoginController implements Serializable {
 
     private String username;
     private String password;

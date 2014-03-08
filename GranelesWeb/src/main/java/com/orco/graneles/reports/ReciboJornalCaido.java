@@ -17,7 +17,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  *
  * @author orco
  */
-public class ReciboJornalCaído extends ReporteGenerico {
+public class ReciboJornalCaido extends ReporteGenerico {
 
     JornalCaidoVO jcVO;
 
@@ -28,7 +28,7 @@ public class ReciboJornalCaído extends ReporteGenerico {
     
     
     
-    public ReciboJornalCaído(JornalCaido jornalCaido) {
+    public ReciboJornalCaido(JornalCaido jornalCaido) {
         jcVO = new JornalCaidoVO(jornalCaido);
     }
     
