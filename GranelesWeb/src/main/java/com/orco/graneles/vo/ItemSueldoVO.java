@@ -24,24 +24,29 @@ public class ItemSueldoVO {
     private Date periodoDesde;
     private Date periodoHasta;
     
+    private String conceptoCodigo;
     private String conceptoDescripcion;
     
     public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial){
         item = itemSueldo;
+        this.conceptoCodigo = itemSueldo.getConceptoRecibo().getCodigo();
+        this.conceptoDescripcion = itemSueldo.getConceptoRecibo().getConcepto();
         this.oficial = oficial;
     }
     
     
     public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta){
         item = itemSueldo;
+        this.conceptoCodigo = itemSueldo.getConceptoRecibo().getCodigo();
         this.conceptoDescripcion = itemSueldo.getConceptoRecibo().getConcepto();
         this.oficial = oficial;
         this.periodoDesde = desde;
         this.periodoHasta = hasta;
     }
     
-    public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta, String descripcionConcepto){
+    public ItemSueldoVO(ItemsSueldo itemSueldo, Boolean oficial, Date desde, Date hasta, String codigoConcepto, String descripcionConcepto){
         item = itemSueldo;
+        this.conceptoCodigo = codigoConcepto;
         this.conceptoDescripcion = descripcionConcepto;
         this.oficial = oficial;
         this.periodoDesde = desde;
@@ -110,6 +115,10 @@ public class ItemSueldoVO {
         } else {
             return null;
         }
+    }
+    
+    public String getConceptoCodigo(){
+        return conceptoCodigo;
     }
     
     public String getConceptoDescripcion(){

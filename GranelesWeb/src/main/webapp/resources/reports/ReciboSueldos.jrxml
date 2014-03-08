@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboSueldosSacYVac" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
-	<property name="ireport.zoom" value="2.1435888100000087"/>
-	<property name="ireport.x" value="732"/>
-	<property name="ireport.y" value="62"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="405"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="sac" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
@@ -25,8 +25,14 @@
 	<field name="conceptoCantidad" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[conceptoCantidad]]></fieldDescription>
 	</field>
+	<field name="conceptoCodigo" class="java.lang.String">
+		<fieldDescription><![CDATA[conceptoCodigo]]></fieldDescription>
+	</field>
 	<field name="conceptoDescripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[conceptoDescripcion]]></fieldDescription>
+	</field>
+	<field name="conceptoOficial" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[conceptoOficial]]></fieldDescription>
 	</field>
 	<field name="conceptoRecibo" class="com.orco.graneles.domain.salario.ConceptoRecibo">
 		<fieldDescription><![CDATA[conceptoRecibo]]></fieldDescription>
@@ -82,6 +88,9 @@
 	<field name="sueldo" class="com.orco.graneles.domain.salario.Sueldo">
 		<fieldDescription><![CDATA[sueldo]]></fieldDescription>
 	</field>
+	<field name="sufijoCantidad" class="java.lang.String">
+		<fieldDescription><![CDATA[sufijoCantidad]]></fieldDescription>
+	</field>
 	<field name="totalDeductivo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalDeductivo]]></fieldDescription>
 	</field>
@@ -135,16 +144,19 @@
 		<groupHeader>
 			<band height="128">
 				<rectangle>
-					<reportElement x="0" y="115" width="166" height="13"/>
+					<reportElement x="423" y="115" width="24" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="166" y="115" width="39" height="13"/>
+					<reportElement x="25" y="115" width="156" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="205" y="115" width="90" height="13"/>
+					<reportElement x="181" y="115" width="39" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="295" y="115" width="85" height="13"/>
+					<reportElement x="220" y="115" width="80" height="13"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="300" y="115" width="80" height="13"/>
 				</rectangle>
 				<line>
 					<reportElement x="0" y="53" width="380" height="1"/>
@@ -204,7 +216,7 @@
 					<textFieldExpression><![CDATA[$F{fechaEgreso}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="115" width="166" height="13"/>
+					<reportElement x="25" y="115" width="156" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
@@ -212,21 +224,21 @@
 					<text><![CDATA[Concepto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="166" y="115" width="39" height="13"/>
+					<reportElement x="181" y="115" width="39" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Hs/%]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="205" y="115" width="90" height="13"/>
+					<reportElement x="220" y="115" width="80" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Remuneraciones]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="295" y="115" width="85" height="13"/>
+					<reportElement x="300" y="115" width="80" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
@@ -274,10 +286,10 @@
 					<text><![CDATA[Hasta:]]></text>
 				</staticText>
 				<rectangle>
-					<reportElement x="717" y="115" width="85" height="13"/>
+					<reportElement x="722" y="115" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="627" y="115" width="90" height="13"/>
+					<reportElement x="642" y="115" width="80" height="13"/>
 				</rectangle>
 				<staticText>
 					<reportElement x="422" y="34" width="46" height="17"/>
@@ -302,12 +314,12 @@
 					<text><![CDATA[Fecha Ingreso:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="422" y="115" width="166" height="13"/>
+					<reportElement x="423" y="115" width="166" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
 					</textElement>
-					<text><![CDATA[Concepto]]></text>
+					<text><![CDATA[Cod]]></text>
 				</staticText>
 				<textField pattern="dd/MM/yyyy">
 					<reportElement x="468" y="34" width="100" height="17"/>
@@ -349,11 +361,11 @@
 					<textFieldExpression><![CDATA[$F{fechaIngreso}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="588" y="115" width="39" height="13"/>
+					<reportElement x="463" y="115" width="39" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Hs/%]]></text>
+					<text><![CDATA[Cod]]></text>
 				</staticText>
 				<line>
 					<reportElement x="422" y="56" width="380" height="1"/>
@@ -369,7 +381,7 @@
 					<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="588" y="115" width="39" height="13"/>
+					<reportElement x="603" y="115" width="39" height="13"/>
 				</rectangle>
 				<staticText>
 					<reportElement x="627" y="91" width="74" height="15"/>
@@ -379,7 +391,7 @@
 					<text><![CDATA[Fecha Egreso:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="717" y="115" width="85" height="13"/>
+					<reportElement x="722" y="115" width="80" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
@@ -391,7 +403,7 @@
 					<textFieldExpression><![CDATA[$F{apellidoNombre}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="627" y="115" width="90" height="13"/>
+					<reportElement x="642" y="115" width="80" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
@@ -401,10 +413,10 @@
 					<reportElement x="422" y="53" width="380" height="1"/>
 				</line>
 				<rectangle>
-					<reportElement x="422" y="115" width="166" height="13"/>
+					<reportElement x="447" y="115" width="156" height="13"/>
 				</rectangle>
 				<staticText>
-					<reportElement x="422" y="115" width="166" height="13"/>
+					<reportElement x="447" y="115" width="156" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
@@ -412,7 +424,7 @@
 					<text><![CDATA[Concepto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="588" y="115" width="39" height="13"/>
+					<reportElement x="603" y="115" width="39" height="13"/>
 					<textElement textAlignment="Center">
 						<font size="9" isBold="true"/>
 					</textElement>
@@ -439,27 +451,38 @@
 					<textElement verticalAlignment="Middle"/>
 					<text><![CDATA[Liquidación de jornales]]></text>
 				</staticText>
+				<rectangle>
+					<reportElement x="1" y="115" width="24" height="13"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="115" width="24" height="13"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+						<paragraph leftIndent="2"/>
+					</textElement>
+					<text><![CDATA[Cod]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="141">
 				<rectangle>
-					<reportElement x="0" y="0" width="205" height="13"/>
+					<reportElement x="0" y="0" width="220" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="295" y="0" width="85" height="13"/>
+					<reportElement x="300" y="0" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="205" y="0" width="90" height="13"/>
+					<reportElement x="220" y="0" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="295" y="13" width="85" height="13"/>
+					<reportElement x="300" y="13" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="0" y="13" width="295" height="13"/>
+					<reportElement x="0" y="13" width="300" height="13"/>
 				</rectangle>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="205" y="0" width="90" height="13"/>
+					<reportElement x="220" y="0" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -467,7 +490,7 @@
 					<textFieldExpression><![CDATA[$F{totalesPositivos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="295" y="0" width="85" height="13"/>
+					<reportElement x="300" y="0" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -475,7 +498,7 @@
 					<textFieldExpression><![CDATA[$F{totalesNegativos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="295" y="13" width="85" height="13"/>
+					<reportElement x="300" y="13" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -483,7 +506,7 @@
 					<textFieldExpression><![CDATA[$F{totalSueldoNeto}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="1" y="0" width="165" height="13"/>
+					<reportElement x="1" y="0" width="219" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
@@ -491,7 +514,7 @@
 					<text><![CDATA[Totales]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="1" y="13" width="165" height="13"/>
+					<reportElement x="1" y="13" width="299" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
@@ -537,22 +560,22 @@
 					</graphicElement>
 				</line>
 				<rectangle>
-					<reportElement x="422" y="0" width="205" height="13"/>
+					<reportElement x="422" y="0" width="220" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="717" y="0" width="85" height="13"/>
+					<reportElement x="722" y="0" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="627" y="0" width="90" height="13"/>
+					<reportElement x="642" y="0" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="717" y="13" width="85" height="13"/>
+					<reportElement x="722" y="13" width="80" height="13"/>
 				</rectangle>
 				<rectangle>
-					<reportElement x="422" y="13" width="295" height="13"/>
+					<reportElement x="422" y="13" width="300" height="13"/>
 				</rectangle>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="627" y="0" width="90" height="13"/>
+					<reportElement x="642" y="0" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -560,7 +583,7 @@
 					<textFieldExpression><![CDATA[$F{totalesPositivos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="717" y="0" width="85" height="13"/>
+					<reportElement x="722" y="0" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -568,7 +591,7 @@
 					<textFieldExpression><![CDATA[$F{totalesNegativos}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00;-###0.00">
-					<reportElement x="717" y="13" width="85" height="13"/>
+					<reportElement x="722" y="13" width="80" height="13"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10"/>
 						<paragraph leftIndent="2" rightIndent="2"/>
@@ -584,7 +607,7 @@
 					<text><![CDATA[Totales]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="423" y="13" width="165" height="13"/>
+					<reportElement x="423" y="13" width="299" height="13"/>
 					<textElement>
 						<font size="9" isBold="true"/>
 						<paragraph leftIndent="2"/>
@@ -632,7 +655,7 @@
 	<detail>
 		<band height="17" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="166" height="17"/>
+				<reportElement x="25" y="0" width="156" height="17"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -640,7 +663,7 @@
 				<textFieldExpression><![CDATA[$F{conceptoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="166" y="0" width="39" height="17"/>
+				<reportElement x="181" y="0" width="39" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -648,7 +671,7 @@
 				<textFieldExpression><![CDATA[$F{conceptoCantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="205" y="0" width="90" height="17"/>
+				<reportElement x="220" y="0" width="80" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -656,7 +679,7 @@
 				<textFieldExpression><![CDATA[$F{valorPositivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="295" y="0" width="85" height="17"/>
+				<reportElement x="300" y="0" width="80" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -670,7 +693,7 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="422" y="0" width="166" height="17"/>
+				<reportElement x="447" y="0" width="156" height="17"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -678,7 +701,7 @@
 				<textFieldExpression><![CDATA[$F{conceptoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="588" y="0" width="39" height="17"/>
+				<reportElement x="603" y="0" width="39" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -686,7 +709,7 @@
 				<textFieldExpression><![CDATA[$F{conceptoCantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="627" y="0" width="90" height="17"/>
+				<reportElement x="642" y="0" width="80" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
@@ -694,12 +717,28 @@
 				<textFieldExpression><![CDATA[$F{valorPositivo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement x="717" y="0" width="85" height="17"/>
+				<reportElement x="722" y="0" width="80" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valorNegativo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="25" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conceptoCodigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="422" y="0" width="25" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conceptoCodigo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -56,6 +56,10 @@ public class ConceptoRecibo implements Serializable {
     @Column(name = "id")
     private Integer id;
     
+    @Size(max = 3)
+    @Column(name = "codigo")
+    private String codigo;
+    
     @Size(max = 45)
     @Column(name = "concepto")
     private String concepto;
@@ -111,6 +115,14 @@ public class ConceptoRecibo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getConcepto() {

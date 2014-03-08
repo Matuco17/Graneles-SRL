@@ -37,7 +37,7 @@ public class RecibosSueldoFeriados extends ReporteGenerico {
             
             for (ItemsSueldo is : s.getItemsSueldoCollection()){
                 if (is.getConceptoRecibo().getTipo().getId().equals(TipoConceptoRecibo.REMUNERATIVO)){
-                    dataSource.add(new ItemSueldoVO(is, true, feriado.getFecha(), feriado.getFecha(), descripcionConcepto));
+                    dataSource.add(new ItemSueldoVO(is, true, feriado.getFecha(), feriado.getFecha(), is.getConceptoRecibo().getCodigo(), descripcionConcepto));
                 } else {
                     dataSource.add(new ItemSueldoVO(is, true, feriado.getFecha(), feriado.getFecha()));
                 }
