@@ -22,6 +22,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -46,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findById", query = "SELECT f FROM Factura f WHERE f.id = :id"),
     @NamedQuery(name = "Factura.findByFecha", query = "SELECT f FROM Factura f WHERE f.fecha = :fecha"),
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
+    @NamedQuery(name = "Factura.findByPagada", query = "SELECT f FROM Factura f WHERE f.pagada = :pagada"),
     @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva")
   })
 public class Factura extends EntidadAuditable implements Serializable, Comparable<Factura> {
@@ -89,10 +92,15 @@ public class Factura extends EntidadAuditable implements Serializable, Comparabl
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
+    @JoinTable(name = "movctacte_factura", joinColumns = {
+        @JoinColumn(name = "factura", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "movimiento", referencedColumnName = "id")})
+    @ManyToMany
     private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
    
+    @Column(name = "pagada")
+    private Boolean pagada;
+    
     
     public Factura() {
     }
@@ -194,6 +202,16 @@ public class Factura extends EntidadAuditable implements Serializable, Comparabl
     public void setPorcentajeAdministracion(BigDecimal porcentajeAdministracion) {
         this.porcentajeAdministracion = porcentajeAdministracion;
     }
+
+    public Boolean isPagada() {
+        return pagada;
+    }
+
+    public void setPagada(Boolean pagada) {
+        this.pagada = pagada;
+    }
+    
+    
     
     @Override
     public int hashCode() {

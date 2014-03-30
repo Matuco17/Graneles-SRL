@@ -4,7 +4,6 @@ import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
-import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
@@ -15,7 +14,6 @@ import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
 import com.orco.graneles.reports.FacturaReport;
 import com.orco.graneles.reports.TurnosFacturados;
 import com.orco.graneles.vo.Calculadora;
-import com.orco.graneles.vo.FilaCalculadora;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -349,6 +347,10 @@ public class FacturaController implements Serializable {
         calculadora = null;
     }
 
+    public SelectItem[] getItemsFacturasSinCobrar() {
+        return JsfUtil.getSelectItems(ejbFacade.findByPagada(false), true);
+    }
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -512,5 +514,8 @@ public class FacturaController implements Serializable {
         this.calculadora = calculadora;
     }
     
+    public FacturaControllerConverter getStaticConverter(){
+        return new FacturaControllerConverter();
+    }
     
 }

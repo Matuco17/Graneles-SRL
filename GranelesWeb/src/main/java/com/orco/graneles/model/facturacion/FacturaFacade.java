@@ -5,20 +5,12 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.carga.CargaTurno;
-import com.orco.graneles.domain.carga.CargaTurnoCargas;
 import com.orco.graneles.domain.carga.Embarque;
-import com.orco.graneles.domain.carga.Mercaderia;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
 import com.orco.graneles.domain.facturacion.Factura;
-import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
-import com.orco.graneles.domain.facturacion.Tarifa;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
-import com.orco.graneles.domain.miscelaneos.FixedList;
-import com.orco.graneles.domain.miscelaneos.GrupoFacturacion;
 import com.orco.graneles.domain.miscelaneos.TipoMovimientoCtaCte;
-import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
-import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,8 +19,9 @@ import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
-import com.orco.graneles.reports.TurnosFacturados;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.EJB;
 /**
  *
@@ -131,6 +124,14 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         super.remove(entity);
     }
     
+    public List<Factura> findByPagada(Boolean pagada) {
+        List<Factura> result = getEntityManager().createNamedQuery("Factura.findByPagada", Factura.class)
+                .setParameter("pagada", pagada)
+                .getResultList();
+        
+        Collections.sort(result);
+        return result;
+    }
     
 
     

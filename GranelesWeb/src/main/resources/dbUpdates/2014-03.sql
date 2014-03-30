@@ -31,3 +31,25 @@ UPDATE graneles.concepto_recibo SET codigo="403" where id= 25;
 UPDATE graneles.concepto_recibo SET codigo="108" where id= 26;
 UPDATE graneles.concepto_recibo SET codigo="108" where id= 27;
 UPDATE graneles.concepto_recibo SET codigo="109" where id= 28;
+
+#ISSUE 91
+
+CREATE TABLE `graneles`.`movctacte_factura` (
+  `movimiento_cta_cta` BIGINT(20) NOT NULL,
+  `factura` BIGINT(20) NOT NULL,
+  PRIMARY KEY (`movimiento_cta_cta`, `factura`),
+  INDEX `mov_cta_cte_factura_fk_fact_idx` (`factura` ASC),
+  CONSTRAINT `mov_cta_cte_factura_fk_mov`
+    FOREIGN KEY (`movimiento_cta_cta`)
+    REFERENCES `graneles`.`mov_cta_cte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `mov_cta_cte_factura_fk_fact`
+    FOREIGN KEY (`factura`)
+    REFERENCES `graneles`.`factura` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+ALTER TABLE `graneles`.`factura` 
+    ADD COLUMN `pagada` TINYINT(1) NULL DEFAULT 0 AFTER `auditoria`;
+

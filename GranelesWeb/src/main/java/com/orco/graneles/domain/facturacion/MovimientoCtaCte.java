@@ -7,6 +7,7 @@ package com.orco.graneles.domain.facturacion;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -77,6 +80,12 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @JoinColumn(name = "factura", referencedColumnName = "id")
     @ManyToOne
     private Factura factura;
+    
+    @JoinTable(name = "movctacte_factura", joinColumns = {
+        @JoinColumn(name = "movimiento", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "factura", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Factura> facturaCollection;
     
     @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -176,6 +185,14 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
 
     public void setTipoValor(FixedList tipoValor) {
         this.tipoValor = tipoValor;
+    }
+
+    public Collection<Factura> getFacturaCollection() {
+        return facturaCollection;
+    }
+
+    public void setFacturaCollection(Collection<Factura> facturaCollection) {
+        this.facturaCollection = facturaCollection;
     }
 
         

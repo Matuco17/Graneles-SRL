@@ -1,17 +1,20 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
+import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoValorMovimientoCtaCte;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
+import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.MovCtaCteReport;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -24,6 +27,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.model.DualListModel;
 
 @ManagedBean(name = "movimientoCtaCteController")
 @SessionScoped
@@ -38,6 +42,8 @@ public class MovimientoCtaCteController implements Serializable {
     
     @EJB
     private MovimientoCtaCteFacade ejbFacade;
+    @EJB
+    private FacturaFacade facturaF;
     @EJB
     private FixedListFacade fixedListF;
     
@@ -58,7 +64,7 @@ public class MovimientoCtaCteController implements Serializable {
     private String urlReporteXEmpresa;
     private String urlReporteXEmpresaYFactura;
     
-    
+    private DualListModel<Factura> facturasASeleccionar;
 
     public MovimientoCtaCteController() {
     }
@@ -123,6 +129,7 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String prepareView() {
+        facturasASeleccionar = null;
         seleccionarMovimiento();        
         return "View";
     }
@@ -131,6 +138,9 @@ public class MovimientoCtaCteController implements Serializable {
         current = new MovimientoCtaCte();
         current.setEmpresa(currentEmpresa);
         current.setTipoValor(tipoValorMovimientoXDefecto);
+        facturasASeleccionar = new DualListModel<Factura>();
+        facturasASeleccionar.setSource(facturaF.findByPagada(false));
+        facturasASeleccionar.setTarget(new ArrayList<Factura>());
         selectedItemIndex = -1;
         return "Create";
     }
@@ -150,6 +160,9 @@ public class MovimientoCtaCteController implements Serializable {
 
     public String prepareEdit() {
         seleccionarMovimiento();
+        facturasASeleccionar = new DualListModel<Factura>();
+        facturasASeleccionar.setSource(new ArrayList<Factura>(facturaF.findByPagada(false)));
+        facturasASeleccionar.setTarget(new ArrayList<Factura>(current.getFacturaCollection()));
         return "Edit";
     }
 
@@ -352,6 +365,14 @@ public class MovimientoCtaCteController implements Serializable {
 
     public String getUrlReporteXEmpresaYFactura() {
         return urlReporteXEmpresaYFactura;
+    }
+
+    public DualListModel<Factura> getFacturasASeleccionar() {
+        return facturasASeleccionar;
+    }
+
+    public void setFacturasASeleccionar(DualListModel<Factura> facturasASeleccionar) {
+        this.facturasASeleccionar = facturasASeleccionar;
     }
     
     
