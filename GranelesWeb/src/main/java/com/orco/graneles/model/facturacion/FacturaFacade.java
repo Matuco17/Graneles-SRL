@@ -18,6 +18,7 @@ import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.GrupoFacturacion;
 import com.orco.graneles.domain.miscelaneos.TipoMovimientoCtaCte;
 import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
+import com.orco.graneles.domain.miscelaneos.TipoValorMovimientoCtaCte;
 import com.orco.graneles.domain.salario.TipoJornal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -65,6 +66,7 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         movCtaCteFact.setTipoMovimiento(fixedListF.find(TipoMovimientoCtaCte.FACTURA));
         movCtaCteFact.setValor(entity.getTotalConIVA());
         movCtaCteFact.setManual(Boolean.FALSE);
+        movCtaCteFact.setTipoValor(fixedListF.find(TipoValorMovimientoCtaCte.DINERO));
         
         entity.setMovimientoCtaCtesCollection(new ArrayList<MovimientoCtaCte>());
         entity.getMovimientoCtaCtesCollection().add(movCtaCteFact);

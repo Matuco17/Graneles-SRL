@@ -24,16 +24,10 @@
                                  paginator="true" rows="10"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15">
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundlePersonal.TareaTitle_descripcion}"/>
-                            </f:facet>
+                        <p:column headerText="#{bundlePersonal.TareaTitle_descripcion}" filterBy="#{item.descripcion}" filterMatchMode="contains">
                             <h:outputText value="#{item.descripcion}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundlePersonal.TareaTitle_lugar}"/>
-                            </f:facet>
+                        <p:column headerText="#{bundlePersonal.TareaTitle_lugar}">
                             <h:outputText value="#{item.lugar.toString()}"/>
                         </p:column>
                         <p:column>
