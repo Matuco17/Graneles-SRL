@@ -34,6 +34,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.joda.time.DateTime;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 
@@ -359,12 +360,17 @@ public class FacturaController implements Serializable {
     }
     
     public void crearLibroVentas() {
-        List<Factura> facturasPeriodo = ejbFacade.getFacturasPeriodo(this.mesLibro, this.anioLibro);
-        String libroDescripcion = this.anioLibro + "-" + (this.mesLibro < 10? "0" : "") + this.mesLibro;
-        
-        this.lnkLibroIVA = (new LibroIVA(facturasPeriodo, libroDescripcion, this.nroPrimeraPagina)).obtenerReportePDF();
-        
-        this.nombreLibro = "Descarga Libro Iva Ventas " + libroDescripcion;
+        try {
+            List<Factura> facturasPeriodo = ejbFacade.getFacturasPeriodo(this.mesLibro, this.anioLibro);
+            String libroDescripcion = this.anioLibro + "-" + (this.mesLibro < 10? "0" : "") + this.mesLibro;
+
+            this.lnkLibroIVA = (new LibroIVA(facturasPeriodo, libroDescripcion, this.nroPrimeraPagina)).obtenerReportePDF();
+
+            this.nombreLibro = "Descarga Libro Iva Ventas " + libroDescripcion;     
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, e.getMessage());
+        }
+       
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -531,6 +537,9 @@ public class FacturaController implements Serializable {
     }
 
     public Integer getMesLibro() {
+        if (mesLibro == null) {
+            mesLibro = (new DateTime()).getMonthOfYear();
+        }
         return mesLibro;
     }
 
@@ -539,6 +548,9 @@ public class FacturaController implements Serializable {
     }
 
     public Integer getAnioLibro() {
+        if (anioLibro == null) {
+            anioLibro = (new DateTime()).getYear();
+        }
         return anioLibro;
     }
 
@@ -551,6 +563,9 @@ public class FacturaController implements Serializable {
     }
 
     public Integer getNroPrimeraPagina() {
+        if (nroPrimeraPagina == null) {
+            nroPrimeraPagina = 1;
+        }
         return nroPrimeraPagina;
     }
 

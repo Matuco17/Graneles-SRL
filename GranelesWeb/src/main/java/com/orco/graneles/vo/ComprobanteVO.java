@@ -9,6 +9,7 @@ package com.orco.graneles.vo;
 import com.orco.graneles.domain.facturacion.Factura;
 import java.math.BigDecimal;
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -31,7 +32,14 @@ public class ComprobanteVO implements Comparable<ComprobanteVO> {
     }
     
     public String getNroComprobante(){
-        return this.factura.getComprobante();
+        String nroComprobante = this.factura.getComprobante();
+        if (nroComprobante.length() < 8) {
+            nroComprobante = StringUtils.leftPad(nroComprobante, 8, "0");
+        }
+        if (nroComprobante.length() < 13) {
+            nroComprobante = "0001-" + nroComprobante;
+        }
+        return nroComprobante;
     }
     
     public String getClienteNombre(){

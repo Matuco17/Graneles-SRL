@@ -42,10 +42,8 @@
                     </h:panelGrid>    
                 </h:form>
             </p:panel>
-            <p:panel id="panPeriodoSeleccionado" style="float: left;" rendered="#{periodoController.current != null}">
-                   <p:panel id="panPeridoView" style="float: left; width: 550px;">
-                       <h:link id="lnk" value="#{facturaController.nombreLibro}" onclick="window.open('#{facturaController.lnkLibroIVA}','Download');window.close();"  rendered="#{facturaController.lnkLibroIVA != null}" />
-                   </p:panel>
+            <p:panel id="panPeriodoSeleccionado" style="float: left;"  rendered="#{facturaController.lnkLibroIVA != null}">
+                <h:link id="lnk" value="#{facturaController.nombreLibro}" onclick="window.open('#{facturaController.lnkLibroIVA}','Download');window.close();"  rendered="#{facturaController.lnkLibroIVA != null}" />
             </p:panel>      
 
         </ui:define>
