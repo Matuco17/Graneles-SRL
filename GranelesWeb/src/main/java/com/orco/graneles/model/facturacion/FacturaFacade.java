@@ -30,7 +30,10 @@ import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.TurnosFacturados;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.EJB;
+import org.joda.time.DateTime;
 /**
  *
  * @author orco
@@ -134,7 +137,22 @@ public class FacturaFacade extends AbstractFacade<Factura> {
     }
     
     
-
+    /**
+     * Obtiene todas las facturas de un periodo ordenadas por fecha y nro de comprobante
+     * @param mes
+     * @param anio
+     * @return 
+     */
+    public List<Factura> getFacturasPeriodo(int mes, int anio) {
+        DateTime fechaBase = new DateTime(anio, mes, 1, 0, 0);
+        List<Factura> facturas = this.getEntityManager().createNamedQuery("Factura.findByMesAnio", Factura.class)
+                .setParameter("desde", fechaBase.toDate())
+                .setParameter("hasta", fechaBase.plusMonths(1).minusDays(1).toDate())
+                .getResultList();
+        
+        Collections.sort(facturas);
+        return facturas;
+    }
     
     
 }

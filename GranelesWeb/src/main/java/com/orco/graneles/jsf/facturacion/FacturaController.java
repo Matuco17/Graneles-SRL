@@ -5,6 +5,7 @@ import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.LineaFactura;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import com.orco.graneles.domain.miscelaneos.TipoTurnoFactura;
+import com.orco.graneles.domain.salario.Periodo;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
@@ -13,6 +14,7 @@ import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.LineaFacturaFacade;
 import com.orco.graneles.model.facturacion.TurnoFacturadoFacade;
 import com.orco.graneles.reports.FacturaReport;
+import com.orco.graneles.reports.LibroIVA;
 import com.orco.graneles.reports.TurnosFacturados;
 import com.orco.graneles.vo.Calculadora;
 import com.orco.graneles.vo.FilaCalculadora;
@@ -76,6 +78,13 @@ public class FacturaController implements Serializable {
     private String lnkTurnosFacturados;
     
     private Calculadora calculadora;
+    
+    //LIBOR DE IVA
+    private Integer mesLibro;
+    private Integer anioLibro;
+    private String nombreLibro;
+    private String lnkLibroIVA;
+    private Integer nroPrimeraPagina;
     
     public FacturaController() {
     }
@@ -319,7 +328,7 @@ public class FacturaController implements Serializable {
             return "List";
         }
     }
-
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -347,6 +356,15 @@ public class FacturaController implements Serializable {
         lnkFactura = null;
         lnkTurnosFacturados = null;
         calculadora = null;
+    }
+    
+    public void crearLibroVentas() {
+        List<Factura> facturasPeriodo = ejbFacade.getFacturasPeriodo(this.mesLibro, this.anioLibro);
+        String libroDescripcion = this.anioLibro + "-" + (this.mesLibro < 10? "0" : "") + this.mesLibro;
+        
+        this.lnkLibroIVA = (new LibroIVA(facturasPeriodo, libroDescripcion, this.nroPrimeraPagina)).obtenerReportePDF();
+        
+        this.nombreLibro = "Descarga Libro Iva Ventas " + libroDescripcion;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -510,6 +528,38 @@ public class FacturaController implements Serializable {
 
     public void setCalculadora(Calculadora calculadora) {
         this.calculadora = calculadora;
+    }
+
+    public Integer getMesLibro() {
+        return mesLibro;
+    }
+
+    public void setMesLibro(Integer mesLibro) {
+        this.mesLibro = mesLibro;
+    }
+
+    public Integer getAnioLibro() {
+        return anioLibro;
+    }
+
+    public void setAnioLibro(Integer anioLibro) {
+        this.anioLibro = anioLibro;
+    }
+
+    public String getNombreLibro() {
+        return nombreLibro;
+    }
+
+    public Integer getNroPrimeraPagina() {
+        return nroPrimeraPagina;
+    }
+
+    public void setNroPrimeraPagina(Integer nroPrimeraPagina) {
+        this.nroPrimeraPagina = nroPrimeraPagina;
+    }
+    
+    public String getLnkLibroIVA() {
+        return lnkLibroIVA;
     }
     
     

@@ -23,14 +23,10 @@ import com.orco.graneles.vo.AccidentadoVO;
 import com.orco.graneles.vo.SueldoAccidentadoVO;
 import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.management.monitor.MonitorSettingException;
-import org.jfree.data.time.Month;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 /**
