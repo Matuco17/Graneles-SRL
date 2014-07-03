@@ -89,22 +89,10 @@
                                <h:commandButton value="Generar Recibos de SAC y Vacaciones" action="#{periodoController.generarRecibosSacYVac()}" rendered="#{periodoController.urlArchivoRecibosSacYVac == null}" />
                                <h:link id="lnkRecibosSACyVac" value="Recibos de SAC y Vacaciones" onclick="window.open('#{periodoController.urlArchivoRecibosSacYVac}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosSacYVac != null}" />
 
-                               <h:outputText value="" />
-                               <h:commandButton value="Generar Recibos de SAC y Vacaciones Oficiales" action="#{periodoController.generarRecibosSacYVacOficiales()}" rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales == null}" />
-                               <h:link id="lnkRecibosSACyVacOficial" value="Recibos de SAC y Vacaciones Oficiales" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosOficiales}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosSavYVacOficiales != null}" />
-
                                <h:outputLabel value="Descargar Recibos de Sueldos Accidentados" />
                                <h:commandButton value="Generar Recibos de Accidentados" action="#{periodoController.generarRecibosAcc()}" rendered="#{periodoController.urlArchivoRecibosAccidentados == null}" />
                                <h:link id="lnkRecibosAcc" value="Recibos de Accidentados" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentados}','Download');window.close();"  rendered="#{periodoController.urlArchivoRecibosAccidentados != null}" />
-                               
-                               <h:outputText value="" />
-                               <h:commandButton value="Generar Recibos de Accidentados Oficiales" action="#{periodoController.generarRecibosAccOficiales()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales == null}" />
-                               <h:link id="lnkRecibosAccOficial" value="Recibos de Accidentados Oficiales" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosOficiales}','Download');window.close();"  rendered="#{periodoController.urlArchivoRecibosAccidentadosOficiales != null}" />
-                               
-                               <h:outputText value="" />
-                               <h:commandButton value="Generar Recibos de Accidentados Sac y Vacaciones" action="#{periodoController.generarRecibosAccSacYVac()}" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales == null}" />
-                               <h:link id="lnkRecibosAccSacYVac" value="Recibos de Accidentados Sac y Vacaciones" onclick="window.open('#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales}','Download');window.close();" rendered="#{periodoController.urlArchivoRecibosAccidentadosSacYVacNoOficiales != null}" />
-                     
+                        
                                <h:outputLabel value="Descargar Cuadro de Aportes y Contribuciones" />
                                <h:commandButton value="Generar Aportes y Contribuciones" action="#{periodoController.generarAportesYContribuciones()}" rendered="#{periodoController.urlArchivoAportesYContribuciones == null}" />
                                <h:link id="lnkAportesYContribuciones" value="Aportes y Contribuciones" onclick="window.open('#{periodoController.urlArchivoAportesYContribuciones}','Download');window.close();"  rendered="#{periodoController.urlArchivoAportesYContribuciones != null}" />
