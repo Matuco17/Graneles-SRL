@@ -5,7 +5,6 @@
 package com.orco.graneles.vo;
 
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
-import com.orco.graneles.domain.miscelaneos.TipoValorMovimientoCtaCte;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -49,39 +48,20 @@ public class MovCtaCteVO {
         return movCtaCte.getObservaciones();
     }
     
-    public BigDecimal getCreditoToneladas(){
-        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.TONELADA)){
-            return movCtaCte.getCredito();
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-    
-    public BigDecimal getDebitoToneladas(){
-        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.TONELADA)){
-            return movCtaCte.getDebito();
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-    
     public BigDecimal getCreditoDinero(){
-        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.DINERO)){
-            return movCtaCte.getCredito();
-        } else {
-            return BigDecimal.ZERO;
-        }
+        return movCtaCte.getCredito();
     }
     
     public BigDecimal getDebitoDinero(){
-        if (movCtaCte.getTipoValor().getId().equals(TipoValorMovimientoCtaCte.DINERO)){
-            return movCtaCte.getDebito();
-        } else {
-            return BigDecimal.ZERO;
-        }
+        return movCtaCte.getDebito();
     }
     
     public BigDecimal getValor(){
         return movCtaCte.getValor();
     }
+    
+    public BigDecimal getSaldoDinero() {
+        return movCtaCte.getSaldo();
+    }
+    
 }

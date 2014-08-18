@@ -5,7 +5,7 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
-import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCteTons;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author orco
  */
 @Stateless
-public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
+public class MovimientoCtaCteTonsFacade extends AbstractFacade<MovimientoCtaCteTons> {
     @PersistenceContext(unitName = "com.orco_GranelesWeb_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -29,12 +29,12 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         return em;
     }
 
-    public MovimientoCtaCteFacade() {
-        super(MovimientoCtaCte.class);
+    public MovimientoCtaCteTonsFacade() {
+        super(MovimientoCtaCteTons.class);
     }
     
-    public List<MovimientoCtaCte> findByEmpresa(Empresa empresa){
-        List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresa", MovimientoCtaCte.class)
+    public List<MovimientoCtaCteTons> findByEmpresa(Empresa empresa){
+        List<MovimientoCtaCteTons> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCteTons.findByEmpresa", MovimientoCtaCteTons.class)
                 .setParameter("empresa", empresa)
                 .getResultList();
         
@@ -43,19 +43,19 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         return movimientos;
     }
 
-    private void setearSaldo(List<MovimientoCtaCte> movimientos) {
+    private void setearSaldo(List<MovimientoCtaCteTons> movimientos) {
         Collections.sort(movimientos);
         
         BigDecimal saldo = BigDecimal.ZERO;
-        for (MovimientoCtaCte movCtaCte : movimientos){
+        for (MovimientoCtaCteTons movCtaCte : movimientos){
             movCtaCte.setSaldo(saldo.add(movCtaCte.getValor()));
             saldo = saldo.add(movCtaCte.getValor());
         }
     }
     
     
-    public List<MovimientoCtaCte> findByEmpresaYFecha(Empresa empresa, Date desde, Date hasta){
-        List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYFechas", MovimientoCtaCte.class)
+    public List<MovimientoCtaCteTons> findByEmpresaYFecha(Empresa empresa, Date desde, Date hasta){
+        List<MovimientoCtaCteTons> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCteTons.findByEmpresaYFechas", MovimientoCtaCteTons.class)
                 .setParameter("empresa", empresa)
                 .setParameter("hasta", hasta)
                 .getResultList();
@@ -65,8 +65,8 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         
         //Filtro los movs desde a mano asi ya los tengo con saldo
         if (desde != null) {
-            List<MovimientoCtaCte> movsFiltrados = new ArrayList<MovimientoCtaCte>();
-            for (MovimientoCtaCte m : movimientos) {
+            List<MovimientoCtaCteTons> movsFiltrados = new ArrayList<MovimientoCtaCteTons>();
+            for (MovimientoCtaCteTons m : movimientos) {
                 if (!m.getFecha().before(desde)) {
                     movsFiltrados.add(m);
                 }
@@ -82,7 +82,7 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
      * @param cantidad
      * @return 
      */
-    public List<MovimientoCtaCte> findUltimos(Integer cantidad){
+    public List<MovimientoCtaCteTons> findUltimos(Integer cantidad){
         return null; //TODO: implementar
     }
     

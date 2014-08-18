@@ -4,15 +4,8 @@
  */
 package com.orco.graneles.reports;
 
-import com.orco.graneles.domain.carga.*;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
-import com.orco.graneles.model.carga.CargaTurnoFacade;
-import com.orco.graneles.vo.CargaTurnoVO;
 import com.orco.graneles.vo.MovCtaCteVO;
-import com.orco.graneles.vo.ResumenCargaEmbarqueVO;
-import com.orco.graneles.vo.TrabajadorTurnoEmbarqueVO;
-import com.orco.graneles.vo.TurnoObservacionVO;
-import java.math.BigDecimal;
 import java.util.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -29,7 +22,6 @@ public class MovCtaCteReport extends ReporteGenerico {
     private Boolean ocultarEmpresas;
     private Boolean ocultarTotales;
     private Boolean ocultarDetalles;
-    private Boolean dinero;
     
     
     @Override
@@ -37,14 +29,13 @@ public class MovCtaCteReport extends ReporteGenerico {
         return new String[]{"logoReducido.jpg"};
     }
     
-    public MovCtaCteReport(List<MovimientoCtaCte> movimientos, Date desde, Date hasta, Boolean ocultarEmpresas, Boolean ocultarFacturas, Boolean ocultarTotales, Boolean ocultarDetalles, boolean dinero){
+    public MovCtaCteReport(List<MovimientoCtaCte> movimientos, Date desde, Date hasta, Boolean ocultarEmpresas, Boolean ocultarFacturas, Boolean ocultarTotales, Boolean ocultarDetalles){
         this.desde = desde;
         this.hasta = hasta;
         this.ocultarEmpresas = ocultarEmpresas;
         this.ocultarFacturas = ocultarFacturas;
         this.ocultarDetalles = ocultarDetalles;
         this.ocultarTotales = ocultarTotales;
-        this.dinero = dinero;
     
         Comparator<MovCtaCteVO> comparador = null;
         
@@ -75,7 +66,6 @@ public class MovCtaCteReport extends ReporteGenerico {
         params.put("ocultarFacturas", ocultarFacturas);
         params.put("ocultarDetalles", ocultarDetalles);
         params.put("ocultarTotales", ocultarTotales);
-        params.put("dinero", dinero);
         
         
         return printGenerico(ds, "ResumenCtaCteXFactura", "ResumenCuentaCorriente_"+ (new Date()).getTime());

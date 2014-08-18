@@ -1,11 +1,11 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
-import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCteTons;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
-import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
+import com.orco.graneles.model.facturacion.MovimientoCtaCteTonsFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.MovCtaCteReport;
 
@@ -16,28 +16,28 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-@ManagedBean(name = "listadoMovimientoCtaCteController")
+@ManagedBean(name = "listadoMovimientoCtaCteTonsController")
 @SessionScoped
-public class ListadoMovimientoCtaCteController implements Serializable {
+public class ListadoMovimientoCtaCteTonsController implements Serializable {
 
     @EJB
-    private MovimientoCtaCteFacade ejbFacade;
+    private MovimientoCtaCteTonsFacade ejbFacade;
     @EJB
     private FixedListFacade fixedListF;
     
     private Empresa currentEmpresa;
     private Date currentDesde;
     private Date currentHasta;
-    private Boolean agruparXFactura;
+    private Boolean agruparXTipoTurno;
     private Boolean agruparXEmpresa;
     private Boolean noMostrarDetalles;
     private FixedList tipoMovimiento;
     
-    List<MovimientoCtaCte> movimientos = null;
+    List<MovimientoCtaCteTons> movimientos = null;
     
     private String urlReporte = null;
     
-    public ListadoMovimientoCtaCteController() {
+    public ListadoMovimientoCtaCteTonsController() {
     }
 
     public void init() {
@@ -48,7 +48,8 @@ public class ListadoMovimientoCtaCteController implements Serializable {
         movimientos = ejbFacade.findByEmpresaYFecha(currentEmpresa, currentDesde, currentHasta);
         boolean ocultarEmpresa = !agruparXEmpresa && (currentEmpresa == null);
         
-        urlReporte =  (new MovCtaCteReport(movimientos, currentDesde, currentHasta, ocultarEmpresa, !agruparXFactura, noMostrarDetalles, noMostrarDetalles)).obtenerReportePDF();
+        //TODO: COMPLETAR
+        //urlReporte =  (new MovCtaCteReport(movimientos, currentDesde, currentHasta, ocultarEmpresa, !agruparXFactura, noMostrarDetalles, noMostrarDetalles)).obtenerReportePDF();
     }
 
     public Empresa getCurrentEmpresa() {
@@ -75,12 +76,12 @@ public class ListadoMovimientoCtaCteController implements Serializable {
         this.currentHasta = currentHasta;
     }
 
-    public Boolean getAgruparXFactura() {
-        return agruparXFactura;
+    public Boolean getAgruparXTipoTurno() {
+        return agruparXTipoTurno;
     }
 
-    public void setAgruparXFactura(Boolean agruparXFactura) {
-        this.agruparXFactura = agruparXFactura;
+    public void setAgruparXTipoTurno(Boolean agruparXTipoTurno) {
+        this.agruparXTipoTurno = agruparXTipoTurno;
     }
 
     public Boolean getAgruparXEmpresa() {
@@ -97,14 +98,6 @@ public class ListadoMovimientoCtaCteController implements Serializable {
 
     public void setNoMostrarDetalles(Boolean noMostrarDetalles) {
         this.noMostrarDetalles = noMostrarDetalles;
-    }
-
-    public FixedList getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public void setTipoMovimiento(FixedList tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
     }
 
     public String getUrlReporte() {

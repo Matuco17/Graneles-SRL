@@ -14,16 +14,21 @@
 
     <!-- IMPLEMENTATION -->
     <co:implementation>
-        <h:panelGrid columns="7" rendered="#{cc.attrs.editar}">
+        <h:panelGrid columns="2" rendered="#{cc.attrs.editar}">
+            <h:outputLabel for="estibamosNosotros" value="#{bundleCarga.EmbarqueTitle_estibamosNosotros}" />
+            <p:selectBooleanCheckbox id="estibamosNosotros" value="#{embarqueController.selected.estibamosNosotros}" rendered="#{cc.attrs.editar}" />
+            <h:outputText value="Si" rendered="#{!cc.attrs.editar and embarqueController.selected.estibamosNosotros}" />
+            <h:outputText value="No" rendered="#{!cc.attrs.editar and !embarqueController.selected.estibamosNosotros}"  />
+        </h:panelGrid>
+        <h:panelGrid columns="8" rendered="#{cc.attrs.editar}">
             <h:outputLabel for="cargador" value="#{bundleCarga.EmbarqueCargadorTitle_cargador}" />
             <h:outputLabel for="mercaderia" value="#{bundleCarga.EmbarqueCargadorTitle_mercaderia}" />
             <h:outputLabel for="minACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMinimo}" />
             <h:outputLabel for="maxACargar" value="#{bundleCarga.EmbarqueCargadorTitle_valorMaximo}" />
             <h:outputLabel for="comienzo" value="#{bundleCarga.EmbarqueCargadorTitle_comienzo}"  />
             <h:outputLabel for="termino" value="#{bundleCarga.EmbarqueCargadorTitle_termino}"  />
+            <h:outputLabel for="esCliente" value="#{bundleCarga.EmbarqueCargadorTitle_esCliente}" />
             <h:outputText value="" />
-
-           
             
             <h:selectOneMenu id="cargador" value="#{embarqueController.currentEC.cargador}" >
                 <f:selectItems value="#{empresaController.itemsAvailableExportadoresSelectOne}" />
@@ -35,6 +40,9 @@
             <p:inputText id="maxACargar" value="#{embarqueController.currentEC.maximo}" />
             <p:calendar id="comienzo" value="#{embarqueController.currentEC.comienzo}" pattern="dd/MM/yyyy HH:mm"/>
             <p:calendar id="termino" value="#{embarqueController.currentEC.termino}" pattern="dd/MM/yyyy HH:mm"/>
+            
+            <p:selectBooleanCheckbox id="esCliente" value="#{embarqueController.currentEC.esCliente}" rendered="#{cc.attrs.editar}" />
+            
             <h:commandButton 
                 image="/faces/resources/images/new.png" 
                 action="#{embarqueController.agregarCargador()}" 
@@ -96,6 +104,11 @@
             <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_destino}" >
                 <p:inputText value="#{cargador.destino}" rendered="#{cc.attrs.editar}" />
                 <h:outputText value="#{cargador.destino}" rendered="#{!cc.attrs.editar}" />
+            </p:column>
+            <p:column headerText="#{bundleCarga.EmbarqueCargadorTitle_esCliente}" >
+                <p:selectBooleanCheckbox id="estibamosNosotros" value="#{cargador.esCliente}" rendered="#{cc.attrs.editar}" />
+                <h:outputText value="Si" rendered="#{!cc.attrs.editar and cargador.esCliente}"  />
+                <h:outputText value="No" rendered="#{!cc.attrs.editar and !cargador.esCliente}" />
             </p:column>
             <p:column rendered="#{cc.attrs.editar}">
                 <h:commandButton 

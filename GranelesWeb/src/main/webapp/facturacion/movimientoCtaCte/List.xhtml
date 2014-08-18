@@ -8,14 +8,12 @@
 
     <f:metadata>  
         <f:event type="preRenderView" listener="#{movimientoCtaCteController.init()}" />
-        <f:viewParam name="tipoid" value="#{movimientoCtaCteController.tipoValorMovimientoXDefectoId}" />
     </f:metadata> 
 
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundleFacturacion.ListMovimientoCtaCteTitle}"/>
-            <h:outputText value="#{movimientoCtaCteController.sufijoTitulo}" />
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">

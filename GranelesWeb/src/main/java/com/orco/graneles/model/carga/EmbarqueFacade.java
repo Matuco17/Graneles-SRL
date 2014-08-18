@@ -5,7 +5,11 @@
 package com.orco.graneles.model.carga;
 
 import com.orco.graneles.domain.carga.ArchivoEmbarque;
+import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.Embarque;
+import com.orco.graneles.domain.carga.EmbarqueCargador;
+import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCteTons;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -16,9 +20,11 @@ import javax.persistence.PersistenceContext;
 
 import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.NegocioException;
+import com.orco.graneles.model.facturacion.MovimientoCtaCteTonsFacade;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
@@ -37,6 +43,8 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
     
     @EJB
     private ArchivoEmbarqueFacade archivoEmbarqueFacade;
+    @EJB
+    private MovimientoCtaCteTonsFacade movimientoCtaCteFacade;
 
     /**
      * Método que busca el mayor embarque del año en cuestión, de ahi 
@@ -186,7 +194,52 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
             throw new NegocioException("No se puede desconosolidar un embarque previamente consolidado");
         }
         
+        //Actualizo los movimientos en cuenta corriente de toneladas disponibles, remuevo los existentes y creo nuevos
+        for (TurnoEmbarque t : entity.getTurnoEmbarqueCollection()) {
+            for (CargaTurno ct : t.getCargaTurnoCollection()) {
+                limpiarMovimientosToneladas(ct);
+                crearMovimientosToneladas(ct);
+            }
+        }
+        
         super.edit(entity);
+    }
+
+    private void limpiarMovimientosToneladas(CargaTurno ct) {
+        for (MovimientoCtaCteTons m : ct.getMovimientoCtaCteCollection()) {
+            movimientoCtaCteFacade.remove(m);
+        }
+        ct.setMovimientoCtaCteCollection(new ArrayList<MovimientoCtaCteTons>());
+    }
+    
+    private void crearMovimientosToneladas(CargaTurno ct) {
+        boolean deboCrearMovimiento = false;
+        
+        for (EmbarqueCargador ec : ct.getTurnoEmbarque().getEmbarque().getEmbarqueCargadoresCollection()) {
+            deboCrearMovimiento |= ec.getEsCliente();
+        }
+        
+        if (deboCrearMovimiento) {
+            MovimientoCtaCteTons nuevoMovimiento = new MovimientoCtaCteTons();
+            nuevoMovimiento.setEmpresa(ct.getCargador());
+            nuevoMovimiento.setFecha(ct.getTurnoEmbarque().getFecha());
+            nuevoMovimiento.setManual(false);
+            nuevoMovimiento.setCargaTurno(ct);
+            nuevoMovimiento.setTipoTurno(ct.getTurnoEmbarque().getTipo());
+            nuevoMovimiento.setObservaciones(
+                    "Embarque: " + ct.getTurnoEmbarque().getEmbarque().getCodigo() + 
+                    ", Buque: " + ct.getTurnoEmbarque().getEmbarque().getBuque().getDescripcion());
+            
+            if (ct.getTurnoEmbarque().getEmbarque().getEstibamosNosotros()) {
+                nuevoMovimiento.setValor(ct.getTotalCargado());
+            } else {
+                nuevoMovimiento.setValor(ct.getTotalCargado().negate());
+            }
+            
+            //Agrego el nuevo movimiento
+            ct.getMovimientoCtaCteCollection().add(nuevoMovimiento);
+        }
+        
     }
     
     public List<Embarque> findByFacturado(Boolean facturado){

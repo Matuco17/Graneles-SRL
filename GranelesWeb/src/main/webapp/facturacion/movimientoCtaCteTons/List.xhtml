@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{movimientoCtaCteTonsController.init()}" />
+    </f:metadata> 
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundleFacturacion.ListMovimientoCtaCteTonsTitle}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                
+                <p:panel>
+                    <h:panelGrid columns="3" >
+                        <h:outputLabel value="Seleccione Empresa" for="seleccionEmpresa" />
+                        <h:selectOneMenu value="#{movimientoCtaCteTonsController.currentEmpresa}" id="seleccionEmpresa">
+                            <f:selectItems value="#{empresaController.itemsAvailableSelectOne}" />
+                        </h:selectOneMenu>
+                        <h:commandButton value="Seleccionar Empresa" action="#{movimientoCtaCteTonsController.seleccionarEmpresa()}" />
+                    </h:panelGrid>
+                </p:panel>
+                
+                <h:outputText escape="false" value="#{bundleFacturacion.ListMovimientoCtaCteTonsEmpty}" rendered="#{movimientoCtaCteTonsController.currentEmpresaMovimientos.rowCount == 0}"/>
+                <p:panel rendered="#{movimientoCtaCteTonsController.currentEmpresaMovimientos.rowCount > 0}">
+                    
+                    <h:panelGrid columns="6">
+                        <h:outputLabel value="Empresa"  />
+                        <h:outputText value="#{movimientoCtaCteTonsController.currentEmpresa.nombre}" />
+                        <h:outputLabel value="Saldo:" />
+                        <h:outputText value="#{movimientoCtaCteTonsController.saldo}" >
+                            <f:convertNumber pattern="#,###,##0.00" />
+                        </h:outputText>
+                        
+                        <h:commandButton action="#{movimientoCtaCteTonsController.generarReporteEmpresa}"
+                                        label="Reporte de Movimientos"
+                                        value="Reporte de Movimientos"
+                                        rendered="#{movimientoCtaCteTonsController.urlReporteXEmpresa == null}"
+                                        />
+
+                        <h:link value="Reporte de Movimientos" 
+                                onclick="window.open('#{movimientoCtaCteTonsController.urlReporteXEmpresa}','Download');window.close();" 
+                                rendered="#{movimientoCtaCteTonsController.urlReporteXEmpresa != null}" />
+ 
+                    </h:panelGrid>
+                    
+                    <p:dataTable value="#{movimientoCtaCteTonsController.currentEmpresaMovimientos}" 
+                                 var="item" paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"   >
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_fecha}">
+                            <h:outputText value="#{item.fecha}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_tipoTurno}"  >
+                            <h:outputText value="#{item.tipoTurno.toString()}"/>
+                            <f:facet name="footer">
+                                <h:outputText value="Totales" />
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_debito}" style="text-align: right" >
+                            <h:outputText value="#{item.debito}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            <f:facet name="footer">
+                                <h:outputText value="#{movimientoCtaCteTonsController.totalDebitos}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_credito}" style="text-align: right" >
+                            <h:outputText value="#{item.credito}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            <f:facet name="footer">
+                                <h:outputText value="#{movimientoCtaCteTonsController.totalCreditos}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_saldo}" style="text-align: right" >
+                            <h:outputText value="#{item.saldo}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            <f:facet name="footer">
+                                <h:outputText value="#{movimientoCtaCteTonsController.saldo}"><f:convertNumber pattern="#,###,##0.00" /></h:outputText>
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="#{bundleFacturacion.MovimientoCtaCteTonsTitle_observaciones}" >
+                            <h:outputText value="#{item.observaciones}" />
+                        </p:column>
+                        <p:column>
+                            <h:commandButton 
+                                image="/faces/resources/images/view.png" 
+                                action="#{movimientoCtaCteTonsController.prepareView}" 
+                                value="#{bundleFacturacion.MovimientoCtaCteTonsViewLink}"
+                                title="#{bundleFacturacion.MovimientoCtaCteTonsViewLink}"
+                                />
+                            
+                            <h:commandButton 
+                                image="/faces/resources/images/edit.png" 
+                                action="#{movimientoCtaCteTonsController.prepareEdit}" 
+                                value="#{bundleFacturacion.MovimientoCtaCteTonsEditLink}"
+                                title="#{bundleCarga.MovimientoCtaCteTonsEditLink}"
+                                rendered="#{item.manual}"
+                                />
+
+                             <h:commandButton 
+                                image="/faces/resources/images/destroy.png"
+                                onclick="return confirm('¿Esta seguro que desea eliminar este Movimiento de Cuenta Corriente?');" 
+                                action="#{movimientoCtaCteTonsController.destroy}" 
+                                title="#{bundleFacturacion.MovimientoCtaCteTonsDestroyLink}"
+                                value="#{bundleFacturacion.MovimientoCtaCteTonsDestroyLink}"
+                                rendered="#{item.manual}"
+                               />
+                        </p:column>
+                    </p:dataTable>
+                    
+                </p:panel>
+                <h:commandButton 
+                    image="/faces/resources/images/new.png" 
+                    action="#{movimientoCtaCteTonsController.prepareCreate}" 
+                    value="#{bundleFacturacion.MovimientoCtaCteTonsCreateLink}"
+                    title="#{bundleFacturacion.MovimientoCtaCteTonsCreateLink}"
+                    />
+                
+              
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
