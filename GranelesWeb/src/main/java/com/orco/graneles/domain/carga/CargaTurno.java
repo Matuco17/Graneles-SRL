@@ -6,6 +6,7 @@ package com.orco.graneles.domain.carga;
 
 import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.facturacion.LineaFactura;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCteTons;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,6 +53,9 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
     private Collection<CargaTurnoCargas> cargasCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargaTurno", orphanRemoval = true)
+    private Collection<MovimientoCtaCteTons> movimientoCtaCteCollection;
     
     @JoinColumn(name = "turno_facturado", referencedColumnName = "id")
     @ManyToOne()
@@ -148,9 +152,15 @@ public class CargaTurno implements Serializable, Comparable<CargaTurno> {
     public void setCantidadLineas(Integer cantidadLineas) {
         this.cantidadLineas = cantidadLineas;
     }
-    
-    
 
+    public Collection<MovimientoCtaCteTons> getMovimientoCtaCteCollection() {
+        return movimientoCtaCteCollection;
+    }
+
+    public void setMovimientoCtaCteCollection(Collection<MovimientoCtaCteTons> movimientoCtaCteCollection) {
+        this.movimientoCtaCteCollection = movimientoCtaCteCollection;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -155,6 +155,9 @@ public class Embarque extends EntidadAuditable implements Serializable, Comparab
     @Column(name = "facturado")
     private Boolean facturado;
     
+    @Column(name = "estibamos_nosotros")
+    private Boolean estibamosNosotros = Boolean.TRUE;
+    
     transient private Boolean consolidadoEnBusqueda;
     
     @JoinColumn(name = "coordinador", referencedColumnName = "id")
@@ -383,8 +386,14 @@ public class Embarque extends EntidadAuditable implements Serializable, Comparab
     public void setFinFumigacion(Date finFumigacion) {
         this.finFumigacion = finFumigacion;
     }
-    
-    
+
+    public Boolean getEstibamosNosotros() {
+        return estibamosNosotros;
+    }
+
+    public void setEstibamosNosotros(Boolean estibamosNosotros) {
+        this.estibamosNosotros = estibamosNosotros;
+    }
     
     public BigDecimal getMaxACargar() {
         BigDecimal max = BigDecimal.ZERO;

@@ -62,6 +62,9 @@ public class EmbarqueCargador implements Serializable {
     @Column(name = "destino")
     private String destino;
     
+    @Column(name = "es_cliente")
+    private Boolean esCliente = Boolean.TRUE;
+    
     private transient String urlDeclaracionJurada;
     
 
@@ -143,6 +146,15 @@ public class EmbarqueCargador implements Serializable {
     public void setMercaderia(Mercaderia mercaderia) {
         this.mercaderia = mercaderia;
     }
+
+    public Boolean getEsCliente() {
+        return esCliente;
+    }
+
+    public void setEsCliente(Boolean esCliente) {
+        this.esCliente = esCliente;
+    }
+    
     
     
     @Override

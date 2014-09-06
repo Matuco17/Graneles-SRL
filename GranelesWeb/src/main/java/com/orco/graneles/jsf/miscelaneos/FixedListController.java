@@ -229,10 +229,6 @@ public class FixedListController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findByLista(ConceptoFacturado.ID_LISTA), true);
     }
     
-    public SelectItem[] getTipoValorMovimientoCtaCteSelectMany(){
-        return JsfUtil.getSelectItems(ejbFacade.findByLista(TipoValorMovimientoCtaCte.ID_LISTA), false);
-    }
-    
     @FacesConverter(forClass=FixedList.class)
     public static class FixedListControllerConverter implements Converter {
 

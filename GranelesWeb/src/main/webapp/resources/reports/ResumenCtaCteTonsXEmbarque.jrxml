@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCtaCteXFactura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCtaCteTonsXEmbarque" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.9487171000000165"/>
-	<property name="ireport.x" value="53"/>
-	<property name="ireport.y" value="244"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="276"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<parameter name="desde" class="java.util.Date"/>
 	<parameter name="hasta" class="java.util.Date"/>
-	<parameter name="ocultarFacturas" class="java.lang.Boolean"/>
+	<parameter name="ocultarEmbarques" class="java.lang.Boolean"/>
 	<parameter name="ocultarEmpresas" class="java.lang.Boolean"/>
 	<parameter name="ocultarDetalles" class="java.lang.Boolean"/>
 	<parameter name="ocultarTotales" class="java.lang.Boolean"/>
+	<parameter name="ocultarTipoTurno" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -22,17 +23,17 @@
 	<field name="debito" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[debito]]></fieldDescription>
 	</field>
+	<field name="embarqueDescripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[embarqueDescripcion]]></fieldDescription>
+	</field>
 	<field name="empresaNombre" class="java.lang.String">
 		<fieldDescription><![CDATA[empresaNombre]]></fieldDescription>
-	</field>
-	<field name="facturaDescripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[facturaDescripcion]]></fieldDescription>
 	</field>
 	<field name="fecha" class="java.util.Date">
 		<fieldDescription><![CDATA[fecha]]></fieldDescription>
 	</field>
-	<field name="fechaFactura" class="java.util.Date">
-		<fieldDescription><![CDATA[fechaFactura]]></fieldDescription>
+	<field name="fechaTurnoEmbarque" class="java.util.Date">
+		<fieldDescription><![CDATA[fechaTurnoEmbarque]]></fieldDescription>
 	</field>
 	<field name="observaciones" class="java.lang.String">
 		<fieldDescription><![CDATA[observaciones]]></fieldDescription>
@@ -40,13 +41,16 @@
 	<field name="saldo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[saldo]]></fieldDescription>
 	</field>
+	<field name="tipoTurno" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoTurno]]></fieldDescription>
+	</field>
 	<field name="valor" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valor]]></fieldDescription>
 	</field>
-	<variable name="credito_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+	<variable name="credito_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmbarque" calculation="Sum">
 		<variableExpression><![CDATA[$F{credito}]]></variableExpression>
 	</variable>
-	<variable name="debito_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+	<variable name="debito_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmbarque" calculation="Sum">
 		<variableExpression><![CDATA[$F{debito}]]></variableExpression>
 	</variable>
 	<variable name="credito_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
@@ -61,7 +65,7 @@
 	<variable name="debito_3" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{debito}]]></variableExpression>
 	</variable>
-	<variable name="saldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoFacturacion" calculation="Sum">
+	<variable name="saldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmbarque" calculation="Sum">
 		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
 	</variable>
 	<variable name="saldo_2" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
@@ -71,7 +75,7 @@
 		<groupExpression><![CDATA[$F{empresaNombre}]]></groupExpression>
 		<groupHeader>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarFacturas}))]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarEmbarques}))]]></printWhenExpression>
 				<staticText>
 					<reportElement x="0" y="5" width="65" height="20"/>
 					<textElement verticalAlignment="Middle">
@@ -88,14 +92,14 @@
 				</textField>
 				<line>
 					<reportElement x="28" y="24" width="526" height="1">
-						<printWhenExpression><![CDATA[$P{ocultarFacturas}]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{ocultarEmbarques}]]></printWhenExpression>
 					</reportElement>
 				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarFacturas}))]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarEmbarques}))]]></printWhenExpression>
 				<rectangle>
 					<reportElement x="198" y="0" width="197" height="20"/>
 				</rectangle>
@@ -153,7 +157,7 @@
 				</staticText>
 			</band>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || !$P{ocultarTotales} || !$P{ocultarFacturas})]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || !$P{ocultarTotales} || !$P{ocultarEmbarques})]]></printWhenExpression>
 				<rectangle>
 					<reportElement x="474" y="0" width="80" height="20"/>
 				</rectangle>
@@ -173,7 +177,7 @@
 				</textField>
 				<line>
 					<reportElement x="0" y="19" width="554" height="1">
-						<printWhenExpression><![CDATA[$P{ocultarFacturas}]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{ocultarEmbarques}]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<rectangle>
@@ -198,31 +202,31 @@
 			</band>
 		</groupFooter>
 	</group>
-	<group name="GrupoFacturacion">
-		<groupExpression><![CDATA[$F{facturaDescripcion}]]></groupExpression>
+	<group name="GrupoEmbarque">
+		<groupExpression><![CDATA[$F{embarqueDescripcion}]]></groupExpression>
 		<groupHeader>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarFacturas} || $P{ocultarTotales})]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmbarques} || $P{ocultarTotales})]]></printWhenExpression>
 				<staticText>
 					<reportElement x="14" y="5" width="85" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Factura:]]></text>
+					<text><![CDATA[Embarque:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="98" y="5" width="100" height="20"/>
+					<reportElement x="99" y="4" width="214" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{facturaDescripcion}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{embarqueDescripcion}]]></textFieldExpression>
 				</textField>
-				<textField pattern="dd/MM/yyyy">
-					<reportElement x="198" y="5" width="126" height="20"/>
+				<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+					<reportElement x="313" y="5" width="70" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{fechaFactura}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{fechaTurnoEmbarque}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="14" y="24" width="540" height="1"/>
@@ -231,7 +235,7 @@
 		</groupHeader>
 		<groupFooter>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarFacturas} || $P{ocultarTotales})]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmbarques} || $P{ocultarTotales})]]></printWhenExpression>
 				<rectangle>
 					<reportElement x="28" y="0" width="71" height="20"/>
 				</rectangle>
@@ -269,7 +273,7 @@
 						<font size="11"/>
 						<paragraph leftIndent="2"/>
 					</textElement>
-					<text><![CDATA[Totales Factura]]></text>
+					<text><![CDATA[Totales Embarque]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="99" y="0" width="89" height="20"/>
@@ -285,11 +289,11 @@
 						<font size="11"/>
 						<paragraph leftIndent="2"/>
 					</textElement>
-					<text><![CDATA[Saldo Fact:]]></text>
+					<text><![CDATA[Saldo Emb:]]></text>
 				</staticText>
 			</band>
 			<band height="25">
-				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || !$P{ocultarTotales} || $P{ocultarFacturas})]]></printWhenExpression>
+				<printWhenExpression><![CDATA[!($P{ocultarEmpresas} || !$P{ocultarTotales} || $P{ocultarTipoTurno})]]></printWhenExpression>
 				<rectangle>
 					<reportElement x="474" y="0" width="80" height="20"/>
 				</rectangle>
@@ -301,21 +305,21 @@
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Factura:]]></text>
+					<text><![CDATA[Tipo Turno]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="98" y="0" width="100" height="20"/>
+					<reportElement x="98" y="0" width="215" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{facturaDescripcion}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{tipoTurno}]]></textFieldExpression>
 				</textField>
-				<textField pattern="dd/MM/yyyy">
-					<reportElement x="198" y="0" width="100" height="20"/>
+				<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+					<reportElement x="313" y="0" width="70" height="20"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{fechaFactura}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{fechaTurnoEmbarque}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="14" y="20" width="540" height="1"/>
@@ -385,13 +389,13 @@
 				<textElement verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Resumen de Movimientos de Cuentas Corrientes en Dinero"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Resumen de Movimientos de Cuentas Corrientes en Toneladas"]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="28" y="106" width="526" height="1">
-					<printWhenExpression><![CDATA[(($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarFacturas}))
+					<printWhenExpression><![CDATA[(($P{ocultarEmpresas} || ($P{ocultarTotales} && $P{ocultarEmbarques}))
 &&
-($P{ocultarFacturas} || $P{ocultarTotales}))]]></printWhenExpression>
+($P{ocultarEmbarques} || $P{ocultarTotales}))]]></printWhenExpression>
 				</reportElement>
 			</line>
 		</band>
@@ -400,18 +404,11 @@
 		<band height="21" splitType="Stretch">
 			<printWhenExpression><![CDATA[!($P{ocultarDetalles})]]></printWhenExpression>
 			<textField pattern="dd/MM/yy">
-				<reportElement x="29" y="0" width="69" height="20"/>
+				<reportElement x="28" y="0" width="70" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="99" y="1" width="242" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<paragraph leftIndent="2" rightIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="413" y="0" width="70" height="20"/>
@@ -434,6 +431,9 @@
 				<reportElement x="29" y="20" width="526" height="1"/>
 			</line>
 			<line>
+				<reportElement x="197" y="0" width="1" height="20"/>
+			</line>
+			<line>
 				<reportElement x="28" y="0" width="1" height="20"/>
 			</line>
 			<line>
@@ -454,6 +454,20 @@
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="0" width="143" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="1" width="98" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoTurno}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

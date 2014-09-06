@@ -9,37 +9,37 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundleFacturacion.ViewMovimientoCtaCteTitle}" />
+            <h:outputText value="#{bundleFacturacion.ViewMovimientoCtaCteTonsTitle}" />
         </ui:define>
         <ui:define name="body">
             <h:form>
                 
-                <Co:movimientoCtaCteCC editar="false" nuevo="false"/>
+                <Co:movimientoCtaCteTonsCC editar="false" nuevo="false"/>
 
                 <p:panel style="float:left; width: 100%" >
                     <h:panelGrid columns="4">
-                        <h:commandButton action="#{movimientoCtaCteController.destroyAndView}" 
+                        <h:commandButton action="#{movimientoCtaCteTonsController.destroyAndView}" 
                                          image="/faces/resources/images/destroy.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteDestroyLink}"
-                                         title="#{bundleFacturacion.MovimientoCtaCteDestroyLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsDestroyLink}"
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsDestroyLink}"
                                          onclick="return confirm('¿Esta seguro que desea eliminar este MovimientoCtaCte?');" 
                                          rendered="#{loginController.esGerente()}"
                                          />
 
                         <h:commandButton action="Edit" 
                                          image="/faces/resources/images/edit.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteEditLink}"
-                                         title="#{bundleFacturacion.MovimientoCtaCteEditLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsEditLink}"
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsEditLink}"
                                          />
-                        <h:commandButton action="#{movimientoCtaCteController.prepareCreate}" 
+                        <h:commandButton action="#{movimientoCtaCteTonsController.prepareCreate}" 
                                          image="/faces/resources/images/new.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteCreateLink}"
-                                         title="#{bundleFacturacion.MovimientoCtaCteCreateLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsCreateLink}"
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsCreateLink}"
                                          />
-                        <h:commandButton action="#{movimientoCtaCteController.prepareList}"
+                        <h:commandButton action="#{movimientoCtaCteTonsController.prepareList}"
                                          image="/faces/resources/images/viewAll.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteShowAllLink}"
-                                         title="#{bundleFacturacion.MovimientoCtaCteShowAllLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsShowAllLink}"
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsShowAllLink}"
                                          />
                     </h:panelGrid>
                 </p:panel>
