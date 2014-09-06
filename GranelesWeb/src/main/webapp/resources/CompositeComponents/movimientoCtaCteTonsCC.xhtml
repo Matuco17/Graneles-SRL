@@ -36,21 +36,21 @@
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTonsTitle_tipo}" for="tipo" />
             <p:selectOneRadio id="tipo" value="#{movimientoCtaCteTonsController.tipo}" disabled="#{!cc.attrs.editar}" >
-                <f:selectItem itemValue="#{movimientoCtaCteController.tipo_debito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_debito}" />
-                <f:selectItem itemValue="#{movimientoCtaCteController.tipo_credito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_credito}" />
+                <f:selectItem itemValue="#{movimientoCtaCteTonsController.tipo_debito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTonsTitle_debito}" />
+                <f:selectItem itemValue="#{movimientoCtaCteTonsController.tipo_credito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTonsTitle_credito}" />
             </p:selectOneRadio>
 
-            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_monto}" for="monto" />
-            <p:inputText value="#{movimientoCtaCteController.monto}" id="monto" rendered="#{cc.attrs.editar}" >
+            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTonsTitle_monto}" for="monto" />
+            <p:inputText value="#{movimientoCtaCteTonsController.monto}" id="monto" rendered="#{cc.attrs.editar}" >
                 <f:convertNumber pattern="###,###,##0.00" />
             </p:inputText>
-            <h:outputText value="#{movimientoCtaCteController.monto}" rendered="#{!cc.attrs.editar}" >
+            <h:outputText value="#{movimientoCtaCteTonsController.monto}" rendered="#{!cc.attrs.editar}" >
                 <f:convertNumber pattern="###,###,##0.00" />
             </h:outputText>
 
-            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_observaciones}" for="observaciones" />
-            <p:inputTextarea value="#{movimientoCtaCteController.selected.observaciones}" id="observaciones" rendered="#{cc.attrs.editar}" />
-            <h:outputText value="#{movimientoCtaCteController.selected.observaciones}" rendered="#{!cc.attrs.editar}" />
+            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTonsTitle_observaciones}" for="observaciones" />
+            <p:inputTextarea value="#{movimientoCtaCteTonsController.selected.observaciones}" id="observaciones" rendered="#{cc.attrs.editar}" />
+            <h:outputText value="#{movimientoCtaCteTonsController.selected.observaciones}" rendered="#{!cc.attrs.editar}" />
 
         </h:panelGrid>
     </cc:implementation>

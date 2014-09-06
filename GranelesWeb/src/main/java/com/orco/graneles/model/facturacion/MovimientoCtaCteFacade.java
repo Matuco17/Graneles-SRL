@@ -57,6 +57,7 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
     public List<MovimientoCtaCte> findByEmpresaYFecha(Empresa empresa, Date desde, Date hasta){
         List<MovimientoCtaCte> movimientos = getEntityManager().createNamedQuery("MovimientoCtaCte.findByEmpresaYFechas", MovimientoCtaCte.class)
                 .setParameter("empresa", empresa)
+                .setParameter("desde", null)
                 .setParameter("hasta", hasta)
                 .getResultList();
         

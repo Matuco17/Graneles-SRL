@@ -7,6 +7,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteTonsFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.MovCtaCteReport;
+import com.orco.graneles.reports.MovCtaCteTonsReport;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,7 +53,7 @@ public class MovimientoCtaCteTonsController implements Serializable {
     private BigDecimal monto;
     
     private String urlReporteXEmpresa;
-    private String urlReporteXEmpresaYFactura;
+    private String urlReporteXEmpresaYEmbarque;
     
     
 
@@ -91,17 +92,16 @@ public class MovimientoCtaCteTonsController implements Serializable {
             
             currentEmpresaMovimientos = new ListDataModel(movimientos);
             urlReporteXEmpresa = null;
-            urlReporteXEmpresaYFactura = null;            
+            urlReporteXEmpresaYEmbarque = null;            
         }
     }
     
     public void generarReporteEmpresa(){
-        //TODO: COMPLETE
-        //urlReporteXEmpresa =  (new MovCtaCteReport(movimientos, null, null, false, true, false, false)).obtenerReportePDF();
+        urlReporteXEmpresa =  (new MovCtaCteTonsReport(movimientos, null, null, false, true, false, false, false)).obtenerReportePDF();
     }
 
-    public void generarReporteEmpresaYFactura(){
-        //urlReporteXEmpresaYFactura =  (new MovCtaCteReport(movimientos, null, null, false, false, false, false)).obtenerReportePDF();
+    public void generarReporteEmpresaYEmbarque(){
+        urlReporteXEmpresaYEmbarque =  (new MovCtaCteTonsReport(movimientos, null, null, false, false, false, false, false)).obtenerReportePDF();
     }
 
     private MovimientoCtaCteTonsFacade getFacade() {
@@ -122,6 +122,7 @@ public class MovimientoCtaCteTonsController implements Serializable {
     public String prepareCreate() {
         current = new MovimientoCtaCteTons();
         current.setEmpresa(currentEmpresa);
+        monto = BigDecimal.ZERO;
         selectedItemIndex = -1;
         return "Create";
     }
@@ -312,8 +313,8 @@ public class MovimientoCtaCteTonsController implements Serializable {
         return urlReporteXEmpresa;
     }
 
-    public String getUrlReporteXEmpresaYFactura() {
-        return urlReporteXEmpresaYFactura;
+    public String getUrlReporteXEmpresaYEmbarque() {
+        return urlReporteXEmpresaYEmbarque;
     }
     
     

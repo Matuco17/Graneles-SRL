@@ -216,7 +216,9 @@ public class EmbarqueFacade extends AbstractFacade<Embarque> {
         boolean deboCrearMovimiento = false;
         
         for (EmbarqueCargador ec : ct.getTurnoEmbarque().getEmbarque().getEmbarqueCargadoresCollection()) {
-            deboCrearMovimiento |= ec.getEsCliente();
+            deboCrearMovimiento |= 
+                    ec.getCargador().getId().equals(ct.getCargador().getId()) 
+                    && !ec.getEsCliente();
         }
         
         if (deboCrearMovimiento) {

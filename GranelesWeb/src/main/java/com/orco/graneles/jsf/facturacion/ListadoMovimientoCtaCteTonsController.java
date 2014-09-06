@@ -8,6 +8,7 @@ import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteTonsFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.MovCtaCteReport;
+import com.orco.graneles.reports.MovCtaCteTonsReport;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class ListadoMovimientoCtaCteTonsController implements Serializable {
     private Date currentHasta;
     private Boolean agruparXTipoTurno;
     private Boolean agruparXEmpresa;
+    private Boolean agruparXEmbarque;
     private Boolean noMostrarDetalles;
     private FixedList tipoMovimiento;
     
@@ -48,8 +50,7 @@ public class ListadoMovimientoCtaCteTonsController implements Serializable {
         movimientos = ejbFacade.findByEmpresaYFecha(currentEmpresa, currentDesde, currentHasta);
         boolean ocultarEmpresa = !agruparXEmpresa && (currentEmpresa == null);
         
-        //TODO: COMPLETAR
-        //urlReporte =  (new MovCtaCteReport(movimientos, currentDesde, currentHasta, ocultarEmpresa, !agruparXFactura, noMostrarDetalles, noMostrarDetalles)).obtenerReportePDF();
+        urlReporte =  (new MovCtaCteTonsReport(movimientos, currentDesde, currentHasta, ocultarEmpresa, !agruparXEmbarque, !agruparXTipoTurno, noMostrarDetalles, noMostrarDetalles)).obtenerReportePDF();
     }
 
     public Empresa getCurrentEmpresa() {
@@ -90,6 +91,14 @@ public class ListadoMovimientoCtaCteTonsController implements Serializable {
 
     public void setAgruparXEmpresa(Boolean agruparXEmpresa) {
         this.agruparXEmpresa = agruparXEmpresa;
+    }
+
+    public Boolean getAgruparXEmbarque() {
+        return agruparXEmbarque;
+    }
+
+    public void setAgruparXEmbarque(Boolean agruparXEmbarque) {
+        this.agruparXEmbarque = agruparXEmbarque;
     }
 
     public Boolean getNoMostrarDetalles() {

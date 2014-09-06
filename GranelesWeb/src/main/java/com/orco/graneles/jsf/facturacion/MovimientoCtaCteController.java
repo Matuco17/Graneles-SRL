@@ -121,6 +121,7 @@ public class MovimientoCtaCteController implements Serializable {
     public String prepareCreate() {
         current = new MovimientoCtaCte();
         current.setEmpresa(currentEmpresa);
+        monto = BigDecimal.ZERO;
         selectedItemIndex = -1;
         return "Create";
     }

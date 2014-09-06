@@ -49,6 +49,16 @@
                                 onclick="window.open('#{movimientoCtaCteTonsController.urlReporteXEmpresa}','Download');window.close();" 
                                 rendered="#{movimientoCtaCteTonsController.urlReporteXEmpresa != null}" />
  
+                        <h:commandButton action="#{movimientoCtaCteTonsController.generarReporteEmpresaYEmbarque()}"
+                                        label="Reporte de Movimientos por Embarque"
+                                        value="Reporte de Movimientos por Embarque"
+                                        rendered="#{movimientoCtaCteTonsController.urlReporteXEmpresaYEmbarque == null}"
+                                        />
+
+                        <h:link value="Reporte de Movimientos por Embarque" 
+                                onclick="window.open('#{movimientoCtaCteTonsController.urlReporteXEmpresaYEmbarque}','Download');window.close();" 
+                                rendered="#{movimientoCtaCteTonsController.urlReporteXEmpresaYEmbarque != null}" />
+ 
                     </h:panelGrid>
                     
                     <p:dataTable value="#{movimientoCtaCteTonsController.currentEmpresaMovimientos}" 
@@ -99,7 +109,7 @@
                                 image="/faces/resources/images/edit.png" 
                                 action="#{movimientoCtaCteTonsController.prepareEdit}" 
                                 value="#{bundleFacturacion.MovimientoCtaCteTonsEditLink}"
-                                title="#{bundleCarga.MovimientoCtaCteTonsEditLink}"
+                                title="#{bundleFacturacion.MovimientoCtaCteTonsEditLink}"
                                 rendered="#{item.manual}"
                                 />
 

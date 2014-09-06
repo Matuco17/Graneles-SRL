@@ -94,6 +94,10 @@ tr.jsfcrud_even_row {
     padding: 0 0.2em;
 }
 
+.ui-radiobutton {
+    vertical-align: top;
+}
+
 .descMonedas td {
     font-size: small;
     text-align: center;

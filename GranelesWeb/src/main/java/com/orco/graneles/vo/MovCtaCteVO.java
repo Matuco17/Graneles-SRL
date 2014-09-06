@@ -48,11 +48,11 @@ public class MovCtaCteVO {
         return movCtaCte.getObservaciones();
     }
     
-    public BigDecimal getCreditoDinero(){
+    public BigDecimal getCredito(){
         return movCtaCte.getCredito();
     }
     
-    public BigDecimal getDebitoDinero(){
+    public BigDecimal getDebito(){
         return movCtaCte.getDebito();
     }
     
@@ -60,7 +60,7 @@ public class MovCtaCteVO {
         return movCtaCte.getValor();
     }
     
-    public BigDecimal getSaldoDinero() {
+    public BigDecimal getSaldo() {
         return movCtaCte.getSaldo();
     }
     
