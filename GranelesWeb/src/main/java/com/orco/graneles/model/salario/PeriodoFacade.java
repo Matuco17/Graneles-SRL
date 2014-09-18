@@ -71,12 +71,10 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private ReciboManualFacade reciboManualF;
 
     protected void generarSueldosSACyVacaciones(Periodo periodo, Map<Long, Sueldo> sueldosCalculados, Map<Integer, List<ConceptoRecibo>> conceptosHoras) {
-        //Recorro todos los sueldos y veo si tengo que calcularles el SAC y Vacaciones
-        boolean calcularSac = periodoConSAC(periodo);
         
         for (Sueldo s : sueldosCalculados.values()){
             //Le calculo el SAC y Vac si es periodo de SAC y Vac o el tipo fue dado de baja en este periodo
-            if (calcularSac || calcularSacIndividual(s.getPersonal(), periodo, null)){
+            if (calcularSacIndividual(s.getPersonal(), periodo, null)){
                 
                 s = generarSACyVacacionesIndividual(periodo, s, conceptosHoras, true, false, true, true, true, null);
                 
@@ -92,7 +90,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         //Ahora solo falta encontrar los sueldos de todos los empleados que participaron en el semestre y no formaron parte del Mes en cuestion
         for(Personal p : personalF.findAll()){
             if (!sueldosCalculados.keySet().contains(p.getId())){
-                if (calcularSac || calcularSacIndividual(p, periodo, null)){
+                if (calcularSacIndividual(p, periodo, null)){
                     Sueldo sueldoSacNuevo = new Sueldo();
                     sueldoSacNuevo.setPeriodo(periodo);
                     sueldoSacNuevo.setPersonal(p);
@@ -123,28 +121,24 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
      * @return 
      */
     public boolean calcularSacIndividual(Personal personal, Periodo periodo, Accidentado accidente){
-        //TODO: falta agregar q 3es periodo con sac
-        int mesPeriodo = (new DateTime(periodo.getDesde())).getMonthOfYear();
-        boolean debeCalcularSAC = (mesPeriodo == DateTimeConstants.JUNE || mesPeriodo == DateTimeConstants.DECEMBER);
         
-        //Si la persona no esta de baja y se dio justo de baja este mes.
-        if (!debeCalcularSAC){
-            debeCalcularSAC = (personal.getBaja() != null)
-                    && personal.getBaja().after(periodo.getDesde())
-                    && personal.getBaja().before(periodo.getHasta());
+        //Si no esta de baja, siempre que el periodo sea con sac deberia calcularsele
+        boolean debeCalcularSAC = periodoConSAC(periodo);
+        
+        //Si la persona esta dada de baja. se debe calcular SAC en el periodo de la baja y no en Junio o Diciembre
+        if (personal.getBaja() != null) {
+            return (personal.getBaja().after(periodo.getDesde())
+                        && personal.getBaja().before(periodo.getHasta()))
+                   ||
+                   (debeCalcularSAC 
+                        && personal.getBaja().after(periodo.getHasta())) ;
         }
+        
         //Otro caso es si dejo de ser accidentado en este periodo
         if (!debeCalcularSAC){
             debeCalcularSAC = accidentadoF.finalizoAccidenteEnPeriodo(accidente, periodo);
         }
-        /*
-        if (!debeCalcularSAC){
-            List<Accidentado> accidentes = accidentadoF.getAccidentadosPeriodoYPersonal(periodo.getDesde(), periodo.getHasta(), personal);
-            for (Accidentado acc : accidentes){
-                debeCalcularSAC = debeCalcularSAC || accidentadoF.finalizoAccidenteEnPeriodo(acc, periodo);
-            }
-        }
-        */
+        
         return debeCalcularSAC;
     }
 
@@ -195,7 +189,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         super(Periodo.class);
     }
     
-     /**
+    /**
      * Busca el período en cuestión, si no lo encuentra devuelve el período correcto pero todavía no guardado
      * @param anio anio del período
      * @param mes mes del período
@@ -240,13 +234,12 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     public List<Sueldo> obtenerSueldosSacYVac(Periodo periodo){
         List<Sueldo> sueldos = new ArrayList<Sueldo>();
         
-        boolean calcularSac = periodoConSAC(periodo);
         Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
                 
         for (Personal p : personalF.findAll()){
             //Por ahora salteo los empleados mensuales
             if (p.getTipoRecibo().getId() == TipoRecibo.HORAS){
-                if (calcularSac || calcularSacIndividual(p, periodo, null)){
+                if (calcularSacIndividual(p, periodo, null)){
                     Sueldo sueldoSacNuevo = new Sueldo();
                     sueldoSacNuevo.setPeriodo(periodo);
                     sueldoSacNuevo.setPersonal(p);
@@ -260,8 +253,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         }
         return sueldos;
     }
-    
-    
+     
     public List<Sueldo> obtenerSueldosAccidentadosSacYVac(Periodo periodo){
         List<Sueldo> sueldos = new ArrayList<Sueldo>();
         
@@ -331,7 +323,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             }
         }
         
-        //Completo los adelantos en cada fila
+        //Completo los adelantos en cada fila        
         for (Adelanto a : adelantoF.obtenerAdelantos(desde.toDate(), hasta.toDate())){
             ProyeccionSacVacYAdelantosVO proyeccion = proyecciones.get(a.getPersonal().getId());
             if (proyeccion == null){
@@ -491,44 +483,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
        
         return new ArrayList<Sueldo>(mapSueldoCreados.values());
     }
-    /*
-    public List<Sueldo> obtenerSueldosAccidentadosSacYVac(Periodo periodo){
-        List<Accidentado> listaAcc = accidentadoF.getAccidentadosPeriodo(periodo.getDesde(), periodo.getHasta());
-        
-        Map<Integer, List<ConceptoRecibo>> conceptosHoras = conceptoReciboF.obtenerConceptosXTipoRecibo(fixedListF.find(TipoRecibo.HORAS));
-        
-        Map<Long, Sueldo> mapSueldoCreados = new HashMap<Long, Sueldo>();
-                
-        for (Accidentado acc : listaAcc){
-            Sueldo sueldoAcc = sueldoF.calcularSueldoAccidentado(periodo, acc, conceptosHoras, true, true);
-            
-            //Hago el merge de sueldos y realizo la actualizacion del TTE para que quede registrado que tiene sueldo asignado
-            Sueldo sueldoCreadoAnterior = mapSueldoCreados.get(acc.getPersonal().getId());
-            if (sueldoCreadoAnterior != null){
-                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoF.mergeSueldos(sueldoCreadoAnterior, sueldoAcc));
-            } else {
-                mapSueldoCreados.put(acc.getPersonal().getId(), sueldoAcc);
-            }
-        }
-       
-        return new ArrayList<Sueldo>(mapSueldoCreados.values());
-    }
-    */
-    
-    private Collection<Sueldo> generarSueldosMensuales(Periodo periodo){
-        //List<Personal> listaMens = personalF.getPersonalMensualActivo();
-  
-        /*
-          Para cada Mensual 
-    Por cada Mensual ver cuanto le correspodne de remunerativo total y despues
-	buscar todas las deducciones
-        buscar todos los no remunerativos
-    generar los valores del sueldo, y likearlo al Acc
-    guardar
-    * 
-    */
-      return new ArrayList<Sueldo>();  
-    }
     
     /**
      * Genera los sueldos del periodo seleccionado
@@ -652,9 +606,7 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         
         return resultHasta.toDate();
     }
-    
-    
-    
+      
     public boolean periodoConSAC(Periodo periodo){
         DateTime desde = new DateTime(periodo.getDesde());
         
@@ -665,7 +617,6 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
     private static final String AC_GRUPO_SEG_SOCIAL = "Seguridad Social";
     private static final String AC_GRUPO_OBRA_SOCIAL = "Obras Sociales";
     private static final String AC_GRUPO_SINDICATO = "Sindicatos";
-    
     
     public List<AporteContribucionVO> generarReporteAportesYContribuciones(Periodo periodo){
         List<AporteContribucionVO> acVO = new ArrayList<AporteContribucionVO>();
@@ -761,7 +712,5 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
             periodo.getSueldoCollection().add(sueldoAAgregar);
         }
     }
-    
-    
     
 }

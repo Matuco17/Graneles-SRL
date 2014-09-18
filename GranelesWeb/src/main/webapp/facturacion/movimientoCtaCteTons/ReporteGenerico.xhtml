@@ -7,52 +7,50 @@
       xmlns:p="http://primefaces.org/ui">
 
     <f:metadata>  
-        <f:event type="preRenderView" listener="#{listadoMovimientoCtaCteController.init()}" />
+        <f:event type="preRenderView" listener="#{listadoMovimientoCtaCteTonsController.init()}" />
     </f:metadata> 
 
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Resumenes de Cuentas Corrientes Dinero"/>
+            <h:outputText value="Resumenes de Cuentas Corrientes de Toneladas"/>
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
                 <p:panel>
                     <h:panelGrid columns="2" >
-                        <h:outputLabel value="Tipo" for="tipoValor" />
-                        <h:selectOneMenu id="tipoValor" value="#{listadoMovimientoCtaCteController.tipoMovimiento}" >
-                            <f:selectItems value="#{fixedListController.tipoValorMovimientoCtaCteSelectMany}" />
-                        </h:selectOneMenu>
-
+                  
                         <h:outputLabel value="Empresa" for="empresa" />
-                        <h:selectOneMenu value="#{listadoMovimientoCtaCteController.currentEmpresa}" id="empresa">
+                        <h:selectOneMenu value="#{listadoMovimientoCtaCteTonsController.currentEmpresa}" id="empresa">
                             <f:selectItems value="#{empresaController.itemsAvailableSelectOne}" />
                         </h:selectOneMenu>
 
                         <h:outputLabel value="Desde" for="desde" />
-                        <p:calendar id="desde" value="#{listadoMovimientoCtaCteController.currentDesde}" pattern="dd/MM/yyyy" />
+                        <p:calendar id="desde" value="#{listadoMovimientoCtaCteTonsController.currentDesde}" pattern="dd/MM/yyyy" />
 
                         <h:outputLabel value="Hasta" for="hasta" />
-                        <p:calendar id="hasta" value="#{listadoMovimientoCtaCteController.currentHasta}" pattern="dd/MM/yyyy" />
+                        <p:calendar id="hasta" value="#{listadoMovimientoCtaCteTonsController.currentHasta}" pattern="dd/MM/yyyy" />
 
                         <h:outputLabel value="Opciones de Visualización" />
                         <h:panelGrid columns="6" >
-                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteController.agruparXEmpresa}" id="agruparXEmpresa" />
+                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteTonsController.agruparXEmpresa}" id="agruparXEmpresa" />
                             <h:outputLabel value="Agrupar por Empresa" for="agruparXEmpresa" />
-                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteController.agruparXFactura}" id="agruparXFactura"/>
-                            <h:outputLabel value="Agrupar por Factura" for="agruparXFactura" />
-                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteController.noMostrarDetalles}" id="noMostrarDetalles" />
+                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteTonsController.agruparXTipoTurno}" id="agruparXTipoTurno"/>
+                            <h:outputLabel value="Agrupar por Empresa y Tipo de Turno" for="agruparXTipoTurno" />
+                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteTonsController.agruparXEmbarque}" id="agruparXEmbarque"/>
+                            <h:outputLabel value="Agrupar por Embarque" for="agruparXEmbarque" />
+                            <h:selectBooleanCheckbox value="#{listadoMovimientoCtaCteTonsController.noMostrarDetalles}" id="noMostrarDetalles" />
                             <h:outputLabel value="No mostrar detalles (Sólo Saldos)" for="noMostrarDetalles" />
                         </h:panelGrid>
 
-                        <h:commandButton action="#{listadoMovimientoCtaCteController.generarReporte()}"
+                        <h:commandButton action="#{listadoMovimientoCtaCteTonsController.generarReporte()}"
                                     label="Reporte de Movimientos"
                                     value="Reporte de Movimientos"
                                     />
 
                         <h:link value="Descargar Reporte" 
-                            onclick="window.open('#{listadoMovimientoCtaCteController.urlReporte}','Download');window.close();" 
-                            rendered="#{listadoMovimientoCtaCteController.urlReporte != null}" />
+                            onclick="window.open('#{listadoMovimientoCtaCteTonsController.urlReporte}','Download');window.close();" 
+                            rendered="#{listadoMovimientoCtaCteTonsController.urlReporte != null}" />
 
                     </h:panelGrid>
                 </p:panel>

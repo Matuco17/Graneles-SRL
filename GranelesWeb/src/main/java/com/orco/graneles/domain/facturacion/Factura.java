@@ -49,7 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findByFecha", query = "SELECT f FROM Factura f WHERE f.fecha = :fecha"),
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
     @NamedQuery(name = "Factura.findByPagada", query = "SELECT f FROM Factura f WHERE f.pagada = :pagada"),
-    @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva")
+    @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva"),
+    @NamedQuery(name = "Factura.findByMesAnio", query = "SELECT f from Factura f WHERE f.fecha BETWEEN :desde AND :hasta")
   })
 public class Factura extends EntidadAuditable implements Serializable, Comparable<Factura> {
 
