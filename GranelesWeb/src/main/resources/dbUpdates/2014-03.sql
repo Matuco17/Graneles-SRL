@@ -35,12 +35,12 @@ UPDATE graneles.concepto_recibo SET codigo="109" where id= 28;
 #ISSUE 91
 
 CREATE TABLE `graneles`.`movctacte_factura` (
-  `movimiento_cta_cta` BIGINT(20) NOT NULL,
+  `movimiento` BIGINT(20) NOT NULL,
   `factura` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`movimiento_cta_cta`, `factura`),
+  PRIMARY KEY (`movimiento`, `factura`),
   INDEX `mov_cta_cte_factura_fk_fact_idx` (`factura` ASC),
   CONSTRAINT `mov_cta_cte_factura_fk_mov`
-    FOREIGN KEY (`movimiento_cta_cta`)
+    FOREIGN KEY (`movimiento`)
     REFERENCES `graneles`.`mov_cta_cte` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -52,4 +52,9 @@ CREATE TABLE `graneles`.`movctacte_factura` (
 
 ALTER TABLE `graneles`.`factura` 
     ADD COLUMN `pagada` TINYINT(1) NULL DEFAULT 0 AFTER `auditoria`;
+
+INSERT INTO graneles.movctacte_factura 
+    SELECT id as movimiento, factura 
+    FROM graneles.mov_cta_cte 
+    WHERE factura IS NOT NULL;
 

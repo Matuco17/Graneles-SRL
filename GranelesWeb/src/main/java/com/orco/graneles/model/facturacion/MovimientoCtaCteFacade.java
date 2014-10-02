@@ -5,6 +5,7 @@
 package com.orco.graneles.model.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
+import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -85,6 +86,92 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
      */
     public List<MovimientoCtaCte> findUltimos(Integer cantidad){
         return null; //TODO: implementar
+    }
+
+    @Override
+    public void create(MovimientoCtaCte entity) {
+        //Pago las facturas involucradas en caso de completar su saldo
+        //En este caso las facturas son siempre debitos asi q tengo q aplicarlo a los creditos solamente
+        if (entity.getValor().compareTo(BigDecimal.ZERO) < 0) {
+            BigDecimal saldoMovimiento = entity.getValor().abs();
+            List<Factura> facturas = new ArrayList<Factura>();
+            Collections.sort(facturas);
+
+            for (Factura f : facturas) {
+                saldoMovimiento = saldoMovimiento.subtract(saldoPendienteFactura(f, entity));
+                if (saldoMovimiento.compareTo(saldoMovimiento) >= 0) {
+                    f.setPagada(Boolean.TRUE);
+                    em.merge(f);
+                }
+            }
+        }
+        
+        super.create(entity);
+    }
+
+    @Override
+    public void edit(MovimientoCtaCte entity) {
+        //En este caso para tener todo bien actualizado elimino el movimiento anterior y agrego uno nuevo con todas las referencias
+        MovimientoCtaCte movimientoAnterior = em.find(MovimientoCtaCte.class, entity.getId());
+        remove(movimientoAnterior);
+        entity.setId(null);
+        create(entity);
+    }
+
+    @Override
+    public void remove(MovimientoCtaCte entity) {
+        
+        if (entity.getValor().compareTo(BigDecimal.ZERO) < 0) {
+            for (Factura f : entity.getFacturaCollection()) {
+                f.setPagada(Boolean.FALSE);
+                em.merge(f);
+            }
+        }
+        
+        entity.getFacturaCollection().clear();
+        em.createNativeQuery("DELETE FROM movctacte_factura WHERE movimiento=" + entity.getId()).executeUpdate();
+        em.createNativeQuery("DELETE FROM mov_cta_cte WHERE id=" + entity.getId()).executeUpdate();
+        em.flush();
+        
+        //super.remove(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Saldo pendiente de la factura a cancelar.
+     * @param f
+     * @return 
+     */
+    private BigDecimal saldoPendienteFactura(Factura f, MovimientoCtaCte movimientoExcluido) {
+        BigDecimal saldoFactura = f.getTotalConIVA().abs();
+        List<MovimientoCtaCte> movCtasCtes = new ArrayList<MovimientoCtaCte>(f.getMovimientoCtaCtesCollection());
+        Collections.sort(movCtasCtes);
+        
+        for(MovimientoCtaCte mCC : movCtasCtes) {
+            if (movimientoExcluido.getId() == null ||
+                    !movimientoExcluido.getId().equals(mCC.getId())) {
+                saldoFactura = saldoFactura.subtract(saldoPendienteMovimiento(mCC, f));
+            }
+        }
+        
+        return saldoFactura;
+    }
+    
+    /**
+     * Saldo pendiente del movimiento relacionado con la factura
+     * @param mCC
+     * @return 
+     */
+    private BigDecimal saldoPendienteMovimiento(MovimientoCtaCte mCC, Factura facturaAExcluir) {
+        BigDecimal saldoMovimiento = mCC.getValor().abs();
+        List<Factura> facturas = new ArrayList<Factura>();
+        Collections.sort(facturas);
+
+        for (Factura f : facturas) {
+            if (!facturaAExcluir.getId().equals(f.getId())) {
+                saldoMovimiento = saldoMovimiento.subtract(saldoPendienteFactura(f, mCC));
+            }
+        }
+        return saldoMovimiento;
     }
     
 }

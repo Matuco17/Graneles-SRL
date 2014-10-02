@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -75,14 +76,10 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @Column(name = "manual")
     private Boolean manual;
     
-    @JoinColumn(name = "factura", referencedColumnName = "id")
-    @ManyToOne
-    private Factura factura;
-    
     @JoinTable(name = "movctacte_factura", joinColumns = {
         @JoinColumn(name = "movimiento", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "factura", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<Factura> facturaCollection;
     
     @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)
@@ -147,14 +144,6 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
 
     public void setManual(Boolean manual) {
         this.manual = manual;
-    }
-
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
     }
 
     public FixedList getTipoMovimiento() {

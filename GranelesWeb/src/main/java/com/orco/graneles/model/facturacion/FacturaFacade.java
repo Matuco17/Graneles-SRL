@@ -7,6 +7,7 @@ package com.orco.graneles.model.facturacion;
 import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.Embarque;
 import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
@@ -19,6 +20,7 @@ import com.orco.graneles.model.AbstractFacade;
 import com.orco.graneles.model.carga.CargaTurnoFacade;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +55,6 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         //Creo el movimiento en cta cte para la factura
         MovimientoCtaCte movCtaCteFact = new MovimientoCtaCte();
         movCtaCteFact.setEmpresa(entity.getExportador());
-        movCtaCteFact.setFactura(entity);
         movCtaCteFact.setFecha(entity.getFecha());
         movCtaCteFact.setObservaciones("Factura: " + entity.getComprobante());
         movCtaCteFact.setTipoMovimiento(fixedListF.find(TipoMovimientoCtaCte.FACTURA));
@@ -125,8 +126,9 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         super.remove(entity);
     }
     
-    public List<Factura> findByPagada(Boolean pagada) {
-        List<Factura> result = getEntityManager().createNamedQuery("Factura.findByPagada", Factura.class)
+    public List<Factura> findByPagada(Empresa exportador, Boolean pagada) {
+        List<Factura> result = getEntityManager().createNamedQuery("Factura.findByExportadorYPagada", Factura.class)
+                .setParameter("exportador", exportador)
                 .setParameter("pagada", pagada)
                 .getResultList();
         

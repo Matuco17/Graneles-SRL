@@ -5,15 +5,11 @@
 package com.orco.graneles.domain.facturacion;
 
 import com.orco.graneles.domain.EntidadAuditable;
-import com.orco.graneles.domain.carga.CargaTurno;
 import com.orco.graneles.domain.carga.Embarque;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Factura.findByFecha", query = "SELECT f FROM Factura f WHERE f.fecha = :fecha"),
     @NamedQuery(name = "Factura.findByComprobante", query = "SELECT f FROM Factura f WHERE f.comprobante = :comprobante"),
     @NamedQuery(name = "Factura.findByPagada", query = "SELECT f FROM Factura f WHERE f.pagada = :pagada"),
+    @NamedQuery(name = "Factura.findByExportadorYPagada", query = "SELECT f FROM Factura f WHERE f.exportador = :exportador AND f.pagada = :pagada"),
     @NamedQuery(name = "Factura.findByPorcentajeIva", query = "SELECT f FROM Factura f WHERE f.porcentajeIva = :porcentajeIva"),
     @NamedQuery(name = "Factura.findByMesAnio", query = "SELECT f from Factura f WHERE f.fecha BETWEEN :desde AND :hasta")
   })
@@ -93,10 +90,7 @@ public class Factura extends EntidadAuditable implements Serializable, Comparabl
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
-    @JoinTable(name = "movctacte_factura", joinColumns = {
-        @JoinColumn(name = "factura", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "movimiento", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "facturaCollection")
     private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
    
     @Column(name = "pagada")

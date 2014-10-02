@@ -4,6 +4,7 @@
  */
 package com.orco.graneles.vo;
 
+import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,16 +26,20 @@ public class MovCtaCteVO {
     }
     
     public String getFacturaDescripcion(){
-        if (movCtaCte.getFactura() != null){
-            return movCtaCte.getFactura().getComprobante();
+        if (movCtaCte.getFacturaCollection() != null){
+            StringBuilder sb = new StringBuilder();
+            for (Factura f : movCtaCte.getFacturaCollection()) {
+                sb.append(", ").append(f.getComprobante());
+            }
+            return sb.substring(2);
         } else {
             return "Sin Factura";
         }
     }
     
     public Date getFechaFactura(){
-        if (movCtaCte.getFactura() != null){
-            return movCtaCte.getFactura().getFecha();
+        if (movCtaCte.getFacturaCollection() != null && movCtaCte.getFacturaCollection().size() > 0){
+            return movCtaCte.getFacturaCollection().iterator().next().getFecha();
         } else {
             return null;
         }

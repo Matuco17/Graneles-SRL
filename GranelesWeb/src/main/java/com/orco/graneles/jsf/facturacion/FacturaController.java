@@ -371,10 +371,6 @@ public class FacturaController implements Serializable {
        
     }
 
-    public SelectItem[] getItemsFacturasSinCobrar() {
-        return JsfUtil.getSelectItems(ejbFacade.findByPagada(false), true);
-    }
-    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -405,18 +401,19 @@ public class FacturaController implements Serializable {
             return controller.ejbFacade.find(getKey(value));
         }
 
-        java.lang.Long getKey(String value) {
-            java.lang.Long key;
+        Long getKey(String value) {
+            Long key;
             key = Long.valueOf(value);
             return key;
         }
 
         String getStringKey(java.lang.Long value) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
 
+        @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;

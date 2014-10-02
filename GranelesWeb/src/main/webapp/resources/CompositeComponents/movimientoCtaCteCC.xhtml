@@ -48,27 +48,22 @@
                 <f:convertNumber pattern="###,###,##0.00" />
             </h:outputText>
 
-            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" for="facturas" />
-            <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
-                        converter="#{facturaController.staticConverter}" itemValue="#{factura}" rendered="#{cc.attrs.editar}"  >
-                 <f:facet name="sourceCaption">Planillas Disponibles</f:facet>  
-                <f:facet name="targetCaption">Planillas A Facturar</f:facet>  
-
-                <p:column>
-                    <h:outputText value="#{cargaTurno.turnoEmbarque.nroPlanilla}" style="font-weight: bold;" />
-                </p:column>
-                               
-                
-                <f:selectItems value="#{facturaController.itemsFacturasSinCobrar}" />
-            </p:pickList>
-            <c:forEach items="#{movimientoCtaCteController.selected.facturaCollection}" var="factura" rendered="#{!cc.attrs.editar}"  >
-                <h:outputText value="#{factura.toString()}" />
-            </c:forEach>
-            
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_observaciones}" for="observaciones" />
             <p:inputTextarea value="#{movimientoCtaCteController.selected.observaciones}" id="observaciones" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{movimientoCtaCteController.selected.observaciones}" rendered="#{!cc.attrs.editar}" />
 
+            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" rendered="#{!cc.attrs.editar}"/>
+            <p:dataList value="#{movimientoCtaCteController.selected.facturaCollection}" var="factura" type="definition" rendered="#{!cc.attrs.editar}"  >
+                - #{factura}
+            </p:dataList>
+     
         </h:panelGrid>
+
+        <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" for="facturas" rendered="#{cc.attrs.editar}" />
+        <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
+                    var="factura" itemLabel="#{factura}" itemValue="#{factura}" 
+                    converter="#{facturaController.staticConverter}" 
+                    rendered="#{cc.attrs.editar}" />
+       
     </cc:implementation>
 </html>

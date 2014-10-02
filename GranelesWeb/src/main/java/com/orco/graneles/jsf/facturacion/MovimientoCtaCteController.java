@@ -129,7 +129,7 @@ public class MovimientoCtaCteController implements Serializable {
         current = new MovimientoCtaCte();
         current.setEmpresa(currentEmpresa);
         facturasASeleccionar = new DualListModel<Factura>();
-        facturasASeleccionar.setSource(facturaF.findByPagada(false));
+        facturasASeleccionar.setSource(facturaF.findByPagada(currentEmpresa, false));
         facturasASeleccionar.setTarget(new ArrayList<Factura>());
         monto = BigDecimal.ZERO;
         selectedItemIndex = -1;
@@ -152,7 +152,7 @@ public class MovimientoCtaCteController implements Serializable {
     public String prepareEdit() {
         seleccionarMovimiento();
         facturasASeleccionar = new DualListModel<Factura>();
-        facturasASeleccionar.setSource(new ArrayList<Factura>(facturaF.findByPagada(false)));
+        facturasASeleccionar.setSource(new ArrayList<Factura>(facturaF.findByPagada(currentEmpresa, false)));
         facturasASeleccionar.setTarget(new ArrayList<Factura>(current.getFacturaCollection()));
         return "Edit";
     }
@@ -230,6 +230,7 @@ public class MovimientoCtaCteController implements Serializable {
         if (tipo.equalsIgnoreCase(TIPO_CREDITO)){
             current.setValor(monto.abs().negate());
         }
+        current.setFacturaCollection(facturasASeleccionar.getTarget());
     }
 
     @FacesConverter(forClass = MovimientoCtaCte.class)
