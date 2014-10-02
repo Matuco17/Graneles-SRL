@@ -17,7 +17,6 @@ import com.orco.graneles.reports.FacturaReport;
 import com.orco.graneles.reports.LibroIVA;
 import com.orco.graneles.reports.TurnosFacturados;
 import com.orco.graneles.vo.Calculadora;
-import com.orco.graneles.vo.FilaCalculadora;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -403,18 +402,19 @@ public class FacturaController implements Serializable {
             return controller.ejbFacade.find(getKey(value));
         }
 
-        java.lang.Long getKey(String value) {
-            java.lang.Long key;
+        Long getKey(String value) {
+            Long key;
             key = Long.valueOf(value);
             return key;
         }
 
         String getStringKey(java.lang.Long value) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
 
+        @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;
@@ -572,10 +572,13 @@ public class FacturaController implements Serializable {
     public void setNroPrimeraPagina(Integer nroPrimeraPagina) {
         this.nroPrimeraPagina = nroPrimeraPagina;
     }
-    
+
     public String getLnkLibroIVA() {
         return lnkLibroIVA;
     }
     
+    public FacturaControllerConverter getStaticConverter(){
+        return new FacturaControllerConverter();
+    }
     
 }

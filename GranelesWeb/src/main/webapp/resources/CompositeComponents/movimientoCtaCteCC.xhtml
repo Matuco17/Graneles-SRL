@@ -48,16 +48,22 @@
                 <f:convertNumber pattern="###,###,##0.00" />
             </h:outputText>
 
-            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_factura}" for="factura" />
-            <h:selectOneMenu id="factura" value="#{movimientoCtaCteController.selected.factura}" rendered="#{cc.attrs.editar}"  >
-                <f:selectItems value="#{facturaController.itemsAvailableSelectOne}" />
-            </h:selectOneMenu>
-            <h:outputText value="#{movimientoCtaCteController.selected.factura.toString()}" rendered="#{!cc.attrs.editar}" />
-
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_observaciones}" for="observaciones" />
             <p:inputTextarea value="#{movimientoCtaCteController.selected.observaciones}" id="observaciones" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{movimientoCtaCteController.selected.observaciones}" rendered="#{!cc.attrs.editar}" />
 
+            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" rendered="#{!cc.attrs.editar}"/>
+            <p:dataList value="#{movimientoCtaCteController.selected.facturaCollection}" var="factura" type="definition" rendered="#{!cc.attrs.editar}"  >
+                - #{factura}
+            </p:dataList>
+     
         </h:panelGrid>
+
+        <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" for="facturas" rendered="#{cc.attrs.editar}" />
+        <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
+                    var="factura" itemLabel="#{factura}" itemValue="#{factura}" 
+                    converter="#{facturaController.staticConverter}" 
+                    rendered="#{cc.attrs.editar}" />
+       
     </cc:implementation>
 </html>

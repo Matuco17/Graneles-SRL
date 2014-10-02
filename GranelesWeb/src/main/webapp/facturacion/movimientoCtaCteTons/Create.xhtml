@@ -9,25 +9,25 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundleFacturacion.CreateMovimientoCtaCteTitle}" />
+            <h:outputText value="#{bundleFacturacion.CreateMovimientoCtaCteTonsTitle}" />
         </ui:define>
         <ui:define name="body">
             <h:form enctype="multipart/form-data">
                 
-                <Co:movimientoCtaCteCC editar="true" nuevo="true"/>
+                <Co:movimientoCtaCteTonsCC editar="true" nuevo="true"/>
                 
                 <p:panel style="float:left; width: 100%" >
                     <h:panelGrid columns="2">
-                        <h:commandButton action="#{movimientoCtaCteController.create}"
+                        <h:commandButton action="#{movimientoCtaCteTonsController.create}"
                                          image="/faces/resources/images/save.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteSaveLink}" 
-                                         title="#{bundleFacturacion.MovimientoCtaCteSaveLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsSaveLink}" 
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsSaveLink}"
                                          />
 
-                        <h:commandButton action="#{movimientoCtaCteController.prepareList}"
+                        <h:commandButton action="#{movimientoCtaCteTonsController.prepareList}"
                                          image="/faces/resources/images/viewAll.png" 
-                                         value="#{bundleFacturacion.MovimientoCtaCteShowAllLink}"
-                                         title="#{bundleFacturacion.MovimientoCtaCteShowAllLink}"
+                                         value="#{bundleFacturacion.MovimientoCtaCteTonsShowAllLink}"
+                                         title="#{bundleFacturacion.MovimientoCtaCteTonsShowAllLink}"
                                          immediate="true" 
                                          />
 

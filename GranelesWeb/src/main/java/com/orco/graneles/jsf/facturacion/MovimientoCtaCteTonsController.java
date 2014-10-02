@@ -1,18 +1,16 @@
 package com.orco.graneles.jsf.facturacion;
 
 import com.orco.graneles.domain.facturacion.Empresa;
-import com.orco.graneles.domain.facturacion.Factura;
-import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
+import com.orco.graneles.domain.facturacion.MovimientoCtaCteTons;
 import com.orco.graneles.domain.seguridad.Grupo;
 import com.orco.graneles.jsf.util.JsfUtil;
-import com.orco.graneles.model.facturacion.FacturaFacade;
-import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
+import com.orco.graneles.model.facturacion.MovimientoCtaCteTonsFacade;
 import com.orco.graneles.model.miscelaneos.FixedListFacade;
 import com.orco.graneles.reports.MovCtaCteReport;
+import com.orco.graneles.reports.MovCtaCteTonsReport;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -25,23 +23,20 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import org.primefaces.model.DualListModel;
 
-@ManagedBean(name = "movimientoCtaCteController")
+@ManagedBean(name = "movimientoCtaCteTonsController")
 @SessionScoped
-public class MovimientoCtaCteController implements Serializable {
+public class MovimientoCtaCteTonsController implements Serializable {
 
     public static final String TIPO_DEBITO = "+";
     public static final String TIPO_CREDITO = "-";
     
-    private MovimientoCtaCte current;
+    private MovimientoCtaCteTons current;
     private DataModel items = null;
     private DataModel currentEmpresaMovimientos;
     
     @EJB
-    private MovimientoCtaCteFacade ejbFacade;
-    @EJB
-    private FacturaFacade facturaF;
+    private MovimientoCtaCteTonsFacade ejbFacade;
     @EJB
     private FixedListFacade fixedListF;
     
@@ -50,7 +45,7 @@ public class MovimientoCtaCteController implements Serializable {
     private Empresa currentEmpresa;
     
     
-    List<MovimientoCtaCte> movimientos = null;
+    List<MovimientoCtaCteTons> movimientos = null;
             
     private String tipo;
     private BigDecimal totalDebitos;
@@ -58,11 +53,11 @@ public class MovimientoCtaCteController implements Serializable {
     private BigDecimal monto;
     
     private String urlReporteXEmpresa;
-    private String urlReporteXEmpresaYFactura;
+    private String urlReporteXEmpresaYEmbarque;
     
-    private DualListModel<Factura> facturasASeleccionar;
+    
 
-    public MovimientoCtaCteController() {
+    public MovimientoCtaCteTonsController() {
     }
 
     public void init() {
@@ -70,9 +65,9 @@ public class MovimientoCtaCteController implements Serializable {
         JsfUtil.minimoRolRequerido(Grupo.ROL_USUARIO);
     }
 
-    public MovimientoCtaCte getSelected() {
+    public MovimientoCtaCteTons getSelected() {
         if (current == null) {
-            current = new MovimientoCtaCte();
+            current = new MovimientoCtaCteTons();
             selectedItemIndex = -1;
         }
         return current;
@@ -86,7 +81,7 @@ public class MovimientoCtaCteController implements Serializable {
             
             totalDebitos = BigDecimal.ZERO;
             totalCreditos = BigDecimal.ZERO;
-            for (MovimientoCtaCte mCC : movimientos){
+            for (MovimientoCtaCteTons mCC : movimientos){
                 if (mCC.getDebito()!= null){
                     totalDebitos = totalDebitos.add(mCC.getDebito());
                 }
@@ -97,19 +92,19 @@ public class MovimientoCtaCteController implements Serializable {
             
             currentEmpresaMovimientos = new ListDataModel(movimientos);
             urlReporteXEmpresa = null;
-            urlReporteXEmpresaYFactura = null;            
+            urlReporteXEmpresaYEmbarque = null;            
         }
     }
     
     public void generarReporteEmpresa(){
-        urlReporteXEmpresa =  (new MovCtaCteReport(movimientos, null, null, false, true, false, false)).obtenerReportePDF();
+        urlReporteXEmpresa =  (new MovCtaCteTonsReport(movimientos, null, null, false, true, false, false, false)).obtenerReportePDF();
     }
 
-    public void generarReporteEmpresaYFactura(){
-        urlReporteXEmpresaYFactura =  (new MovCtaCteReport(movimientos, null, null, false, false, false, false)).obtenerReportePDF();
+    public void generarReporteEmpresaYEmbarque(){
+        urlReporteXEmpresaYEmbarque =  (new MovCtaCteTonsReport(movimientos, null, null, false, false, false, false, false)).obtenerReportePDF();
     }
 
-    private MovimientoCtaCteFacade getFacade() {
+    private MovimientoCtaCteTonsFacade getFacade() {
         return ejbFacade;
     }
 
@@ -120,17 +115,13 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String prepareView() {
-        facturasASeleccionar = null;
         seleccionarMovimiento();        
         return "View";
     }
 
     public String prepareCreate() {
-        current = new MovimientoCtaCte();
+        current = new MovimientoCtaCteTons();
         current.setEmpresa(currentEmpresa);
-        facturasASeleccionar = new DualListModel<Factura>();
-        facturasASeleccionar.setSource(facturaF.findByPagada(currentEmpresa, false));
-        facturasASeleccionar.setTarget(new ArrayList<Factura>());
         monto = BigDecimal.ZERO;
         selectedItemIndex = -1;
         return "Create";
@@ -141,7 +132,7 @@ public class MovimientoCtaCteController implements Serializable {
             prepararParaGuardar(); 
             current.setManual(Boolean.TRUE);
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteTonsCreated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
@@ -151,9 +142,6 @@ public class MovimientoCtaCteController implements Serializable {
 
     public String prepareEdit() {
         seleccionarMovimiento();
-        facturasASeleccionar = new DualListModel<Factura>();
-        facturasASeleccionar.setSource(new ArrayList<Factura>(facturaF.findByPagada(currentEmpresa, false)));
-        facturasASeleccionar.setTarget(new ArrayList<Factura>(current.getFacturaCollection()));
         return "Edit";
     }
 
@@ -161,7 +149,7 @@ public class MovimientoCtaCteController implements Serializable {
         try {
             prepararParaGuardar(); 
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteTonsUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
@@ -170,7 +158,7 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String destroy() {
-        current = (MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData();
+        current = (MovimientoCtaCteTons) getCurrentEmpresaMovimientos().getRowData();
         selectedItemIndex = getCurrentEmpresaMovimientos().getRowIndex();
         performDestroy();
         recreateModel();
@@ -194,7 +182,7 @@ public class MovimientoCtaCteController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteTonsDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
         }
@@ -213,7 +201,7 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     private void seleccionarMovimiento() {
-        current = (MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData();
+        current = (MovimientoCtaCteTons) getCurrentEmpresaMovimientos().getRowData();
         selectedItemIndex = getCurrentEmpresaMovimientos().getRowIndex();
         if (current.getValor().doubleValue() >= 0){
             tipo = TIPO_DEBITO;
@@ -230,18 +218,17 @@ public class MovimientoCtaCteController implements Serializable {
         if (tipo.equalsIgnoreCase(TIPO_CREDITO)){
             current.setValor(monto.abs().negate());
         }
-        current.setFacturaCollection(facturasASeleccionar.getTarget());
     }
 
-    @FacesConverter(forClass = MovimientoCtaCte.class)
+    @FacesConverter(forClass = MovimientoCtaCteTons.class)
     public static class MovimientoCtaCteControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MovimientoCtaCteController controller = (MovimientoCtaCteController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "movimientoCtaCteController");
+            MovimientoCtaCteTonsController controller = (MovimientoCtaCteTonsController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "movimientoCtaCteTonsController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -261,8 +248,8 @@ public class MovimientoCtaCteController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof MovimientoCtaCte) {
-                MovimientoCtaCte o = (MovimientoCtaCte) object;
+            if (object instanceof MovimientoCtaCteTons) {
+                MovimientoCtaCteTons o = (MovimientoCtaCteTons) object;
                 return getStringKey(o.getId());
             } else {
                 return null;
@@ -326,16 +313,8 @@ public class MovimientoCtaCteController implements Serializable {
         return urlReporteXEmpresa;
     }
 
-    public String getUrlReporteXEmpresaYFactura() {
-        return urlReporteXEmpresaYFactura;
-    }
-
-    public DualListModel<Factura> getFacturasASeleccionar() {
-        return facturasASeleccionar;
-    }
-
-    public void setFacturasASeleccionar(DualListModel<Factura> facturasASeleccionar) {
-        this.facturasASeleccionar = facturasASeleccionar;
+    public String getUrlReporteXEmpresaYEmbarque() {
+        return urlReporteXEmpresaYEmbarque;
     }
     
     

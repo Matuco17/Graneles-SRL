@@ -4,21 +4,19 @@
  */
 package com.orco.graneles.domain.facturacion;
 
-import com.orco.graneles.domain.miscelaneos.FixedList;
+import com.orco.graneles.domain.carga.CargaTurno;
+import com.orco.graneles.domain.carga.TurnoEmbarque;
+import com.orco.graneles.domain.salario.TipoJornal;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,22 +32,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author orco
  */
 @Entity
-@Table(name = "mov_cta_cte", catalog = "graneles", schema = "")
+@Table(name = "mov_cta_cte_tons", catalog = "graneles", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MovimientoCtaCte.findAll", query = "SELECT m FROM MovimientoCtaCte m"),
-    @NamedQuery(name = "MovimientoCtaCte.findById", query = "SELECT m FROM MovimientoCtaCte m WHERE m.id = :id"),
-    @NamedQuery(name = "MovimientoCtaCte.findByFecha", query = "SELECT m FROM MovimientoCtaCte m WHERE m.fecha = :fecha"),
-    @NamedQuery(name = "MovimientoCtaCte.findByValor", query = "SELECT m FROM MovimientoCtaCte m WHERE m.valor = :valor"),
-    @NamedQuery(name = "MovimientoCtaCte.findByObservaciones", query = "SELECT m FROM MovimientoCtaCte m WHERE m.observaciones = :observaciones"),
-    @NamedQuery(name = "MovimientoCtaCte.findByManual", query = "SELECT m FROM MovimientoCtaCte m WHERE m.manual = :manual"),
-    @NamedQuery(name = "MovimientoCtaCte.findByEmpresa", query = "SELECT m FROM MovimientoCtaCte m WHERE m.empresa = :empresa"),
-    @NamedQuery(name = "MovimientoCtaCte.findByEmpresaYFechas", query = "SELECT m FROM MovimientoCtaCte m "
+    @NamedQuery(name = "MovimientoCtaCteTons.findAll", query = "SELECT m FROM MovimientoCtaCteTons m"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findById", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.id = :id"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByFecha", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.fecha = :fecha"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByValor", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.valor = :valor"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByObservaciones", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.observaciones = :observaciones"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByManual", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.manual = :manual"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByEmpresa", query = "SELECT m FROM MovimientoCtaCteTons m WHERE m.empresa = :empresa"),
+    @NamedQuery(name = "MovimientoCtaCteTons.findByEmpresaYFechas", query = "SELECT m FROM MovimientoCtaCteTons m "
         + "     WHERE (:empresa IS NULL OR m.empresa = :empresa)"
         + "     AND (:desde IS NULL OR m.fecha >= :desde)"
         + "     AND (:hasta IS NULL OR m.fecha <= :hasta)")
 })
-public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaCte> {
+public class MovimientoCtaCteTons implements Serializable, Comparable<MovimientoCtaCteTons> {
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -76,31 +74,29 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @Column(name = "manual")
     private Boolean manual;
     
-    @JoinTable(name = "movctacte_factura", joinColumns = {
-        @JoinColumn(name = "movimiento", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "factura", referencedColumnName = "id")})
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<Factura> facturaCollection;
-    
-    @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private FixedList tipoMovimiento;
+    @JoinColumn(name = "carga_turno", referencedColumnName = "id")
+    @ManyToOne
+    private CargaTurno cargaTurno;
     
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
     
+    @JoinColumn(name = "tipo", referencedColumnName = "id")
+    @ManyToOne(optional = true)
+    private TipoJornal tipoTurno;
+
     transient BigDecimal saldo;
     
     
-    public MovimientoCtaCte() {
+    public MovimientoCtaCteTons() {
     }
 
-    public MovimientoCtaCte(Long id) {
+    public MovimientoCtaCteTons(Long id) {
         this.id = id;
     }
 
-    public MovimientoCtaCte(Long id, Date fecha, BigDecimal valor) {
+    public MovimientoCtaCteTons(Long id, Date fecha, BigDecimal valor) {
         this.id = id;
         this.fecha = fecha;
         this.valor = valor;
@@ -146,14 +142,6 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         this.manual = manual;
     }
 
-    public FixedList getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public void setTipoMovimiento(FixedList tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
-    }
-
     public Empresa getEmpresa() {
         return empresa;
     }
@@ -162,15 +150,22 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
         this.empresa = empresa;
     }
 
-    public Collection<Factura> getFacturaCollection() {
-        return facturaCollection;
+    public TipoJornal getTipoTurno() {
+        return tipoTurno;
     }
 
-    public void setFacturaCollection(Collection<Factura> facturaCollection) {
-        this.facturaCollection = facturaCollection;
+    public void setTipoTurno(TipoJornal tipoTurno) {
+        this.tipoTurno = tipoTurno;
     }
 
-        
+    public CargaTurno getCargaTurno() {
+        return cargaTurno;
+    }
+
+    public void setCargaTurno(CargaTurno cargaTurno) {
+        this.cargaTurno = cargaTurno;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -181,10 +176,10 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MovimientoCtaCte)) {
+        if (!(object instanceof MovimientoCtaCteTons)) {
             return false;
         }
-        MovimientoCtaCte other = (MovimientoCtaCte) object;
+        MovimientoCtaCteTons other = (MovimientoCtaCteTons) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -201,11 +196,11 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
 
     @Override
     public String toString() {
-        return "MovimientoCtaCte[ id=" + id + " ]";
+        return "MovimientoCtaCteTons[ id=" + id + " ]";
     }
 
     @Override
-    public int compareTo(MovimientoCtaCte o) {
+    public int compareTo(MovimientoCtaCteTons o) {
         return this.getFecha().compareTo(o.getFecha());
     }
     
