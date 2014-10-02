@@ -61,9 +61,8 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
                 .setParameter("desde", null)
                 .setParameter("hasta", hasta)
                 .getResultList();
-        
+
         setearSaldo(movimientos);
-        
         
         //Filtro los movs desde a mano asi ya los tengo con saldo
         if (desde != null) {
