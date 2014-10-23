@@ -125,6 +125,7 @@ public class EmbarqueController implements Serializable {
     }
     
     private void recreateModelEmbarqueIndividual(){
+        current = ejbFacade.find(current.getId());
         cargasPrevias = null;
         archivosModel = null;
         cargas = null;
@@ -267,9 +268,7 @@ public class EmbarqueController implements Serializable {
     public String prepareView() {
         if (current != null){
             recreateModelEmbarqueIndividual();
-            //current = (Embarque) getItems().getRowData();
-            //selectedItemIndex = getItems().getRowIndex();
-        return "View";
+            return "View";
         } else {
             return null;
         }
@@ -301,8 +300,6 @@ public class EmbarqueController implements Serializable {
     public String prepareEdit() {
         if (current != null){
             recreateModelEmbarqueIndividual();
-            //current = (Embarque) getItems().getRowData();
-            //selectedItemIndex = getItems().getRowIndex();
             return "Edit";
         } else {
             return null;

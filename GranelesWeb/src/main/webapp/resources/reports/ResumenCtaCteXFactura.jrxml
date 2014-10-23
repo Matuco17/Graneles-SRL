@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCtaCteXFactura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.9487171000000165"/>
-	<property name="ireport.x" value="53"/>
-	<property name="ireport.y" value="244"/>
+	<property name="ireport.x" value="495"/>
+	<property name="ireport.y" value="268"/>
 	<parameter name="logoReducido.jpg" class="java.io.InputStream"/>
 	<parameter name="desde" class="java.util.Date"/>
 	<parameter name="hasta" class="java.util.Date"/>
@@ -108,16 +108,16 @@
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="474" y="0" width="80" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12"/>
-						<paragraph leftIndent="2" rightIndent="2"/>
+						<font size="11"/>
+						<paragraph rightIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{credito_2}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="394" y="0" width="80" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12"/>
-						<paragraph leftIndent="2" rightIndent="2"/>
+						<font size="11"/>
+						<paragraph rightIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{debito_2}]]></textFieldExpression>
 				</textField>
@@ -190,8 +190,8 @@
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="474" y="0" width="80" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12"/>
-						<paragraph leftIndent="2" rightIndent="2"/>
+						<font size="11"/>
+						<paragraph rightIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{saldo_2}]]></textFieldExpression>
 				</textField>
@@ -324,7 +324,7 @@
 					<reportElement x="474" y="0" width="80" height="20"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="11"/>
-						<paragraph leftIndent="2" rightIndent="2"/>
+						<paragraph rightIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{saldo_1}]]></textFieldExpression>
 				</textField>
@@ -471,16 +471,16 @@
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="474" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-					<paragraph leftIndent="2" rightIndent="2"/>
+					<font size="11" isBold="false"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{credito_3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="394" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-					<paragraph leftIndent="2" rightIndent="2"/>
+					<font size="11" isBold="false"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{debito_3}]]></textFieldExpression>
 			</textField>

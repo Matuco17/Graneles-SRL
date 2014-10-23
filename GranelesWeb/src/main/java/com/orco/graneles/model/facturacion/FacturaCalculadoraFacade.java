@@ -88,7 +88,7 @@ public class FacturaCalculadoraFacade extends AbstractFacade<FacturaCalculadora>
     
     /**
      * Genera las filas de la calculadora con las cantidades en cero,
-     * @param fecha
+     * @param factura
      * @return 
      */
     public Calculadora generarCalculadoraNueva(Factura factura){

@@ -31,7 +31,6 @@ public class ListadoMovimientoCtaCteController implements Serializable {
     private Boolean agruparXFactura;
     private Boolean agruparXEmpresa;
     private Boolean noMostrarDetalles;
-    private FixedList tipoMovimiento;
     
     List<MovimientoCtaCte> movimientos = null;
     
@@ -99,14 +98,6 @@ public class ListadoMovimientoCtaCteController implements Serializable {
         this.noMostrarDetalles = noMostrarDetalles;
     }
 
-    public FixedList getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public void setTipoMovimiento(FixedList tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
-    }
-
     public String getUrlReporte() {
         return urlReporte;
     }
@@ -115,7 +106,4 @@ public class ListadoMovimientoCtaCteController implements Serializable {
         this.urlReporte = urlReporte;
     }
 
-    
-    
-    
 }

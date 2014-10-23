@@ -7,6 +7,7 @@ package com.orco.graneles.vo;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -26,7 +27,7 @@ public class MovCtaCteVO {
     }
     
     public String getFacturaDescripcion(){
-        if (movCtaCte.getFacturaCollection() != null){
+        if (movCtaCte.getFacturaCollection() != null && movCtaCte.getFacturaCollection().size() > 0){
             StringBuilder sb = new StringBuilder();
             for (Factura f : movCtaCte.getFacturaCollection()) {
                 sb.append(", ").append(f.getComprobante());

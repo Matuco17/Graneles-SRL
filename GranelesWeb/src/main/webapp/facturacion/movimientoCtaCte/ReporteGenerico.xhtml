@@ -19,11 +19,7 @@
             <h:form styleClass="jsfcrud_list_form">
                 <p:panel>
                     <h:panelGrid columns="2" >
-                        <h:outputLabel value="Tipo" for="tipoValor" />
-                        <h:selectOneMenu id="tipoValor" value="#{listadoMovimientoCtaCteController.tipoMovimiento}" >
-                            <f:selectItems value="#{fixedListController.tipoValorMovimientoCtaCteSelectMany}" />
-                        </h:selectOneMenu>
-
+                        
                         <h:outputLabel value="Empresa" for="empresa" />
                         <h:selectOneMenu value="#{listadoMovimientoCtaCteController.currentEmpresa}" id="empresa">
                             <f:selectItems value="#{empresaController.itemsAvailableSelectOne}" />
