@@ -90,7 +90,11 @@ public class Factura extends EntidadAuditable implements Serializable, Comparabl
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura", orphanRemoval = true)
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "facturaCollection")
+    
+    @JoinTable(name = "movctacte_factura", joinColumns = {
+        @JoinColumn(name = "factura", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "movimiento", referencedColumnName = "id")})
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
    
     @Column(name = "pagada")

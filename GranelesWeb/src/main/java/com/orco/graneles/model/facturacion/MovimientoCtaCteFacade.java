@@ -91,21 +91,38 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
     public void create(MovimientoCtaCte entity) {
         //Pago las facturas involucradas en caso de completar su saldo
         //En este caso las facturas son siempre debitos asi q tengo q aplicarlo a los creditos solamente
-        if (entity.getValor().compareTo(BigDecimal.ZERO) < 0) {
+        System.out.println("*** Inicio create facturas orig");
+        for (Factura f : entity.getFacturaCollection()) {
+            System.out.println(f.getId());
+        }
+        
+        System.out.println("*** edicion de facturas");
+        List<Factura> facturas = new ArrayList<Factura>(entity.getFacturaCollection());
+        if (facturas.size() > 0) {
             BigDecimal saldoMovimiento = entity.getValor().abs();
-            List<Factura> facturas = new ArrayList<Factura>();
             Collections.sort(facturas);
 
             for (Factura f : facturas) {
                 saldoMovimiento = saldoMovimiento.subtract(saldoPendienteFactura(f, entity));
                 if (saldoMovimiento.compareTo(saldoMovimiento) >= 0) {
-                    f.setPagada(Boolean.TRUE);
+                    System.out.println(f.getId());
+                    if (entity.getValor().compareTo(BigDecimal.ZERO) < 0) {
+                        f.setPagada(Boolean.TRUE);
+                    }
+                    f.getMovimientoCtaCtesCollection().add(entity);
                     em.merge(f);
+                    System.out.println(f.getId());
                 }
             }
+        } else {
+            super.create(entity);    
         }
+      
         
-        super.create(entity);
+        System.out.println("*** facturas dpesues de ejecutra create");
+        for (Factura f : entity.getFacturaCollection()) {
+            System.out.println(f.getId());
+        }
     }
 
     @Override
@@ -131,8 +148,6 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         em.createNativeQuery("DELETE FROM movctacte_factura WHERE movimiento=" + entity.getId()).executeUpdate();
         em.createNativeQuery("DELETE FROM mov_cta_cte WHERE id=" + entity.getId()).executeUpdate();
         em.flush();
-        
-        //super.remove(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
