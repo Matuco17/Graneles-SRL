@@ -152,6 +152,8 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                         Date saHasta = (saVO.getHasta() == null || saVO.getHasta().after(hasta)) ? hasta : saVO.getHasta();
 
                         int diasTrabajados = calculoDiasAccidentado(saDesde, saHasta, accidentado);
+                        
+                        System.out.println("Dias trabajados:" + diasTrabajados);
 
                         if (accidentado.getIncluirAdicionales() != null && accidentado.getIncluirAdicionales()){
                             acumulado += saVO.getBrutoConAdicionales().doubleValue() * diasTrabajados;
@@ -191,7 +193,10 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
             hastaCalculado = new DateTime(hasta).plusDays(1);
         }
         //OBS: le sumo un dia ya que la comparacion es solamente isBefore y no tengo el equal en la fecha.
-                
+        //Limpio las horas minnutos y segundos ya a veces puede venir la fecha con el ultimo instante del dia
+        desdeCalculado = new DateTime(desdeCalculado.getYear(), desdeCalculado.getMonthOfYear(), desdeCalculado.getDayOfMonth(), 0, 0);
+        hastaCalculado = new DateTime(hastaCalculado.getYear(), hastaCalculado.getMonthOfYear(), hastaCalculado.getDayOfMonth(), 0, 0);
+        
         //calculo los dias de acuerdo al periodo limite impuesto 
         DateTime currentFecha = desdeCalculado;
         while (currentFecha.isBefore(hastaCalculado)){
@@ -467,7 +472,7 @@ public class ConceptoReciboFacade extends AbstractFacade<ConceptoRecibo> {
                 
                 s+= "," + String.valueOf(totalAcumulado);
                 
-                //System.out.println(s);
+                System.out.println(s);
                 
                 return totalAcumulado * conceptoSAC.getValor().doubleValue() / 100;
                 
