@@ -11,6 +11,7 @@ import com.orco.graneles.domain.facturacion.Empresa;
 import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import com.orco.graneles.domain.facturacion.TurnoFacturado;
+import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.miscelaneos.TipoMovimientoCtaCte;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -126,14 +127,30 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         super.remove(entity);
     }
     
-    public List<Factura> findByPagada(Empresa exportador, Boolean pagada) {
+    public List<Factura> findByPagada(Empresa exportador, Boolean pagada, FixedList tipoMovimientoAExcluir) {
+        
         List<Factura> result = getEntityManager().createNamedQuery("Factura.findByExportadorYPagada", Factura.class)
                 .setParameter("exportador", exportador)
                 .setParameter("pagada", pagada)
                 .getResultList();
         
-        Collections.sort(result);
-        return result;
+        if (tipoMovimientoAExcluir != null) {
+            List<Factura> facturasFiltradas = new ArrayList<Factura>();
+            for (Factura f : result) {
+                boolean tieneMovimiento = false;
+                for (MovimientoCtaCte mCC : f.getMovimientoCtaCtesCollection()) {
+                    tieneMovimiento |= (mCC.getTipoMovimiento().equals(tipoMovimientoAExcluir));
+                }
+                    if (!tieneMovimiento) {
+                    facturasFiltradas.add(f);
+                }
+            }
+            Collections.sort(facturasFiltradas);
+            return facturasFiltradas;
+        } else {
+            Collections.sort(result);
+            return result;
+        }
     }
     
     /**

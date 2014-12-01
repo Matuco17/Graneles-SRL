@@ -89,14 +89,12 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
 
     @Override
     public void create(MovimientoCtaCte entity) {
+        persistirMovimiento(entity);
+    }
+
+    private void persistirMovimiento(MovimientoCtaCte entity) {
         //Pago las facturas involucradas en caso de completar su saldo
         //En este caso las facturas son siempre debitos asi q tengo q aplicarlo a los creditos solamente
-        System.out.println("*** Inicio create facturas orig");
-        for (Factura f : entity.getFacturaCollection()) {
-            System.out.println(f.getId());
-        }
-        
-        System.out.println("*** edicion de facturas");
         List<Factura> facturas = new ArrayList<Factura>(entity.getFacturaCollection());
         if (facturas.size() > 0) {
             BigDecimal saldoMovimiento = entity.getValor().abs();
@@ -111,17 +109,10 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
                     }
                     f.getMovimientoCtaCtesCollection().add(entity);
                     em.merge(f);
-                    System.out.println(f.getId());
                 }
             }
         } else {
-            super.create(entity);    
-        }
-      
-        
-        System.out.println("*** facturas dpesues de ejecutra create");
-        for (Factura f : entity.getFacturaCollection()) {
-            System.out.println(f.getId());
+            super.persist(entity);    
         }
     }
 
@@ -129,9 +120,15 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
     public void edit(MovimientoCtaCte entity) {
         //En este caso para tener todo bien actualizado elimino el movimiento anterior y agrego uno nuevo con todas las referencias
         MovimientoCtaCte movimientoAnterior = em.find(MovimientoCtaCte.class, entity.getId());
-        remove(movimientoAnterior);
-        entity.setId(null);
-        create(entity);
+        
+        if (movimientoAnterior.getValor().compareTo(BigDecimal.ZERO) < 0) {
+            for (Factura f : movimientoAnterior.getFacturaCollection()) {
+                f.setPagada(Boolean.FALSE);
+                em.merge(f);
+            }
+        }
+        
+        persistirMovimiento(entity);
     }
 
     @Override
@@ -149,6 +146,8 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         em.createNativeQuery("DELETE FROM mov_cta_cte WHERE id=" + entity.getId()).executeUpdate();
         em.flush();
     }
+    
+    
 
     /**
      * Saldo pendiente de la factura a cancelar.

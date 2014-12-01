@@ -4,8 +4,7 @@
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -17,10 +16,7 @@
     <cc:implementation>
         <h:panelGrid columns="2">
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_empresa}" for="empresa" />
-            <h:selectOneMenu id="empresa" value="#{movimientoCtaCteController.selected.empresa}" rendered="#{cc.attrs.editar}">
-                <f:selectItems value="#{empresaController.itemsAvailableSelectOne}" />
-            </h:selectOneMenu>
-            <h:outputText value="#{movimientoCtaCteController.selected.empresa.toString()}" rendered="#{!cc.attrs.editar}" />
+            <h:outputText id="empresa" value="#{movimientoCtaCteController.selected.empresa.toString()}" />
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_fecha}" for="fecha" />
             <p:calendar value="#{movimientoCtaCteController.selected.fecha}" pattern="dd/MM/yyyy" id="fecha" rendered="#{cc.attrs.editar}" />
@@ -29,16 +25,21 @@
             </h:outputText>
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_tipoMovimiento}" for="tipoMovimiento" />
-            <h:selectOneMenu id="tipoMovimiento" value="#{movimientoCtaCteController.selected.tipoMovimiento}" rendered="#{cc.attrs.editar}" >
+            <h:selectOneMenu id="tipoMovimiento" value="#{movimientoCtaCteController.selected.tipoMovimiento}" rendered="#{cc.attrs.editar}" 
+                             valueChangeListener="#{movimientoCtaCteController.tipoMovimientoSeleccionado}">
+                <p:ajax event="change" update="panFacturas" />
                 <f:selectItems value="#{fixedListController.tipoMovimientoCtaCteSelectOne}" />
             </h:selectOneMenu>
             <h:outputText value="#{movimientoCtaCteController.selected.tipoMovimiento.toString()}"  rendered="#{!cc.attrs.editar}" />
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_tipo}" for="tipo" />
-            <p:selectOneRadio id="tipo" value="#{movimientoCtaCteController.tipo}" disabled="#{!cc.attrs.editar}" >
-                <f:selectItem itemValue="#{movimientoCtaCteController.tipo_debito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_debito}" />
+            <h:selectOneMenu id="tipo" value="#{movimientoCtaCteController.tipo}" disabled="#{!cc.attrs.editar}" 
+                             valueChangeListener="#{movimientoCtaCteController.debitoCreditoSeleccionado}">
+                <p:ajax event="change" update="panFacturas" />
+                <f:selectItem itemValue="" itemLabel="---" />
+                <f:selectItem itemValue="#{movimientoCtaCteController.tipo_debito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_debito}" /> 
                 <f:selectItem itemValue="#{movimientoCtaCteController.tipo_credito}" itemLabel="#{bundleFacturacion.MovimientoCtaCteTitle_credito}" />
-            </p:selectOneRadio>
+            </h:selectOneMenu>
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_monto}" for="monto" />
             <p:inputText value="#{movimientoCtaCteController.monto}" id="monto" rendered="#{cc.attrs.editar}" >
@@ -49,7 +50,8 @@
             </h:outputText>
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_observaciones}" for="observaciones" />
-            <p:inputTextarea value="#{movimientoCtaCteController.selected.observaciones}" id="observaciones" rendered="#{cc.attrs.editar}" />
+            <p:inputTextarea value="#{movimientoCtaCteController.selected.observaciones}" id="observaciones"
+                             autoResize="false" cols="40" rows="5" rendered="#{cc.attrs.editar}" />
             <h:outputText value="#{movimientoCtaCteController.selected.observaciones}" rendered="#{!cc.attrs.editar}" />
 
             <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" rendered="#{!cc.attrs.editar}"/>
@@ -58,12 +60,13 @@
             </p:dataList>
      
         </h:panelGrid>
-
-        <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" for="facturas" rendered="#{cc.attrs.editar}" />
-        <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
-                    var="factura" itemLabel="#{factura}" itemValue="#{factura}" 
-                    converter="#{facturaController.staticConverter}" 
-                    rendered="#{cc.attrs.editar}" />
+        <h:panelGroup id="panFacturas" >
+            <h:outputLabel value="#{bundleFacturacion.MovimientoCtaCteTitle_facturas}" for="facturas" rendered="#{cc.attrs.editar}" />
+            <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
+                        var="factura" itemLabel="#{factura}" itemValue="#{factura}" 
+                        converter="#{facturaController.staticConverter}" 
+                        rendered="#{movimientoCtaCteController.facturasASeleccionar != null}" />
+        </h:panelGroup> 
        
     </cc:implementation>
 </html>
