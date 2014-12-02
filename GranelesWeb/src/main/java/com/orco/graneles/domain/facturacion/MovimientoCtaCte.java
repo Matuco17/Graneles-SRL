@@ -76,7 +76,7 @@ public class MovimientoCtaCte implements Serializable, Comparable<MovimientoCtaC
     @Column(name = "manual")
     private Boolean manual;
     
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "movimientoCtaCtesCollection")
+    @ManyToMany(mappedBy = "movimientoCtaCtesCollection")
     private Collection<Factura> facturaCollection;
     
     @JoinColumn(name = "tipo_movimiento", referencedColumnName = "id", nullable = false)

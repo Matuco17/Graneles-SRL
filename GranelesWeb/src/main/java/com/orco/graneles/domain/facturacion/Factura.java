@@ -91,10 +91,10 @@ public class Factura extends EntidadAuditable implements Serializable, Comparabl
     private Collection<TurnoFacturado> turnosFacturadosCollection;
 
     
+    @ManyToMany
     @JoinTable(name = "movctacte_factura", joinColumns = {
         @JoinColumn(name = "factura", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "movimiento", referencedColumnName = "id")})
-    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<MovimientoCtaCte> movimientoCtaCtesCollection;
    
     @Column(name = "pagada")

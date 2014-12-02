@@ -65,7 +65,7 @@
             <p:pickList id="facturas" value="#{movimientoCtaCteController.facturasASeleccionar}" 
                         var="factura" itemLabel="#{factura}" itemValue="#{factura}" 
                         converter="#{facturaController.staticConverter}" 
-                        rendered="#{movimientoCtaCteController.facturasASeleccionar != null}" />
+                        rendered="#{movimientoCtaCteController.facturasASeleccionar != null and cc.attrs.editar}" />
         </h:panelGroup> 
        
     </cc:implementation>

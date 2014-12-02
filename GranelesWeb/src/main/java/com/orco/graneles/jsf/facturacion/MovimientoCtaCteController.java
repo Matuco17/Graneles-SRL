@@ -130,6 +130,8 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     public String prepareCreate() {
+        facturasPreviamenteSeleccionas = null;
+        facturasASeleccionar = null;
         current = new MovimientoCtaCte();
         current.setEmpresa(currentEmpresa);
         monto = BigDecimal.ZERO;
@@ -143,6 +145,7 @@ public class MovimientoCtaCteController implements Serializable {
             current.setManual(Boolean.TRUE);
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleFacturacion").getString("MovimientoCtaCteCreated"));
+            facturasASeleccionar = null;
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleFacturacion").getString("PersistenceErrorOccured"));
@@ -235,7 +238,7 @@ public class MovimientoCtaCteController implements Serializable {
     }
 
     private void seleccionarMovimiento() {
-        current = (MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData();
+        current = ejbFacade.find(((MovimientoCtaCte) getCurrentEmpresaMovimientos().getRowData()).getId());
         selectedItemIndex = getCurrentEmpresaMovimientos().getRowIndex();
         if (current.getValor().doubleValue() >= 0){
             tipo = TIPO_DEBITO;

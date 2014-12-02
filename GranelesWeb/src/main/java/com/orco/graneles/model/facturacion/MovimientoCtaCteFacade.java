@@ -96,14 +96,15 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         //Pago las facturas involucradas en caso de completar su saldo
         //En este caso las facturas son siempre debitos asi q tengo q aplicarlo a los creditos solamente
         List<Factura> facturas = new ArrayList<Factura>(entity.getFacturaCollection());
+        entity.getFacturaCollection().clear();
+        super.create(entity);   
         if (facturas.size() > 0) {
             BigDecimal saldoMovimiento = entity.getValor().abs();
             Collections.sort(facturas);
-
+            
             for (Factura f : facturas) {
                 saldoMovimiento = saldoMovimiento.subtract(saldoPendienteFactura(f, entity));
                 if (saldoMovimiento.compareTo(saldoMovimiento) >= 0) {
-                    System.out.println(f.getId());
                     if (entity.getValor().compareTo(BigDecimal.ZERO) < 0) {
                         f.setPagada(Boolean.TRUE);
                     }
@@ -111,23 +112,16 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
                     em.merge(f);
                 }
             }
-        } else {
-            super.persist(entity);    
         }
+        //Vuelvo a poner las facturas para que todo ande bien
+        entity.setFacturaCollection(facturas);
     }
 
     @Override
     public void edit(MovimientoCtaCte entity) {
         //En este caso para tener todo bien actualizado elimino el movimiento anterior y agrego uno nuevo con todas las referencias
         MovimientoCtaCte movimientoAnterior = em.find(MovimientoCtaCte.class, entity.getId());
-        
-        if (movimientoAnterior.getValor().compareTo(BigDecimal.ZERO) < 0) {
-            for (Factura f : movimientoAnterior.getFacturaCollection()) {
-                f.setPagada(Boolean.FALSE);
-                em.merge(f);
-            }
-        }
-        
+        remove(movimientoAnterior);
         persistirMovimiento(entity);
     }
 
@@ -142,6 +136,7 @@ public class MovimientoCtaCteFacade extends AbstractFacade<MovimientoCtaCte> {
         }
         
         entity.getFacturaCollection().clear();
+        em.detach(entity);
         em.createNativeQuery("DELETE FROM movctacte_factura WHERE movimiento=" + entity.getId()).executeUpdate();
         em.createNativeQuery("DELETE FROM mov_cta_cte WHERE id=" + entity.getId()).executeUpdate();
         em.flush();
