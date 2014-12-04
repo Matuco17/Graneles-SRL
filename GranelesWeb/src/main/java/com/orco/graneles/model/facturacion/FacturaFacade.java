@@ -62,6 +62,8 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         movCtaCteFact.setValor(entity.getTotalConIVA());
         movCtaCteFact.setManual(Boolean.FALSE);
         
+        em.persist(movCtaCteFact);
+        em.flush();
         entity.setMovimientoCtaCtesCollection(new ArrayList<MovimientoCtaCte>());
         entity.getMovimientoCtaCtesCollection().add(movCtaCteFact);
         
@@ -123,6 +125,19 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         Embarque e = entity.getEmbarque();
         e.setFacturado(false);
         embarqueF.edit(e);
+        
+        MovimientoCtaCte movFactura = null;
+        for(MovimientoCtaCte m : entity.getMovimientoCtaCtesCollection()) {
+            if (!m.getManual()) movFactura = m;
+        }
+        
+        em.createNativeQuery("DELETE FROM movctacte_factura WHERE factura=" + entity.getId()).executeUpdate();
+        if (movFactura != null) {
+            em.createNativeQuery("DELETE FROM movctacte_factura WHERE movimiento=" + movFactura.getId()).executeUpdate();
+            em.createNativeQuery("DELETE FROM mov_cta_cte WHERE id=" + movFactura.getId()).executeUpdate();
+        }
+        em.flush();
+        entity.getMovimientoCtaCtesCollection().clear();
         
         super.remove(entity);
     }
