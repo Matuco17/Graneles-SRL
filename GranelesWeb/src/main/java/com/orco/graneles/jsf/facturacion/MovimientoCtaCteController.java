@@ -5,6 +5,7 @@ import com.orco.graneles.domain.facturacion.Factura;
 import com.orco.graneles.domain.facturacion.MovimientoCtaCte;
 import com.orco.graneles.domain.miscelaneos.FixedList;
 import com.orco.graneles.domain.seguridad.Grupo;
+import com.orco.graneles.fileExport.MovCtaCteXLS;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.facturacion.FacturaFacade;
 import com.orco.graneles.model.facturacion.MovimientoCtaCteFacade;
@@ -62,6 +63,7 @@ public class MovimientoCtaCteController implements Serializable {
     
     private String urlReporteXEmpresa;
     private String urlReporteXEmpresaYFactura;
+    private String urlReporteMovimientosXLS;
     
     private DualListModel<Factura> facturasASeleccionar;
     private Collection<Factura> facturasPreviamenteSeleccionas;
@@ -101,7 +103,8 @@ public class MovimientoCtaCteController implements Serializable {
             
             currentEmpresaMovimientos = new ListDataModel(movimientos);
             urlReporteXEmpresa = null;
-            urlReporteXEmpresaYFactura = null;            
+            urlReporteXEmpresaYFactura = null; 
+            urlReporteMovimientosXLS = null;
         }
     }
     
@@ -111,6 +114,10 @@ public class MovimientoCtaCteController implements Serializable {
 
     public void generarReporteEmpresaYFactura(){
         urlReporteXEmpresaYFactura =  (new MovCtaCteReport(movimientos, null, null, false, false, false, false)).obtenerReportePDF();
+    }
+    
+    public void generarReporteMovimientosXLS() {
+        urlReporteMovimientosXLS = (new MovCtaCteXLS(movimientos, currentEmpresa, getTotalDebitos(), getTotalCreditos(), getSaldo())).generarArchivo("MovimienttosCtaCte_" + getCurrentEmpresa().getNombre() + "_" + System.currentTimeMillis());
     }
 
     private MovimientoCtaCteFacade getFacade() {
@@ -353,6 +360,10 @@ public class MovimientoCtaCteController implements Serializable {
 
     public String getUrlReporteXEmpresaYFactura() {
         return urlReporteXEmpresaYFactura;
+    }
+    
+    public String getUrlReporteMovimientosXLS() {
+        return urlReporteMovimientosXLS;
     }
 
     public DualListModel<Factura> getFacturasASeleccionar() {

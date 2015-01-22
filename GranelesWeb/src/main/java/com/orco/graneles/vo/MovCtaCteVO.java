@@ -46,6 +46,10 @@ public class MovCtaCteVO {
         }
     }
     
+    public String getTipoMovimiento() {
+        return movCtaCte.getTipoMovimiento().getDescripcion();
+    }
+    
     public Date getFecha(){
         return movCtaCte.getFecha();
     }

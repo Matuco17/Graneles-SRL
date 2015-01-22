@@ -31,7 +31,7 @@
                 <h:outputText escape="false" value="#{bundleFacturacion.ListMovimientoCtaCteEmpty}" rendered="#{movimientoCtaCteController.currentEmpresaMovimientos.rowCount == 0}"/>
                 <p:panel rendered="#{movimientoCtaCteController.currentEmpresaMovimientos.rowCount > 0}">
                     
-                    <h:panelGrid columns="6">
+                    <h:panelGrid columns="7">
                         <h:outputLabel value="Empresa"  />
                         <h:outputText value="#{movimientoCtaCteController.currentEmpresa.nombre}" />
                         <h:outputLabel value="Saldo:" />
@@ -58,6 +58,16 @@
                         <h:link value="Reporte de Movimientos por Factura" 
                                 onclick="window.open('#{movimientoCtaCteController.urlReporteXEmpresaYFactura}','Download');window.close();" 
                                 rendered="#{movimientoCtaCteController.urlReporteXEmpresaYFactura != null}" />
+
+                        <h:commandButton action="#{movimientoCtaCteController.generarReporteMovimientosXLS()}"
+                                        label="Exportar Movimientos a Excel"
+                                        value="Exportar Movimientos a Excel"
+                                        rendered="#{movimientoCtaCteController.urlReporteMovimientosXLS == null}"
+                                        />
+
+                        <h:link value="Movimientos en Excel" 
+                                onclick="window.open('#{movimientoCtaCteController.urlReporteMovimientosXLS}','Download');window.close();" 
+                                rendered="#{movimientoCtaCteController.urlReporteMovimientosXLS != null}" />
 
                     </h:panelGrid>
                     
