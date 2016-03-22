@@ -99,6 +99,8 @@ public class EmbarqueController implements Serializable {
     //Reportes Turno
     private String urlReportePlanillaTrabajadores;
     private String urlReporteCargaTurno;
+    private Map<String, String> urlsReportesPlanillaTrabajadores;
+    private Map<String, String> urlsReporteCargaTurno;
     
     //Cargadores del Embarque
     private EmbarqueCargador currentEC;
@@ -148,6 +150,8 @@ public class EmbarqueController implements Serializable {
         urlReporteResumenCargasTurnos = null;
         urlReporteResumenCargasCoordinador = null;
         urlReporteNoDanios = null;
+        urlsReporteCargaTurno = null;
+        urlsReportesPlanillaTrabajadores = null;
         currentEC = null;
         cargadores = null;
         cargadoresModel = null;
@@ -392,6 +396,32 @@ public class EmbarqueController implements Serializable {
     
     public void generarReporteNoDanios(){
         urlReporteNoDanios = (new NoDanios(current)).obtenerReportePDF();
+    }
+    
+    public Map<String, String> getUrlsReportesPlanillaTrabajadores() {
+        return urlsReportesPlanillaTrabajadores;
+    }
+
+    public Map<String, String> getUrlsReporteCargaTurno() {
+        return urlsReporteCargaTurno;
+    }
+    
+    public void generarTodosLosResportes(){
+        generarReportePlano();
+        generarReporteResumenCargasTurnos();
+        generarReporteResumenCargasCoordinador();
+        generarReporteNoDanios();
+        
+        urlsReporteCargaTurno = new HashMap<String, String>();
+        urlsReportesPlanillaTrabajadores = new HashMap<String, String>();
+        for (TurnoEmbarque te : current.getTurnoEmbarqueCollection()) {
+            urlsReporteCargaTurno.put("CargaTurno_" + te.getNroPlanilla(), 
+                    (new ResumenCargasPorTurno(te)).obtenerReportePDF());
+            urlsReportesPlanillaTrabajadores.put("PlanillaTrabajadores_" + te.getNroPlanilla(),
+                    (new PlanillaTrabajadoresTurno(te,
+                 turnoEmbarqueF.obtenerTteVos(te)))
+                 .obtenerReportePDF());
+        }
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {

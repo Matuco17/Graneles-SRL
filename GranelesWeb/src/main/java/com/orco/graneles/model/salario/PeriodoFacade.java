@@ -340,6 +340,9 @@ public class PeriodoFacade extends AbstractFacade<Periodo> {
         List<TrabajadoresTurnoEmbarque> ttes = trabTurnoEmbarqueF.getTrabajadoresPeriodo(desde.toDate(), hasta.toDate());
         for (TrabajadoresTurnoEmbarque tte : ttes){
             ProyeccionSacVacYAdelantosVO proyeccion = proyecciones.get(tte.getPersonal().getId());
+            if (proyeccion == null){
+                proyeccion = new ProyeccionSacVacYAdelantosVO(tte.getPersonal());
+            }
             proyeccion.setUltimoTTE(tte);
         }
         

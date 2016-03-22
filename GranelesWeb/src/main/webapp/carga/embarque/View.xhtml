@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:Cc="http://java.sun.com/jsf/composite/CompositeComponents"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <f:metadata>
         <f:viewParam name="embarque" value="#{embarqueController.embarqueId}" />
@@ -90,6 +91,15 @@
                                         onclick="window.open('#{embarqueController.urlReporteNoDanios}','Download');window.close();" 
                                         rendered="#{embarqueController.urlReporteNoDanios != null}" />
 
+                                <c:forEach items="#{embarqueController.urlsReporteCargaTurno}" var="reporteCargaTurno" >
+                                     <h:link value="#{reporteCargaTurno.key}" 
+                                        onclick="window.open('#{reporteCargaTurno.value}','Download');window.close();" 
+                                </c:forEach>
+                                
+                                <c:forEach items="#{embarqueController.urlsReportesPlanillaTrabajadores}" var="reportePlanilla" >
+                                     <h:link value="#{reportePlanilla.key}" 
+                                        onclick="window.open('#{reportePlanilla.value}','Download');window.close();" 
+                                </c:forEach>
                                 
                         </h:panelGrid>
                     </p:tab>
