@@ -56,6 +56,23 @@
                        </p:column>  
                    </p:dataTable>
                </p:panel>
+               <p:panel header="Planilla Rápida" style="width: 470px; float: left;" rendered="#{loginController.esUsuario()}" >
+                   <p:inputText value="#{indexController.nroPlanilla}" />
+                   <h:commandButton action="#{indexController.generarReportesTurnoEmbarque()}"
+                             label="Generar Reportes"
+                             value="Generar Reportes" />
+                   <p:panel header="Reportes Planilla #{indexController.nroPlanilla}" >
+                        <h:link value="Planilla de Trabajadores" 
+                             onclick="window.open('#{indexController.urlReportePlanillaTrabajadores}','Download');window.close();" 
+                             rendered="#{indexController.urlReportePlanillaTrabajadores != null}" 
+                             style="padding: 10px; font-size: 12px;"/>
+
+                        <h:link value="Cargas de Turno" 
+                            onclick="window.open('#{indexController.urlReporteCargaTurno}','Download');window.close();" 
+                            rendered="#{indexController.urlReporteCargaTurno != null}" 
+                            style="padding: 10px; font-size: 12px;"/>
+                   </p:panel>
+               </p:panel>
            </div>
            
            <div style="max-width: 450px; float: left; ">
