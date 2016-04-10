@@ -54,7 +54,14 @@
                     
                 
                     <p:tab title="Reportes" rendered="#{embarqueController.selected.consolidado}">
-                        <h:panelGrid columns="4">
+                        <h:panelGrid columns="5">
+                                <h:commandButton action="#{embarqueController.generarTodosLosResportes()}"
+                                             label="Generar Todos los Reportes"
+                                             value="Generar Todos los Reportes"
+                                             style="font-size: medium"
+                                             />
+
+                            
                                 <h:commandButton action="#{embarqueController.generarReportePlano()}"
                                              label="Generar Plano de Carga"
                                              value="Generar Plano de Carga"
@@ -93,12 +100,12 @@
 
                                 <c:forEach items="#{embarqueController.urlsReporteCargaTurno}" var="reporteCargaTurno" >
                                      <h:link value="#{reporteCargaTurno.key}" 
-                                        onclick="window.open('#{reporteCargaTurno.value}','Download');window.close();" 
+                                        onclick="window.open('#{reporteCargaTurno.value}','Download');window.close();" />
                                 </c:forEach>
                                 
                                 <c:forEach items="#{embarqueController.urlsReportesPlanillaTrabajadores}" var="reportePlanilla" >
                                      <h:link value="#{reportePlanilla.key}" 
-                                        onclick="window.open('#{reportePlanilla.value}','Download');window.close();" 
+                                        onclick="window.open('#{reportePlanilla.value}','Download');window.close();" />
                                 </c:forEach>
                                 
                         </h:panelGrid>

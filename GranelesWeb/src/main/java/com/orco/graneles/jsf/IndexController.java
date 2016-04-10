@@ -43,8 +43,8 @@ public class IndexController {
     
     private Integer nroPlanilla;
     private TurnoEmbarque currentTE;
-    private String urlReportePlanillaTrabajadores;
-    private String urlReporteCargaTurno;
+    private String urlReportePlanillaTrabajadores = null;
+    private String urlReporteCargaTurno = null;
 
     /** Creates a new instance of MenuController */
     public IndexController() {
@@ -75,8 +75,8 @@ public class IndexController {
         
         embarquesNoFacturados = new ListDataModel(embarqueF.findByFacturado(false));
         
-        urlReporteCargaTurno = null;
-        urlReportePlanillaTrabajadores = null;
+        //urlReporteCargaTurno = null;
+        //urlReportePlanillaTrabajadores = null;
     }
     
     public void generarReportesTurnoEmbarque() {
