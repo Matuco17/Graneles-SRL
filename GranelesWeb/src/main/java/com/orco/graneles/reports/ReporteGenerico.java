@@ -81,7 +81,7 @@ public abstract class ReporteGenerico {
                     
             
             String pathPdfGenerado = pathBaseReportes + nombreArchivoPDF + ".pdf";
-            String urlArchivoGenerado = "~/../../../resources/reports/" + nombreArchivoPDF + ".pdf";
+            String urlArchivoGenerado = "/GranelesWeb/resources/reports/" + nombreArchivoPDF + ".pdf";
             //Genero el pdf para bajar
             JasperExportManager.exportReportToPdfFile(jasperPrint, pathPdfGenerado);
             

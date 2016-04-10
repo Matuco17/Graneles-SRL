@@ -9,11 +9,14 @@ import com.orco.graneles.domain.carga.TurnoEmbarque;
 import com.orco.graneles.jsf.util.JsfUtil;
 import com.orco.graneles.model.carga.EmbarqueFacade;
 import com.orco.graneles.model.carga.TurnoEmbarqueFacade;
+import com.orco.graneles.reports.PlanillaTrabajadoresTurno;
+import com.orco.graneles.reports.ResumenCargasPorTurno;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -38,6 +41,11 @@ public class IndexController {
     private DataModel ultimasPlanillas;
     private DataModel embarquesNoFacturados;
     
+    private Integer nroPlanilla;
+    private TurnoEmbarque currentTE;
+    private String urlReportePlanillaTrabajadores = null;
+    private String urlReporteCargaTurno = null;
+
     /** Creates a new instance of MenuController */
     public IndexController() {
     }
@@ -66,7 +74,27 @@ public class IndexController {
         ultimasPlanillas = new ListDataModel(turnoEmbarqueF.getRecientes(5));
         
         embarquesNoFacturados = new ListDataModel(embarqueF.findByFacturado(false));
+        
+        //urlReporteCargaTurno = null;
+        //urlReportePlanillaTrabajadores = null;
     }
+    
+    public void generarReportesTurnoEmbarque() {
+        if (nroPlanilla != null) {
+            currentTE = turnoEmbarqueF.obtenerTurnoEmbarque(nroPlanilla);
+            if (currentTE != null) {
+                urlReporteCargaTurno = (new ResumenCargasPorTurno(currentTE)).obtenerReportePDF();
+                urlReportePlanillaTrabajadores = (new PlanillaTrabajadoresTurno(currentTE,
+                         turnoEmbarqueF.obtenerTteVos(currentTE)))
+                         .obtenerReportePDF();
+            } else {
+               urlReporteCargaTurno = null;
+               urlReportePlanillaTrabajadores = null;
+               JsfUtil.addErrorMessage("La planilla Nro: " + nroPlanilla + " no existe.");
+            }
+        }
+    }
+    
     
     public DataModel getEtaVencidos() {
         return etaVencidos;
@@ -100,7 +128,31 @@ public class IndexController {
         this.embarquesNoFacturados = embarquesNoFacturados;
     }
 
+    public TurnoEmbarque getCurrentTE() {
+        return currentTE;
+    }
+
+    public void setCurrentTE(TurnoEmbarque currentTE) {
+        this.currentTE = currentTE;
+    }
     
+    public String getUrlReportePlanillaTrabajadores() {
+        return urlReportePlanillaTrabajadores;
+    }
+
+    public String getUrlReporteCargaTurno() {
+        return urlReporteCargaTurno;
+    }
+
+    public Integer getNroPlanilla() {
+        return nroPlanilla;
+    }
+
+    public void setNroPlanilla(Integer nroPlanilla) {
+        this.nroPlanilla = nroPlanilla;
+    }
+    
+  
     
     
 }
